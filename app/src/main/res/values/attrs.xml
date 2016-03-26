@@ -1,0 +1,34 @@
+<resources>
+
+    <declare-styleable name="ProgressBar">
+        <attr name="progressColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="cardStyle">
+        <attr name="cardStyle" format="reference" />
+    </declare-styleable>
+
+    <attr name="fastScrollerStyle" format="reference" />
+
+    <declare-styleable name="FastScroller">
+        <attr name="scrollerColor" format="color" />
+        <attr name="handleHeight" format="dimension"/>
+        <attr name="handleWidth" format="dimension" />
+        <attr name="bubbleTextSize" format="dimension" />
+        <attr name="bubbleRadius" format="dimension" />
+    </declare-styleable>
+
+
+    <attr name="seekBarControl" format="reference" />
+    <attr name="seekBarProgress" format="reference" />
+    <attr name="fastScrollerHandle" format="reference" />
+    <attr name="controlsBackground" format="reference" />
+    <attr name="trackInfoBackground" format="reference" />
+    <attr name="controlsTint" format="reference" />
+
+    <attr name="ToolBar" format="reference" />
+
+    <attr name="ImageControlColor" format="color" />
+
+    <attr name="textColor" format="reference" />
+</resources>
