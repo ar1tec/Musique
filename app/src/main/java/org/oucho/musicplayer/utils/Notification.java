@@ -74,8 +74,8 @@ public class Notification {
 
         Resources res = playbackService.getResources();
 
-        final int height = (int) res.getDimension(android.R.dimen.notification_large_icon_height);
-        final int width = (int) res.getDimension(android.R.dimen.notification_large_icon_width);
+         int height = (int) res.getDimension(R.dimen.notification_large_icon_height);
+        final int width = (int) res.getDimension(R.dimen.notification_large_icon_width);
 
         ArtworkCache artworkCache = ArtworkCache.getInstance();
         Bitmap b = artworkCache.getCachedBitmap(playbackService.getAlbumId(), width, height);

@@ -39,4 +39,20 @@
 
     <dimen name="widget_art_size">110dp</dimen>
 
+    <dimen name="notification_large_icon_height">200dp</dimen>
+    <dimen name="notification_large_icon_width">200dp</dimen>
+
+
+
+    <!-- album_app_largewidget -->
+    <dimen name="music_player_time_text_size">13.0sp</dimen>
+
+    <dimen name="widget_4x1_album_cover_width">50.0dip</dimen>
+    <dimen name="widget_4x1_album_cover_height">50.0dip</dimen>
+    <dimen name="widget_large_text_size">15.0dip</dimen>
+    <dimen name="widget_new_large_artist_text_size">12.0dip</dimen>
+
+
+
+
 </resources>

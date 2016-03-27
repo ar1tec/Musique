@@ -255,7 +255,7 @@ public class AudioEffects {
         editor.putBoolean(PREF_EQ_ENABLED,
                 sEqualizer.getEnabled());
 
-        editor.apply();
+        editor.commit();
     }
 
     private static class BassBoostValues {

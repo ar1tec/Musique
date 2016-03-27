@@ -23,12 +23,12 @@
     <org.oucho.musicplayer.utils.VuMetre.VuMeterView
         android:id="@+id/vu_meter"
         android:layout_width="15dp"
-        android:layout_height="15dp"
+        android:layout_height="13dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="18dp"
         vumeter:backgroundColor="?attr/colorAccent"
         vumeter:stopSize="5dp"
-        vumeter:speed="2"
+        vumeter:speed="3"
         vumeter:blockNumber="3"
         vumeter:blockSpacing="1dp"
         android:visibility="gone" />

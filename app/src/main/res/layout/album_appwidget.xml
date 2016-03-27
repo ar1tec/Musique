@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/album_app_resize_widget"
+    android:background="@drawable/asus_widget_bg"
+    android:layout_width="fill_parent"
+    android:layout_height="80.0dip"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/album_appwidget_click"
+        android:paddingLeft="5.0dip"
+        android:paddingTop="5.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/control_large_album_image"
+            android:layout_width="@dimen/widget_4x1_album_cover_width"
+            android:layout_height="@dimen/widget_4x1_album_cover_height"
+            android:src="@drawable/albumart_mp_unknown"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/album_app_new_largewidget_upper"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout android:gravity="top"
+                android:orientation="horizontal"
+                android:paddingLeft="10.0dip"
+                android:paddingRight="10.0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="26.0dip">
+
+                <TextView
+                    android:textSize="@dimen/widget_large_text_size"
+                    android:textColor="@color/appwidget_text"
+                    android:ellipsize="end"
+                    android:id="@+id/title"
+                    android:fadingEdge="horizontal"
+                    android:fadingEdgeLength="10.0dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:textSize="@dimen/widget_new_large_artist_text_size"
+                    android:textColor="@color/appwidget_text"
+                    android:ellipsize="end"
+                    android:id="@+id/artist"
+                    android:paddingLeft="10.0dip"
+                    android:fadingEdge="horizontal"
+                    android:fadingEdgeLength="10.0dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:singleLine="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal"
+                android:id="@+id/album_app_new_largewidget_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:id="@+id/control_large_repeat"
+                    android:background="@drawable/appwidget_button_bg"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/asus_music_widget_icon_repeat_none"
+                    android:layout_weight="1.0" />
+
+                <ImageView
+                    android:id="@+id/control_previous"
+                    android:background="@drawable/appwidget_button_bg"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18.0dip"
+                    android:src="@drawable/asus_music_widget_icon_previous"
+                    android:layout_weight="1.0" />
+
+                <ImageView
+                    android:id="@+id/play_pause_toggle"
+                    android:background="@drawable/appwidget_button_bg"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18.0dip"
+                    android:src="@drawable/asus_music_widget_icon_play"
+                    android:layout_weight="1.0" />
+
+                <ImageView
+                    android:id="@+id/control_next"
+                    android:background="@drawable/appwidget_button_bg"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18.0dip"
+                    android:src="@drawable/asus_music_widget_icon_next"
+                    android:layout_weight="1.0" />
+
+                <ImageView
+                    android:id="@+id/control_large_shuffle"
+                    android:background="@drawable/appwidget_button_bg"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18.0dip"
+                    android:src="@drawable/asus_music_widget_icon_no_shuffle"
+                    android:layout_weight="1.0" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

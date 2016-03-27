@@ -237,7 +237,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
             editor.putInt("currentPosition", mCurrentPosition);
             editor.putInt("repeatMode", mRepeatMode);
             editor.putBoolean("shuffle", mShuffle);
-            editor.apply();
+            editor.commit();
         }
     }
 
@@ -271,7 +271,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
         SharedPreferences.Editor editor = mStatePrefs.edit();
         editor.putBoolean("seekPosSaved", true);
         editor.putInt("seekPos", mMediaPlayer.getCurrentPosition());
-        editor.apply();
+        editor.commit();
     }
 
     private void restoreSeekPos() {
@@ -283,7 +283,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
             SharedPreferences.Editor editor = mStatePrefs.edit();
             editor.putBoolean("seekPosSaved", false);
             editor.putInt("seekPos", 0);
-            editor.apply();
+            editor.commit();
         }
     }
 
@@ -356,7 +356,8 @@ public class PlaybackService extends Service implements OnPreparedListener,
                 }
             }
         }
-        return START_STICKY;
+        //return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -679,6 +680,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
         mMediaPlayer.stop();
 
         mIsPlaying = false;
+
         notifyChange(PLAYSTATE_CHANGED);
     }
 

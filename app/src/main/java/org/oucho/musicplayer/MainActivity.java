@@ -49,6 +49,8 @@ import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.fragments.PlaylistFragment;
+import org.oucho.musicplayer.images.ArtistImageCache;
+import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
@@ -93,33 +95,130 @@ public class MainActivity extends AppCompatActivity
     private static final int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
     private final Handler mHandler = new Handler();
-    /**
-     * Handler for the sleep timer dialog
-     */
-    private final HmsPickerDialogFragment.HmsPickerDialogHandler mHmsPickerHandler = new HmsPickerDialogFragment.HmsPickerDialogHandler() {
-        @Override
-        public void onDialogHmsSet(int reference, int hours, int minutes, int seconds) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-            SleepTimer.setTimer(MainActivity.this, prefs, hours * 3600 + minutes * 60 + seconds);
-        }
-    };
-    private final DialogInterface.OnClickListener mSleepTimerDialogListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE: // set a new timer
-                    DialogUtils.showSleepHmsPicker(MainActivity.this, mHmsPickerHandler);
-                    break;
-                case DialogInterface.BUTTON_NEGATIVE: // cancel the current timer
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    SleepTimer.cancelTimer(MainActivity.this, prefs);
-                    break;
-                case DialogInterface.BUTTON_NEUTRAL: // just go back
-                    break;
 
-            }
+
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawerLayout;
+
+    private boolean favorite = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setTheme();
+
+        super.onCreate(savedInstanceState);
+
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        setContentView(R.layout.activity_main);
+
+        mPlaybackRequests = new PlaybackRequests();
+
+        if (savedInstanceState == null) {
+            showLibrary();
         }
-    };
+
+
+        findViewById(R.id.quick_play_pause_toggle).setOnClickListener(mOnClickListener);
+
+        findViewById(R.id.track_info).setOnClickListener(mOnClickListener);
+
+        findViewById(R.id.quick_prev).setOnClickListener(mOnClickListener);
+        findViewById(R.id.quick_next).setOnClickListener(mOnClickListener);
+
+
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        //mNavigationView.inflateHeaderView(R.layout.navigation_header);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                mDrawerLayout.closeDrawers();
+                switch (menuItem.getItemId()) {
+                    case R.id.action_library:
+                        showLibrary();
+                        break;
+                    case R.id.action_favorites:
+                        showFavorites();
+                        break;
+                    case R.id.action_equalizer:
+                        NavigationUtils.showEqualizer(MainActivity.this);
+                        break;
+                    case R.id.action_theme:
+                        NavigationUtils.showTheme(MainActivity.this);
+                        break;
+                    case R.id.nav_help:
+                        About();
+                        return true;
+                    case R.id.nav_exit:
+                        mPlaybackService.stop();
+                        killNotif();
+                        System.exit(0);
+                        return true;
+                }
+                return true;
+            }
+        });
+        checkPermissions();
+
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+
+    }
+
+    public DrawerLayout getDrawerLayout() {
+        return mDrawerLayout;
+    }
+
+
+    private void setTheme() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        int theme = prefs.getInt(PreferencesActivity.KEY_PREF_THEME, ThemePreference.DEFAULT_THEME);
+
+        switch (theme) {
+            case ThemePreference.original_green:
+                setTheme(R.style.MainActivityOGreenLight);
+                break;
+            case ThemePreference.red:
+                setTheme(R.style.MainActivityRedLight);
+                break;
+            case ThemePreference.orange:
+                setTheme(R.style.MainActivityOrangeLight);
+                break;
+            case ThemePreference.purple:
+                setTheme(R.style.MainActivityPurpleLight);
+                break;
+            case ThemePreference.navy:
+                setTheme(R.style.MainActivityNavyLight);
+                break;
+            case ThemePreference.blue:
+                setTheme(R.style.MainActivityBlueLight);
+                break;
+            case ThemePreference.sky:
+                setTheme(R.style.MainActivitySkyLight);
+                break;
+            case ThemePreference.seagreen:
+                setTheme(R.style.MainActivitySeagreenLight);
+                break;
+            case ThemePreference.cyan:
+                setTheme(R.style.MainActivityCyanLight);
+                break;
+            case ThemePreference.pink:
+                setTheme(R.style.MainActivityPinkLight);
+                break;
+        }
+    }
+
+    // recharge pour appliquer la nouvelle couleur de thème
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        recreate();
+    }
+
+
+
     private Intent mOnActivityResultIntent;
     private PlaybackService mPlaybackService;
     private final OnClickListener mOnClickListener = new OnClickListener() {
@@ -217,119 +316,6 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    private NavigationView mNavigationView;
-    private DrawerLayout mDrawerLayout;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTheme();
-
-        super.onCreate(savedInstanceState);
-
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-        setContentView(R.layout.activity_main);
-
-        mPlaybackRequests = new PlaybackRequests();
-
-        if (savedInstanceState == null) {
-            showLibrary();
-        }
-
-
-        findViewById(R.id.quick_play_pause_toggle).setOnClickListener(mOnClickListener);
-
-        findViewById(R.id.track_info).setOnClickListener(mOnClickListener);
-
-        findViewById(R.id.quick_prev).setOnClickListener(mOnClickListener);
-        findViewById(R.id.quick_next).setOnClickListener(mOnClickListener);
-
-
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        //mNavigationView.inflateHeaderView(R.layout.navigation_header);
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                mDrawerLayout.closeDrawers();
-                switch (menuItem.getItemId()) {
-                    case R.id.action_library:
-                        showLibrary();
-                        break;
-                    case R.id.action_favorites:
-                        showFavorites();
-                        break;
-                    case R.id.action_equalizer:
-                        NavigationUtils.showEqualizer(MainActivity.this);
-                        break;
-                    case R.id.nav_help:
-                        About();
-                        return true;
-                    case R.id.action_theme:
-                        NavigationUtils.showTheme(MainActivity.this);
-                        break;
-                }
-                return true;
-            }
-        });
-        checkPermissions();
-
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
-
-    }
-
-    // recharge pour appliquer la nouvelle couleur de thème
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        recreate();
-    }
-
-    public DrawerLayout getDrawerLayout() {
-        return mDrawerLayout;
-    }
-
-
-    private void setTheme() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        int theme = prefs.getInt(PreferencesActivity.KEY_PREF_THEME, ThemePreference.DEFAULT_THEME);
-
-        switch (theme) {
-            case ThemePreference.original_green:
-                setTheme(R.style.MainActivityOGreenLight);
-                break;
-            case ThemePreference.red:
-                setTheme(R.style.MainActivityRedLight);
-                break;
-            case ThemePreference.orange:
-                setTheme(R.style.MainActivityOrangeLight);
-                break;
-            case ThemePreference.purple:
-                setTheme(R.style.MainActivityPurpleLight);
-                break;
-            case ThemePreference.navy:
-                setTheme(R.style.MainActivityNavyLight);
-                break;
-            case ThemePreference.blue:
-                setTheme(R.style.MainActivityBlueLight);
-                break;
-            case ThemePreference.sky:
-                setTheme(R.style.MainActivitySkyLight);
-                break;
-            case ThemePreference.seagreen:
-                setTheme(R.style.MainActivitySeagreenLight);
-                break;
-            case ThemePreference.cyan:
-                setTheme(R.style.MainActivityCyanLight);
-                break;
-            case ThemePreference.pink:
-                setTheme(R.style.MainActivityPinkLight);
-                break;
-        }
-    }
-
     /**
      * Affiche bibliothèque sans backstack
      */
@@ -342,7 +328,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    boolean favorite = false;
+
     /**
      * Afficher favoris sans backstack
      */
@@ -593,15 +579,8 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
 
-        NotificationManager notificationManager;
-
-        try {
-            if (!mPlaybackService.isPlaying()) {
-                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.cancel(Notification.NOTIFY_ID);
-            }
-        } catch (RuntimeException ignore){}
-
+        killNotif();
+        clearCache();
 
         if (mServiceBound) {
             mPlaybackService = null;
@@ -783,6 +762,35 @@ public class MainActivity extends AppCompatActivity
 
 
     /**
+     * Handler for the sleep timer dialog
+     */
+    private final HmsPickerDialogFragment.HmsPickerDialogHandler mHmsPickerHandler = new HmsPickerDialogFragment.HmsPickerDialogHandler() {
+        @Override
+        public void onDialogHmsSet(int reference, int hours, int minutes, int seconds) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            SleepTimer.setTimer(MainActivity.this, prefs, hours * 3600 + minutes * 60 + seconds);
+        }
+    };
+    private final DialogInterface.OnClickListener mSleepTimerDialogListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE: // set a new timer
+                    DialogUtils.showSleepHmsPicker(MainActivity.this, mHmsPickerHandler);
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE: // cancel the current timer
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    SleepTimer.cancelTimer(MainActivity.this, prefs);
+                    break;
+                case DialogInterface.BUTTON_NEUTRAL: // just go back
+                    break;
+
+            }
+        }
+    };
+
+
+    /**
      * About
      */
     private void About() {
@@ -827,6 +835,22 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void killNotif() {
+        NotificationManager notificationManager;
+
+        try {
+            if (!mPlaybackService.isPlaying()) {
+                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.cancel(Notification.NOTIFY_ID);
+            }
+        } catch (RuntimeException ignore){}
+    }
+
+    public void clearCache() {
+        ArtistImageCache.getInstance().clear();
+        ArtworkCache.getInstance().clear();
     }
 
 }

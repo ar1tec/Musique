@@ -35,6 +35,13 @@
 
     <style name="AppBaseThemeLight.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+    <!-- album_app_largewidget -->
+    <style name="timeText">
+        <item name="android:textSize">@dimen/music_player_time_text_size</item>
+        <item name="android:textColor">@color/player_duration</item>
+    </style>
+
 <!-- theme Light -->
     <style name="AppThemeOGreenLight" parent="AppBaseThemeLight">
         <item name="colorPrimary">@color/transparent</item>
@@ -267,37 +274,11 @@
     </style>
 
 
-
     <style name="AppBar" parent="Base.Widget.AppCompat.Toolbar">
-
         <item name="android:textColorPrimary">@android:color/black</item>
-
-        <!--
-       android:actionMenuTextColor is the color of the text of
-        action (menu) items in the Toolbar, at least in the
-        Theme.AppCompat theme.
-        For some reason, they already get the textColorPrimary
-        when running on API 21, but not on older versions of
-        Android, so this is only necessary to support older
-        Android versions.
-        -->
         <item name="actionMenuTextColor">@color/abc_primary_text_material_light</item>
-        <!--
-       android:textColorSecondary is the color of the menu
-       overflow icon (three vertical dots)
-        -->
         <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
-
-        <!--
-       This would set the toolbar's background color,
-        but setting this also changes the popup menu's background,
-        even if we define popupTheme for our <Toolbar>
-        -->
-        <!--<item name="android:background">?attr/colorPrimary</item>-->
-
         <item name="android:gravity">center_vertical</item>
-
-
     </style>
 
 

@@ -222,6 +222,8 @@ public class AlbumFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
+
+
         if (args != null) {
 
             long id = args.getLong(ARG_ID);

@@ -33,4 +33,11 @@
 
     <color name="fast_scroller_background">#00ffffff</color>
     <!--<color name="fast_scroller_background2">#5Acccccc</color>-->
+
+    <color name="player_duration">#ff2c2c2c</color>
+
+    <color name="appwidget_image_bg_default">#ff9f9f9f</color>
+
+
+    <color name="appwidget_text">#ff505050</color>
 </resources>

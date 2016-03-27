@@ -34,7 +34,7 @@ public class PrefUtils {
     private void putString(String key, String value) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(key, value);
-        editor.apply();
+        editor.commit();
     }
 
 

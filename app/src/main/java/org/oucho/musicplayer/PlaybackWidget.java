@@ -10,10 +10,13 @@ import android.widget.RemoteViews;
 
 import org.oucho.musicplayer.images.ArtworkCache;
 
+import java.util.Locale;
+
 
 public class PlaybackWidget extends AppWidgetProvider {
 
     private static int sArtworkSize;
+
 
     public static void updateAppWidget(PlaybackService service, int appWidgetIds[]) {
         //final int N = appWidgetIds.length;
@@ -28,25 +31,35 @@ public class PlaybackWidget extends AppWidgetProvider {
         }
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(service);
 
-        RemoteViews views = new RemoteViews(service.getPackageName(), R.layout.playback_widget);
+
+        //RemoteViews views = new RemoteViews(service.getPackageName(), R.layout.playback_widget);
+        RemoteViews views = new RemoteViews(service.getPackageName(), R.layout.album_appwidget);
         views.setTextViewText(R.id.title, service.getSongTitle());
         views.setTextViewText(R.id.artist, service.getArtistName());
+
+
         Bitmap b = ArtworkCache.getInstance().getCachedBitmap(service.getAlbumId(), sArtworkSize, sArtworkSize);
         if (b != null) {
-            views.setImageViewBitmap(R.id.album_artwork, b);
+            views.setImageViewBitmap(R.id.control_large_album_image, b);
         } else {
-            views.setImageViewResource(R.id.album_artwork, R.drawable.default_artwork);
+            views.setImageViewResource(R.id.control_large_album_image, R.drawable.albumart_mp_unknown);
         }
         if (service.isPlaying()) {
-            views.setImageViewResource(R.id.play_pause_toggle, R.drawable.notification_pause);
+            views.setImageViewResource(R.id.play_pause_toggle, R.drawable.asus_music_widget_icon_pause);
 
         } else {
-            views.setImageViewResource(R.id.play_pause_toggle, R.drawable.notification_play);
+            views.setImageViewResource(R.id.play_pause_toggle, R.drawable.asus_music_widget_icon_play);
 
         }
         setUpButtons(service, views);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
+
+    private static String msToText(int msec) {
+        return String.format(Locale.getDefault(), "%d:%02d", msec / 60000,
+                (msec % 60000) / 1000);
+    }
+
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -55,12 +68,14 @@ public class PlaybackWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+
     }
 
     @Override
     public void onEnabled(Context context) {
         // Enter relevant functionality for when the first widget is created
         sArtworkSize = context.getResources().getDimensionPixelSize(R.dimen.widget_art_size);
+
     }
 
     @Override
@@ -72,7 +87,7 @@ public class PlaybackWidget extends AppWidgetProvider {
                                         int appWidgetId) {
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.album_appwidget);
 
 
         views.setTextViewText(R.id.title, context.getResources().getString(R.string.touch_to_select_a_song));
@@ -88,7 +103,7 @@ public class PlaybackWidget extends AppWidgetProvider {
         PendingIntent chooseSongIntent = PendingIntent.getService(context, 0, new Intent(context, PlaybackService.class)
                         .setAction(PlaybackService.ACTION_CHOOSE_SONG), 0);
 
-        views.setOnClickPendingIntent(R.id.song_info, chooseSongIntent);
+        views.setOnClickPendingIntent(R.id.album_appwidget_click, chooseSongIntent);
 
         PendingIntent togglePlayIntent = PendingIntent.getService(context, 0, new Intent(context, PlaybackService.class)
                         .setAction(PlaybackService.ACTION_TOGGLE), 0);
@@ -98,12 +113,12 @@ public class PlaybackWidget extends AppWidgetProvider {
         PendingIntent nextIntent = PendingIntent.getService(context, 0, new Intent(context, PlaybackService.class)
                         .setAction(PlaybackService.ACTION_NEXT), 0);
 
-        views.setOnClickPendingIntent(R.id.next, nextIntent);
+        views.setOnClickPendingIntent(R.id.control_next, nextIntent);
 
         PendingIntent previousIntent = PendingIntent.getService(context, 0, new Intent(context, PlaybackService.class)
                         .setAction(PlaybackService.ACTION_PREVIOUS), 0);
 
-        views.setOnClickPendingIntent(R.id.prev, previousIntent);
+        views.setOnClickPendingIntent(R.id.control_previous, previousIntent);
     }
 }
 

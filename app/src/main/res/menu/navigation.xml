@@ -2,12 +2,10 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:context=".MainActivity">
-    <group
-        android:checkableBehavior="single">
+    <group>
 
         <item
             android:id="@+id/action_library"
-            android:checked="true"
             android:icon="@drawable/ic_nav_music_library"
             android:title="@string/library"/>
         <item
@@ -17,7 +15,7 @@
 
         <item
             android:id="@+id/action_equalizer"
-            android:icon="@drawable/ic_nav_equalizer"
+            android:icon="@drawable/ic_menu_equalizer"
             android:title="@string/action_equalizer"/>
 
     </group>
@@ -41,6 +39,11 @@
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_menu_help"
             android:title="A propos" />
+
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_menu_exit"
+            android:title="Quitter" />
 
     </group>
 </menu>

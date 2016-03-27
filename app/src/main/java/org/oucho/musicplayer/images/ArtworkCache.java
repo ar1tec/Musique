@@ -131,5 +131,6 @@ public class ArtworkCache extends BitmapCache<Long> {
 
     public synchronized void clear() {
         sLargeImageCache.evictAll();
+        sThumbCache.evictAll();
     }
 }

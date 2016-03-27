@@ -1,6 +1,7 @@
 package org.oucho.musicplayer.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.oucho.musicplayer.PlaybackService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.model.db.queue.QueueDbHelper;
@@ -42,17 +44,24 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.song_album_list_item, parent, false);
 
+
         return new SongViewHolder(itemView);
     }
+
 
     @Override
     public void onBindViewHolderImpl(SongViewHolder holder, int position) {
         Song song = getItem(position);
 
+
+
         String Track = String.valueOf(position + 1);
 
         holder.vTitle.setText(song.getTitle());
+
         holder.vTrackNumber.setText(Track);
+        holder.vTrackNumber.setVisibility(View.VISIBLE);
+
         holder.vuMeter.setVisibility(View.GONE);
 
 
@@ -110,19 +119,25 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
             int position = getAdapterPosition();
             triggerOnItemClickListener(position, v);
 
-            //vumetre(v, position);
+            vumetre(v, position);
 
-            //PrevCurrentPos = position;
         }
     }
 
+    int PrevCurrentPos = -1;
+
     public void vumetre(View v, int position) {
 
-/*        View trackNumber = v.findViewById(R.id.track_number);
+        if (PrevCurrentPos != position)
+        notifyItemChanged(PrevCurrentPos, null);
+
+        View trackNumber = v.findViewById(R.id.track_number);
         View VuMeter = v.findViewById(R.id.vu_meter);
 
         trackNumber.setVisibility(View.INVISIBLE);
-        VuMeter.setVisibility(View.VISIBLE);*/
+        VuMeter.setVisibility(View.VISIBLE);
+
+        PrevCurrentPos = position;
     }
 
 }

@@ -37,7 +37,7 @@ public class SleepTimer {
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putBoolean(KEY_TIMER_SET, true);
         prefsEditor.putLong(KEY_TIMER_EXPIRATION, timerMillis);
-        prefsEditor.apply();
+        prefsEditor.commit();
 
     }
 
@@ -53,6 +53,6 @@ public class SleepTimer {
 
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putBoolean(KEY_TIMER_SET, false);
-        prefsEditor.apply();
+        prefsEditor.commit();
     }
 }
