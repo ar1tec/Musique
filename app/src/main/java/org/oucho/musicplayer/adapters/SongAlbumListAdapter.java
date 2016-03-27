@@ -11,24 +11,21 @@ import android.widget.TextView;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.model.db.queue.QueueDbHelper;
+import org.oucho.musicplayer.utils.VuMetre.VuMeterView;
 import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.Collections;
 import java.util.List;
 
 
-public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter.SongViewHolder> implements FastScroller.SectionIndexer {
+public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter.SongViewHolder>
+        implements FastScroller.SectionIndexer {
 
 
-
-    //private final int mThumbWidth;
-    //private final int mThumbHeight;
     private List<Song> mSongList = Collections.emptyList();
 
-
     public SongAlbumListAdapter(Context c) {
-        //mThumbWidth = c.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_size);
-        //mThumbHeight = mThumbWidth;
+
     }
 
     public void setData(List<Song> data) {
@@ -56,6 +53,9 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
 
         holder.vTitle.setText(song.getTitle());
         holder.vTrackNumber.setText(Track);
+        holder.vuMeter.setVisibility(View.GONE);
+
+
 
     }
 
@@ -89,12 +89,14 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
 
         private final TextView vTitle;
         private final TextView vTrackNumber;
+        private final VuMeterView vuMeter;
 
 
         public SongViewHolder(View itemView) {
             super(itemView);
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vTrackNumber = (TextView) itemView.findViewById(R.id.track_number);
+            vuMeter = (VuMeterView) itemView.findViewById(R.id.vu_meter);
 
             itemView.setOnClickListener(this);
 
@@ -108,7 +110,7 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
             int position = getAdapterPosition();
             triggerOnItemClickListener(position, v);
 
-            vumetre(v, position);
+            //vumetre(v, position);
 
             //PrevCurrentPos = position;
         }
@@ -116,11 +118,11 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
 
     public void vumetre(View v, int position) {
 
-        View trackNumber = v.findViewById(R.id.track_number);
+/*        View trackNumber = v.findViewById(R.id.track_number);
         View VuMeter = v.findViewById(R.id.vu_meter);
 
         trackNumber.setVisibility(View.INVISIBLE);
-        VuMeter.setVisibility(View.VISIBLE);
+        VuMeter.setVisibility(View.VISIBLE);*/
     }
 
 }

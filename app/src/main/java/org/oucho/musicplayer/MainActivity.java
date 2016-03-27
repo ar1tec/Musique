@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case R.id.quick_next:
                 case R.id.next:
-
                     mPlaybackService.playNext(true);
                     break;
                 case R.id.action_equalizer:

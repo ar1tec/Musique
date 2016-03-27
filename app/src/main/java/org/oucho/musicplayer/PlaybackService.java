@@ -722,8 +722,6 @@ public class PlaybackService extends Service implements OnPreparedListener,
 
             //on met à jour la position
             updateCurrentPosition();
-
-
             notifyChange(ORDER_CHANGED);
         }
     }
@@ -837,9 +835,17 @@ public class PlaybackService extends Service implements OnPreparedListener,
         return true;
     }
 
+    Boolean start = false;
+
     @Override
     public void onPrepared(MediaPlayer mp) {
-        notifyChange(META_CHANGED);
+        // évite de charger la notification au démarrage de l'application
+        if (!start) {
+            start = true;
+        } else {
+            notifyChange(META_CHANGED);
+        }
+
         restoreSeekPos();
         if (mPlayImmediately) {
             play();
