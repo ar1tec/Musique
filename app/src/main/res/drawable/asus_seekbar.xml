@@ -2,12 +2,12 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/asus_scrubber_secondary_light" />
+        android:drawable="@drawable/scrubber_secondary" />
     <item android:id="@android:id/progress">
         <clip>
             <nine-patch
                 android:dither="true"
-                android:src="@drawable/asus_scrubber_primary_light"
+                android:src="@drawable/scrubber_primary"
                 android:tint="?attr/colorAccent" />
         </clip>
     </item>

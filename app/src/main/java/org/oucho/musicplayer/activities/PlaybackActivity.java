@@ -104,7 +104,7 @@ public class PlaybackActivity extends BaseActivity
         button_prev.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.colorAccent), PorterDuff.Mode.SRC_ATOP);
 
 
-        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.musicplayer_dropdown);
+        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_dropdown);
         upArrow.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
@@ -451,10 +451,10 @@ public class PlaybackActivity extends BaseActivity
         if (mPlaybackService != null) {
             ImageView button = (ImageView) findViewById(R.id.play_pause_toggle);
             if (mPlaybackService.isPlaying()) {
-                button.setImageResource(R.drawable.musique_pause);
+                button.setImageResource(R.drawable.musicplayer_pause);
                 button.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.colorAccent), PorterDuff.Mode.SRC_ATOP);
             } else {
-                button.setImageResource(R.drawable.musique_play);
+                button.setImageResource(R.drawable.musicplayer_play);
                 button.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.colorAccent), PorterDuff.Mode.SRC_ATOP);
             }
         }
@@ -466,11 +466,11 @@ public class PlaybackActivity extends BaseActivity
         Log.d("shuffle", "shuffle " + String.valueOf(shuffle));
         ImageView shuffleButton = (ImageView) findViewById(R.id.shuffle);
         if (shuffle) {
-            shuffleButton.setImageResource(R.drawable.musique_shuffle_on);
+            shuffleButton.setImageResource(R.drawable.musicplayer_shuffle_on);
             shuffleButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
 
         } else {
-            shuffleButton.setImageResource(R.drawable.musique_shuffle);
+            shuffleButton.setImageResource(R.drawable.musicplayer_shuffle);
             shuffleButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
 
         }
@@ -480,13 +480,13 @@ public class PlaybackActivity extends BaseActivity
         ImageView repeatButton = (ImageView) findViewById(R.id.repeat);
         int mode = mPlaybackService.getRepeatMode();
         if (mode == PlaybackService.NO_REPEAT) {
-            repeatButton.setImageResource(R.drawable.musique_repeat_no);
+            repeatButton.setImageResource(R.drawable.musicplayer_repeat_no);
             repeatButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
         } else if (mode == PlaybackService.REPEAT_ALL) {
-            repeatButton.setImageResource(R.drawable.musique_repeat);
+            repeatButton.setImageResource(R.drawable.musicplayer_repeat);
             repeatButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
         } else if (mode == PlaybackService.REPEAT_CURRENT) {
-            repeatButton.setImageResource(R.drawable.musique_repeat_once);
+            repeatButton.setImageResource(R.drawable.musicplayer_repeat_once);
             repeatButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
 
         }

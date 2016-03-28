@@ -110,7 +110,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="146dp"
                     android:progressDrawable="@drawable/asus_seekbar"
-                    android:thumb="@drawable/asus_scrubber_control_normal_light" />
+                    android:thumb="@drawable/scrubber_control" />
 
 
                 <TextView
@@ -135,7 +135,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="image_description"
                     android:padding="10dp"
-                    android:src="@drawable/musique_play" />
+                    android:src="@drawable/musicplayer_play" />
 
                 <ImageView
                     android:id="@+id/prev"
@@ -147,7 +147,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="image_description"
                     android:padding="10dp"
-                    android:src="@drawable/musique_previous" />
+                    android:src="@drawable/musicplayer_previous" />
 
                 <ImageView
                     android:id="@+id/next"
@@ -159,7 +159,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="image description"
                     android:padding="10dp"
-                    android:src="@drawable/musique_next" />
+                    android:src="@drawable/musicplayer_next" />
 
                 <ImageView
                     android:id="@+id/repeat"
@@ -171,7 +171,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="image_description"
                     android:padding="10dp"
-                    android:src="@drawable/musique_repeat_no"
+                    android:src="@drawable/musicplayer_repeat_no"
                     android:tint="@color/controls_tint_light" />
 
                 <ImageView
@@ -184,7 +184,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="image description"
                     android:padding="10dp"
-                    android:src="@drawable/musique_shuffle" />
+                    android:src="@drawable/musicplayer_shuffle" />
             </RelativeLayout>
         </LinearLayout>
 

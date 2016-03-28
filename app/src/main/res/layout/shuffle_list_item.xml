@@ -34,5 +34,5 @@
         android:contentDescription="@string/next"
         android:paddingEnd="15dp"
         android:scaleType="center"
-        android:src="@drawable/musique_shuffle_on" />
+        android:src="@drawable/musicplayer_shuffle_on" />
 </FrameLayout>

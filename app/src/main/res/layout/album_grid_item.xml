@@ -32,7 +32,7 @@
             android:paddingLeft="@dimen/content_padding"
             android:paddingRight="@dimen/content_padding"
             android:paddingTop="10sp"
-            android:src="@drawable/musique_spinner_black"
+            android:src="@drawable/ic_spinner_black"
             android:tint="@color/appwidget_bg" />
 
         <LinearLayout

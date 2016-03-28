@@ -50,7 +50,7 @@
         android:contentDescription="@string/context_menu_description"
         android:paddingLeft="10dp"
         android:paddingRight="20dp"
-        android:src="@drawable/musique_spinner_black"
+        android:src="@drawable/ic_spinner_black"
         android:tint="@color/appwidget_bg" />
 
     <LinearLayout

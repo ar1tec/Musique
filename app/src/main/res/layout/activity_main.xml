@@ -83,7 +83,7 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/prev"
                         android:scaleType="center"
-                        android:src="@drawable/musique_previous"
+                        android:src="@drawable/musicplayer_previous"
                         android:tint="?attr/colorAccent" />
 
                     <ImageButton
@@ -95,7 +95,7 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/play"
                         android:scaleType="center"
-                        android:src="@drawable/musique_play"
+                        android:src="@drawable/musicplayer_play"
                         android:tint="?attr/colorAccent" />
 
                     <ImageButton
@@ -105,7 +105,7 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/next"
                         android:scaleType="center"
-                        android:src="@drawable/musique_next"
+                        android:src="@drawable/musicplayer_next"
                         android:tint="?attr/colorAccent" />
                 </LinearLayout>
 

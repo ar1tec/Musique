@@ -687,9 +687,9 @@ public class MainActivity extends AppCompatActivity
         if (mPlaybackService != null) {
             ImageButton quickButton = (ImageButton) findViewById(R.id.quick_play_pause_toggle);
             if (mPlaybackService.isPlaying()) {
-                quickButton.setImageResource(R.drawable.musique_pause);
+                quickButton.setImageResource(R.drawable.musicplayer_pause);
             } else {
-                quickButton.setImageResource(R.drawable.musique_play);
+                quickButton.setImageResource(R.drawable.musicplayer_play);
             }
         }
     }
