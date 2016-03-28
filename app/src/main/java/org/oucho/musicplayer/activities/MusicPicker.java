@@ -35,7 +35,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-// utiliser des Loaders, selon le modèle de SearchActivity
+//TODO utiliser des Loaders, selon le modèle de SearchActivity
 public class MusicPicker extends BaseActivity {
 
     public static final String EXTRA_IDS = "ids";
@@ -202,7 +202,7 @@ public class MusicPicker extends BaseActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //  Auto-generated method stub
+                // TODO Auto-generated method stub
                 return true;
             }
 

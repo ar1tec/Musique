@@ -43,7 +43,7 @@ public class ArtworkHelper {
 
     public static Drawable getDefaultThumbDrawable(Context c) {
         if (sDefaultThumbDrawable == null) {
-            sDefaultThumbDrawable = ContextCompat.getDrawable(c, R.drawable.default_album_thumb);
+            sDefaultThumbDrawable = ContextCompat.getDrawable(c, R.drawable.default_artwork);
 
         }
         return sDefaultThumbDrawable.getConstantState().newDrawable(c.getResources()).mutate();
