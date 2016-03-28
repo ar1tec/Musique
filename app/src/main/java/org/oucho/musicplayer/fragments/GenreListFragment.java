@@ -43,7 +43,7 @@ public class GenreListFragment extends BaseFragment {
 
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
-            // TODO Auto-generated method stub
+            //  Auto-generated method stub
 
         }
 

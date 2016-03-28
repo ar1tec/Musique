@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/selectableItemBackgroundBorderless">
 
     <ImageView
@@ -16,11 +16,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:textStyle="bold"
+        android:paddingStart="15dp"
         android:text="@string/shuffle"
         android:textColor="?attr/colorAccent"
         android:textSize="18sp"
-        android:paddingStart="15dp">
+        android:textStyle="bold">
 
     </TextView>
 
@@ -29,10 +29,10 @@
         android:id="@+id/header_shuffle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_gravity="right"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/next"
+        android:paddingEnd="15dp"
         android:scaleType="center"
-        android:layout_gravity="right"
-        android:src="@drawable/musique_shuffle_on"
-        android:paddingEnd="15dp"/>
+        android:src="@drawable/musique_shuffle_on" />
 </FrameLayout>

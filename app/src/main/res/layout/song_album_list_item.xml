@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:vumeter="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_view"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
     android:background="?attr/selectableItemBackground"
-    android:orientation="vertical"
-    android:layout_centerVertical="true">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/track_number"
-        android:text="0"
-        android:textSize="14sp"
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
         android:gravity="center_vertical|center_horizontal"
-        android:visibility="visible"/>
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:text="0"
+        android:textSize="14sp"
+        android:visibility="visible" />
 
     <org.oucho.musicplayer.utils.VuMetre.VuMeterView
         android:id="@+id/vu_meter"
@@ -26,12 +26,12 @@
         android:layout_height="13dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="18dp"
+        android:visibility="gone"
         vumeter:backgroundColor="?attr/colorAccent"
-        vumeter:stopSize="5dp"
-        vumeter:speed="3"
         vumeter:blockNumber="3"
         vumeter:blockSpacing="1dp"
-        android:visibility="gone" />
+        vumeter:speed="3"
+        vumeter:stopSize="5dp" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -45,23 +45,23 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:background="?attr/selectableItemBackground"
-        android:tint="@color/appwidget_bg"
         android:contentDescription="@string/context_menu_description"
-        android:paddingRight="20dp"
         android:paddingLeft="10dp"
+        android:paddingRight="20dp"
         android:src="@drawable/musique_spinner_black"
-        android:layout_centerVertical="true"/>
+        android:tint="@color/appwidget_bg" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@id/track_number"
         android:layout_toLeftOf="@id/menu_button"
         android:layout_toRightOf="@id/track_number"
         android:layout_toStartOf="@id/menu_button"
-        android:orientation="vertical"
-        android:layout_centerVertical="true">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/title"
@@ -70,7 +70,7 @@
             android:paddingLeft="@dimen/big_content_padding"
             android:singleLine="true"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 

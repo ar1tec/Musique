@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_view"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -14,7 +14,8 @@
         android:background="@color/default_artwork_bg"
         android:contentDescription="@string/album_artwork"
 
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
@@ -28,23 +29,23 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:background="?attr/selectableItemBackground"
-        android:tint="@color/appwidget_bg"
         android:contentDescription="@string/context_menu_description"
-        android:paddingRight="20dp"
         android:paddingLeft="10dp"
+        android:paddingRight="20dp"
         android:src="@drawable/musique_spinner_black"
-        android:layout_centerVertical="true"/>
+        android:tint="@color/appwidget_bg" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@id/artwork"
         android:layout_toLeftOf="@id/menu_button"
         android:layout_toRightOf="@id/artwork"
         android:layout_toStartOf="@id/menu_button"
-        android:orientation="vertical"
-        android:layout_centerVertical="true">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/title"
@@ -56,7 +57,7 @@
             android:paddingLeft="@dimen/big_content_padding"
             android:singleLine="true"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/artist"
@@ -68,7 +69,7 @@
             android:paddingLeft="@dimen/big_content_padding"
             android:singleLine="true"
             android:textColor="?android:attr/textColorSecondary"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
     </LinearLayout>
 

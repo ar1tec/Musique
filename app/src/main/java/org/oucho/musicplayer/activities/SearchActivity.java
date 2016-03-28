@@ -50,7 +50,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//TODO lot of refactoring...
+// lot of refactoring...
 public class SearchActivity extends BaseActivity {
 
     private static final String FILTER = "filter";
@@ -152,7 +152,7 @@ public class SearchActivity extends BaseActivity {
     private final LoaderManager.LoaderCallbacks<List<Song>> mSongLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Song>>() {
         @Override
         public void onLoaderReset(Loader<List<Song>> loader) {
-            // TODO Auto-generated method stub
+            //  Auto-generated method stub
         }
 
         @Override
@@ -222,7 +222,7 @@ public class SearchActivity extends BaseActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // TODO Auto-generated method stub
+                //  Auto-generated method stub
                 return true;
             }
 

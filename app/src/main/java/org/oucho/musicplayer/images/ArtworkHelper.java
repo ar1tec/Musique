@@ -54,7 +54,7 @@ public class ArtworkHelper {
         if (!Permissions.checkPermission(c, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return null;
         }
-        String prefix = FILENAME_PREFIX+albumName.replaceAll("\\W+", "_");
+        String prefix = FILENAME_PREFIX + albumName.replaceAll("\\W+", "_");
         File file = File.createTempFile(prefix, ".png", getArtworkStorageDir());
         FileOutputStream out = new FileOutputStream(file);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);

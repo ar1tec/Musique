@@ -558,15 +558,8 @@ public class PlaybackService extends Service implements OnPreparedListener,
             i.putExtras(data);
         }
         sendBroadcast(i);
-        refreshAppWidgets();
     }
 
-    private void refreshAppWidgets() {
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(this, PlaybackWidget.class));
-        PlaybackWidget.updateAppWidget(this, appWidgetIds);
-    }
 
     public void setAsNextTrack(Song song) {
         if (mPlayList != null) {

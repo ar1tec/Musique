@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
+        android:theme="?attr/ToolBar"
         android:visibility="gone"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="?attr/ToolBar" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_view"
@@ -24,9 +24,9 @@
         android:id="@+id/fastscroller"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="10dp"
+        android:layout_below="@id/toolbar"
         android:paddingRight="10dp"
-        android:layout_below="@id/toolbar" />
+        android:paddingTop="10dp" />
 
 
 </RelativeLayout>

@@ -42,7 +42,7 @@
         <item name="android:textColor">@color/player_duration</item>
     </style>
 
-<!-- theme Light -->
+    <!-- theme Light -->
     <style name="AppThemeOGreenLight" parent="AppBaseThemeLight">
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorPrimaryDark">@color/theme_original_green</item>
@@ -227,7 +227,6 @@
     </style>
 
 
-
     <style name="AppThemeCyanLight" parent="AppBaseThemeLight">
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorPrimaryDark">@color/theme_light_cyan</item>
@@ -280,7 +279,6 @@
         <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
         <item name="android:gravity">center_vertical</item>
     </style>
-
 
 
 </resources>

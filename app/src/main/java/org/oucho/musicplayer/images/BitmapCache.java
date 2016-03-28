@@ -34,6 +34,10 @@ abstract public class BitmapCache<K> {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
+    private static boolean hasRequiredSize(Bitmap bitmap, int reqWidth, int reqHeight) {
+        return bitmap != null && bitmap.getWidth() >= reqWidth && bitmap.getHeight() >= reqHeight;
+    }
+
     public Bitmap getBitmap(K key, int w, int h) {
         Bitmap b = getCachedBitmap(key, w, h);
         if (b != null) {
@@ -55,8 +59,6 @@ abstract public class BitmapCache<K> {
     abstract protected void cacheBitmap(K key, Bitmap bitmap);
 
     abstract protected Bitmap getDefaultBitmap();
-
-
 
     public void loadBitmap(final K key, ImageView view, final int reqWidth, final int reqHeight, final Drawable placeholder, final boolean smoothTransition) {
         Context context = view.getContext();
@@ -106,16 +108,12 @@ abstract public class BitmapCache<K> {
         loadBitmap(key, view, reqWidth, reqHeight, null, false);
     }
 
-    private static boolean hasRequiredSize(Bitmap bitmap, int reqWidth, int reqHeight) {
-        return bitmap != null && bitmap.getWidth() >= reqWidth && bitmap.getHeight() >= reqHeight;
-    }
-
     abstract protected Drawable getDefaultDrawable(Context context, int reqWidth, int reqHeight);
 
     protected void setBitmap(Bitmap bitmap, ImageView imageView, Drawable placeholder, int reqWidth, int reqHeight, boolean smoothTransition) {
         Context context = imageView.getContext();
 
-        if(bitmap == null) {
+        if (bitmap == null) {
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setImageDrawable(placeholder == null ? getDefaultDrawable(context, reqWidth, reqHeight) : placeholder);
             return;

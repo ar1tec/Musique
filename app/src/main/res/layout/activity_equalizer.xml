@@ -22,11 +22,11 @@
 
     <TextView
         android:id="@+id/bassboost_label"
-        android:text="@string/bass_boost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/bassboost_slider"
-        android:gravity="center" />
+        android:gravity="center"
+        android:text="@string/bass_boost" />
 
     <LinearLayout
         android:id="@+id/equalizer_layout"
@@ -35,7 +35,6 @@
         android:layout_above="@id/bassboost_label"
         android:layout_below="@id/presets_spinner"
         android:clipToPadding="false"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"></LinearLayout>
 
 </RelativeLayout>

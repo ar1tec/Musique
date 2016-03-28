@@ -44,7 +44,7 @@ public class ArtistListFragment extends BaseFragment {
 
         @Override
         public void onLoaderReset(Loader<List<Artist>> loader) {
-            // TODO Auto-generated method stub
+            //  Auto-generated method stub
 
         }
 

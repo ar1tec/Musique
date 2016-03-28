@@ -1,5 +1,4 @@
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -42,34 +41,34 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:padding="@dimen/content_padding"
-                    android:gravity="center_vertical|center_horizontal">
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="@dimen/content_padding">
 
                     <TextView
                         android:id="@+id/song_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
                         android:ellipsize="end"
+                        android:paddingLeft="5dp"
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:paddingLeft="5dp"
-                        android:layout_centerVertical="true"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/song_artist"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/song_title"
+                        android:layout_centerVertical="true"
                         android:layout_marginTop="2dp"
                         android:ellipsize="end"
+                        android:paddingLeft="5dp"
                         android:singleLine="true"
                         android:textColor="?attr/controlsTint"
-                        android:textSize="15sp"
-                        android:paddingLeft="5dp"
-                        android:layout_centerVertical="true" />
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -85,7 +84,7 @@
                         android:contentDescription="@string/prev"
                         android:scaleType="center"
                         android:src="@drawable/musique_previous"
-                        android:tint="?attr/colorAccent"/>
+                        android:tint="?attr/colorAccent" />
 
                     <ImageButton
                         android:id="@+id/quick_play_pause_toggle"
