@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.preferences.ThemePreference;
 
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
@@ -18,40 +17,55 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+    public static final int original_green = 1;
+    public static final int red = 2;
+    public static final int orange = 3;
+    public static final int purple = 4;
+    public static final int navy = 5;
+    public static final int blue = 6;
+    public static final int sky = 7;
+    public static final int seagreen = 8;
+    public static final int cyan = 9;
+    public static final int pink = 10;
+
+
+
+    public static final int DEFAULT_THEME = -1;
+
     private void setTheme() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        int theme = prefs.getInt(PreferencesActivity.KEY_PREF_THEME, ThemePreference.DEFAULT_THEME);
+        int theme = prefs.getInt("pref_theme", DEFAULT_THEME);
 
         switch (theme) {
-            case ThemePreference.original_green:
+            case original_green:
                     setTheme(R.style.AppThemeOGreenLight);
                 break;
-            case ThemePreference.red:
+            case red:
                     setTheme(R.style.AppThemeRedLight);
                 break;
-            case ThemePreference.orange:
+            case orange:
                 setTheme(R.style.AppThemeOrangeLight);
                 break;
-            case ThemePreference.purple:
-                setTheme(R.style.AppThemePurpleLight)
-                ;break;
-            case ThemePreference.navy:
+            case purple:
+                setTheme(R.style.AppThemePurpleLight);
+                break;
+            case navy:
                 setTheme(R.style.AppThemeNavyLight);
                 break;
-            case ThemePreference.blue:
+            case blue:
                 setTheme(R.style.AppThemeBlueLight);
                 break;
-            case ThemePreference.sky:
+            case sky:
                 setTheme(R.style.AppThemeSkyLight);
                 break;
-            case ThemePreference.seagreen:
+            case seagreen:
                 setTheme(R.style.AppThemeSeagreenLight);
                 break;
-            case ThemePreference.cyan:
+            case cyan:
                 setTheme(R.style.AppThemeCyanLight);
                 break;
-            case ThemePreference.pink:
+            case pink:
                 setTheme(R.style.AppThemePinkLight);
                 break;
         }
@@ -60,38 +74,38 @@ public class BaseActivity extends AppCompatActivity {
     static String getColor(Context context) {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int theme = prefs.getInt(PreferencesActivity.KEY_PREF_THEME, ThemePreference.DEFAULT_THEME);
+        int theme = prefs.getInt("pref_theme", DEFAULT_THEME);
 
         String Couleur = "";
         switch (theme) {
-            case ThemePreference.original_green:
+            case original_green:
                 Couleur = "14b68e";
                 break;
-            case ThemePreference.red:
+            case red:
                 Couleur = "a50916";
                 break;
-            case ThemePreference.orange:
+            case orange:
                 Couleur = "fd7c08";
                 break;
-            case ThemePreference.purple:
+            case purple:
                 Couleur = "5b1588";
                 break;
-            case ThemePreference.navy:
+            case navy:
                 Couleur = "303aa6";
                 break;
-            case ThemePreference.blue:
+            case blue:
                 Couleur = "175fc9";
                 break;
-            case ThemePreference.sky:
+            case sky:
                 Couleur = "19729a";
                 break;
-            case ThemePreference.seagreen:
+            case seagreen:
                 Couleur = "239388";
                 break;
-            case ThemePreference.cyan:
+            case cyan:
                 Couleur = "138d3a";
                 break;
-            case ThemePreference.pink:
+            case pink:
                 Couleur = "ff4381";
                 break;
         }

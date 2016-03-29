@@ -1,7 +1,6 @@
 package org.oucho.musicplayer.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import org.oucho.musicplayer.PlaybackService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.model.db.queue.QueueDbHelper;
 import org.oucho.musicplayer.utils.VuMetre.VuMeterView;
 import org.oucho.musicplayer.widgets.FastScroller;
 
@@ -53,8 +50,6 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
     public void onBindViewHolderImpl(SongViewHolder holder, int position) {
         Song song = getItem(position);
 
-
-
         String Track = String.valueOf(position + 1);
 
         holder.vTitle.setText(song.getTitle());
@@ -63,8 +58,6 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
         holder.vTrackNumber.setVisibility(View.VISIBLE);
 
         holder.vuMeter.setVisibility(View.GONE);
-
-
 
     }
 

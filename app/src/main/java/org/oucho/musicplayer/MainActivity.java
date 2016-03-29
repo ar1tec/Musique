@@ -43,7 +43,7 @@ import android.widget.TextView;
 import com.codetroopers.betterpickers.hmspicker.HmsPickerDialogFragment;
 
 import org.oucho.musicplayer.PlaybackService.PlaybackBinder;
-import org.oucho.musicplayer.activities.PreferencesActivity;
+import org.oucho.musicplayer.activities.BaseActivity;
 import org.oucho.musicplayer.fragments.AlbumFragment;
 import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.fragments.BaseFragment;
@@ -54,7 +54,6 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.preferences.ThemePreference;
 import org.oucho.musicplayer.utils.DialogUtils;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
@@ -167,6 +166,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    static final int DEFAULT_THEME = 0;
+
     public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
     }
@@ -175,37 +176,37 @@ public class MainActivity extends AppCompatActivity
     private void setTheme() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        int theme = prefs.getInt(PreferencesActivity.KEY_PREF_THEME, ThemePreference.DEFAULT_THEME);
+        int theme = prefs.getInt("pref_theme", BaseActivity.DEFAULT_THEME);
 
         switch (theme) {
-            case ThemePreference.original_green:
+            case BaseActivity.original_green:
                 setTheme(R.style.MainActivityOGreenLight);
                 break;
-            case ThemePreference.red:
+            case BaseActivity.red:
                 setTheme(R.style.MainActivityRedLight);
                 break;
-            case ThemePreference.orange:
+            case BaseActivity.orange:
                 setTheme(R.style.MainActivityOrangeLight);
                 break;
-            case ThemePreference.purple:
+            case BaseActivity.purple:
                 setTheme(R.style.MainActivityPurpleLight);
                 break;
-            case ThemePreference.navy:
+            case BaseActivity.navy:
                 setTheme(R.style.MainActivityNavyLight);
                 break;
-            case ThemePreference.blue:
+            case BaseActivity.blue:
                 setTheme(R.style.MainActivityBlueLight);
                 break;
-            case ThemePreference.sky:
+            case BaseActivity.sky:
                 setTheme(R.style.MainActivitySkyLight);
                 break;
-            case ThemePreference.seagreen:
+            case BaseActivity.seagreen:
                 setTheme(R.style.MainActivitySeagreenLight);
                 break;
-            case ThemePreference.cyan:
+            case BaseActivity.cyan:
                 setTheme(R.style.MainActivityCyanLight);
                 break;
-            case ThemePreference.pink:
+            case BaseActivity.pink:
                 setTheme(R.style.MainActivityPinkLight);
                 break;
         }
