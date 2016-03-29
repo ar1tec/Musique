@@ -17,6 +17,8 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+    public static final String KEY_PREF_THEME = "pref_theme";
+
     public static final int original_green = 1;
     public static final int red = 2;
     public static final int orange = 3;
@@ -28,11 +30,12 @@ public class BaseActivity extends AppCompatActivity {
     public static final int cyan = 9;
     public static final int pink = 10;
 
+    public static final int DEFAULT_THEME = original_green;
 
     private void setTheme() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        int theme = prefs.getInt("pref_theme", 0);
+        int theme = prefs.getInt(KEY_PREF_THEME, DEFAULT_THEME);
 
         switch (theme) {
             case original_green:
@@ -71,7 +74,7 @@ public class BaseActivity extends AppCompatActivity {
     static String getColor(Context context) {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int theme = prefs.getInt("pref_theme", 0);
+        int theme = prefs.getInt(KEY_PREF_THEME, DEFAULT_THEME);
 
         String Couleur = "";
         switch (theme) {

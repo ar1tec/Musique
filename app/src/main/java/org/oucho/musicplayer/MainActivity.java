@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity
     private void setTheme() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        int theme = prefs.getInt("pref_theme", 0);
+        int theme = prefs.getInt(BaseActivity.KEY_PREF_THEME, BaseActivity.DEFAULT_THEME);
 
         switch (theme) {
             case BaseActivity.original_green:
