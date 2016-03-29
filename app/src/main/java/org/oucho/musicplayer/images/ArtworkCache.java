@@ -115,11 +115,6 @@ public class ArtworkCache extends BitmapCache<Long> {
     }
 
     @Override
-    protected Bitmap getDefaultBitmap() {
-        return null;
-    }
-
-    @Override
     protected Drawable getDefaultDrawable(Context context, int reqWidth, int reqHeight) {
         if (reqWidth <= mThumbSize && reqHeight <= mThumbSize) {
             return ArtworkHelper.getDefaultThumbDrawable(context);

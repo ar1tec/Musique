@@ -63,8 +63,8 @@ public class PlaybackActivity extends BaseActivity
     private final Handler mHandler = new Handler();
 
 
-    int total_track = 0;
-    int track = 0;
+    private int total_track = 0;
+    private int track = 0;
 
 
 
@@ -86,6 +86,7 @@ public class PlaybackActivity extends BaseActivity
 
         String couleur = BaseActivity.getColor(this);
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setTitle(Html.fromHtml("<font color='#" + couleur + "'>En cours de lecture</font>"));
         actionBar.setSubtitle(Html.fromHtml("<small><font color='#" + couleur + "'>" + track + "/" + total_track + "</font><small>"));
         actionBar.setElevation(0);
@@ -106,6 +107,7 @@ public class PlaybackActivity extends BaseActivity
 
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_dropdown);
         upArrow.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
+        //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
 
@@ -148,6 +150,7 @@ public class PlaybackActivity extends BaseActivity
 
             String couleur = BaseActivity.getColor(this);
             ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
             actionBar.setSubtitle(Html.fromHtml("<small><font color='#" + couleur + "'>" + track + " / " + total_track + "</font><small>"));
         }
     }
@@ -301,7 +304,7 @@ public class PlaybackActivity extends BaseActivity
                 case PlaybackService.ITEM_ADDED:
                 case PlaybackService.ORDER_CHANGED:
                     Log.d("eee", "position_changed");
-                    updateQueue(action);
+                    updateQueue();
                     break;
             }
         }
@@ -402,9 +405,6 @@ public class PlaybackActivity extends BaseActivity
         }
     }
 
-    private void updateQueue() {
-        updateQueue(null);
-    }
 
     private void updateTrackInfo() {
         if (mPlaybackService != null) {
@@ -492,7 +492,7 @@ public class PlaybackActivity extends BaseActivity
         }
     }
 
-    private void updateQueue(String action) {
+    private void updateQueue() {
         if (mPlaybackService == null) {
             return;
         }

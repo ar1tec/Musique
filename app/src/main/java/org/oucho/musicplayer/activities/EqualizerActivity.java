@@ -44,11 +44,13 @@ public class EqualizerActivity extends BaseActivity {
         String couleur = BaseActivity.getColor(this);
 
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setTitle(Html.fromHtml("<font color='#" + couleur + "'>Egaliseur</font>"));
         actionBar.setElevation(0);
 
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp);
         upArrow.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
+        //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         mSwitchBound = false;
@@ -168,7 +170,8 @@ public class EqualizerActivity extends BaseActivity {
                 SeekBar seekBar = (SeekBar) v.findViewById(R.id.seek_bar);
 
 
-                seekBar.setMax((range != null ? range[1] : 0) - range[0]);
+                assert range != null;
+                seekBar.setMax((range[1]) - range[0]);
 
                 seekBar.setTag(band);
 
@@ -195,7 +198,8 @@ public class EqualizerActivity extends BaseActivity {
                             short band = (Short) seekBar.getTag();
                             short level = (short) (seekBar.getProgress() + range[0]);
                             AudioEffects.setBandLevel(band, level);
-                            levelTextView.setText((level > 0 ? "+" : "") + level / 100 + "dB");
+                            String niveau = (level > 0 ? "+" : "") + level / 100 + "dB";
+                            levelTextView.setText(niveau);
                             mSpinner.setSelection(0);
                         }
                     }
@@ -224,17 +228,19 @@ public class EqualizerActivity extends BaseActivity {
 
             int freq = AudioEffects.getCenterFreq(band);
             if (freq < 1000 * 1000) {
-                freqTextView.setText(freq / 1000 + "Hz");
+                String frequence = freq / 1000 + "Hz";
+                freqTextView.setText(frequence);
             } else {
-                freqTextView.setText(freq / (1000 * 1000) + "kHz");
+                String frequence = freq / (1000 * 1000) + "kHz";
+                freqTextView.setText(frequence);
             }
 
 
             short level = AudioEffects.getBandLevel(band);
             seekBar.setProgress(level - (range != null ? range[0] : 0));
 
-
-            levelTextView.setText((level > 0 ? "+" : "") + level / 100 + "dB");
+            String niveau = (level > 0 ? "+" : "") + level / 100 + "dB";
+            levelTextView.setText(niveau);
         }
     }
 

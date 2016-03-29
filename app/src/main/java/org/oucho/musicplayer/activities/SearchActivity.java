@@ -74,11 +74,13 @@ public class SearchActivity extends BaseActivity {
         String couleur = BaseActivity.getColor(this);
 
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setTitle(Html.fromHtml("<font color='#" + couleur + "'>Rechercher</font>"));
         actionBar.setElevation(0);
 
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp);
         upArrow.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
+        //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
 
@@ -193,7 +195,7 @@ public class SearchActivity extends BaseActivity {
     private final AlbumEditorDialog.OnEditionSuccessListener mOnEditionSuccessListener = new AlbumEditorDialog.OnEditionSuccessListener() {
         @Override
         public void onEditionSuccess() {
-            returnToMain(MainActivity.ACTION_REFRESH);
+            returnToMain();
         }
     };
 
@@ -268,8 +270,8 @@ public class SearchActivity extends BaseActivity {
         refresh(null);
     }
 
-    private void returnToMain(String action) {
-        returnToMain(action, null);
+    private void returnToMain() {
+        returnToMain(MainActivity.ACTION_REFRESH, null);
     }
 
     private void returnToMain(String action, Bundle data) {
@@ -402,7 +404,7 @@ public class SearchActivity extends BaseActivity {
         private final ID3TagEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener = new ID3TagEditorDialog.OnTagsEditionSuccessListener() {
             @Override
             public void onTagsEditionSuccess() {
-                returnToMain(MainActivity.ACTION_REFRESH);
+                returnToMain();
             }
         };
 

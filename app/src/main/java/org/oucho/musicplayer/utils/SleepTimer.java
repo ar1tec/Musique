@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.utils;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,6 +20,7 @@ public class SleepTimer {
     }
 
 
+    @SuppressLint("CommitPrefEdits")
     public static void setTimer(Context context, SharedPreferences prefs, int seconds) {
 
         Intent intent = new Intent(context, PlaybackService.class);
@@ -42,6 +44,7 @@ public class SleepTimer {
     }
 
 
+    @SuppressLint("CommitPrefEdits")
     public static void cancelTimer(Context context, SharedPreferences prefs) {
         Intent intent = new Intent(context, PlaybackService.class);
         intent.setAction(PlaybackService.ACTION_PAUSE);

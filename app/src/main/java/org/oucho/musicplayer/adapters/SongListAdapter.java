@@ -29,6 +29,7 @@ public class SongListAdapter extends AdapterWithHeader<SongListAdapter.SongViewH
 
     public SongListAdapter(Context c) {
         mThumbWidth = c.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_size);
+        //noinspection SuspiciousNameCombination
         mThumbHeight = mThumbWidth;
         mContext = c;
     }

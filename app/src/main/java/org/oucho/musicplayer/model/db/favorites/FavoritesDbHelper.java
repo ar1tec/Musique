@@ -78,10 +78,6 @@ public class FavoritesDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<Song> read() {
-        return read(-1);
-    }
-
     public List<Song> read(int limit) {
         SQLiteDatabase db = getReadableDatabase();
 

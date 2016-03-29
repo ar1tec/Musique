@@ -213,6 +213,7 @@ public class PlaylistFragment extends BaseFragment {
         toolbar.setVisibility(View.VISIBLE);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return rootView;
     }

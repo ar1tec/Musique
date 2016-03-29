@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -31,6 +32,7 @@ public class PrefUtils {
         return sInstance;
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void putString(String key, String value) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(key, value);

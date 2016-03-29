@@ -191,9 +191,6 @@ public class ArtistFragment extends BaseFragment {
                     case R.id.action_add_to_queue:
                         ((MainActivity) getActivity()).addToQueue(song);
                         return true;
-/*                    case R.id.action_set_as_next_track:
-                        ((MainActivity) getActivity()).setAsNextTrack(song);
-                        return true;*/
                     case R.id.action_edit_tags:
                         showID3TagEditor(song);
                         return true;
@@ -269,6 +266,7 @@ public class ArtistFragment extends BaseFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mThumbWidth = context.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_size);
+        //noinspection SuspiciousNameCombination
         mThumbHeight = mThumbWidth;
         try {
             mActivity = (MainActivity) context;
@@ -317,6 +315,7 @@ public class ArtistFragment extends BaseFragment {
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getActivity().setTitle(mArtist.getName());

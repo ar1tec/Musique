@@ -69,6 +69,7 @@ public class HomeFragment extends BaseFragment {
     {
         if(favorites != null)
         {
+            @SuppressWarnings("ConstantConditions")
             GridLayout favoritesLayout = (GridLayout)getView().findViewById(R.id.favorites_layout);
 
 

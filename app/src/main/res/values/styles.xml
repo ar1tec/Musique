@@ -35,13 +35,6 @@
 
     <style name="AppBaseThemeLight.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-
-    <!-- album_app_largewidget -->
-    <style name="timeText">
-        <item name="android:textSize">@dimen/music_player_time_text_size</item>
-        <item name="android:textColor">@color/player_duration</item>
-    </style>
-
     <!-- theme Light -->
     <style name="AppThemeOGreenLight" parent="AppBaseThemeLight">
         <item name="colorPrimary">@color/transparent</item>

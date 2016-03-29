@@ -1,6 +1,5 @@
 package org.oucho.musicplayer.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.VuMetre.VuMeterView;
 import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.Collections;
@@ -23,7 +21,7 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
 
     private List<Song> mSongList = Collections.emptyList();
 
-    public SongAlbumListAdapter(Context c) {
+    public SongAlbumListAdapter() {
 
     }
 
@@ -55,10 +53,6 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
         holder.vTitle.setText(song.getTitle());
 
         holder.vTrackNumber.setText(Track);
-        holder.vTrackNumber.setVisibility(View.VISIBLE);
-
-        holder.vuMeter.setVisibility(View.GONE);
-
     }
 
     public Song getItem(int position) {
@@ -91,15 +85,12 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
 
         private final TextView vTitle;
         private final TextView vTrackNumber;
-        private final VuMeterView vuMeter;
 
 
         public SongViewHolder(View itemView) {
             super(itemView);
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vTrackNumber = (TextView) itemView.findViewById(R.id.track_number);
-            vuMeter = (VuMeterView) itemView.findViewById(R.id.vu_meter);
-
             itemView.setOnClickListener(this);
 
             ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
@@ -112,25 +103,7 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
             int position = getAdapterPosition();
             triggerOnItemClickListener(position, v);
 
-            vumetre(v, position);
-
         }
-    }
-
-    int PrevCurrentPos = -1;
-
-    public void vumetre(View v, int position) {
-
-        if (PrevCurrentPos != position)
-        notifyItemChanged(PrevCurrentPos, null);
-
-        View trackNumber = v.findViewById(R.id.track_number);
-        View VuMeter = v.findViewById(R.id.vu_meter);
-
-        trackNumber.setVisibility(View.INVISIBLE);
-        VuMeter.setVisibility(View.VISIBLE);
-
-        PrevCurrentPos = position;
     }
 
 }

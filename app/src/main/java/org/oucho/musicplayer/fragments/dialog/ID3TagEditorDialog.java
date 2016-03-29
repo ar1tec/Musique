@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.fragments.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -82,6 +83,7 @@ public class ID3TagEditorDialog extends DialogFragment {
         builder.setTitle(R.string.edit_tags);
 
         mSong.setGenre(MusicLibraryHelper.getSongGenre(getActivity(), mSong.getId()));//TODO récupérer le genre de manière asynchrone ??
+        @SuppressLint("InflateParams")
         View dialogView = getActivity().getLayoutInflater().inflate(R.layout.fragment_id3_tag_editor_dialog, null);
         builder.setView(dialogView);
 

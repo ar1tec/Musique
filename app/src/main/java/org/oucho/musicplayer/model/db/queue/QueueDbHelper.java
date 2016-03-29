@@ -74,13 +74,6 @@ public class QueueDbHelper extends SQLiteOpenHelper {
         db.insert(QueueContract.QueueEntry.TABLE_NAME, null, values);
 
     }
-    public void add(Song song) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        addInternal(db, song);
-
-        db.close();
-    }
 
     public void removeAll() {
         SQLiteDatabase db = getWritableDatabase();

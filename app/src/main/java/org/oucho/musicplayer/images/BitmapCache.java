@@ -21,15 +21,14 @@ abstract public class BitmapCache<K> {
 
     private static final int KEEP_ALIVE_TIME = 1;
     private static final TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
-    private static int NUMBER_OF_CORES =
+    private static final int NUMBER_OF_CORES =
             Runtime.getRuntime().availableProcessors();
 
-    private LinkedBlockingQueue<Runnable> mWorkQueue;
-    private ThreadPoolExecutor mExecutor;
-    private Handler mHandler;
+    private final ThreadPoolExecutor mExecutor;
+    private final Handler mHandler;
 
     public BitmapCache() {
-        mWorkQueue = new LinkedBlockingQueue<>();
+        LinkedBlockingQueue<Runnable> mWorkQueue = new LinkedBlockingQueue<>();
         mExecutor = new ThreadPoolExecutor(NUMBER_OF_CORES, NUMBER_OF_CORES, KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_UNIT, mWorkQueue);
         mHandler = new Handler(Looper.getMainLooper());
     }
@@ -38,30 +37,13 @@ abstract public class BitmapCache<K> {
         return bitmap != null && bitmap.getWidth() >= reqWidth && bitmap.getHeight() >= reqHeight;
     }
 
-    public Bitmap getBitmap(K key, int w, int h) {
-        Bitmap b = getCachedBitmap(key, w, h);
-        if (b != null) {
-            return b;
-        }
-
-        b = retrieveBitmap(key, w, h);
-        if (b != null) {
-            cacheBitmap(key, b);
-        }
-
-        return b;
-    }
-
     abstract public Bitmap getCachedBitmap(K key, int reqWidth, int reqHeight);
 
     abstract protected Bitmap retrieveBitmap(K key, int reqWidth, int reqHeight);
 
     abstract protected void cacheBitmap(K key, Bitmap bitmap);
 
-    abstract protected Bitmap getDefaultBitmap();
-
-    public void loadBitmap(final K key, ImageView view, final int reqWidth, final int reqHeight, final Drawable placeholder, final boolean smoothTransition) {
-        Context context = view.getContext();
+    private void loadBitmap(final K key, ImageView view, final int reqWidth, final int reqHeight, final Drawable placeholder, final boolean smoothTransition) {
 
         Bitmap b = getCachedBitmap(key, reqWidth, reqHeight);
         if (b != null) {
@@ -110,7 +92,7 @@ abstract public class BitmapCache<K> {
 
     abstract protected Drawable getDefaultDrawable(Context context, int reqWidth, int reqHeight);
 
-    protected void setBitmap(Bitmap bitmap, ImageView imageView, Drawable placeholder, int reqWidth, int reqHeight, boolean smoothTransition) {
+    private void setBitmap(Bitmap bitmap, ImageView imageView, Drawable placeholder, int reqWidth, int reqHeight, boolean smoothTransition) {
         Context context = imageView.getContext();
 
         if (bitmap == null) {

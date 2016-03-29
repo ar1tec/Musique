@@ -44,24 +44,24 @@ public class ThemeActivity extends BaseActivity implements
         String couleur = BaseActivity.getColor(this);
 
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setTitle(Html.fromHtml("<font color='#" + couleur + "'>Thème</font>"));
         actionBar.setElevation(0);
 
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp);
         upArrow.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
+        //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
     }
-
-    final String fichier_préférence = "org.oucho.musicplayer_preferences";
-    SharedPreferences préférences = null;
 
 
     @SuppressLint("CommitPrefEdits")
     @Override
     public void onClick(View v) {
 
-        préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
+        String fichier_préférence = "org.oucho.musicplayer_preferences";
+        SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
 
         Editor editor = préférences.edit();
 

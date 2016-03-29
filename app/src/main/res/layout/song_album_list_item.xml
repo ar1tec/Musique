@@ -17,21 +17,8 @@
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
         android:text="0"
-        android:textSize="14sp"
-        android:visibility="visible" />
+        android:textSize="14sp" />
 
-    <org.oucho.musicplayer.utils.VuMetre.VuMeterView
-        android:id="@+id/vu_meter"
-        android:layout_width="15dp"
-        android:layout_height="13dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="18dp"
-        android:visibility="gone"
-        vumeter:backgroundColor="?attr/colorAccent"
-        vumeter:blockNumber="3"
-        vumeter:blockSpacing="1dp"
-        vumeter:speed="3"
-        vumeter:stopSize="5dp" />
 
     <ImageView
         android:layout_width="match_parent"

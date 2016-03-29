@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.fragments.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.database.Cursor;
 import android.net.Uri;
@@ -145,6 +146,7 @@ public class PlaylistPicker extends DialogFragment {
 
         builder.setTitle(R.string.choose_playlist);
 
+        @SuppressLint("InflateParams")
         View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_playlist_picker, null);
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

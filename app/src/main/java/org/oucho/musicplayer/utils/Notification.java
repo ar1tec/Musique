@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.utils;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -74,7 +75,10 @@ public class Notification {
 
         Resources res = playbackService.getResources();
 
+         @SuppressLint("PrivateResource")
          int height = (int) res.getDimension(R.dimen.notification_large_icon_height);
+
+        @SuppressLint("PrivateResource")
         final int width = (int) res.getDimension(R.dimen.notification_large_icon_width);
 
         ArtworkCache artworkCache = ArtworkCache.getInstance();

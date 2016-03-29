@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    static final int DEFAULT_THEME = 0;
 
     public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
@@ -176,7 +175,7 @@ public class MainActivity extends AppCompatActivity
     private void setTheme() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        int theme = prefs.getInt("pref_theme", BaseActivity.DEFAULT_THEME);
+        int theme = prefs.getInt("pref_theme", 0);
 
         switch (theme) {
             case BaseActivity.original_green:
@@ -559,12 +558,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void setAsNextTrack(Song song) {
-        if (mPlaybackService != null) {
-            mPlaybackService.setAsNextTrack(song);
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -573,9 +566,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    final String fichier_préférence = "org.oucho.musicplayer_preferences";
-    SharedPreferences préférences = null;
+    private final String fichier_préférence = "org.oucho.musicplayer_preferences";
+    private SharedPreferences préférences = null;
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onPause() {
         super.onPause();
@@ -651,6 +645,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("PrivateResource")
     private void updateTrackInfo() {
         View trackInfoLayout = findViewById(R.id.track_info);
 
@@ -838,7 +833,7 @@ public class MainActivity extends AppCompatActivity
         return super.onKeyDown(keyCode, event);
     }
 
-    public void killNotif() {
+    private void killNotif() {
         NotificationManager notificationManager;
 
         try {
@@ -849,7 +844,7 @@ public class MainActivity extends AppCompatActivity
         } catch (RuntimeException ignore){}
     }
 
-    public void clearCache() {
+    private void clearCache() {
         ArtistImageCache.getInstance().clear();
         ArtworkCache.getInstance().clear();
     }

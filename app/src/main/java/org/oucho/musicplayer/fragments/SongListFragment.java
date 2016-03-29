@@ -1,6 +1,5 @@
 package org.oucho.musicplayer.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -19,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
@@ -35,7 +33,6 @@ import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.Playlists;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.RecyclerViewUtils;
-import org.oucho.musicplayer.utils.ThemeHelper;
 import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.List;
@@ -147,9 +144,7 @@ public class SongListFragment extends BaseFragment {
                     case R.id.action_add_to_queue:
                         ((MainActivity) getActivity()).addToQueue(song);
                         return true;
-/*                    case R.id.action_set_as_next_track:
-                        ((MainActivity) getActivity()).setAsNextTrack(song);
-                        return true;*/
+
                     case R.id.action_edit_tags:
                         showID3TagEditor(song);
                         return true;
@@ -260,6 +255,7 @@ public class SongListFragment extends BaseFragment {
             toolbar.setVisibility(View.VISIBLE);
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             activity.setSupportActionBar(toolbar);
+            //noinspection ConstantConditions
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         return rootView;

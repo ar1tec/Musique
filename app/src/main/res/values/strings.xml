@@ -3,12 +3,26 @@
 
     <string name="app_name">Musique</string>
 
+    <string name="album">Album</string>
     <string name="albums">Albums</string>
+    <string name="unknown_album">Album inconnu</string>
+    <string name="album_artwork">Couverture d\'album</string>
+
+    <plurals name="albums_count">
+        <item quantity="one">%d album</item>
+        <item quantity="other">%d albums</item>
+    </plurals>
+
     <string name="titles">Morceaux</string>
+    <string name="title">Titre</string>
+    <string name="title_activity_music_picker">Choisissez des musiques</string>
 
     <string name="artists">Artistes</string>
+    <string name="unknown_artist">Artiste inconnu</string>
+    <string name="artist">Artiste</string>
+
+    <string name="genre">Genre</string>
     <string name="genres">Genres</string>
-    <string name="playlists">Listes de lecture</string>
 
 
     <string name="play">Lecture</string>
@@ -16,58 +30,35 @@
     <string name="next">Suivant</string>
 
     <string name="shuffle">Lecture aléatoire</string>
-
-    <string name="album_artwork">Couverture d\'album</string>
-
     <string name="reorder">Réordonner</string>
 
     <string name="custom">Custom</string>
     <string name="bass_boost">Amplificateur de basses</string>
 
+    <string name="playlists">Listes de lecture</string>
+    <string name="choose_playlist">Choisir une playlist</string>
     <string name="new_playlist">Nouvelle liste de lecture</string>
     <string name="playlist_name">Nom de la liste de lecture</string>
     <string name="create_playlist">Créer une liste de lecture</string>
     <string name="add_to_playlist">Ajouter à la liste de lecture</string>
+    <string name="action_add_to_playlist">Ajouter à une playlist</string>
+    <string name="adding_songs_to_playlist">Ajout des morceaux à la liste de lecture</string>
+
 
     <string name="action_submit">Valider</string>
     <string name="action_cancel">Annuler</string>
 
+    <string name="view_queue">Voir la file de lecture</string>
     <string name="action_add_to_queue">Ajouter à la file de lecture</string>
 
     <string name="context_menu_description">Menu contextuel</string>
 
-    <string name="unknown_album">Album inconnu</string>
-    <string name="unknown_artist">Artiste inconnu</string>
-    <string name="action_set_as_next_track">Piste suivante</string>
 
 
-    <plurals name="albums_count">
-
-        <!--
-             As a developer, you should always supply "one" and "other"
-             strings. Your translators will know which strings are actually
-             needed for their language. Always include %d in "one" because
-             translators will need to use %d for languages where "one"
-             doesn't mean 1 (as explained above).
-        -->
-        <item quantity="one">%d album</item>
-        <item quantity="other">%d albums</item>
-    </plurals>
-
-
-    <string name="pref_theme_title">Thème</string>
-    <string name="pref_theme_summary">Choisissez un thème</string>
-
-
-    <string name="view_queue">Voir la file de lecture</string>
     <string name="equalizer">Égaliseur</string>
     <string name="action_equalizer">Égaliseur</string>
-    <string name="title_activity_music_picker">Choisissez des musiques</string>
+
     <string name="search">Rechercher</string>
-    <string name="title">Titre</string>
-    <string name="artist">Artiste</string>
-    <string name="album">Album</string>
-    <string name="genre">Genre</string>
     <string name="edit_tags">Editer données</string>
     <string name="action_edit_tags">Editer données</string>
     <string name="track_number">Numéro de piste</string>
@@ -75,29 +66,17 @@
     <string name="year">Année</string>
     <string name="action_search">Recherche</string>
     <string name="no_results">Aucun résultat</string>
-    <string name="choose_a_color">Choisissez une couleur</string>
-    <string name="preferences">Préférences</string>
-    <string name="title_activity_preferences">Preferences</string>
 
-    <string name="action_add_to_playlist">Ajouter à une playlist</string>
-    <string name="choose_playlist">Choisir une playlist</string>
-    <string name="touch_to_select_a_song">Touchez pour sélectionner une chanson</string>
-
-    <string name="clear_image_cache">Effacer les images en cache</string>
-    <string name="cache_cleared_message">Cache effacé !</string>
     <string name="now_playing">Lecture en cours</string>
     <string name="favorites">Favoris</string>
     <string name="loading" tools:ignore="TypographyEllipsis">Chargement...</string>
-    <string name="adding_songs_to_playlist">Ajout des morceaux à la liste de lecture</string>
     <string name="library">Bibliothèque</string>
     <string name="more">Plus</string>
-    <string name="error">Erreur</string>
+
     <string name="permission">Permission</string>
     <string name="permission_read_external_storage">L\'application doit  pouvoir lire le stockage externe.</string>
     <string name="permission_write_external_storage">L\'application doit pouvoir écrire sur le stockage externe pour sauvegarder les images téléchargées.</string>
     <string name="permission_read_phone_state">Il est recommandé (mais pas nécessaire) de donner la permission "READ_PHONE_STATE" à l\'application. Le lecteur pourrait ainsi se mettre en pause automatiquement lorsque vous recevez un appel.</string>
-    <string name="navigation">Navigation</string>
-
 
     <!-- Timer -->
     <string name="action_sleep_timer">Minuteur sommeil</string>
@@ -117,8 +96,6 @@
     <string name="sort_order_entry_number_of_albums">Nombre d\'albums</string>
 
 
-    <string name="version">Musique 1.14.6</string>
-    <string name="by">Old Geek, mars 2016</string>
 
     <string name="about">Musique v1.0.0</string>
 
@@ -126,8 +103,6 @@
 
 
         Musique 1.0 \n \n
-
-        bla\n\n\n\n
 
         Old Geek, mars 2016
     </string>

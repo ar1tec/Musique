@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
@@ -18,6 +19,7 @@ public class ToolbarDrawerToggle implements DrawerLayout.DrawerListener {
         init(context, drawerLayout, toolbar, gravities);
     }
 
+    @SuppressLint("RtlHardcoded")
     private void init(final Context context, DrawerLayout drawerLayout, Toolbar toolbar, int[] gravities) {
         mDrawerLayout = drawerLayout;
         mArrowDrawable = new DrawerArrowDrawable(context);

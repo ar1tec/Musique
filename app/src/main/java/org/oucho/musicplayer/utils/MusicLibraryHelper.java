@@ -106,6 +106,7 @@ public class MusicLibraryHelper {
                 found = true;
             }
 
+            assert c != null;
             c.close();
 
             if (found) {
@@ -134,6 +135,7 @@ public class MusicLibraryHelper {
                 genreId = l;
             }
 
+            assert c != null;
             c.close();
         }
 

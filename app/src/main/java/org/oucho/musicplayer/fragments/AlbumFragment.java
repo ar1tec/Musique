@@ -1,9 +1,7 @@
 package org.oucho.musicplayer.fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -35,7 +33,6 @@ import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.Playlists;
 import org.oucho.musicplayer.utils.RecyclerViewUtils;
-import org.oucho.musicplayer.utils.VuMetre.VuMeterView;
 
 import java.util.List;
 
@@ -52,11 +49,6 @@ public class AlbumFragment extends BaseFragment {
     private Album mAlbum;
 
     private SongAlbumListAdapter mAdapter;
-
-    private VuMeterView mVuMeterView;
-
-    final String fichier_préférence = "org.oucho.musicplayer_preferences";
-    SharedPreferences préférences = null;
 
 
     private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Song>>() {
@@ -91,18 +83,6 @@ public class AlbumFragment extends BaseFragment {
     };
 
     private MainActivity mActivity;
-/*    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-*//*                case R.id.shuffle_fab:
-                    if (mActivity != null) {
-                        mActivity.onShuffleRequested(mAdapter.getSongList(), true);
-                    }
-                    break;*//*
-            }
-        }
-    };*/
 
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
         @Override
@@ -168,9 +148,7 @@ public class AlbumFragment extends BaseFragment {
                     case R.id.action_add_to_queue:
                         ((MainActivity) getActivity()).addToQueue(song);
                         return true;
-/*                    case R.id.action_set_as_next_track:
-                        ((MainActivity) getActivity()).setAsNextTrack(song);
-                        return true;*/
+
                     case R.id.action_edit_tags:
                         showID3TagEditor(song);
                         return true;
@@ -279,7 +257,7 @@ public class AlbumFragment extends BaseFragment {
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new SongAlbumListAdapter(getActivity());
+        mAdapter = new SongAlbumListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
 
         View headerView = RecyclerViewUtils.inflateChild(inflater, R.layout.shuffle_list_item, mRecyclerView);

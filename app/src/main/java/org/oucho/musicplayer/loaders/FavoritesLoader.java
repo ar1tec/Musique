@@ -15,6 +15,7 @@ public class FavoritesLoader extends BaseLoader<List<Song>> {
         super(context);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public FavoritesLoader(Context context, int limit) {
         super(context);
         mLimit = 3;

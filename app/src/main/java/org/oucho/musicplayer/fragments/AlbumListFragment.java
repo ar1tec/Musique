@@ -29,7 +29,6 @@ import org.oucho.musicplayer.fragments.dialog.PlaylistPicker;
 import org.oucho.musicplayer.loaders.AlbumLoader;
 import org.oucho.musicplayer.loaders.SortOrder;
 import org.oucho.musicplayer.model.Album;
-import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.utils.Playlists;
 import org.oucho.musicplayer.utils.PrefUtils;
@@ -39,10 +38,6 @@ import java.util.List;
 
 
 public class AlbumListFragment extends BaseFragment {
-
-    private static final String PARAM_ARTIST = "artist";
-    private static final String PARAM_ARTIST_ALBUM = "artist_album";
-
 
     private AlbumListAdapter mAdapter;
 
@@ -116,15 +111,8 @@ public class AlbumListFragment extends BaseFragment {
     }
 
     public static AlbumListFragment newInstance() {
-        AlbumListFragment fragment = new AlbumListFragment();
-        if (null != null) {
-            Bundle args = new Bundle();
-            args.putString(PARAM_ARTIST, ((Artist) null).getName());
-            args.putBoolean(PARAM_ARTIST_ALBUM, true);
-            fragment.setArguments(args);
-        }
 
-        return fragment;
+        return new AlbumListFragment();
     }
 
     private void showMenu(final int position, View v) {
@@ -175,13 +163,6 @@ public class AlbumListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-     /*   Bundle args = getArguments();
-        if (args != null) {
-            mArtistAlbum = args.getBoolean(PARAM_ARTIST_ALBUM);
-            if (mArtistAlbum) {
-                mArtist = args.getString(PARAM_ARTIST);
-            }
-        }*/
 
     }
 

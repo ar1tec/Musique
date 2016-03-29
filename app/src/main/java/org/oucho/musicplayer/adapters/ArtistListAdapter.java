@@ -28,6 +28,7 @@ public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewH
 
     public ArtistListAdapter(Context c) {
         mThumbWidth = c.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_size);
+        //noinspection SuspiciousNameCombination
         mThumbHeight = mThumbWidth;
         mContext = c;
     }

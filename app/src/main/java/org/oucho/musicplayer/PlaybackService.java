@@ -2,9 +2,7 @@ package org.oucho.musicplayer;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
-import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -61,8 +59,8 @@ public class PlaybackService extends Service implements OnPreparedListener,
     public static final String ACTION_TOGGLE = "org.oucho.musicplayer.ACTION_TOGGLE";
     public static final String ACTION_NEXT = "org.oucho.musicplayer.ACTION_NEXT";
     public static final String ACTION_PREVIOUS = "org.oucho.musicplayer.ACTION_PREVIOUS";
-    public static final String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
-    public static final String ACTION_CHOOSE_SONG = "org.oucho.musicplayer.ACTION_CHOOSE_SONG";
+    private static final String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
+    private static final String ACTION_CHOOSE_SONG = "org.oucho.musicplayer.ACTION_CHOOSE_SONG";
     public static final String META_CHANGED = "org.oucho.musicplayer.META_CHANGED";
     public static final String PLAYSTATE_CHANGED = "org.oucho.musicplayer.PLAYSTATE_CHANGED";
     public static final String QUEUE_CHANGED = "org.oucho.musicplayer.QUEUE_CHANGED";
@@ -76,7 +74,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
     public static final int REPEAT_CURRENT = 22;
     private static final String TAG = "PlaybackService";
     private static final int IDLE_DELAY = 60000;
-    public static final String STATE_PREFS_NAME = "PlaybackState";
+    private static final String STATE_PREFS_NAME = "PlaybackState";
 
     private final PlaybackBinder mBinder = new PlaybackBinder();
     private MediaPlayer mMediaPlayer;
@@ -222,6 +220,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void saveState(boolean saveQueue) {
         if (mPlayList.size() > 0) {
             SharedPreferences.Editor editor = mStatePrefs.edit();
@@ -266,6 +265,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void saveSeekPos() {
         Log.d(TAG, "save seek pos");
         SharedPreferences.Editor editor = mStatePrefs.edit();
@@ -274,6 +274,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
         editor.commit();
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void restoreSeekPos() {
         if (mStatePrefs.getBoolean("seekPosSaved", false)) {
             int seekPos = mStatePrefs.getInt("seekPos", 0);
@@ -751,7 +752,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
 
     }
 
-    public void fin() {
+    private void fin() {
         mIsPlaying = false;
         mIsPaused = true;
         notifyChange(PLAYSTATE_CHANGED);
@@ -829,7 +830,7 @@ public class PlaybackService extends Service implements OnPreparedListener,
         return true;
     }
 
-    Boolean start = false;
+    private Boolean start = false;
 
     @Override
     public void onPrepared(MediaPlayer mp) {

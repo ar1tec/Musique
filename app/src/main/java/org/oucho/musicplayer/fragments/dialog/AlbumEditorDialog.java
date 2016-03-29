@@ -1,6 +1,7 @@
 package org.oucho.musicplayer.fragments.dialog;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -82,6 +83,7 @@ public class AlbumEditorDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.edit_tags);
 
+        @SuppressLint("InflateParams")
         View dialogView = getActivity().getLayoutInflater().inflate(R.layout.fragment_album_editor_dialog, null);
         builder.setView(dialogView);
 

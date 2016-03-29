@@ -13,6 +13,7 @@ class ContentHelper {
             String[] proj = { MediaStore.Images.Media.DATA };
             cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor != null ? cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA) : 0;
+            assert cursor != null;
             cursor.moveToFirst();
             return cursor.getString(column_index);
         } finally {
