@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.model.db.queue;
+package org.oucho.musicplayer.model.db;
 
 import android.content.ContentValues;
 import android.content.Context;

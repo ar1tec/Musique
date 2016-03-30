@@ -240,8 +240,7 @@ public class PlaylistFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_item:
-                startActivityForResult(
-                        new Intent(getActivity(), MusicPicker.class), PICK_MUSIC);
+                startActivityForResult(new Intent(getActivity(), MusicPicker.class), PICK_MUSIC);
                 break;
 
         }

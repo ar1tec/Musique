@@ -1,6 +1,4 @@
-package org.oucho.musicplayer.model.db.queue;
-
-import org.oucho.musicplayer.model.db.SongListColumns;
+package org.oucho.musicplayer.model.db;
 
 
 class QueueContract {

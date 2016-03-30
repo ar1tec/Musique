@@ -2,7 +2,7 @@ package org.oucho.musicplayer.loaders;
 
 import android.content.Context;
 
-import org.oucho.musicplayer.model.db.favorites.FavoritesDbHelper;
+import org.oucho.musicplayer.model.db.FavoritesDbHelper;
 import org.oucho.musicplayer.model.Song;
 
 import java.util.List;

@@ -60,8 +60,7 @@ public class ArtistLoader extends BaseLoader<List<Artist>> {
 
                 int trackCount = cursor.getInt(tracksNbCol);
 
-                mArtistList.add(new Artist(id, artistName, albumCount,
-                        trackCount));
+                mArtistList.add(new Artist(id, artistName, albumCount, trackCount));
 
             } while (cursor.moveToNext());
 

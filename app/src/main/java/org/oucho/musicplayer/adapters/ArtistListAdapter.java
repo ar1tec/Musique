@@ -44,6 +44,7 @@ public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewH
     public void onBindViewHolder(ArtistViewHolder viewHolder, int position) {
         Artist artist = mArtistList.get(position);
         viewHolder.vName.setText(artist.getName());
+
         viewHolder.vAlbumCount.setText(viewHolder.vAlbumCount.getContext().getResources()
                 .getQuantityString(R.plurals.albums_count,
                         artist.getAlbumCount(), artist.getAlbumCount()));
@@ -52,7 +53,6 @@ public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewH
         viewHolder.vArtistImage.setTag(position);
 
         ArtistImageCache.getInstance().loadBitmap(artist.getName(), viewHolder.vArtistImage, mThumbWidth, mThumbHeight, ArtistImageHelper.getDefaultArtistThumb(mContext));
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.model.db.favorites;
+package org.oucho.musicplayer.model.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -85,10 +85,12 @@ public class FavoritesDbHelper extends SQLiteOpenHelper {
 
         Cursor cursor;
         if (limit < 0) {
-            cursor = db.query(FavoritesContract.FavoritesEntry.TABLE_NAME, sProjection, null, null, null, null, FavoritesContract.FavoritesEntry.COLUMN_NAME_TITLE);
+            cursor = db.query(FavoritesContract.FavoritesEntry.TABLE_NAME, sProjection, null, null, null, null,
+                    FavoritesContract.FavoritesEntry.COLUMN_NAME_TITLE);
 
         } else {
-            cursor = db.query(FavoritesContract.FavoritesEntry.TABLE_NAME, sProjection, null, null, null, null, FavoritesContract.FavoritesEntry.COLUMN_NAME_TITLE, String.valueOf(limit));
+            cursor = db.query(FavoritesContract.FavoritesEntry.TABLE_NAME, sProjection, null, null, null, null,
+                    FavoritesContract.FavoritesEntry.COLUMN_NAME_TITLE, String.valueOf(limit));
         }
         if (cursor != null && cursor.moveToFirst()) {
 
@@ -136,7 +138,10 @@ public class FavoritesDbHelper extends SQLiteOpenHelper {
 
         boolean result = false;
 
-        Cursor cursor = db.query(FavoritesContract.FavoritesEntry.TABLE_NAME, sProjection, FavoritesContract.FavoritesEntry.COLUMN_NAME_SONG_ID + "= ?", new String[]{String.valueOf(songId)}, null, null, null, "1");
+        Cursor cursor = db.query(FavoritesContract.FavoritesEntry.TABLE_NAME,
+                sProjection,
+                FavoritesContract.FavoritesEntry.COLUMN_NAME_SONG_ID + "= ?",
+                new String[]{String.valueOf(songId)}, null, null, null, "1");
         if (cursor != null && cursor.moveToFirst()) {
             result = true;
         }

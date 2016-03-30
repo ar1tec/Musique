@@ -39,16 +39,16 @@
                 style="?attr/cardStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="3dp"
                 card_view:elevation="1dp">
 
                 <ImageView
                     android:id="@+id/album_artwork"
-                    android:layout_width="140.0dip"
-                    android:layout_height="140.0dip"
+                    android:layout_width="@dimen/fragment_album_size"
+                    android:layout_height="@dimen/fragment_album_size"
                     android:contentDescription="@string/album_artwork"
                     android:scaleType="fitCenter"
                     app:layout_collapseMode="parallax" />
@@ -66,7 +66,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="140.0dip"
+                android:layout_height="@dimen/fragment_album_size"
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_toLeftOf="@+id/list_checkbox"
                 android:layout_toRightOf="@+id/album_artwork"
@@ -127,7 +127,7 @@
             android:id="@+id/song_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="161dp"
+            android:paddingTop="160.5dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

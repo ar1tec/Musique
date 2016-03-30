@@ -30,7 +30,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import org.oucho.musicplayer.model.db.queue.QueueDbHelper;
+import org.oucho.musicplayer.model.db.QueueDbHelper;
 import org.oucho.musicplayer.utils.FavoritesHelper;
 import org.oucho.musicplayer.PlaybackService;
 import org.oucho.musicplayer.R;

@@ -43,7 +43,7 @@ import java.util.List;
 
 import android.Manifest;
 import org.oucho.musicplayer.utils.Permissions;
-import org.oucho.musicplayer.model.db.queue.QueueDbHelper;
+import org.oucho.musicplayer.model.db.QueueDbHelper;
 
 
 

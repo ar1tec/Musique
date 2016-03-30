@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import org.oucho.musicplayer.model.db.favorites.FavoritesDbHelper;
+import org.oucho.musicplayer.model.db.FavoritesDbHelper;
 import org.oucho.musicplayer.model.Song;
 
 
