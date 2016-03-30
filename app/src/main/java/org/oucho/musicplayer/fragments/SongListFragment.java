@@ -30,7 +30,7 @@ import org.oucho.musicplayer.loaders.SongLoader;
 import org.oucho.musicplayer.loaders.SortOrder;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.Playlists;
+import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.RecyclerViewUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
@@ -96,6 +96,7 @@ public class SongListFragment extends BaseFragment {
             ((MainActivity) getActivity()).refresh();
         }
     };
+
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position, View view) {
@@ -169,7 +170,7 @@ public class SongListFragment extends BaseFragment {
         picker.setListener(new PlaylistPicker.OnPlaylistPickedListener() {
             @Override
             public void onPlaylistPicked(Playlist playlist) {
-                Playlists.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
+                PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
             }
         });
         picker.show(getChildFragmentManager(), "pick_playlist");

@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Playlist;
+import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.ThemeHelper;
 import org.oucho.musicplayer.widgets.FastScroller;
 
@@ -18,6 +20,8 @@ import java.util.List;
 
 public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.PlaylistViewHolder>
         implements FastScroller.SectionIndexer {
+
+    Context context;
 
     private List<Playlist> mPlaylistList = Collections.emptyList();
 
@@ -67,6 +71,8 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
         return "";
     }
 
+
+
     class PlaylistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView vName;
@@ -75,15 +81,27 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
             super(itemView);
             vName = (TextView) itemView.findViewById(R.id.name);
 
+            itemView.findViewById(R.id.delete_playlist).setOnClickListener(this);
+
             ThemeHelper.tintImageView(itemView.getContext(), (ImageView) itemView.findViewById(R.id.icon));
             itemView.setOnClickListener(this);
+            context = itemView.getContext();
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
 
-            triggerOnItemClickListener(position, v);
+            int id = v.getId();
+
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.delete_playlist) {
+                long playlist = mPlaylistList.get(position).getId();
+
+                PlaylistsUtils.deletePlaylist(context.getContentResolver(), playlist);
+            } else {
+                triggerOnItemClickListener(position, v);
+            }
         }
     }
 }

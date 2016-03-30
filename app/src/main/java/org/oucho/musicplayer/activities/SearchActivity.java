@@ -43,7 +43,7 @@ import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.Playlists;
+import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.ThemeHelper;
 
 import java.util.ArrayList;
@@ -294,7 +294,7 @@ public class SearchActivity extends BaseActivity {
         picker.setListener(new PlaylistPicker.OnPlaylistPickedListener() {
             @Override
             public void onPlaylistPicked(Playlist playlist) {
-                Playlists.addAlbumToPlaylist(getContentResolver(), playlist.getId(), album.getId());
+                PlaylistsUtils.addAlbumToPlaylist(getContentResolver(), playlist.getId(), album.getId());
             }
         });
         picker.show(getSupportFragmentManager(), "pick_playlist");
@@ -474,7 +474,7 @@ public class SearchActivity extends BaseActivity {
             picker.setListener(new PlaylistPicker.OnPlaylistPickedListener() {
                 @Override
                 public void onPlaylistPicked(Playlist playlist) {
-                    Playlists.addSongToPlaylist(getContentResolver(), playlist.getId(), song.getId());
+                    PlaylistsUtils.addSongToPlaylist(getContentResolver(), playlist.getId(), song.getId());
                 }
             });
             picker.show(getSupportFragmentManager(), "pick_playlist");

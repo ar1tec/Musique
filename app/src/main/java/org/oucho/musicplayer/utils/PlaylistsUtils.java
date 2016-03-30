@@ -2,11 +2,12 @@ package org.oucho.musicplayer.utils;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-public class Playlists {
+public class PlaylistsUtils {
 
     public static Uri createPlaylist(ContentResolver resolver, String playlistName) {
         Uri uri = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
@@ -15,6 +16,12 @@ public class Playlists {
         return resolver.insert(uri, values);
     }
 
+    public static void deletePlaylist(ContentResolver resolver, long playlistId) {
+        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
+        resolver.delete(uri, null, null);
+        String filter = MediaStore.Audio.Playlists._ID + "=" + playlistId;
+        resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, filter, null);
+    }
 
 
     private static int getSongCount(ContentResolver resolver, Uri uri) {
@@ -71,10 +78,8 @@ public class Playlists {
         }
     }
 
-    public static void removeFromPlaylist(ContentResolver resolver,
-                                          long playlistId, long audioId) {
-        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external",
-                playlistId);
+    public static void removeFromPlaylist(ContentResolver resolver, long playlistId, long audioId) {
+        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
 
         resolver.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID
                 + " = " + audioId, null);
@@ -90,6 +95,5 @@ public class Playlists {
         values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, to);
         return res.update(uri, values, null, null) != 0;
     }
-
 
 }

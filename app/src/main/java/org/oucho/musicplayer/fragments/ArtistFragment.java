@@ -38,7 +38,7 @@ import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.Playlists;
+import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.ThemeHelper;
 
 import java.util.List;
@@ -215,7 +215,7 @@ public class ArtistFragment extends BaseFragment {
         picker.setListener(new PlaylistPicker.OnPlaylistPickedListener() {
             @Override
             public void onPlaylistPicked(Playlist playlist) {
-                Playlists.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
+                PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
             }
         });
         picker.show(getChildFragmentManager(), "pick_playlist");
@@ -255,7 +255,7 @@ public class ArtistFragment extends BaseFragment {
         picker.setListener(new PlaylistPicker.OnPlaylistPickedListener() {
             @Override
             public void onPlaylistPicked(Playlist playlist) {
-                Playlists.addAlbumToPlaylist(getActivity().getContentResolver(), playlist.getId(), album.getId());
+                PlaylistsUtils.addAlbumToPlaylist(getActivity().getContentResolver(), playlist.getId(), album.getId());
             }
         });
         picker.show(getChildFragmentManager(), "pick_playlist");

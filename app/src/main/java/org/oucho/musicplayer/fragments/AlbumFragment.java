@@ -31,7 +31,7 @@ import org.oucho.musicplayer.loaders.SongLoader;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.Playlists;
+import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.RecyclerViewUtils;
 
 import java.util.List;
@@ -173,7 +173,7 @@ public class AlbumFragment extends BaseFragment {
         picker.setListener(new PlaylistPicker.OnPlaylistPickedListener() {
             @Override
             public void onPlaylistPicked(Playlist playlist) {
-                Playlists.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
+                PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
             }
         });
         picker.show(getChildFragmentManager(), "pick_playlist");

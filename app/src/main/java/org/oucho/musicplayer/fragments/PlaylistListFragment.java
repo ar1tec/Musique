@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.fragments;
 
+
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,16 +88,7 @@ public class PlaylistListFragment extends BaseFragment {
         }
     };
 
-    private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(int position, View view) {
-            Playlist playlist = mAdapter.getItem(position);
 
-            PlaylistFragment fragment = PlaylistFragment.newInstance(playlist);
-
-            ((MainActivity) getActivity()).setFragment(fragment);
-        }
-    };
 
     public PlaylistListFragment() {
         // Required empty public constructor
@@ -111,6 +103,8 @@ public class PlaylistListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+
 
     }
 
@@ -143,10 +137,14 @@ public class PlaylistListFragment extends BaseFragment {
         return rootView;
     }
 
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.playlist_list, menu);
+
+
 
     }
 
@@ -187,6 +185,23 @@ public class PlaylistListFragment extends BaseFragment {
             getActivity().setTitle("Listes de lecture");
         }
     }
+
+    private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(int position, View view) {
+            Playlist playlist = mAdapter.getItem(position);
+/*            switch (view.getId()) {
+                case R.id.delete_playlist:
+                    deletePlaylist(mAdapter.getSectionForPosition(position));
+                    break;
+
+            }*/
+
+            PlaylistFragment fragment = PlaylistFragment.newInstance(playlist);
+
+            ((MainActivity) getActivity()).setFragment(fragment);
+        }
+    };
 
 
 }

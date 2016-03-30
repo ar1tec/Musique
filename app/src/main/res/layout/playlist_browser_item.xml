@@ -1,31 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
-    android:background="?attr/selectableItemBackground"
-    android:orientation="horizontal"
-    android:padding="@dimen/content_padding">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/selectable_item_background"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/small_content_padding"
+    android:paddingLeft="@dimen/content_padding"
+    android:paddingRight="@dimen/content_padding"
+    android:paddingTop="@dimen/small_content_padding">
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center"
         android:scaleType="center"
         android:src="@drawable/ic_playlist"
         tools:ignore="ContentDescription" />
 
+    <ImageButton
+        android:id="@+id/delete_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_delete" />
+
+    <LinearLayout
+        android:id="@+id/playlist_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/icon"
+        android:layout_toStartOf="@id/delete_playlist"
+        android:orientation="vertical">
+
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/small_content_padding"
+        android:paddingLeft="8dp"
         android:singleLine="true"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp" />
+        android:textSize="17sp"
+        android:text="TEST test"
+        android:gravity="center_vertical" />
+        </LinearLayout>
 
-
-</LinearLayout>
+</RelativeLayout>

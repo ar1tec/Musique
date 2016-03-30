@@ -37,16 +37,11 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
             if (idCol == -1) {
                 idCol = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
             }
-            int titleCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.TITLE);
-            int artistCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.ARTIST);
-            int albumCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.ALBUM);
-            int albumIdCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
-            int trackCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.TRACK);
+            int titleCol = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
+            int artistCol = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+            int albumCol = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+            int albumIdCol = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
+            int trackCol = cursor.getColumnIndex(MediaStore.Audio.Media.TRACK);
 
             do {
                 long id = cursor.getLong(idCol);
@@ -79,8 +74,7 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
         if (!Permissions.checkPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return null;
         }
-        Uri musicUri = MediaStore.Audio.Playlists.Members.getContentUri(
-                "external", mPlaylistId);
+        Uri musicUri = MediaStore.Audio.Playlists.Members.getContentUri( "external", mPlaylistId);
 
         return getContext().getContentResolver().query(musicUri,
                 sProjection, getSelectionString(), getSelectionArgs(),

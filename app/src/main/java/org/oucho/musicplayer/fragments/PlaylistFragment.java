@@ -35,7 +35,7 @@ import org.oucho.musicplayer.loaders.FavoritesLoader;
 import org.oucho.musicplayer.loaders.PlaylistLoader;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.Playlists;
+import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.ThemeHelper;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.FastScroller;
@@ -138,7 +138,7 @@ public class PlaylistFragment extends BaseFragment {
                 } else {
                     ContentResolver resolver = getActivity().getContentResolver();
                     for (long id : ids) {
-                        Playlists.addSongToPlaylist(resolver, mPlaylist.getId(), id);
+                        PlaylistsUtils.addSongToPlaylist(resolver, mPlaylist.getId(), id);
                     }
                 }
                 return null;
@@ -330,7 +330,7 @@ public class PlaylistFragment extends BaseFragment {
             }
             Collections.swap(mSongList, oldPosition, newPosition);
             if (!mFavorites) {
-                Playlists.moveItem(getActivity().getContentResolver(), mPlaylist.getId(), oldPosition, newPosition);
+                PlaylistsUtils.moveItem(getActivity().getContentResolver(), mPlaylist.getId(), oldPosition, newPosition);
             }
             notifyItemMoved(oldPosition, newPosition);
 
@@ -341,7 +341,7 @@ public class PlaylistFragment extends BaseFragment {
             if (mFavorites) {
                 FavoritesHelper.removeFromFavorites(getActivity(), s.getId());
             } else {
-                Playlists.removeFromPlaylist(getActivity().getContentResolver(),
+                PlaylistsUtils.removeFromPlaylist(getActivity().getContentResolver(),
                         mPlaylist.getId(), s.getId());
             }
             notifyItemRemoved(position);
