@@ -11,7 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlaybackService;
@@ -20,7 +19,7 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.images.BitmapCache;
 
 public class Notification {
-    private static final String TAG = Notification.class.getCanonicalName();
+
     public static final int NOTIFY_ID = 32;
 
     private static boolean sIsServiceForeground = false;
@@ -32,7 +31,6 @@ public class Notification {
             return; // no need to go further since there is nothing to display
         }
 
-        Log.d(TAG, "p " + playbackService.hasPlaylist() + " " + playbackService.getPlayList().size());
         PendingIntent togglePlayIntent = PendingIntent.getService(playbackService, 0,
                 new Intent(playbackService, PlaybackService.class)
                         .setAction(PlaybackService.ACTION_TOGGLE), 0);
@@ -50,8 +48,7 @@ public class Notification {
 
 
         builder.setContentTitle(playbackService.getSongTitle())
-                .setContentText(playbackService.getArtistName())
-                .setSubText(playbackService.getAlbumName());
+                .setContentText(playbackService.getArtistName());
 
         int toggleResId = playbackService.isPlaying() ? R.drawable.notification_pause : R.drawable.notification_play;
 

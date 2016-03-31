@@ -65,8 +65,6 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         viewHolder.vArtwork.setTag(position);
 
         ArtworkCache.getInstance().loadBitmap(album.getId(), viewHolder.vArtwork, mArtworkWidth, mArtworkHeight, ArtworkHelper.getDefaultArtworkDrawable(mContext));
-
-
     }
 
     @Override
@@ -107,11 +105,6 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
             }
             ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
             menuButton.setOnClickListener(this);
-
-/*            Drawable drawable = menuButton.getDrawable();
-
-            drawable.mutate();
-            ThemeHelper.tintDrawable(itemView.getContext(), drawable);*/
 
         }
 

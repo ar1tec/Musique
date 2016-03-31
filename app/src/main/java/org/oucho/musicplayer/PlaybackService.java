@@ -357,7 +357,8 @@ public class PlaybackService extends Service implements OnPreparedListener,
                 }
             }
         }
-        return START_STICKY;
+        //return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override

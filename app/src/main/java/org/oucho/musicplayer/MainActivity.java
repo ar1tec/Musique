@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity
         setTheme();
 
         super.onCreate(savedInstanceState);
-
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         setContentView(R.layout.activity_main);
@@ -155,7 +154,7 @@ public class MainActivity extends AppCompatActivity
                         mPlaybackService.stop();
                         killNotif();
                         System.exit(0);
-                        return true;
+                        break;
                 }
                 return true;
             }

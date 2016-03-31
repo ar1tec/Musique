@@ -44,8 +44,9 @@ public class CreatePlaylistDialog extends DialogFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 EditText editText = (EditText) layout
                                         .findViewById(R.id.playlist_name);
-                                PlaylistsUtils.createPlaylist(getActivity().getContentResolver(),
-                                        editText.getText().toString());
+                                PlaylistsUtils.createPlaylist(getActivity()
+                                        .getContentResolver(), editText
+                                        .getText().toString());
 
                                 if (mListener != null) {
                                     mListener.onPlaylistCreated();
