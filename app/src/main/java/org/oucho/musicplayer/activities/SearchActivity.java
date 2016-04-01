@@ -31,6 +31,7 @@ import org.oucho.musicplayer.loaders.SongLoader;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +48,7 @@ public class SearchActivity extends BaseActivity {
     private boolean mSongListLoaded = false;
     private View mEmptyView;
     private SearchAdapter mAdapter;
+
     private final LoaderManager.LoaderCallbacks<List<Album>> mAlbumLoaderCallbacks
             = new LoaderManager.LoaderCallbacks<List<Album>>() {
 
@@ -220,6 +222,10 @@ public class SearchActivity extends BaseActivity {
         getSupportLoaderManager().initLoader(0, null, mAlbumLoaderCallbacks);
         getSupportLoaderManager().initLoader(1, null, mArtistLoaderCallbacks);
         getSupportLoaderManager().initLoader(2, null, mSongLoaderCallbacks);
+
+        FastScroller mFastScroller = (FastScroller) findViewById(R.id.fastscroller);
+        assert mFastScroller != null;
+        mFastScroller.setRecyclerView(mRecyclerView);
     }
 
 

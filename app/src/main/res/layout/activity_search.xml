@@ -17,4 +17,11 @@
         android:text="@string/no_results"
         android:visibility="gone" />
 
+    <org.oucho.musicplayer.widgets.FastScroller
+        android:id="@+id/fastscroller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" />
+
 </RelativeLayout>
