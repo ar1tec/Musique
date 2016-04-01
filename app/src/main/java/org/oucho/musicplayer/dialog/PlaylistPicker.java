@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.fragments.dialog;
+package org.oucho.musicplayer.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

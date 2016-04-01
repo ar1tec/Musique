@@ -30,9 +30,9 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.fragments.dialog.AlbumEditorDialog;
-import org.oucho.musicplayer.fragments.dialog.ID3TagEditorDialog;
-import org.oucho.musicplayer.fragments.dialog.PlaylistPicker;
+import org.oucho.musicplayer.dialog.AlbumEditorDialog;
+import org.oucho.musicplayer.dialog.ID3TagEditorDialog;
+import org.oucho.musicplayer.dialog.PlaylistPicker;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.loaders.AlbumLoader;

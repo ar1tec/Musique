@@ -96,11 +96,11 @@ public class LibraryFragment extends BaseFragment {
                     return AlbumListFragment.newInstance();
                 case 1:
                     return SongListFragment.newInstance();
+/*                case 2:
+                    return ArtistListFragment.newInstance();*/
+/*                case 2:
+                    return GenreListFragment.newInstance();*/
                 case 2:
-                    return ArtistListFragment.newInstance();
-                case 3:
-                    return GenreListFragment.newInstance();
-                case 4:
                     return PlaylistListFragment.newInstance();
             }
             return null;
@@ -128,7 +128,7 @@ public class LibraryFragment extends BaseFragment {
 
         @Override
         public int getCount() {
-            return 5;
+            return 3;
         }
 
         @Override
@@ -139,11 +139,11 @@ public class LibraryFragment extends BaseFragment {
                     return getString(R.string.albums).toUpperCase(l);
                 case 1:
                     return getString(R.string.titles).toUpperCase(l);
+/*                case 2:
+                    return getString(R.string.artists).toUpperCase(l);*/
+/*                case 2:
+                    return getString(R.string.genres).toUpperCase(l);*/
                 case 2:
-                    return getString(R.string.artists).toUpperCase(l);
-                case 3:
-                    return getString(R.string.genres).toUpperCase(l);
-                case 4:
                     return getString(R.string.playlists).toUpperCase(l);
 
             }

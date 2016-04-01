@@ -7,7 +7,7 @@ import android.content.Intent;
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.activities.EqualizerActivity;
-import org.oucho.musicplayer.activities.PlaybackActivity;
+import org.oucho.musicplayer.activities.PlayerActivity;
 import org.oucho.musicplayer.activities.SearchActivity;
 import org.oucho.musicplayer.activities.ThemeActivity;
 
@@ -40,7 +40,7 @@ public class NavigationUtils {
     }
 
     public static void showPlaybackActivity(Activity activity, boolean animate) {
-        Intent i = new Intent(activity, PlaybackActivity.class);
+        Intent i = new Intent(activity, PlayerActivity.class);
         if (animate) {
             i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         }

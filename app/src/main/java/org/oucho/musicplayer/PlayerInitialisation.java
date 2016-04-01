@@ -9,7 +9,7 @@ import org.oucho.musicplayer.images.ArtworkCache;
 
 import org.oucho.musicplayer.utils.PrefUtils;
 
-public class PlayerApplication extends Application {
+public class PlayerInitialisation extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

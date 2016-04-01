@@ -29,7 +29,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,7 +41,7 @@ import android.widget.TextView;
 
 import com.codetroopers.betterpickers.hmspicker.HmsPickerDialogFragment;
 
-import org.oucho.musicplayer.PlaybackService.PlaybackBinder;
+import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.activities.BaseActivity;
 import org.oucho.musicplayer.fragments.AlbumFragment;
 import org.oucho.musicplayer.fragments.ArtistFragment;
@@ -63,8 +62,9 @@ import org.oucho.musicplayer.widgets.ProgressBar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     public static final String ALBUM_ID = "id";
     public static final String ALBUM_NAME = "name";
@@ -93,34 +93,39 @@ public class MainActivity extends AppCompatActivity
     private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
+
     private final Handler mHandler = new Handler();
-
-
+    private final String fichier_préférence = "org.oucho.musicplayer_preferences";
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
-
     private boolean favorite = false;
+    private SharedPreferences préférences = null;
+
+    private Intent mOnActivityResultIntent;
+
+    private PlayerService mPlaybackService;
+
+
+
+    /* *********************************************************************************************
+     * Création de l'activité
+     * ********************************************************************************************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme();
 
         super.onCreate(savedInstanceState);
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
         setContentView(R.layout.activity_main);
+
+        checkPermissions();
+
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         mPlaybackRequests = new PlaybackRequests();
 
-        if (savedInstanceState == null) {
-            showLibrary();
-        }
-
-
         findViewById(R.id.quick_play_pause_toggle).setOnClickListener(mOnClickListener);
-
         findViewById(R.id.track_info).setOnClickListener(mOnClickListener);
-
         findViewById(R.id.quick_prev).setOnClickListener(mOnClickListener);
         findViewById(R.id.quick_next).setOnClickListener(mOnClickListener);
 
@@ -128,98 +133,62 @@ public class MainActivity extends AppCompatActivity
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        //mNavigationView.inflateHeaderView(R.layout.navigation_header);
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                mDrawerLayout.closeDrawers();
-                switch (menuItem.getItemId()) {
-                    case R.id.action_library:
-                        showLibrary();
-                        break;
-                    case R.id.action_favorites:
-                        showFavorites();
-                        break;
-                    case R.id.action_equalizer:
-                        NavigationUtils.showEqualizer(MainActivity.this);
-                        break;
-                    case R.id.action_theme:
-                        NavigationUtils.showTheme(MainActivity.this);
-                        break;
-                    case R.id.nav_help:
-                        About();
-                        return true;
-                    case R.id.nav_exit:
-                        mPlaybackService.stop();
-                        killNotif();
-                        System.exit(0);
-                        break;
-                }
-                return true;
-            }
-        });
-        checkPermissions();
+
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
+        if (savedInstanceState == null) {
+            showLibrary();
+        }
     }
 
+
+
+    /* *********************************************************************************************
+     * Navigation Drawer
+     * ********************************************************************************************/
 
     public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
     }
 
-
-    private void setTheme() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        int theme = prefs.getInt(BaseActivity.KEY_PREF_THEME, BaseActivity.DEFAULT_THEME);
-
-        switch (theme) {
-            case BaseActivity.original_green:
-                setTheme(R.style.MainActivityOGreenLight);
+    @Override
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        mDrawerLayout.closeDrawers();
+        switch (menuItem.getItemId()) {
+            case R.id.action_library:
+                showLibrary();
                 break;
-            case BaseActivity.red:
-                setTheme(R.style.MainActivityRedLight);
+            case R.id.action_favorites:
+                showFavorites();
                 break;
-            case BaseActivity.orange:
-                setTheme(R.style.MainActivityOrangeLight);
+            case R.id.action_equalizer:
+                NavigationUtils.showEqualizer(MainActivity.this);
                 break;
-            case BaseActivity.purple:
-                setTheme(R.style.MainActivityPurpleLight);
+            case R.id.action_theme:
+                NavigationUtils.showTheme(MainActivity.this);
                 break;
-            case BaseActivity.navy:
-                setTheme(R.style.MainActivityNavyLight);
-                break;
-            case BaseActivity.blue:
-                setTheme(R.style.MainActivityBlueLight);
-                break;
-            case BaseActivity.sky:
-                setTheme(R.style.MainActivitySkyLight);
-                break;
-            case BaseActivity.seagreen:
-                setTheme(R.style.MainActivitySeagreenLight);
-                break;
-            case BaseActivity.cyan:
-                setTheme(R.style.MainActivityCyanLight);
-                break;
-            case BaseActivity.pink:
-                setTheme(R.style.MainActivityPinkLight);
+            case R.id.nav_help:
+                About();
+                return true;
+            case R.id.nav_exit:
+                mPlaybackService.stop();
+                killNotif();
+                System.exit(0);
                 break;
         }
-    }
-
-    // recharge pour appliquer la nouvelle couleur de thème
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        recreate();
+        return true;
     }
 
 
 
-    private Intent mOnActivityResultIntent;
-    private PlaybackService mPlaybackService;
+    /* *********************************************************************************************
+     * Click listener activity_main
+     * ********************************************************************************************/
+
     private final OnClickListener mOnClickListener = new OnClickListener() {
 
         @Override
@@ -252,6 +221,217 @@ public class MainActivity extends AppCompatActivity
     };
 
 
+
+    /* *********************************************************************************************
+     * Menu
+     * ********************************************************************************************/
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                FragmentManager fm = getSupportFragmentManager();
+                if (fm.getBackStackEntryCount() > 0) {
+                    fm.popBackStack();
+                } else {
+                    showLibrary();
+                }
+                return true;
+            case R.id.action_search:
+                NavigationUtils.showSearchActivity(this, SEARCH_ACTIVITY);
+                return true;
+            case R.id.action_equalizer:
+                NavigationUtils.showEqualizer(this);
+                return true;
+            case R.id.action_sleep_timer:
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                if (SleepTimer.isTimerSet(prefs)) {
+                    DialogUtils.showSleepTimerDialog(this, mSleepTimerDialogListener);
+                } else {
+                    DialogUtils.showSleepHmsPicker(this, mHmsPickerHandler);
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+    /* ************************
+     * Affiche la bibliothèque
+     * ************************/
+
+    private void showLibrary() {
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        mNavigationView.getMenu().findItem(R.id.action_library).setChecked(true);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, LibraryFragment.newInstance()).commit();
+    }
+
+
+
+    /* *********************
+     * Afficher les favoris
+     * *********************/
+
+    private void showFavorites() {
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        mNavigationView.getMenu().findItem(R.id.action_favorites).setChecked(true);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, PlaylistFragment.newFavoritesFragment()).commit();
+        setTitle("Favoris");
+
+        favorite = true;
+    }
+
+
+
+    /* *********************************************************************************************
+     * Pause, resume etc.
+     * ********************************************************************************************/
+
+    @SuppressLint("CommitPrefEdits")
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        killNotif();
+        clearCache();
+
+        if (mServiceBound) {
+            mPlaybackService = null;
+
+            unregisterReceiver(mServiceListener);
+
+            unbindService(mServiceConnection);
+            mServiceBound = false;
+        }
+        mHandler.removeCallbacks(mUpdateProgressBar);
+
+        préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = préférences.edit();
+
+        editor.putBoolean("favorite_state", favorite);
+        editor.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!mServiceBound) {
+            Intent mServiceIntent = new Intent(this, PlayerService.class);
+            bindService(mServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+            startService(mServiceIntent);
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(PlayerService.META_CHANGED);
+            filter.addAction(PlayerService.PLAYSTATE_CHANGED);
+            filter.addAction(PlayerService.POSITION_CHANGED);
+            filter.addAction(PlayerService.ITEM_ADDED);
+            filter.addAction(PlayerService.ORDER_CHANGED);
+            registerReceiver(mServiceListener, filter);
+        } else {
+            updateAll();
+        }
+
+        préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
+        favorite = préférences.getBoolean("favorite_state", false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (mOnActivityResultIntent != null) {
+            Bundle bundle = mOnActivityResultIntent.getExtras();
+            if (mOnActivityResultIntent.getAction().equals(ACTION_REFRESH)) {
+                refresh();
+            } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ALBUM)) {
+                Album album = getAlbumFromBundle(bundle);
+                AlbumFragment fragment = AlbumFragment.newInstance(album);
+                setFragment(fragment);
+            } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ARTIST)) {
+                Artist artist = getArtistFromBundle(bundle);
+                ArtistFragment fragment = ArtistFragment.newInstance(artist);
+                setFragment(fragment);
+            } else {
+
+
+                Song song = getSongFromBundle(bundle);
+
+                if (mOnActivityResultIntent.getAction().equals(ACTION_PLAY_SONG)) {
+                    ArrayList<Song> songList = new ArrayList<>();
+                    songList.add(song);
+                    mPlaybackRequests.requestPlayList(songList);
+                } else if (mOnActivityResultIntent.getAction().equals(ACTION_ADD_TO_QUEUE)) {
+                    mPlaybackRequests.requestAddToQueue(song);
+                } else if (mOnActivityResultIntent.getAction().equals(ACTION_SET_AS_NEXT_TRACK)) {
+                    mPlaybackRequests.requestAsNextTrack(song);
+                }
+            }
+            mOnActivityResultIntent = null;
+        }
+    }
+
+    public void setFragment(Fragment f) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, f).addToBackStack(null).commit();
+    }
+
+    private Album getAlbumFromBundle(Bundle bundle) {
+        long id = bundle.getLong(ALBUM_ID);
+        String title = bundle.getString(ALBUM_NAME);
+        String artist = bundle.getString(ALBUM_ARTIST);
+        int year = bundle.getInt(ALBUM_YEAR);
+        int trackCount = bundle.getInt(ALBUM_TRACK_COUNT);
+
+        return new Album(id, title, artist, year, trackCount);
+    }
+
+
+
+    private Artist getArtistFromBundle(Bundle bundle) {
+        long id = bundle.getLong(ARTIST_ARTIST_ID);
+        String name = bundle.getString(ARTIST_ARTIST_NAME);
+        int albumCount = bundle.getInt(ARTIST_ALBUM_COUNT);
+        int trackCount = bundle.getInt(ARTIST_TRACK_COUNT);
+        return new Artist(id, name, albumCount, trackCount);
+    }
+
+    private Song getSongFromBundle(Bundle bundle) {
+        long id = bundle.getLong(SONG_ID);
+        String title = bundle.getString(SONG_TITLE);
+        String artist = bundle.getString(SONG_ARTIST);
+        String album = bundle.getString(SONG_ALBUM);
+        long albumId = bundle.getLong(SONG_ALBUM_ID);
+        int trackNumber = bundle.getInt(SONG_TRACK_NUMBER);
+
+        return new Song(id, title, artist, album, albumId, trackNumber);
+    }
+
+    public void refresh() {
+        for (Fragment f : getSupportFragmentManager().getFragments()) {
+            if (f != null) {
+                ((BaseFragment) f).load();
+            }
+        }
+    }
+
+
+
+    /***********************************************************************************************
+     * Lecture
+     **********************************************************************************************/
+
     private boolean mServiceBound = false;
     private ProgressBar mProgressBar;
 
@@ -275,8 +455,8 @@ public class MainActivity extends AppCompatActivity
                 return;
             }
             String action = intent.getAction();
-            Log.d("action", action);
-            if (action.equals(PlaybackService.PLAYSTATE_CHANGED)) {
+
+            if (action.equals(PlayerService.PLAYSTATE_CHANGED)) {
                 setButtonDrawable();
                 if (mPlaybackService.isPlaying()) {
                     mHandler.post(mUpdateProgressBar);
@@ -285,7 +465,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
 
-            } else if (action.equals(PlaybackService.META_CHANGED)) {
+            } else if (action.equals(PlayerService.META_CHANGED)) {
                 updateTrackInfo();
             }
         }
@@ -298,7 +478,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
 
-            PlaybackService.PlaybackBinder binder = (PlaybackBinder) service;
+            PlayerService.PlaybackBinder binder = (PlaybackBinder) service;
             mPlaybackService = binder.getService();
             mServiceBound = true;
 
@@ -315,32 +495,305 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    /**
-     * Affiche bibliothèque sans backstack
-     */
-    private void showLibrary() {
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+    public void onSongSelected(List<Song> songList, int position) {
+        if (mPlaybackService == null) {
+            return;
+        }
+        mPlaybackService.setPlayList(songList, position, true);
+        // mPlaybackService.play();
+    }
 
-        mNavigationView.getMenu().findItem(R.id.action_library).setChecked(true);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, LibraryFragment.newInstance()).commit();
+    public void onShuffleRequested(List<Song> songList, boolean play) {
+        if (mPlaybackService == null) {
+            return;
+        }
+        mPlaybackService.setPlayListAndShuffle(songList, play);
+
+
+    }
+
+    public void addToQueue(Song song) {
+        if (mPlaybackService != null) {
+            mPlaybackService.addToQueue(song);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SEARCH_ACTIVITY && resultCode == RESULT_OK) {
+            mOnActivityResultIntent = data;
+        }
+    }
+
+
+    private void updateAll() {
+        if (mPlaybackService != null) {
+            updateTrackInfo();
+            setButtonDrawable();
+            if (mPlaybackService.isPlaying()) {
+                mHandler.post(mUpdateProgressBar);
+            }
+        }
     }
 
 
 
-    /**
-     * Afficher favoris sans backstack
-     */
-    private void showFavorites() {
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+    /***********************************************************************************************
+     * Barre de lecture
+     **********************************************************************************************/
 
-        mNavigationView.getMenu().findItem(R.id.action_favorites).setChecked(true);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, PlaylistFragment.newFavoritesFragment()).commit();
-        setTitle("Favoris");
-
-        favorite = true;
+    private void setButtonDrawable() {
+        if (mPlaybackService != null) {
+            ImageButton quickButton = (ImageButton) findViewById(R.id.quick_play_pause_toggle);
+            if (mPlaybackService.isPlaying()) {
+                quickButton.setImageResource(R.drawable.musicplayer_pause);
+            } else {
+                quickButton.setImageResource(R.drawable.musicplayer_play);
+            }
+        }
     }
+
+
+    private class PlaybackRequests {
+
+        private List<Song> mPlayList;
+        private int mIndex;
+        private boolean mAutoPlay;
+
+        private Song mNextTrack;
+
+        private Song mAddToQueue;
+
+        private void requestPlayList(List<Song> playList) {
+            if (mPlaybackService != null) {
+                mPlaybackService.setPlayList(playList, 0, true);
+            } else {
+                mPlayList = playList;
+                mIndex = 0;
+                mAutoPlay = true;
+            }
+        }
+
+        public void requestAddToQueue(Song song) {
+            if (mPlaybackService != null) {
+                mPlaybackService.addToQueue(song);
+            } else {
+                mAddToQueue = song;
+            }
+        }
+
+        public void requestAsNextTrack(Song song) {
+            if (mPlaybackService != null) {
+                mPlaybackService.setAsNextTrack(song);
+            } else {
+                mNextTrack = song;
+            }
+        }
+
+        public void sendRequests() {
+            if (mPlaybackService == null) {
+                return;
+            }
+
+            if (mPlayList != null) {
+                mPlaybackService.setPlayList(mPlayList, mIndex, mAutoPlay);
+                mPlayList = null;
+            }
+
+            if (mAddToQueue != null) {
+                mPlaybackService.addToQueue(mAddToQueue);
+                mAddToQueue = null;
+            }
+
+            if (mNextTrack != null) {
+                mPlaybackService.setAsNextTrack(mNextTrack);
+                mNextTrack = null;
+            }
+        }
+    }
+
+
+    @SuppressLint("PrivateResource")
+    private void updateTrackInfo() {
+        View trackInfoLayout = findViewById(R.id.track_info);
+
+        if (mPlaybackService != null && mPlaybackService.hasPlaylist()) {
+
+            if (trackInfoLayout.getVisibility() != View.VISIBLE) {
+                trackInfoLayout.setVisibility(View.VISIBLE);
+                trackInfoLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_grow_fade_in_from_bottom));
+            }
+
+            String title = mPlaybackService.getSongTitle();
+            String artist = mPlaybackService.getArtistName();
+
+            if (title != null) {
+                ((TextView) findViewById(R.id.song_title)).setText(title);
+
+            }
+
+            if (artist != null) {
+                ((TextView) findViewById(R.id.song_artist)).setText(artist);
+            }
+
+            int duration = mPlaybackService.getTrackDuration();
+
+            if (duration != -1) {
+                mProgressBar.setMax(duration);
+
+                updateProgressBar();
+            }
+
+        } else {
+            trackInfoLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateProgressBar() {
+        if (mPlaybackService != null) {
+            int position = mPlaybackService.getPlayerPosition();
+            mProgressBar.setProgress(position);
+        }
+    }
+
+
+
+    /***********************************************************************************************
+     * Sleep Timer
+     **********************************************************************************************/
+
+    private final HmsPickerDialogFragment.HmsPickerDialogHandler mHmsPickerHandler
+            = new HmsPickerDialogFragment.HmsPickerDialogHandler() {
+        @Override
+        public void onDialogHmsSet(int reference, int hours, int minutes, int seconds) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            SleepTimer.setTimer(MainActivity.this, prefs, hours * 3600 + minutes * 60 + seconds);
+        }
+    };
+    private final DialogInterface.OnClickListener mSleepTimerDialogListener
+            = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    DialogUtils.showSleepHmsPicker(MainActivity.this, mHmsPickerHandler);
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    SleepTimer.cancelTimer(MainActivity.this, prefs);
+                    break;
+                case DialogInterface.BUTTON_NEUTRAL:
+                    break;
+            }
+        }
+    };
+
+
+
+    /***********************************************************************************************
+     * About dialog
+     **********************************************************************************************/
+
+    private void About() {
+
+        String title = getString(R.string.about);
+        AlertDialog.Builder About = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = getLayoutInflater();
+
+        @SuppressLint("InflateParams") View dialoglayout = inflater.inflate(R.layout.alertdialog_main_noshadow, null);
+        Toolbar toolbar = (Toolbar) dialoglayout.findViewById(R.id.dialog_toolbar_noshadow);
+        toolbar.setTitle(title);
+        toolbar.setTitleTextColor(0xffffffff);
+
+        final TextView text = (TextView) dialoglayout.findViewById(R.id.showrules_dialog);
+        text.setText(getString(R.string.about_message));
+
+        About.setView(dialoglayout);
+
+        AlertDialog dialog = About.create();
+        dialog.show();
+    }
+
+
+
+    /***********************************************************************************************
+     * Touche retour
+     **********************************************************************************************/
+
+    @Override
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
+
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            if (favorite) {
+                favorite = false;
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, LibraryFragment.newInstance())
+                        .commit();
+                return true;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+
+    /***********************************************************************************************
+     * Fermeture notification
+     **********************************************************************************************/
+
+    private void killNotif() {
+        NotificationManager notificationManager;
+
+        try {
+            if (!mPlaybackService.isPlaying()) {
+                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.cancel(Notification.NOTIFY_ID);
+            }
+        } catch (RuntimeException ignore){}
+    }
+
+    private void clearCache() {
+        ArtistImageCache.getInstance().clear();
+        ArtworkCache.getInstance().clear();
+    }
+
+
+
+    /* *********************************************************************************************
+    * Gestion des permissions (Android >= 6.0)
+    * *********************************************************************************************/
+
+    @SuppressLint("CommitPrefEdits")
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String permissions[],
+            @NonNull int[] grantResults)
+    {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_READ_PHONE_STATE:
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean(PlayerService.PREF_AUTO_PAUSE, true);
+                if (mPlaybackService != null) {
+                    mPlaybackService.setAutoPauseEnabled(true);
+                }
+                editor.commit();
+                break;
+        }
+    }
+
 
     private void checkPermissions() {
         if (ContextCompat.checkSelfPermission(this,
@@ -417,435 +870,55 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+
+    /* *********************************************************************************************
+     * Thème
+     * ********************************************************************************************/
+
+    // recharge pour appliquer la nouvelle couleur de thème
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        if (mOnActivityResultIntent != null) {
-            Bundle bundle = mOnActivityResultIntent.getExtras();
-            if (mOnActivityResultIntent.getAction().equals(ACTION_REFRESH)) {
-                refresh();
-            } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ALBUM)) {
-                Album album = getAlbumFromBundle(bundle);
-                AlbumFragment fragment = AlbumFragment.newInstance(album);
-                setFragment(fragment);
-            } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ARTIST)) {
-                Artist artist = getArtistFromBundle(bundle);
-                ArtistFragment fragment = ArtistFragment.newInstance(artist);
-                setFragment(fragment);
-            } else {
-
-
-                Song song = getSongFromBundle(bundle);
-
-                if (mOnActivityResultIntent.getAction().equals(ACTION_PLAY_SONG)) {
-                    ArrayList<Song> songList = new ArrayList<>();
-                    songList.add(song);
-                    mPlaybackRequests.requestPlayList(songList);
-                } else if (mOnActivityResultIntent.getAction().equals(ACTION_ADD_TO_QUEUE)) {
-                    mPlaybackRequests.requestAddToQueue(song);
-                } else if (mOnActivityResultIntent.getAction().equals(ACTION_SET_AS_NEXT_TRACK)) {
-                    mPlaybackRequests.requestAsNextTrack(song);
-                }
-            }
-            mOnActivityResultIntent = null;
-        }
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        recreate();
     }
 
-    public void refresh() {
-        for (Fragment f : getSupportFragmentManager().getFragments()) {
-            if (f != null) {
-                Log.d("frag", f.getClass().getCanonicalName());
-                ((BaseFragment) f).load();
-            }
-        }
-    }
+    private void setTheme() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-    private Album getAlbumFromBundle(Bundle bundle) {
-        long id = bundle.getLong(ALBUM_ID);
-        String title = bundle.getString(ALBUM_NAME);
-        String artist = bundle.getString(ALBUM_ARTIST);
-        int year = bundle.getInt(ALBUM_YEAR);
-        int trackCount = bundle.getInt(ALBUM_TRACK_COUNT);
+        int theme = prefs.getInt(BaseActivity.KEY_PREF_THEME, BaseActivity.DEFAULT_THEME);
 
-        return new Album(id, title, artist, year, trackCount);
-    }
-
-    public void setFragment(Fragment f) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, f).addToBackStack(null).commit();
-    }
-
-    private Artist getArtistFromBundle(Bundle bundle) {
-        long id = bundle.getLong(ARTIST_ARTIST_ID);
-        String name = bundle.getString(ARTIST_ARTIST_NAME);
-        int albumCount = bundle.getInt(ARTIST_ALBUM_COUNT);
-        int trackCount = bundle.getInt(ARTIST_TRACK_COUNT);
-        return new Artist(id, name, albumCount, trackCount);
-    }
-
-    private Song getSongFromBundle(Bundle bundle) {
-        long id = bundle.getLong(SONG_ID);
-        String title = bundle.getString(SONG_TITLE);
-        String artist = bundle.getString(SONG_ARTIST);
-        String album = bundle.getString(SONG_ALBUM);
-        long albumId = bundle.getLong(SONG_ALBUM_ID);
-        int trackNumber = bundle.getInt(SONG_TRACK_NUMBER);
-
-        return new Song(id, title, artist, album, albumId, trackNumber);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                FragmentManager fm = getSupportFragmentManager();
-                if (fm.getBackStackEntryCount() > 0) {
-                    fm.popBackStack();
-                } else {
-                    showLibrary();
-                }
-                return true;
-            case R.id.action_search:
-                NavigationUtils.showSearchActivity(this, SEARCH_ACTIVITY);
-                return true;
-            case R.id.action_equalizer:
-                NavigationUtils.showEqualizer(this);
-                return true;
-/*            case R.id.action_preferences:
-                NavigationUtils.showPreferencesActivity(this);
-                break;*/
-            case R.id.action_sleep_timer:
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                if (SleepTimer.isTimerSet(prefs)) {
-                    DialogUtils.showSleepTimerDialog(this, mSleepTimerDialogListener);
-                } else {
-                    DialogUtils.showSleepHmsPicker(this, mHmsPickerHandler);
-                }
+        switch (theme) {
+            case BaseActivity.original_green:
+                setTheme(R.style.MainActivityOGreenLight);
+                break;
+            case BaseActivity.red:
+                setTheme(R.style.MainActivityRedLight);
+                break;
+            case BaseActivity.orange:
+                setTheme(R.style.MainActivityOrangeLight);
+                break;
+            case BaseActivity.purple:
+                setTheme(R.style.MainActivityPurpleLight);
+                break;
+            case BaseActivity.navy:
+                setTheme(R.style.MainActivityNavyLight);
+                break;
+            case BaseActivity.blue:
+                setTheme(R.style.MainActivityBlueLight);
+                break;
+            case BaseActivity.sky:
+                setTheme(R.style.MainActivitySkyLight);
+                break;
+            case BaseActivity.seagreen:
+                setTheme(R.style.MainActivitySeagreenLight);
+                break;
+            case BaseActivity.cyan:
+                setTheme(R.style.MainActivityCyanLight);
+                break;
+            case BaseActivity.pink:
+                setTheme(R.style.MainActivityPinkLight);
                 break;
         }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void onSongSelected(List<Song> songList, int position) {
-        if (mPlaybackService == null) {
-            return;
-        }
-        mPlaybackService.setPlayList(songList, position, true);
-        // mPlaybackService.play();
-    }
-
-    public void onShuffleRequested(List<Song> songList, boolean play) {
-        if (mPlaybackService == null) {
-            return;
-        }
-        mPlaybackService.setPlayListAndShuffle(songList, play);
-
-
-    }
-
-    public void addToQueue(Song song) {
-        if (mPlaybackService != null) {
-            mPlaybackService.addToQueue(song);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SEARCH_ACTIVITY && resultCode == RESULT_OK) {
-            mOnActivityResultIntent = data;
-        }
-    }
-
-    private final String fichier_préférence = "org.oucho.musicplayer_preferences";
-    private SharedPreferences préférences = null;
-
-    @SuppressLint("CommitPrefEdits")
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        killNotif();
-        clearCache();
-
-        if (mServiceBound) {
-            mPlaybackService = null;
-
-            unregisterReceiver(mServiceListener);
-
-            unbindService(mServiceConnection);
-            mServiceBound = false;
-        }
-        mHandler.removeCallbacks(mUpdateProgressBar);
-
-        préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = préférences.edit();
-
-        editor.putBoolean("favorite_state", favorite);
-        editor.commit();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!mServiceBound) {
-            Intent mServiceIntent = new Intent(this, PlaybackService.class);
-            bindService(mServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-            startService(mServiceIntent);
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(PlaybackService.META_CHANGED);
-            filter.addAction(PlaybackService.PLAYSTATE_CHANGED);
-            filter.addAction(PlaybackService.POSITION_CHANGED);
-            filter.addAction(PlaybackService.ITEM_ADDED);
-            filter.addAction(PlaybackService.ORDER_CHANGED);
-            registerReceiver(mServiceListener, filter);
-        } else {
-            updateAll();
-        }
-
-        préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
-        favorite = préférences.getBoolean("favorite_state", false);
-    }
-
-    @SuppressLint("CommitPrefEdits")
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_READ_PHONE_STATE:
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(PlaybackService.PREF_AUTO_PAUSE, true);
-                if (mPlaybackService != null) {
-                    mPlaybackService.setAutoPauseEnabled(true);
-                }
-                editor.commit();
-                break;
-        }
-    }
-
-    private void updateAll() {
-        if (mPlaybackService != null) {
-            Log.d("playlist", "hasplaylist " + mPlaybackService.hasPlaylist());
-            updateTrackInfo();
-            setButtonDrawable();
-            if (mPlaybackService.isPlaying()) {
-                mHandler.post(mUpdateProgressBar);
-            }
-        }
-    }
-
-    @SuppressLint("PrivateResource")
-    private void updateTrackInfo() {
-        View trackInfoLayout = findViewById(R.id.track_info);
-
-        if (mPlaybackService != null && mPlaybackService.hasPlaylist()) {
-
-            if (trackInfoLayout.getVisibility() != View.VISIBLE) {
-                trackInfoLayout.setVisibility(View.VISIBLE);
-                trackInfoLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_grow_fade_in_from_bottom));
-            }
-            String title = mPlaybackService.getSongTitle();
-            String artist = mPlaybackService.getArtistName();
-            if (title != null) {
-                ((TextView) findViewById(R.id.song_title)).setText(title);
-
-            }
-            if (artist != null) {
-                ((TextView) findViewById(R.id.song_artist)).setText(artist);
-            }
-
-
-            int duration = mPlaybackService.getTrackDuration();
-            if (duration != -1) {
-                mProgressBar.setMax(duration);
-
-                updateProgressBar();
-            }
-
-
-        } else {
-            trackInfoLayout.setVisibility(View.GONE);
-        }
-    }
-
-    private void setButtonDrawable() {
-        if (mPlaybackService != null) {
-            ImageButton quickButton = (ImageButton) findViewById(R.id.quick_play_pause_toggle);
-            if (mPlaybackService.isPlaying()) {
-                quickButton.setImageResource(R.drawable.musicplayer_pause);
-            } else {
-                quickButton.setImageResource(R.drawable.musicplayer_play);
-            }
-        }
-    }
-
-
-    private void updateProgressBar() {
-        if (mPlaybackService != null) {
-            int position = mPlaybackService.getPlayerPosition();
-            mProgressBar.setProgress(position);
-        }
-    }
-
-    private class PlaybackRequests {
-
-        private List<Song> mPlayList;
-        private int mIndex;
-        private boolean mAutoPlay;
-
-        private Song mNextTrack;
-
-        private Song mAddToQueue;
-
-        private void requestPlayList(List<Song> playList) {
-            if (mPlaybackService != null) {
-                mPlaybackService.setPlayList(playList, 0, true);
-            } else {
-                mPlayList = playList;
-                mIndex = 0;
-                mAutoPlay = true;
-            }
-        }
-
-        public void requestAddToQueue(Song song) {
-            if (mPlaybackService != null) {
-                mPlaybackService.addToQueue(song);
-            } else {
-                mAddToQueue = song;
-            }
-        }
-
-        public void requestAsNextTrack(Song song) {
-            if (mPlaybackService != null) {
-                mPlaybackService.setAsNextTrack(song);
-            } else {
-                mNextTrack = song;
-            }
-        }
-
-        public void sendRequests() {
-            if (mPlaybackService == null) {
-                return;
-            }
-
-            if (mPlayList != null) {
-                mPlaybackService.setPlayList(mPlayList, mIndex, mAutoPlay);
-                mPlayList = null;
-            }
-
-            if (mAddToQueue != null) {
-                mPlaybackService.addToQueue(mAddToQueue);
-                mAddToQueue = null;
-            }
-
-            if (mNextTrack != null) {
-                mPlaybackService.setAsNextTrack(mNextTrack);
-                mNextTrack = null;
-            }
-        }
-    }
-
-
-    /**
-     * Handler for the sleep timer dialog
-     */
-    private final HmsPickerDialogFragment.HmsPickerDialogHandler mHmsPickerHandler = new HmsPickerDialogFragment.HmsPickerDialogHandler() {
-        @Override
-        public void onDialogHmsSet(int reference, int hours, int minutes, int seconds) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-            SleepTimer.setTimer(MainActivity.this, prefs, hours * 3600 + minutes * 60 + seconds);
-        }
-    };
-    private final DialogInterface.OnClickListener mSleepTimerDialogListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE: // set a new timer
-                    DialogUtils.showSleepHmsPicker(MainActivity.this, mHmsPickerHandler);
-                    break;
-                case DialogInterface.BUTTON_NEGATIVE: // cancel the current timer
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    SleepTimer.cancelTimer(MainActivity.this, prefs);
-                    break;
-                case DialogInterface.BUTTON_NEUTRAL: // just go back
-                    break;
-
-            }
-        }
-    };
-
-
-    /**
-     * About
-     */
-    private void About() {
-
-        String title = getString(R.string.about);
-        AlertDialog.Builder About = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = getLayoutInflater();
-
-        @SuppressLint("InflateParams") View dialoglayout = inflater.inflate(R.layout.alertdialog_main_noshadow, null);
-        Toolbar toolbar = (Toolbar) dialoglayout.findViewById(R.id.dialog_toolbar_noshadow);
-        toolbar.setTitle(title);
-        toolbar.setTitleTextColor(0xffffffff);
-
-        final TextView text = (TextView) dialoglayout.findViewById(R.id.showrules_dialog);
-        text.setText(getString(R.string.about_message));
-
-        About.setView(dialoglayout);
-
-        AlertDialog dialog = About.create();
-        dialog.show();
-    }
-
-
-    @Override
-    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-            return true;
-        }
-
-
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            if (favorite) {
-                favorite = false;
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, LibraryFragment.newInstance()).commit();
-                return true;
-            }
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-    private void killNotif() {
-        NotificationManager notificationManager;
-
-        try {
-            if (!mPlaybackService.isPlaying()) {
-                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.cancel(Notification.NOTIFY_ID);
-            }
-        } catch (RuntimeException ignore){}
-    }
-
-    private void clearCache() {
-        ArtistImageCache.getInstance().clear();
-        ArtworkCache.getInstance().clear();
     }
 
 }

@@ -13,7 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 
 import org.oucho.musicplayer.MainActivity;
-import org.oucho.musicplayer.PlaybackService;
+import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.images.BitmapCache;
@@ -24,7 +24,7 @@ public class Notification {
 
     private static boolean sIsServiceForeground = false;
 
-    public static void updateNotification(@NonNull final PlaybackService playbackService) {
+    public static void updateNotification(@NonNull final PlayerService playbackService) {
 
         if (!playbackService.hasPlaylist()) {
             removeNotification(playbackService);
@@ -32,17 +32,17 @@ public class Notification {
         }
 
         PendingIntent togglePlayIntent = PendingIntent.getService(playbackService, 0,
-                new Intent(playbackService, PlaybackService.class)
-                        .setAction(PlaybackService.ACTION_TOGGLE), 0);
+                new Intent(playbackService, PlayerService.class)
+                        .setAction(PlayerService.ACTION_TOGGLE), 0);
 
 
 
-        PendingIntent nextIntent = PendingIntent.getService(playbackService, 0, new Intent(playbackService, PlaybackService.class)
-                        .setAction(PlaybackService.ACTION_NEXT), 0);
+        PendingIntent nextIntent = PendingIntent.getService(playbackService, 0, new Intent(playbackService, PlayerService.class)
+                        .setAction(PlayerService.ACTION_NEXT), 0);
 
         PendingIntent previousIntent = PendingIntent.getService(playbackService, 0,
-                new Intent(playbackService, PlaybackService.class)
-                        .setAction(PlaybackService.ACTION_PREVIOUS), 0);
+                new Intent(playbackService, PlayerService.class)
+                        .setAction(PlayerService.ACTION_PREVIOUS), 0);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(playbackService);
 
@@ -93,7 +93,7 @@ public class Notification {
         }
     }
 
-    private static void setBitmapAndBuild(Bitmap bitmap, @NonNull PlaybackService playbackService, NotificationCompat.Builder builder) {
+    private static void setBitmapAndBuild(Bitmap bitmap, @NonNull PlayerService playbackService, NotificationCompat.Builder builder) {
         if (bitmap == null) {
             BitmapDrawable d = ((BitmapDrawable) ContextCompat.getDrawable(playbackService, R.drawable.ic_stat_note));
             bitmap = d.getBitmap();

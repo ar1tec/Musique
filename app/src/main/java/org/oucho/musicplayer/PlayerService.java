@@ -46,10 +46,7 @@ import org.oucho.musicplayer.utils.Permissions;
 import org.oucho.musicplayer.model.db.QueueDbHelper;
 
 
-
-//TODO déplacer certaines méthodes dans d'autres classes (égaliseur, mediaplayer, etc.)
-
-public class PlaybackService extends Service implements OnPreparedListener,
+public class PlayerService extends Service implements OnPreparedListener,
         OnErrorListener,
         OnCompletionListener {
 
@@ -59,37 +56,39 @@ public class PlaybackService extends Service implements OnPreparedListener,
     public static final String ACTION_TOGGLE = "org.oucho.musicplayer.ACTION_TOGGLE";
     public static final String ACTION_NEXT = "org.oucho.musicplayer.ACTION_NEXT";
     public static final String ACTION_PREVIOUS = "org.oucho.musicplayer.ACTION_PREVIOUS";
-    private static final String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
-    private static final String ACTION_CHOOSE_SONG = "org.oucho.musicplayer.ACTION_CHOOSE_SONG";
+    public static final String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
+    public static final String ACTION_CHOOSE_SONG = "org.oucho.musicplayer.ACTION_CHOOSE_SONG";
     public static final String META_CHANGED = "org.oucho.musicplayer.META_CHANGED";
     public static final String PLAYSTATE_CHANGED = "org.oucho.musicplayer.PLAYSTATE_CHANGED";
     public static final String QUEUE_CHANGED = "org.oucho.musicplayer.QUEUE_CHANGED";
     public static final String POSITION_CHANGED = "org.oucho.musicplayer.POSITION_CHANGED";
     public static final String ITEM_ADDED = "org.oucho.musicplayer.ITEM_ADDED";
     public static final String ORDER_CHANGED = "org.oucho.musicplayer.ORDER_CHANGED";
-    private static final String REPEAT_MODE_CHANGED = "org.oucho.musicplayer.REPEAT_MODE_CHANGED";
-    private static final String EXTRA_POSITION = "org.oucho.musicplayer.POSITION";
+    public static final String REPEAT_MODE_CHANGED = "org.oucho.musicplayer.REPEAT_MODE_CHANGED";
+    public static final String EXTRA_POSITION = "org.oucho.musicplayer.POSITION";
+
+    private static final String TAG = "PlaybackService";
+
+    private static final String STATE_PREFS_NAME = "PlaybackState";
+
     public static final int NO_REPEAT = 20;
     public static final int REPEAT_ALL = 21;
     public static final int REPEAT_CURRENT = 22;
-    private static final String TAG = "PlaybackService";
+
     private static final int IDLE_DELAY = 60000;
-    private static final String STATE_PREFS_NAME = "PlaybackState";
 
     private final PlaybackBinder mBinder = new PlaybackBinder();
     private MediaPlayer mMediaPlayer;
 
     private List<Song> mOriginalSongList = new ArrayList<>();
     private final List<Song> mPlayList = new ArrayList<>();
+
     private Song mCurrentSong;
 
 
     private boolean mIsPlaying = false;
-
     private boolean mIsPaused = false;
-
     private boolean mHasPlaylist = false;
-
     private boolean mShuffle = false;
 
     private int mStartId;
@@ -860,8 +859,8 @@ public class PlaybackService extends Service implements OnPreparedListener,
     }
 
     public class PlaybackBinder extends Binder {
-        public PlaybackService getService() {
-            return PlaybackService.this;
+        public PlayerService getService() {
+            return PlayerService.this;
         }
     }
 

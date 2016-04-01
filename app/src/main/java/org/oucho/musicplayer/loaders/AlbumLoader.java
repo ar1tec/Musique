@@ -21,8 +21,6 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
             MediaStore.Audio.AlbumColumns.ALBUM,
             MediaStore.Audio.AlbumColumns.ARTIST,
             MediaStore.Audio.AlbumColumns.FIRST_YEAR,
-
-
             MediaStore.Audio.AlbumColumns.NUMBER_OF_SONGS};
 
     private String mArtist = null;

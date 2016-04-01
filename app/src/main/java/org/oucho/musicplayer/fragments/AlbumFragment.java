@@ -24,8 +24,8 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.AdapterWithHeader;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
-import org.oucho.musicplayer.fragments.dialog.ID3TagEditorDialog;
-import org.oucho.musicplayer.fragments.dialog.PlaylistPicker;
+import org.oucho.musicplayer.dialog.ID3TagEditorDialog;
+import org.oucho.musicplayer.dialog.PlaylistPicker;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.loaders.SongLoader;
 import org.oucho.musicplayer.model.Album;
@@ -45,11 +45,35 @@ public class AlbumFragment extends BaseFragment {
     private static final String ARG_YEAR = "year";
     private static final String ARG_TRACK_COUNT = "track_count";
 
-
     private Album mAlbum;
 
     private SongAlbumListAdapter mAdapter;
 
+    private MainActivity mActivity;
+
+    private int mArtworkWidth;
+    private int mArtworkHeight;
+
+    private String Titre = "";
+    private String Artiste = "";
+    private String Année = "";
+    private String nb_Morceaux = "";
+
+    public AlbumFragment() {
+        // Required empty public constructor
+    }
+
+    public static AlbumFragment newInstance(Album album) {
+        AlbumFragment fragment = new AlbumFragment();
+        Bundle args = new Bundle();
+        args.putLong(ARG_ID, album.getId());
+        args.putString(ARG_NAME, album.getAlbumName());
+        args.putString(ARG_ARTIST, album.getArtistName());
+        args.putInt(ARG_YEAR, album.getYear());
+        args.putInt(ARG_TRACK_COUNT, album.getTrackCount());
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Song>>() {
 
@@ -75,14 +99,92 @@ public class AlbumFragment extends BaseFragment {
     };
 
 
-    private final ID3TagEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener = new ID3TagEditorDialog.OnTagsEditionSuccessListener() {
-        @Override
-        public void onTagsEditionSuccess() {
-            ((MainActivity) getActivity()).refresh();
-        }
-    };
+    /* *********************************************************************************************
+     * Création du fragment
+     * ********************************************************************************************/
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
 
-    private MainActivity mActivity;
+
+        if (args != null) {
+
+            long id = args.getLong(ARG_ID);
+            String title = args.getString(ARG_NAME);
+            String artist = args.getString(ARG_ARTIST);
+            int year = args.getInt(ARG_YEAR);
+            int trackCount = args.getInt(ARG_TRACK_COUNT);
+
+            mAlbum = new Album(id, title, artist, year, trackCount);
+
+            Titre = title;
+            Artiste = artist;
+            Année = String.valueOf(year);
+
+            if (trackCount < 2) {
+                nb_Morceaux = String.valueOf(trackCount) + " titre";
+            } else {
+                nb_Morceaux = String.valueOf(trackCount) + " titres";
+            }
+        }
+
+        mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.artist_image_req_width);
+        mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
+
+        getActivity().setTitle(Titre);
+
+    }
+
+
+
+    /* *********************************************************************************************
+     * Création du visuel
+     * ********************************************************************************************/
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_album, container, false);
+
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
+        titreAlbum.setText(Titre);
+
+        TextView artiste = (TextView) rootView.findViewById(R.id.line2);
+        artiste.setText(Artiste);
+
+        TextView an = (TextView) rootView.findViewById(R.id.line3);
+        an.setText(Année);
+
+        TextView morceaux = (TextView) rootView.findViewById(R.id.line4);
+        morceaux.setText(nb_Morceaux);
+
+
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mAdapter = new SongAlbumListAdapter();
+        mAdapter.setOnItemClickListener(mOnItemClickListener);
+
+        View headerView = RecyclerViewUtils.inflateChild(inflater, R.layout.shuffle_list_item, mRecyclerView);
+
+        mAdapter.setHeaderView(headerView);
+        mAdapter.setOnHeaderClickListener(mOnHeaderClickListener);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
+
+        ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
+
+        return rootView;
+    }
 
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
         @Override
@@ -108,25 +210,20 @@ public class AlbumFragment extends BaseFragment {
         }
     };
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(0, null, mLoaderCallbacks);
 
-    private int mArtworkWidth;
-    private int mArtworkHeight;
-
-    public AlbumFragment() {
-        // Required empty public constructor
     }
 
-    public static AlbumFragment newInstance(Album album) {
-        AlbumFragment fragment = new AlbumFragment();
-        Bundle args = new Bundle();
-        args.putLong(ARG_ID, album.getId());
-        args.putString(ARG_NAME, album.getAlbumName());
-        args.putString(ARG_ARTIST, album.getArtistName());
-        args.putInt(ARG_YEAR, album.getYear());
-        args.putInt(ARG_TRACK_COUNT, album.getTrackCount());
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void load() {
+        getLoaderManager().restartLoader(0, null, mLoaderCallbacks);
+
     }
+
+
 
     private void selectSong(int position) {
 
@@ -134,6 +231,13 @@ public class AlbumFragment extends BaseFragment {
             mActivity.onSongSelected(mAdapter.getSongList(), position);
         }
     }
+
+    private final ID3TagEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener = new ID3TagEditorDialog.OnTagsEditionSuccessListener() {
+        @Override
+        public void onTagsEditionSuccess() {
+            ((MainActivity) getActivity()).refresh();
+        }
+    };
 
     private void showMenu(final int position, View v) {
         PopupMenu popup = new PopupMenu(getActivity(), v);
@@ -190,109 +294,4 @@ public class AlbumFragment extends BaseFragment {
         }
 
     }
-
-    private String Titre = "";
-    private String Artiste = "";
-    private String Année = "";
-    private String nb_Morceaux = "";
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-
-
-        if (args != null) {
-
-            long id = args.getLong(ARG_ID);
-            String title = args.getString(ARG_NAME);
-            String artist = args.getString(ARG_ARTIST);
-            int year = args.getInt(ARG_YEAR);
-            int trackCount = args.getInt(ARG_TRACK_COUNT);
-
-            mAlbum = new Album(id, title, artist, year, trackCount);
-
-            Titre = title;
-            Artiste = artist;
-            Année = String.valueOf(year);
-
-            if (trackCount < 2) {
-                nb_Morceaux = String.valueOf(trackCount) + " titre";
-            } else {
-                nb_Morceaux = String.valueOf(trackCount) + " titres";
-            }
-        }
-
-        mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.artist_image_req_width);
-        mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
-
-        getActivity().setTitle(Titre);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_album, container, false);
-
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
-        titreAlbum.setText(Titre);
-
-        TextView artiste = (TextView) rootView.findViewById(R.id.line2);
-        artiste.setText(Artiste);
-
-        TextView an = (TextView) rootView.findViewById(R.id.line3);
-        an.setText(Année);
-
-        TextView morceaux = (TextView) rootView.findViewById(R.id.line4);
-        morceaux.setText(nb_Morceaux);
-
-
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        mAdapter = new SongAlbumListAdapter();
-        mAdapter.setOnItemClickListener(mOnItemClickListener);
-
-        View headerView = RecyclerViewUtils.inflateChild(inflater, R.layout.shuffle_list_item, mRecyclerView);
-
-        mAdapter.setHeaderView(headerView);
-        mAdapter.setOnHeaderClickListener(mOnHeaderClickListener);
-
-        mRecyclerView.setAdapter(mAdapter);
-
-        ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
-
-        ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
-
-/*        boolean etat_shuffle;
-        etat_shuffle = préférences.getBoolean("shuffle", false);
-
-        if (etat_shuffle) {
-            ImageView button = (ImageView) findViewById(R.id.header_shuffle);
-            button.setImageResource(R.drawable.musique_shuffle_on);
-        }*/
-
-        return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(0, null, mLoaderCallbacks);
-
-    }
-
-    @Override
-    public void load() {
-        getLoaderManager().restartLoader(0, null, mLoaderCallbacks);
-
-    }
-
 }

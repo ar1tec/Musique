@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
 
-import org.oucho.musicplayer.PlaybackService;
+import org.oucho.musicplayer.PlayerService;
 
 public class SleepTimer {
     private static final String KEY_TIMER_SET = "org.oucho.musicplayer.KEY_TIMER_SET";
@@ -23,8 +23,8 @@ public class SleepTimer {
     @SuppressLint("CommitPrefEdits")
     public static void setTimer(Context context, SharedPreferences prefs, int seconds) {
 
-        Intent intent = new Intent(context, PlaybackService.class);
-        intent.setAction(PlaybackService.ACTION_PAUSE);
+        Intent intent = new Intent(context, PlayerService.class);
+        intent.setAction(PlayerService.ACTION_PAUSE);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -46,8 +46,8 @@ public class SleepTimer {
 
     @SuppressLint("CommitPrefEdits")
     public static void cancelTimer(Context context, SharedPreferences prefs) {
-        Intent intent = new Intent(context, PlaybackService.class);
-        intent.setAction(PlaybackService.ACTION_PAUSE);
+        Intent intent = new Intent(context, PlayerService.class);
+        intent.setAction(PlayerService.ACTION_PAUSE);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

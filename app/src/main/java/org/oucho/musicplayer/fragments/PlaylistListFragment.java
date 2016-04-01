@@ -22,7 +22,7 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.PlaylistListAdapter;
-import org.oucho.musicplayer.fragments.dialog.CreatePlaylistDialog;
+import org.oucho.musicplayer.dialog.CreatePlaylistDialog;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.widgets.FastScroller;
 
@@ -103,9 +103,6 @@ public class PlaylistListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-
-
     }
 
     @Override

@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.model.db.QueueDbHelper;
 import org.oucho.musicplayer.utils.FavoritesHelper;
-import org.oucho.musicplayer.PlaybackService;
+import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Song;
@@ -44,7 +44,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class PlaybackActivity extends BaseActivity
+public class PlayerActivity extends BaseActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     
     private SeekBar mSeekBar;
@@ -58,7 +58,7 @@ public class PlaybackActivity extends BaseActivity
     private QueueAdapter mQueueAdapter = new QueueAdapter();
 
     private boolean mServiceBound;
-    private PlaybackService mPlaybackService;
+    private PlayerService mPlaybackService;
 
     private final Handler mHandler = new Handler();
 
@@ -239,11 +239,11 @@ public class PlaybackActivity extends BaseActivity
                 case R.id.action_favorite:
                     ImageView button = (ImageView) v;
                     long songId = mPlaybackService.getSongId();
-                    if (FavoritesHelper.isFavorite(PlaybackActivity.this, songId)) {
-                        FavoritesHelper.removeFromFavorites(PlaybackActivity.this, songId);
+                    if (FavoritesHelper.isFavorite(PlayerActivity.this, songId)) {
+                        FavoritesHelper.removeFromFavorites(PlayerActivity.this, songId);
                         button.setImageResource(R.drawable.musicplayer_like_disable);
                     } else {
-                        FavoritesHelper.addFavorite(PlaybackActivity.this, mPlaybackService.getSongId());
+                        FavoritesHelper.addFavorite(PlayerActivity.this, mPlaybackService.getSongId());
                         button.setImageResource(R.drawable.musicplayer_like);
                     }
                     break;
@@ -257,7 +257,7 @@ public class PlaybackActivity extends BaseActivity
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
 
-            PlaybackService.PlaybackBinder binder = (PlaybackService.PlaybackBinder) service;
+            PlayerService.PlaybackBinder binder = (PlayerService.PlaybackBinder) service;
             mPlaybackService = binder.getService();
             if (mPlaybackService == null || !mPlaybackService.hasPlaylist()) {
                 finish();
@@ -286,7 +286,7 @@ public class PlaybackActivity extends BaseActivity
             String action = intent.getAction();
             Log.d("action", action);
             switch (action) {
-                case PlaybackService.PLAYSTATE_CHANGED:
+                case PlayerService.PLAYSTATE_CHANGED:
                     setButtonDrawable();
                     if (mPlaybackService.isPlaying()) {
                         mHandler.post(mUpdateSeekBarRunnable);
@@ -296,13 +296,13 @@ public class PlaybackActivity extends BaseActivity
 
 
                     break;
-                case PlaybackService.META_CHANGED:
+                case PlayerService.META_CHANGED:
                     updateTrackInfo();
                     break;
-                case PlaybackService.QUEUE_CHANGED:
-                case PlaybackService.POSITION_CHANGED:
-                case PlaybackService.ITEM_ADDED:
-                case PlaybackService.ORDER_CHANGED:
+                case PlayerService.QUEUE_CHANGED:
+                case PlayerService.POSITION_CHANGED:
+                case PlayerService.ITEM_ADDED:
+                case PlayerService.ORDER_CHANGED:
                     Log.d("eee", "position_changed");
                     updateQueue();
                     break;
@@ -376,15 +376,15 @@ public class PlaybackActivity extends BaseActivity
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
         super.onResume();
         if (!mServiceBound) {
-            Intent mServiceIntent = new Intent(this, PlaybackService.class);
+            Intent mServiceIntent = new Intent(this, PlayerService.class);
             bindService(mServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
             startService(mServiceIntent);
             IntentFilter filter = new IntentFilter();
-            filter.addAction(PlaybackService.META_CHANGED);
-            filter.addAction(PlaybackService.PLAYSTATE_CHANGED);
-            filter.addAction(PlaybackService.POSITION_CHANGED);
-            filter.addAction(PlaybackService.ITEM_ADDED);
-            filter.addAction(PlaybackService.ORDER_CHANGED);
+            filter.addAction(PlayerService.META_CHANGED);
+            filter.addAction(PlayerService.PLAYSTATE_CHANGED);
+            filter.addAction(PlayerService.POSITION_CHANGED);
+            filter.addAction(PlayerService.ITEM_ADDED);
+            filter.addAction(PlayerService.ORDER_CHANGED);
             registerReceiver(mServiceListener, filter);
         } else {
             updateAll();
@@ -479,13 +479,13 @@ public class PlaybackActivity extends BaseActivity
     private void updateRepeatButton() {
         ImageView repeatButton = (ImageView) findViewById(R.id.repeat);
         int mode = mPlaybackService.getRepeatMode();
-        if (mode == PlaybackService.NO_REPEAT) {
+        if (mode == PlayerService.NO_REPEAT) {
             repeatButton.setImageResource(R.drawable.musicplayer_repeat_no);
             repeatButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
-        } else if (mode == PlaybackService.REPEAT_ALL) {
+        } else if (mode == PlayerService.REPEAT_ALL) {
             repeatButton.setImageResource(R.drawable.musicplayer_repeat);
             repeatButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
-        } else if (mode == PlaybackService.REPEAT_CURRENT) {
+        } else if (mode == PlayerService.REPEAT_CURRENT) {
             repeatButton.setImageResource(R.drawable.musicplayer_repeat_once);
             repeatButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
 

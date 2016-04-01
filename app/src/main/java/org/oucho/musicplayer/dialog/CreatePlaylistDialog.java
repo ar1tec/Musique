@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.fragments.dialog;
+package org.oucho.musicplayer.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -16,9 +16,7 @@ import org.oucho.musicplayer.R;
 
 public class CreatePlaylistDialog extends DialogFragment {
 
-
     private OnPlaylistCreatedListener mListener;
-
 
     public CreatePlaylistDialog() {
         // Required empty public constructor
@@ -60,11 +58,8 @@ public class CreatePlaylistDialog extends DialogFragment {
                             }
                         });
 
-
         return builder.create();
     }
-
-
 
 
     public void setOnPlaylistCreatedListener(OnPlaylistCreatedListener listener) {
@@ -73,7 +68,6 @@ public class CreatePlaylistDialog extends DialogFragment {
 
 
     public interface OnPlaylistCreatedListener {
-
 
         void onPlaylistCreated();
     }

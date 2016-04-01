@@ -9,12 +9,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
-        android:name=".PlayerApplication"
+        android:name=".PlayerInitialisation"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppThemeOGreenLight"
         android:hardwareAccelerated="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -47,6 +48,7 @@
                 <data android:mimeType="application/itunes"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.SearchActivity"
             android:label="@string/search"
@@ -56,6 +58,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.oucho.musicplayer.MainActivity"/>
         </activity>
+
         <activity
             android:name=".activities.EqualizerActivity"
             android:label="@string/equalizer"
@@ -65,6 +68,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.oucho.musicplayer.MainActivity"/>
         </activity>
+
         <activity
             android:name=".activities.MusicPicker"
             android:label="@string/title_activity_music_picker"
@@ -76,7 +80,7 @@
         </activity>
 
         <service
-            android:name=".PlaybackService"
+            android:name=".PlayerService"
             android:enabled="true"
             android:exported="false"/>
 
@@ -91,7 +95,7 @@
         </receiver>
 
         <activity
-            android:name=".activities.PlaybackActivity"
+            android:name=".activities.PlayerActivity"
             android:label="@string/now_playing"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
