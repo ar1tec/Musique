@@ -69,16 +69,6 @@
                 android:value="org.oucho.musicplayer.MainActivity"/>
         </activity>
 
-        <activity
-            android:name=".activities.MusicPicker"
-            android:label="@string/title_activity_music_picker"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.oucho.musicplayer.MainActivity"/>
-        </activity>
-
         <service
             android:name=".PlayerService"
             android:enabled="true"

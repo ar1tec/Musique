@@ -70,7 +70,7 @@ public class SongListFragment extends BaseFragment {
             PrefUtils prefUtils = PrefUtils.getInstance();
             String sortOrder = prefUtils.getSongSortOrder();
 
-            mShowScrollerBubble = SortOrder.SongSortOrder.SONG_A_Z.equals(sortOrder) || SortOrder.SongSortOrder.SONG_Z_A.equals(sortOrder);
+            mShowScrollerBubble = SortOrder.SongSortOrder.SONG_A_Z.equals(sortOrder);
 
             if (mFastScroller != null) {
                 mFastScroller.setShowBubble(mShowScrollerBubble);
@@ -297,26 +297,23 @@ public class SongListFragment extends BaseFragment {
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_A_Z);
                 load();
                 break;
-            case R.id.menu_sort_by_za:
-                prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_Z_A);
-                load();
-                break;
-            case R.id.menu_sort_by_year:
-                prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_YEAR);
+
+            case R.id.menu_sort_by_album:
+                prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_ALBUM);
                 load();
                 break;
             case R.id.menu_sort_by_artist:
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_ARTIST);
                 load();
                 break;
-            case R.id.menu_sort_by_album:
-                prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_ALBUM);
+            case R.id.menu_sort_by_year:
+                prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_YEAR);
                 load();
                 break;
-            case R.id.menu_sort_by_duration:
+/*            case R.id.menu_sort_by_duration:
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_DURATION);
                 load();
-                break;
+                break;*/
 
 
         }

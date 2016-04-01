@@ -1,11 +1,6 @@
 package org.oucho.musicplayer.fragments;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -15,9 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,12 +21,11 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.activities.MusicPicker;
-import org.oucho.musicplayer.utils.FavoritesHelper;
 import org.oucho.musicplayer.loaders.FavoritesLoader;
 import org.oucho.musicplayer.loaders.PlaylistLoader;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.utils.FavoritesHelper;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.ThemeHelper;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
@@ -51,9 +42,6 @@ public class PlaylistFragment extends BaseFragment {
 
     private static final String PARAM_PLAYLIST_ID = "playlist_id";
     private static final String PARAM_PLAYLIST_NAME = "playlist_name";
-
-    private static final int PICK_MUSIC = 22;
-
 
     private MainActivity mActivity;
 
@@ -117,47 +105,6 @@ public class PlaylistFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_MUSIC && resultCode == Activity.RESULT_OK) {
-            long[] ids = data.getExtras().getLongArray(MusicPicker.EXTRA_IDS);
-            addToPlaylist(ids);
-        }
-    }
-
-    private void addToPlaylist(final long[] ids) {
-        new AsyncTask<Void, Void, Void>() {
-            private ProgressDialog mProgressDialog;
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                if (mFavorites) {
-                    for (long id : ids) {
-                        FavoritesHelper.addFavorite(getActivity(), id);
-                    }
-                } else {
-                    ContentResolver resolver = getActivity().getContentResolver();
-                    for (long id : ids) {
-                        PlaylistsUtils.addSongToPlaylist(resolver, mPlaylist.getId(), id);
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPreExecute() {
-                mProgressDialog = ProgressDialog.show(getActivity(), getString(R.string.loading), getString(R.string.adding_songs_to_playlist), true);
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                mProgressDialog.dismiss();
-                getLoaderManager().restartLoader(0, null, mLoaderCallbacks);
-
-            }
-        }.execute();
-
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -230,22 +177,6 @@ public class PlaylistFragment extends BaseFragment {
         mActivity = null;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.playlist, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_item:
-                startActivityForResult(new Intent(getActivity(), MusicPicker.class), PICK_MUSIC);
-                break;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void load() {

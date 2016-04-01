@@ -3,6 +3,7 @@ package org.oucho.musicplayer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -143,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements
         if (savedInstanceState == null) {
             showLibrary();
         }
+
     }
 
 
@@ -168,6 +170,9 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.action_equalizer:
                 NavigationUtils.showEqualizer(MainActivity.this);
                 break;
+            case R.id.action_radio:
+                Radio();
+                return true;
             case R.id.action_theme:
                 NavigationUtils.showTheme(MainActivity.this);
                 break;
@@ -185,8 +190,22 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
+    /* **************************
+     * Lance l'application radio
+     * **************************/
+
+    private void Radio() {
+        Context context = getApplicationContext();
+        PackageManager pm = context.getPackageManager();
+        Intent appStartIntent = pm.getLaunchIntentForPackage("org.oucho.radio");
+        context.startActivity(appStartIntent);
+        clearCache();
+        killNotif();
+        finish();
+    }
+
     /* *********************************************************************************************
-     * Click listener activity_main
+     * Click listener activity_main layout
      * ********************************************************************************************/
 
     private final OnClickListener mOnClickListener = new OnClickListener() {
@@ -293,7 +312,6 @@ public class MainActivity extends AppCompatActivity implements
 
         favorite = true;
     }
-
 
 
     /* *********************************************************************************************

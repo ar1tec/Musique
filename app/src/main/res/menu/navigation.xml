@@ -14,6 +14,11 @@
             android:title="@string/favorites" />
 
         <item
+            android:id="@+id/action_radio"
+            android:icon="@drawable/ic_radio"
+            android:title="Radio" />
+
+        <item
             android:id="@+id/action_equalizer"
             android:icon="@drawable/ic_menu_equalizer"
             android:title="@string/action_equalizer" />
@@ -21,13 +26,6 @@
     </group>
 
     <group android:id="@+id/menu_bottom">
-        <!--
-                <item
-                    android:id="@+id/action_settings"
-                    android:icon="@drawable/ic_menu_setting"
-                    android:title="@string/action_settings"/>
-        -->
-
         <item
             android:id="@+id/action_theme"
             android:icon="@drawable/ic_menu_theme"

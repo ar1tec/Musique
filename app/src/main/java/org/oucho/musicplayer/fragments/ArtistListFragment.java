@@ -51,7 +51,7 @@ public class ArtistListFragment extends BaseFragment {
             PrefUtils prefUtils = PrefUtils.getInstance();
             String sortOrder = prefUtils.getArtistSortOrder();
 
-            mShowScrollerBubble = SortOrder.ArtistSortOrder.ARTIST_A_Z.equals(sortOrder) || SortOrder.ArtistSortOrder.ARTIST_Z_A.equals(sortOrder);
+            mShowScrollerBubble = SortOrder.ArtistSortOrder.ARTIST_A_Z.equals(sortOrder);
 
             if(mFastScroller != null) {
                 mFastScroller.setShowBubble(mShowScrollerBubble);
@@ -154,10 +154,7 @@ public class ArtistListFragment extends BaseFragment {
                 prefUtils.setArtistSortOrder(SortOrder.ArtistSortOrder.ARTIST_A_Z);
                 load();
                 break;
-            case R.id.menu_sort_by_za:
-                prefUtils.setArtistSortOrder(SortOrder.ArtistSortOrder.ARTIST_Z_A);
-                load();
-                break;
+
             case R.id.menu_sort_by_number_of_songs:
                 prefUtils.setArtistSortOrder(SortOrder.ArtistSortOrder.ARTIST_NUMBER_OF_SONGS);
                 load();

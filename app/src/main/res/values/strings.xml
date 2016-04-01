@@ -86,7 +86,7 @@
     <string name="back">Retour</string>
 
     <string name="menu_sort_by">Trier par</string>
-    <string name="sort_order_entry_az">A-Z</string>
+    <string name="sort_order_entry_az">Ordre alphabétique</string>
     <string name="sort_order_entry_za">Z-A</string>
     <string name="sort_order_entry_year">Année</string>
     <string name="sort_order_entry_artist">Artiste</string>

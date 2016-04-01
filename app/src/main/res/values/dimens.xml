@@ -37,6 +37,8 @@
 
     <dimen name="art_thumbnail_size">76dp</dimen>
 
+    <dimen name="art_thumbnail_search_size">56dp</dimen>
+
     <dimen name="list_item_height">50dp</dimen>
 
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
