@@ -150,5 +150,4 @@ public class LibraryFragment extends BaseFragment {
             return null;
         }
     }
-
 }
