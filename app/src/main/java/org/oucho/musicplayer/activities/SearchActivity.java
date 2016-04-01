@@ -200,6 +200,8 @@ public class SearchActivity extends BaseActivity {
         searchView.setIconifiedByDefault(false);
         actionBar.setCustomView(searchView);
         actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setElevation(0);
+
         searchView.setOnQueryTextListener(searchQueryListener);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
