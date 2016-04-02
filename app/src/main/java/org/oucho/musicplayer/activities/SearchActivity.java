@@ -400,7 +400,8 @@ public class SearchActivity extends BaseActivity {
         }
     }
 
-    class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+            implements FastScroller.SectionIndexer {
 
         private static final int ALBUM = 1;
         private static final int ARTIST = 2;
@@ -414,6 +415,13 @@ public class SearchActivity extends BaseActivity {
         private final List<Artist> mArtistList = Collections.synchronizedList(new ArrayList<Artist>());
         private final List<Song> mSongList = Collections.synchronizedList(new ArrayList<Song>());
 
+        @Override
+        public String getSectionForPosition(int position) {
+            if(position >= 1) { // on ne prend pas en compte le header
+                position--; // je répète : on ne prend pas en compte le header
+            }
+            return "";
+        }
 
         public void setAlbumList(List<Album> albumList) {
             mAlbumList.clear();
