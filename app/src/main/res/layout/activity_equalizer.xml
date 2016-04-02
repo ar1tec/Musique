@@ -35,6 +35,6 @@
         android:layout_above="@id/bassboost_label"
         android:layout_below="@id/presets_spinner"
         android:clipToPadding="false"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical"/>
 
 </RelativeLayout>

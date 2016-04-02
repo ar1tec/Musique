@@ -417,9 +417,7 @@ public class SearchActivity extends BaseActivity {
 
         @Override
         public String getSectionForPosition(int position) {
-            if(position >= 1) { // on ne prend pas en compte le header
-                position--; // je répète : on ne prend pas en compte le header
-            }
+
             return "";
         }
 

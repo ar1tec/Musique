@@ -9,15 +9,12 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.Collections;
 import java.util.List;
 
 
-public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter.SongViewHolder>
-        implements FastScroller.SectionIndexer {
-
+public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter.SongViewHolder> {
 
     private List<Song> mSongList = Collections.emptyList();
 
@@ -38,7 +35,6 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
     public SongViewHolder onCreateViewHolderImpl(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.song_album_list_item, parent, false);
-
 
         return new SongViewHolder(itemView);
     }
@@ -69,28 +65,17 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
         return 0;
     }
 
-    @Override
-    public String getSectionForPosition(int position) {
-        if(position >= 1) { // on ne prend pas en compte le header
-            position--; // je répète : on ne prend pas en compte le header
-            String title = getItem(position).getTitle();
-            if (title.length() > 0) {
-                return title.substring(0, 1);
-            }
-        }
-        return "";
-    }
 
     public class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView vTitle;
         private final TextView vTrackNumber;
 
-
         public SongViewHolder(View itemView) {
             super(itemView);
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vTrackNumber = (TextView) itemView.findViewById(R.id.track_number);
+
             itemView.setOnClickListener(this);
 
             ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
@@ -102,8 +87,9 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
         public void onClick(View v) {
             int position = getAdapterPosition();
             triggerOnItemClickListener(position, v);
-
         }
     }
+
+
 
 }

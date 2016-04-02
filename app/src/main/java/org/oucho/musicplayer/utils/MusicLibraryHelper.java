@@ -155,7 +155,7 @@ public class MusicLibraryHelper {
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 song.getId());
 
-        File f = new File(ContentHelper.getRealPathFromUri(context, songUri));
+        File f = new File(getRealPathFromUri(context, songUri));
 
         AudioFile audioFile = null;
         try {
@@ -319,6 +319,22 @@ public class MusicLibraryHelper {
         }
         return false;
 
+    }
+
+    public static String getRealPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor != null ? cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA) : 0;
+            assert cursor != null;
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
 }

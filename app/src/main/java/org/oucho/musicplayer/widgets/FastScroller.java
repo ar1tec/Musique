@@ -19,16 +19,12 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.utils.ColorUtils;
-import org.oucho.musicplayer.utils.MathUtils;
 
 public class FastScroller extends View {
 
     private float mHandleY;
 
-
     private boolean mScrolling = false;
-
 
     private boolean mShowScroller = true;
 
@@ -110,7 +106,6 @@ public class FastScroller extends View {
                     showScroller();
                 }
             }
-
         }
 
         @Override
@@ -131,8 +126,6 @@ public class FastScroller extends View {
             float proportion = ((float) offset) / range;
 
             moveHandleTo(proportion);
-
-
         }
 
     };
@@ -234,25 +227,6 @@ public class FastScroller extends View {
     }
 
 
-    /*@Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            float x = ev.getX();
-            float y = ev.getY();
-            float width = getWidth();
-            if (x > width - mHandleWidth
-                    && y > mHandleY && y < mHandleY + mHandleHeight) {
-                mScrolling = true;
-                removeCallbacks(mHideScrollerRunnable);
-                if (!mScrollerVisible) {
-                    showScroller();
-                }
-                return true;
-            }
-        }
-        return false;
-    }*/
-
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         float x = ev.getX();
@@ -340,9 +314,7 @@ public class FastScroller extends View {
             mScrollerAnimator.cancel();
         }
 
-
         mScrollerAnimator.start();
-
 
     }
 
@@ -356,17 +328,17 @@ public class FastScroller extends View {
 
 
             float scrollerX = width - mHandleWidth;
-            mPaint.setColor(ColorUtils.applyAlpha(mScrollerBackground, mScrollerAlpha));
+            mPaint.setColor(applyAlpha(mScrollerBackground, mScrollerAlpha));
             canvas.drawRect(scrollerX, 0, width, height, mPaint);
 
-            mPaint.setColor(ColorUtils.applyAlpha(mScrollerColor, mScrollerAlpha));
+            mPaint.setColor(applyAlpha(mScrollerColor, mScrollerAlpha));
             canvas.drawRect(scrollerX, mHandleY, width, mHandleY + mHandleHeight, mPaint);
 
             if (mShowBubble && mBubbleVisible && mBubbleText != null) {
                 mBubblePath.reset();
-                mPaint.setColor(ColorUtils.applyAlpha(mScrollerColor, mBubbleAlpha));
+                mPaint.setColor(applyAlpha(mScrollerColor, mBubbleAlpha));
                 float cx = scrollerX - mBubbleRadius - getPaddingRight();
-                float cy = MathUtils.getValueInRange(mHandleY + mHandleHeight / 2.0F - mBubbleRadius, getPaddingTop() + mBubbleRadius, height - getPaddingBottom() - mBubbleRadius);
+                float cy = getValueInRange(mHandleY + mHandleHeight / 2.0F - mBubbleRadius, getPaddingTop() + mBubbleRadius, height - getPaddingBottom() - mBubbleRadius);
 
                 mBubbleRect.set(cx - mBubbleRadius, cy - mBubbleRadius, cx + mBubbleRadius, cy + mBubbleRadius);
                 mBubblePath.addRoundRect(mBubbleRect, new float[]{mBubbleRadius, mBubbleRadius, mBubbleRadius, mBubbleRadius, 0, 0, mBubbleRadius, mBubbleRadius}, Path.Direction.CW);
@@ -375,11 +347,8 @@ public class FastScroller extends View {
 
                 mPaint.setColor(Color.WHITE);
 
-
                 canvas.drawText(mBubbleText, cx - mBubbleTextBounds.width() / 2.0F, cy + mBubbleTextBounds.height() / 2.0F, mPaint);
             }
-
-
         }
     }
 
@@ -387,4 +356,12 @@ public class FastScroller extends View {
         String getSectionForPosition(int position);
     }
 
+    public static int applyAlpha(int color, float alpha) {
+        int colorAlpha  = ((color & 0xFF000000) >> 24) + 256;
+        return (color & 0x00FFFFFF) | ((int) (colorAlpha * alpha) << 24);
+    }
+
+    public static float getValueInRange(float val, float min, float max) {
+        return Math.min(max, Math.max(min, val));
+    }
 }

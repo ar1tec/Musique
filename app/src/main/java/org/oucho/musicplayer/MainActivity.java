@@ -3,7 +3,6 @@ package org.oucho.musicplayer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -204,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements
         finish();
     }
 
+
+
     /* *********************************************************************************************
      * Click listener activity_main layout
      * ********************************************************************************************/
@@ -291,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements
     private void showLibrary() {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        mNavigationView.getMenu().findItem(R.id.action_library).setChecked(true);
+        mNavigationView.getMenu().findItem(R.id.action_library);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, LibraryFragment.newInstance()).commit();
     }
@@ -305,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements
     private void showFavorites() {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        mNavigationView.getMenu().findItem(R.id.action_favorites).setChecked(true);
+        mNavigationView.getMenu().findItem(R.id.action_favorites);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, PlaylistFragment.newFavoritesFragment()).commit();
         setTitle("Favoris");
@@ -689,6 +690,7 @@ public class MainActivity extends AppCompatActivity implements
             SleepTimer.setTimer(MainActivity.this, prefs, hours * 3600 + minutes * 60 + seconds);
         }
     };
+
     private final DialogInterface.OnClickListener mSleepTimerDialogListener
             = new DialogInterface.OnClickListener() {
         @Override

@@ -220,7 +220,6 @@ public class AlbumFragment extends BaseFragment {
     @Override
     public void load() {
         getLoaderManager().restartLoader(0, null, mLoaderCallbacks);
-
     }
 
 
@@ -294,4 +293,5 @@ public class AlbumFragment extends BaseFragment {
         }
 
     }
+
 }

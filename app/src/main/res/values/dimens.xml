@@ -31,7 +31,7 @@
 
     <dimen name="playback_activity_art_size">400dp</dimen>
 
-    <dimen name="preferences_activity_margin">0dp</dimen>
+    <!--<dimen name="preferences_activity_margin">0dp</dimen>-->
 
     <dimen name="art_size">150dp</dimen>
 
