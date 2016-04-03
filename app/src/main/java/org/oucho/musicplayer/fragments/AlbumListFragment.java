@@ -244,9 +244,9 @@ public class AlbumListFragment extends BaseFragment {
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
         if (visible && isResumed()){
-            getActivity().setTitle("Album");
+            getActivity().setTitle("Albums");
         }else  if (visible){
-            getActivity().setTitle("Album");
+            getActivity().setTitle("Albums");
         }
     }
 

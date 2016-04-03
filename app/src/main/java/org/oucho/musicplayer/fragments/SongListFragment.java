@@ -328,9 +328,9 @@ public class SongListFragment extends BaseFragment {
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
         if (visible && isResumed()){
-            getActivity().setTitle("Titre");
+            getActivity().setTitle("Titres");
         }else  if (visible){
-            getActivity().setTitle("Titre");
+            getActivity().setTitle("Titres");
         }
     }
 

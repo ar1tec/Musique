@@ -31,7 +31,7 @@
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/context_menu_description"
             android:padding="@dimen/content_padding"
-            android:src="@drawable/ic_dots_vertical" />
+            android:src="@drawable/ic_spinner_black_small" />
 
         <TextView
             android:id="@+id/album_name"

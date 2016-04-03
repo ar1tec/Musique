@@ -17,7 +17,8 @@ public class ArtistLoader extends BaseLoader<List<Artist>> {
 
 
     private static final String[] sProjection = {BaseColumns._ID,
-            MediaStore.Audio.ArtistColumns.ARTIST, MediaStore.Audio.ArtistColumns.NUMBER_OF_ALBUMS,
+            MediaStore.Audio.ArtistColumns.ARTIST,
+            MediaStore.Audio.ArtistColumns.NUMBER_OF_ALBUMS,
             MediaStore.Audio.ArtistColumns.NUMBER_OF_TRACKS};
 
 

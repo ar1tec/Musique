@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-//import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -34,6 +33,7 @@ import org.oucho.musicplayer.dialog.PlaylistPicker;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.loaders.AlbumLoader;
 import org.oucho.musicplayer.loaders.SongLoader;
+import org.oucho.musicplayer.loaders.SortOrder;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Playlist;
@@ -64,7 +64,8 @@ public class ArtistFragment extends BaseFragment {
 
             loader.setSelection(MediaStore.Audio.Media.ARTIST_ID + " = ?", new String[]{String.valueOf(mArtist.getId())});
 
-            loader.setSortOrder(MediaStore.Audio.Media.TRACK);
+            loader.setSortOrder(SortOrder.AlbumSortOrder.ALBUM_A_Z);
+
             return loader;
         }
 
@@ -106,19 +107,22 @@ public class ArtistFragment extends BaseFragment {
             return new AlbumLoader(getActivity(), mArtist.getName());
         }
     };
-    private final ID3TagEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener = new ID3TagEditorDialog.OnTagsEditionSuccessListener() {
+    private final ID3TagEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
+            = new ID3TagEditorDialog.OnTagsEditionSuccessListener() {
         @Override
         public void onTagsEditionSuccess() {
             ((MainActivity) getActivity()).refresh();
         }
     };
-    private final AlbumEditorDialog.OnEditionSuccessListener mOnEditionSuccessListener = new AlbumEditorDialog.OnEditionSuccessListener() {
+    private final AlbumEditorDialog.OnEditionSuccessListener mOnEditionSuccessListener
+            = new AlbumEditorDialog.OnEditionSuccessListener() {
         @Override
         public void onEditionSuccess() {
             ((MainActivity) getActivity()).refresh();
         }
     };
-    private final BaseAdapter.OnItemClickListener mOnAlbumClickListener = new BaseAdapter.OnItemClickListener() {
+    private final BaseAdapter.OnItemClickListener mOnAlbumClickListener
+            = new BaseAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position, final View view) {
             Album album = mAlbumListAdapter.getItem(position);
@@ -138,19 +142,6 @@ public class ArtistFragment extends BaseFragment {
     };
 
     private MainActivity mActivity;
-
-/*    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-*//*                case R.id.shuffle_fab:
-                    if (mActivity != null) {
-                        mActivity.onShuffleRequested(mSongListAdapter.mSongList, true);
-                    }
-                    break;*//*
-            }
-        }
-    };*/
 
     private int mThumbWidth;
     private int mThumbHeight;
@@ -288,8 +279,6 @@ public class ArtistFragment extends BaseFragment {
             int trackCount = args.getInt(PARAM_TRACK_COUNT);
             mArtist = new Artist(id, name, albumCount, trackCount);
         }
-        //int mArtistImageWidth = getResources().getDimensionPixelSize(R.dimen.artist_image_req_width);
-        //int mArtistImageHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
 
         mArtworkSize = getResources().getDimensionPixelSize(R.dimen.art_size);
 
@@ -375,11 +364,8 @@ public class ArtistFragment extends BaseFragment {
         public void onClick(View v) {
             int position = getAdapterPosition() - 1;
 
-
             switch (v.getId()) {
                 case R.id.item_view:
-
-
                     selectSong(position);
                     break;
                 case R.id.menu_button:
@@ -407,13 +393,10 @@ public class ArtistFragment extends BaseFragment {
 
     class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
         private final int FIRST = 1;
         private final int NORMAL = 2;
 
-
         private List<Song> mSongList;
-
 
         public void setData(List<Song> data) {
             mSongList = data;
