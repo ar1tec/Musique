@@ -17,4 +17,4 @@ Lecteur de fichiers musicaux pour android
  <img alt="screenshot" src="/screenshots/3.jpg?raw=true" width="250px" />
  <img alt="screenshot" src="/screenshots/4.jpg?raw=true" width="250px" />
  <img alt="screenshot" src="/screenshots/5.jpg?raw=true" width="250px" />
- 
+ <img alt="screenshot" src="/screenshots/6.jpg?raw=true" width="250px" />

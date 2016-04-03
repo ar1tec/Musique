@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.quick_prev).setOnClickListener(mOnClickListener);
         findViewById(R.id.quick_next).setOnClickListener(mOnClickListener);
 
-
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -144,8 +143,6 @@ public class MainActivity extends AppCompatActivity implements
         if (savedInstanceState == null) {
             showLibrary();
         }
-
-
     }
 
     /* *********************************************************************************************
@@ -204,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements
         context.startActivity(appStartIntent);
         clearCache();
         killNotif();
-        finish();
+        //finish();
     }
 
 
