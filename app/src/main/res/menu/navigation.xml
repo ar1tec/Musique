@@ -6,15 +6,19 @@
 
     <group>
 
-        <item
+<!--        <item
             android:id="@+id/action_library"
             android:icon="@drawable/ic_nav_music_library"
-            android:title="@string/library" />
+            android:title="@string/library" />-->
+        <item
+            android:id="@+id/action_equalizer"
+            android:icon="@drawable/ic_menu_equalizer"
+            android:title="@string/action_equalizer" />
 
-<!--        <item
-            android:id="@+id/action_favorites"
-            android:icon="@drawable/ic_nav_favorites"
-            android:title="@string/favorites" />-->
+        <item
+            android:id="@+id/action_sleep_timer"
+            android:icon="@drawable/ic_sleep_timer"
+            android:title="@string/action_sleep_timer" />
 
         <item
             android:id="@+id/action_radio"
@@ -22,18 +26,13 @@
             android:title="Radio" />
 
         <item
-            android:id="@+id/action_equalizer"
-            android:icon="@drawable/ic_menu_equalizer"
-            android:title="@string/action_equalizer" />
-
-    </group>
-
-    <group android:id="@+id/menu_bottom">
-        <item
             android:id="@+id/action_theme"
             android:icon="@drawable/ic_menu_theme"
             android:title="Thème" />
 
+    </group>
+
+    <group android:id="@+id/menu_bottom">
 
         <item
             android:id="@+id/nav_help"

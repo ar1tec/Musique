@@ -9,15 +9,4 @@
         android:title="@string/action_search"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_equalizer"
-        android:title="@string/action_equalizer"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_sleep_timer"
-        android:title="@string/action_sleep_timer"
-        app:showAsAction="never" />
-
-
 </menu>

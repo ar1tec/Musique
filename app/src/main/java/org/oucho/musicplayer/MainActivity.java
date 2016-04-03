@@ -160,18 +160,22 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         mDrawerLayout.closeDrawers();
         switch (menuItem.getItemId()) {
-            case R.id.action_library:
-                showLibrary();
-                break;
-/*            case R.id.action_favorites:
-                showFavorites();
-                break;*/
             case R.id.action_equalizer:
                 NavigationUtils.showEqualizer(MainActivity.this);
                 break;
             case R.id.action_radio:
                 Radio();
                 return true;
+
+            case R.id.action_sleep_timer:
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                if (SleepTimer.isTimerSet(prefs)) {
+                    DialogUtils.showSleepTimerDialog(this, mSleepTimerDialogListener);
+                } else {
+                    DialogUtils.showSleepHmsPicker(this, mHmsPickerHandler);
+                }
+                break;
+
             case R.id.action_theme:
                 NavigationUtils.showTheme(MainActivity.this);
                 break;
@@ -268,17 +272,6 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.action_search:
                 NavigationUtils.showSearchActivity(this, SEARCH_ACTIVITY);
                 return true;
-            case R.id.action_equalizer:
-                NavigationUtils.showEqualizer(this);
-                return true;
-            case R.id.action_sleep_timer:
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                if (SleepTimer.isTimerSet(prefs)) {
-                    DialogUtils.showSleepTimerDialog(this, mSleepTimerDialogListener);
-                } else {
-                    DialogUtils.showSleepHmsPicker(this, mHmsPickerHandler);
-                }
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -292,27 +285,9 @@ public class MainActivity extends AppCompatActivity implements
     private void showLibrary() {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        mNavigationView.getMenu().findItem(R.id.action_library);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, LibraryFragment.newInstance()).commit();
     }
-
-
-
-    /* *********************
-     * Afficher les favoris
-     * *********************/
-
-/*    private void showFavorites() {
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-
-        mNavigationView.getMenu().findItem(R.id.action_favorites);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, PlaylistFragment.newFavoritesFragment()).commit();
-        setTitle("Favoris");
-
-        favorite = true;
-    }*/
 
 
     /* *********************************************************************************************

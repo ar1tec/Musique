@@ -3,6 +3,14 @@
  
   Music player for Android
 
+Lecteur de fichiers musicaux pour android
+
+- pas de cloud
+- pas de partage sur les réseaux sociaux
+- pas de harcèlement
+- pas de publicité
+- pas de surveillance
+
 
  <img alt="screenshot" src="/screenshots/1.jpg?raw=true" width="250px" />
  <img alt="screenshot" src="/screenshots/2.jpg?raw=true" width="250px" />
