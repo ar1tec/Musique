@@ -80,14 +80,13 @@
     <string name="sort_order_entry_number_of_songs">Nombre de chansons</string>
     <string name="sort_order_entry_number_of_albums">Nombre d\'albums</string>
 
-    <string name="about">Musique v1.0.0</string>
+    <string name="about">Musique v1.1</string>
 
     <string name="about_message">
+    \n\n\n
 
-
-        Musique 1.0 \n \n
-
-        Old Geek, mars 2016
+        Old Geek, avril 2016
+        \n\n\n
     </string>
 
 </resources>
