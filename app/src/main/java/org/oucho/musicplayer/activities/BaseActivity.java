@@ -15,8 +15,17 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme();
         super.onCreate(savedInstanceState);
+        subTitle();
+
     }
 
+    private void subTitle() {
+        String mTitle = "Analyseur WiFi";
+        String mSubTitle = "Tri par année";
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setTitle(mTitle);
+        getSupportActionBar().setSubtitle(mSubTitle);
+    }
     public static final String KEY_PREF_THEME = "pref_theme";
 
     public static final int original_green = 1;

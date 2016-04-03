@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <string name="app_name">Musique</string>
 
@@ -15,14 +15,12 @@
 
     <string name="titles">Morceaux</string>
     <string name="title">Titre</string>
-    <string name="title_activity_music_picker">Choisissez des musiques</string>
 
     <string name="artists">Artistes</string>
     <string name="unknown_artist">Artiste inconnu</string>
     <string name="artist">Artiste</string>
 
     <string name="genre">Genre</string>
-    <string name="genres">Genres</string>
 
 
     <string name="play">Lecture</string>
@@ -40,20 +38,12 @@
     <string name="new_playlist">Nouvelle liste de lecture</string>
     <string name="playlist_name">Nom de la liste de lecture</string>
     <string name="create_playlist">Créer une liste de lecture</string>
-    <string name="add_to_playlist">Ajouter à la liste de lecture</string>
     <string name="action_add_to_playlist">Ajouter à une playlist</string>
-    <string name="adding_songs_to_playlist">Ajout des morceaux à la liste de lecture</string>
-
-
-    <string name="action_submit">Valider</string>
-    <string name="action_cancel">Annuler</string>
 
     <string name="view_queue">Voir la file de lecture</string>
     <string name="action_add_to_queue">Ajouter à la file de lecture</string>
 
     <string name="context_menu_description">Menu contextuel</string>
-
-
 
     <string name="equalizer">Égaliseur</string>
     <string name="action_equalizer">Égaliseur</string>
@@ -68,10 +58,8 @@
     <string name="no_results">Aucun résultat</string>
 
     <string name="now_playing">Lecture en cours</string>
-    <string name="favorites">Favoris</string>
-    <string name="loading" tools:ignore="TypographyEllipsis">Chargement...</string>
+
     <string name="library">Bibliothèque</string>
-    <string name="more">Plus</string>
 
     <string name="permission">Permission</string>
     <string name="permission_read_external_storage">L\'application doit  pouvoir lire le stockage externe.</string>
@@ -91,11 +79,8 @@
     <string name="sort_order_entry_year">Année</string>
     <string name="sort_order_entry_artist">Artiste</string>
     <string name="sort_order_entry_album">Album</string>
-    <string name="sort_order_entry_duration">Durée</string>
     <string name="sort_order_entry_number_of_songs">Nombre de chansons</string>
     <string name="sort_order_entry_number_of_albums">Nombre d\'albums</string>
-
-
 
     <string name="about">Musique v1.0.0</string>
 

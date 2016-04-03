@@ -31,7 +31,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.model.db.QueueDbHelper;
-import org.oucho.musicplayer.utils.FavoritesHelper;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
@@ -130,7 +129,6 @@ public class PlayerActivity extends BaseActivity
         findViewById(R.id.play_pause_toggle).setOnClickListener(mOnClickListener);
         findViewById(R.id.shuffle).setOnClickListener(mOnClickListener);
         findViewById(R.id.repeat).setOnClickListener(mOnClickListener);
-        findViewById(R.id.action_favorite).setOnClickListener(mOnClickListener);
 
 
         mSeekBar = (SeekBar) findViewById(R.id.seek_bar);
@@ -234,18 +232,6 @@ public class PlayerActivity extends BaseActivity
                     int mode = mPlaybackService.getNextRepeatMode();//TODO changer ça
                     mPlaybackService.setRepeatMode(mode);
                     updateRepeatButton();
-                    break;
-
-                case R.id.action_favorite:
-                    ImageView button = (ImageView) v;
-                    long songId = mPlaybackService.getSongId();
-                    if (FavoritesHelper.isFavorite(PlayerActivity.this, songId)) {
-                        FavoritesHelper.removeFromFavorites(PlayerActivity.this, songId);
-                        button.setImageResource(R.drawable.musicplayer_like_disable);
-                    } else {
-                        FavoritesHelper.addFavorite(PlayerActivity.this, mPlaybackService.getSongId());
-                        button.setImageResource(R.drawable.musicplayer_like);
-                    }
                     break;
             }
         }
@@ -433,13 +419,6 @@ public class PlayerActivity extends BaseActivity
                 updateSeekBar();
             }
 
-            ImageView favButton = (ImageView) findViewById(R.id.action_favorite);
-
-            if (FavoritesHelper.isFavorite(this, mPlaybackService.getSongId())) {
-                favButton.setImageResource(R.drawable.musicplayer_like);
-            } else {
-                favButton.setImageResource(R.drawable.musicplayer_like_disable);
-            }
 
             setQueueSelection(mPlaybackService.getPositionWithinPlayList());
 

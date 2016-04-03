@@ -81,11 +81,11 @@ public class MainActivity extends AppCompatActivity implements
     public static final String SONG_ALBUM = "song_album";
     public static final String SONG_ALBUM_ID = "song_album_id";
     public static final String SONG_TRACK_NUMBER = "song_track_number";
-    public static final String ACTION_REFRESH = "resfresh";
+    private static final String ACTION_REFRESH = "resfresh";
     public static final String ACTION_SHOW_ALBUM = "show_album";
     public static final String ACTION_SHOW_ARTIST = "show_artist";
     public static final String ACTION_PLAY_SONG = "play_song";
-    public static final String ACTION_ADD_TO_QUEUE = "add_to_queue";
+    private static final String ACTION_ADD_TO_QUEUE = "add_to_queue";
     private static final String ACTION_SET_AS_NEXT_TRACK = "set_as_next_track";
 
     private static final int SEARCH_ACTIVITY = 234;
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements
      * Création de l'activité
      * ********************************************************************************************/
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme();
@@ -144,9 +145,8 @@ public class MainActivity extends AppCompatActivity implements
             showLibrary();
         }
 
+
     }
-
-
 
     /* *********************************************************************************************
      * Navigation Drawer
@@ -163,9 +163,9 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.action_library:
                 showLibrary();
                 break;
-            case R.id.action_favorites:
+/*            case R.id.action_favorites:
                 showFavorites();
-                break;
+                break;*/
             case R.id.action_equalizer:
                 NavigationUtils.showEqualizer(MainActivity.this);
                 break;
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements
      * Afficher les favoris
      * *********************/
 
-    private void showFavorites() {
+/*    private void showFavorites() {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         mNavigationView.getMenu().findItem(R.id.action_favorites);
@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements
         setTitle("Favoris");
 
         favorite = true;
-    }
+    }*/
 
 
     /* *********************************************************************************************

@@ -16,7 +16,8 @@
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
         android:text="0"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:visibility="visible" />
 
     <ImageView
         android:layout_width="match_parent"

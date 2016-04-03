@@ -35,7 +35,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="350dp">
+        android:layout_marginTop="360dp">
 
         <TextView
             android:id="@+id/song_title"
@@ -64,7 +64,7 @@
             android:textAlignment="center"
             android:textSize="16sp" />
 
-        <ImageView
+<!--        <ImageView
             android:id="@+id/action_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,14 +73,14 @@
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="image_description"
             android:padding="10dp"
-            android:src="@drawable/musicplayer_like_disable" />
+            android:src="@drawable/musicplayer_like_disable" />-->
     </RelativeLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="450dp">
+        android:layout_marginTop="440dp">
 
         <LinearLayout
             android:id="@+id/linearLayout"

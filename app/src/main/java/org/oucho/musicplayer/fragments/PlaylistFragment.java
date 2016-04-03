@@ -21,11 +21,9 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.loaders.FavoritesLoader;
 import org.oucho.musicplayer.loaders.PlaylistLoader;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.FavoritesHelper;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.ThemeHelper;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
@@ -38,8 +36,6 @@ import java.util.List;
 
 public class PlaylistFragment extends BaseFragment {
 
-    private static final String PARAM_PLAYLIST_FAVORITES = "favorites";
-
     private static final String PARAM_PLAYLIST_ID = "playlist_id";
     private static final String PARAM_PLAYLIST_NAME = "playlist_name";
 
@@ -51,15 +47,13 @@ public class PlaylistFragment extends BaseFragment {
     private Playlist mPlaylist;
 
     private SongListAdapter mAdapter;
-    private boolean mFavorites = false;
+
     private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderCallbacks<List<Song>>() {
 
 
         @Override
         public Loader<List<Song>> onCreateLoader(int id, Bundle args) {
-            if (mFavorites) {
-                return new FavoritesLoader(getActivity());
-            }
+
             return new PlaylistLoader(getActivity(), mPlaylist.getId());
         }
 
@@ -87,7 +81,7 @@ public class PlaylistFragment extends BaseFragment {
         return fragment;
     }
 
-    public static PlaylistFragment newFavoritesFragment() {
+/*    public static PlaylistFragment newFavoritesFragment() {
         PlaylistFragment fragment = new PlaylistFragment();
 
         Bundle args = new Bundle();
@@ -96,7 +90,7 @@ public class PlaylistFragment extends BaseFragment {
 
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     private void selectSong(int position) {
 
@@ -124,13 +118,11 @@ public class PlaylistFragment extends BaseFragment {
         setHasOptionsMenu(true);
         if (args != null) {
 
-            if (args.getBoolean(PARAM_PLAYLIST_FAVORITES)) {
-                mFavorites = true;
-            } else {
-                long id = args.getLong(PARAM_PLAYLIST_ID);
-                String name = args.getString(PARAM_PLAYLIST_NAME);
-                mPlaylist = new Playlist(id, name);
-            }
+
+            long id = args.getLong(PARAM_PLAYLIST_ID);
+            String name = args.getString(PARAM_PLAYLIST_NAME);
+            mPlaylist = new Playlist(id, name);
+
         }
     }
 
@@ -260,21 +252,18 @@ public class PlaylistFragment extends BaseFragment {
                 return;
             }
             Collections.swap(mSongList, oldPosition, newPosition);
-            if (!mFavorites) {
+
+
                 PlaylistsUtils.moveItem(getActivity().getContentResolver(), mPlaylist.getId(), oldPosition, newPosition);
-            }
+
             notifyItemMoved(oldPosition, newPosition);
 
         }
 
         public void removeItem(int position) {
             Song s = mSongList.remove(position);
-            if (mFavorites) {
-                FavoritesHelper.removeFromFavorites(getActivity(), s.getId());
-            } else {
-                PlaylistsUtils.removeFromPlaylist(getActivity().getContentResolver(),
-                        mPlaylist.getId(), s.getId());
-            }
+
+            PlaylistsUtils.removeFromPlaylist(getActivity().getContentResolver(), mPlaylist.getId(), s.getId());
             notifyItemRemoved(position);
         }
 
