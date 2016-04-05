@@ -122,10 +122,13 @@ public class AlbumFragment extends BaseFragment {
             Artiste = artist;
             Année = String.valueOf(year);
 
+            String singulier = getString(R.string.title);
+            String pluriel = getString(R.string.titles);
+
             if (trackCount < 2) {
-                nb_Morceaux = String.valueOf(trackCount) + " titre";
+                nb_Morceaux = String.valueOf(trackCount) + " " + singulier;
             } else {
-                nb_Morceaux = String.valueOf(trackCount) + " titres";
+                nb_Morceaux = String.valueOf(trackCount) + " " + pluriel;
             }
         }
 

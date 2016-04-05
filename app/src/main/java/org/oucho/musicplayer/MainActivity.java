@@ -42,12 +42,11 @@ import android.widget.TextView;
 import com.codetroopers.betterpickers.hmspicker.HmsPickerDialogFragment;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
-import org.oucho.musicplayer.activities.BaseActivity;
+import org.oucho.musicplayer.audiofx.AudioEffects;
 import org.oucho.musicplayer.fragments.AlbumFragment;
 import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
-import org.oucho.musicplayer.fragments.PlaylistFragment;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Album;
@@ -56,6 +55,7 @@ import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.DialogUtils;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
+import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SleepTimer;
 import org.oucho.musicplayer.widgets.ProgressBar;
 
@@ -63,7 +63,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        SharedPreferences.OnSharedPreferenceChangeListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     public static final String ALBUM_ID = "id";
@@ -114,10 +113,10 @@ public class MainActivity extends AppCompatActivity implements
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         checkPermissions();
 
@@ -138,7 +137,11 @@ public class MainActivity extends AppCompatActivity implements
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+
+        PrefUtils.init(this);
+        ArtworkCache.init(this);
+        ArtistImageCache.init(this);
+        AudioEffects.init(this);
 
         if (savedInstanceState == null) {
             showLibrary();
@@ -171,10 +174,6 @@ public class MainActivity extends AppCompatActivity implements
                 } else {
                     DialogUtils.showSleepHmsPicker(this, mHmsPickerHandler);
                 }
-                break;
-
-            case R.id.action_theme:
-                NavigationUtils.showTheme(MainActivity.this);
                 break;
             case R.id.nav_help:
                 About();
@@ -861,56 +860,4 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
-
-
-
-    /* *********************************************************************************************
-     * Thème
-     * ********************************************************************************************/
-
-    // recharge pour appliquer la nouvelle couleur de thème
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        recreate();
-    }
-
-    private void setTheme() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        int theme = prefs.getInt(BaseActivity.KEY_PREF_THEME, BaseActivity.DEFAULT_THEME);
-
-        switch (theme) {
-            case BaseActivity.original_green:
-                setTheme(R.style.MainActivityOGreenLight);
-                break;
-            case BaseActivity.red:
-                setTheme(R.style.MainActivityRedLight);
-                break;
-            case BaseActivity.orange:
-                setTheme(R.style.MainActivityOrangeLight);
-                break;
-            case BaseActivity.purple:
-                setTheme(R.style.MainActivityPurpleLight);
-                break;
-            case BaseActivity.navy:
-                setTheme(R.style.MainActivityNavyLight);
-                break;
-            case BaseActivity.blue:
-                setTheme(R.style.MainActivityBlueLight);
-                break;
-            case BaseActivity.sky:
-                setTheme(R.style.MainActivitySkyLight);
-                break;
-            case BaseActivity.seagreen:
-                setTheme(R.style.MainActivitySeagreenLight);
-                break;
-            case BaseActivity.cyan:
-                setTheme(R.style.MainActivityCyanLight);
-                break;
-            case BaseActivity.pink:
-                setTheme(R.style.MainActivityPinkLight);
-                break;
-        }
-    }
-
 }

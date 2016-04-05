@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -36,14 +37,13 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.NavigationUtils;
-import org.oucho.musicplayer.utils.ThemeHelper;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class PlayerActivity extends BaseActivity
+public class PlayerActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     
     private SeekBar mSeekBar;
@@ -83,11 +83,13 @@ public class PlayerActivity extends BaseActivity
 
         track = préférences.getInt("currentPosition", 0) + 1;
 
-        String couleur = BaseActivity.getColor(this);
+        Context context = getApplicationContext();
+        int couleur = ContextCompat.getColor(context, R.color.colorAccent);
+
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setTitle(Html.fromHtml("<font color='#" + couleur + "'>En cours de lecture</font>"));
-        actionBar.setSubtitle(Html.fromHtml("<small><font color='#" + couleur + "'>" + track + "/" + total_track + "</font><small>"));
+        actionBar.setTitle(Html.fromHtml("<font color='" + couleur + "'>En cours de lecture</font>"));
+        actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleur + "'>" + track + "/" + total_track + "</font><small>"));
         actionBar.setElevation(0);
 
 
@@ -100,12 +102,14 @@ public class PlayerActivity extends BaseActivity
         ImageView button_next = (ImageView) findViewById(R.id.next);
         ImageView button_prev = (ImageView) findViewById(R.id.prev);
 
-        button_next.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.colorAccent), PorterDuff.Mode.SRC_ATOP);
-        button_prev.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.colorAccent), PorterDuff.Mode.SRC_ATOP);
+
+        button_next.setColorFilter(couleur, PorterDuff.Mode.SRC_ATOP);
+        button_prev.setColorFilter(couleur, PorterDuff.Mode.SRC_ATOP);
 
 
+        int couleur_control = ContextCompat.getColor(context, R.color.controls_tint_light);
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_dropdown);
-        upArrow.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
+        upArrow.setColorFilter(couleur_control, PorterDuff.Mode.SRC_ATOP);
         //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
@@ -146,10 +150,7 @@ public class PlayerActivity extends BaseActivity
             SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
             track = préférences.getInt("currentPosition", 0) + 1;
 
-            String couleur = BaseActivity.getColor(this);
-            ActionBar actionBar = getSupportActionBar();
-            assert actionBar != null;
-            actionBar.setSubtitle(Html.fromHtml("<small><font color='#" + couleur + "'>" + track + " / " + total_track + "</font><small>"));
+
         }
     }
 
@@ -427,15 +428,20 @@ public class PlayerActivity extends BaseActivity
 
 
     private void setButtonDrawable() {
+
+        Context context = getApplicationContext();
+
+        int couleur = ContextCompat.getColor(context, R.color.colorAccent);
+
         if (mPlaybackService != null) {
             ImageView button = (ImageView) findViewById(R.id.play_pause_toggle);
             if (mPlaybackService.isPlaying()) {
                 button.setImageResource(R.drawable.musicplayer_pause);
-                button.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.colorAccent), PorterDuff.Mode.SRC_ATOP);
             } else {
                 button.setImageResource(R.drawable.musicplayer_play);
-                button.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.colorAccent), PorterDuff.Mode.SRC_ATOP);
             }
+
+            button.setColorFilter(couleur, PorterDuff.Mode.SRC_ATOP);
         }
 
     }
@@ -446,11 +452,9 @@ public class PlayerActivity extends BaseActivity
         ImageView shuffleButton = (ImageView) findViewById(R.id.shuffle);
         if (shuffle) {
             shuffleButton.setImageResource(R.drawable.musicplayer_shuffle_on);
-            shuffleButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
 
         } else {
             shuffleButton.setImageResource(R.drawable.musicplayer_shuffle);
-            shuffleButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
 
         }
     }
@@ -460,13 +464,10 @@ public class PlayerActivity extends BaseActivity
         int mode = mPlaybackService.getRepeatMode();
         if (mode == PlayerService.NO_REPEAT) {
             repeatButton.setImageResource(R.drawable.musicplayer_repeat_no);
-            repeatButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
         } else if (mode == PlayerService.REPEAT_ALL) {
             repeatButton.setImageResource(R.drawable.musicplayer_repeat);
-            repeatButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
         } else if (mode == PlayerService.REPEAT_CURRENT) {
             repeatButton.setImageResource(R.drawable.musicplayer_repeat_once);
-            repeatButton.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
 
         }
     }

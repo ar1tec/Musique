@@ -46,10 +46,11 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:singleLine="true"
-            android:text="Titre"
+            android:text="Title"
             android:textAlignment="center"
             android:textColor="@color/primary_text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            card_view:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/song_artist"
@@ -62,7 +63,8 @@
             android:singleLine="true"
             android:text="artiste"
             android:textAlignment="center"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            card_view:ignore="HardcodedText" />
 
 <!--        <ImageView
             android:id="@+id/action_favorite"
@@ -101,7 +103,8 @@
                     android:text="00:00"
                     android:textAlignment="center"
                     android:textColor="@color/primary_text"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    card_view:ignore="HardcodedText" />
 
                 <SeekBar
                     android:id="@+id/seek_bar"
@@ -122,7 +125,8 @@
                     android:text="00:00"
                     android:textAlignment="center"
                     android:textColor="@color/primary_text"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    card_view:ignore="HardcodedText" />
 
                 <ImageView
                     android:id="@+id/play_pause_toggle"
@@ -135,7 +139,8 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="image_description"
                     android:padding="10dp"
-                    android:src="@drawable/musicplayer_play" />
+                    android:src="@drawable/musicplayer_play"
+                    card_view:ignore="HardcodedText" />
 
                 <ImageView
                     android:id="@+id/prev"
@@ -147,7 +152,8 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="image_description"
                     android:padding="10dp"
-                    android:src="@drawable/musicplayer_previous" />
+                    android:src="@drawable/musicplayer_previous"
+                    card_view:ignore="HardcodedText" />
 
                 <ImageView
                     android:id="@+id/next"
@@ -159,7 +165,8 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="image description"
                     android:padding="10dp"
-                    android:src="@drawable/musicplayer_next" />
+                    android:src="@drawable/musicplayer_next"
+                    card_view:ignore="HardcodedText" />
 
                 <ImageView
                     android:id="@+id/repeat"
@@ -172,7 +179,8 @@
                     android:contentDescription="image_description"
                     android:padding="10dp"
                     android:src="@drawable/musicplayer_repeat_no"
-                    android:tint="@color/controls_tint_light" />
+                    android:tint="@color/controls_tint_light"
+                    card_view:ignore="HardcodedText" />
 
                 <ImageView
                     android:id="@+id/shuffle"
@@ -184,7 +192,9 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="image description"
                     android:padding="10dp"
-                    android:src="@drawable/musicplayer_shuffle" />
+                    android:src="@drawable/musicplayer_shuffle"
+                    android:tint="@color/controls_tint_light"
+                    card_view:ignore="HardcodedText" />
             </RelativeLayout>
         </LinearLayout>
 

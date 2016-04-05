@@ -22,7 +22,6 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.PlaylistListAdapter;
 import org.oucho.musicplayer.model.Playlist;
-import org.oucho.musicplayer.utils.ThemeHelper;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -156,7 +155,6 @@ public class PlaylistPicker extends DialogFragment {
 
         Button newPlaylistButton = (Button) rootView.findViewById(R.id.new_playlist);
         newPlaylistButton.setOnClickListener(mOnClickListener);
-        ThemeHelper.tintCompoundDrawables(getActivity(), newPlaylistButton);
 
         builder.setView(rootView);
         return builder.create();

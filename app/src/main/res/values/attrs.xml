@@ -30,5 +30,4 @@
 
     <attr name="ImageControlColor" format="color" />
 
-    <attr name="textColor" format="reference" />
 </resources>

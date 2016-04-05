@@ -39,7 +39,6 @@ import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.utils.ThemeHelper;
 
 import java.util.List;
 
@@ -355,8 +354,6 @@ public class ArtistFragment extends BaseFragment {
             Drawable drawable = menuButton.getDrawable();
 
             drawable.mutate();
-
-            ThemeHelper.tintDrawable(getActivity(), drawable);
 
         }
 

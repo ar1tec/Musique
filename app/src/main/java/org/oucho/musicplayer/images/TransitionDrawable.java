@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.animation;
+package org.oucho.musicplayer.images;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;

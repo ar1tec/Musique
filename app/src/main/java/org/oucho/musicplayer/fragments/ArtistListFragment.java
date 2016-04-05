@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -91,10 +92,13 @@ public class ArtistListFragment extends BaseFragment {
         return new ArtistListFragment();
     }
 
+    Context context;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        context = getContext();
     }
 
     @Override
@@ -174,10 +178,11 @@ public class ArtistListFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
+
         if (visible && isResumed()){
-            getActivity().setTitle("Artistes");
+            getActivity().setTitle(context.getString(R.string.artists));
         }else  if (visible){
-            getActivity().setTitle("Artistes");
+            getActivity().setTitle(context.getString(R.string.artists));
         }
     }
 

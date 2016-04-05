@@ -16,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
@@ -25,7 +24,6 @@ import org.oucho.musicplayer.loaders.PlaylistLoader;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.utils.ThemeHelper;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.FastScroller;
 
@@ -193,8 +191,6 @@ public class PlaylistFragment extends BaseFragment {
             itemView.findViewById(R.id.song_info).setOnClickListener(this);
             itemView.findViewById(R.id.delete_button).setOnClickListener(this);
             vReorderButton.setOnTouchListener(this);
-            ThemeHelper.tintImageView(getActivity(), vReorderButton);
-            ThemeHelper.tintImageView(getActivity(), (ImageView) itemView.findViewById(R.id.delete_button));
         }
 
         @Override

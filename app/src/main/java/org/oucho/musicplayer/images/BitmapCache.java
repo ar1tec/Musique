@@ -8,8 +8,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 
-import org.oucho.musicplayer.animation.TransitionDrawable;
-
 import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;

@@ -197,7 +197,6 @@ public class DragRecyclerView extends RecyclerView {
                                 triggerListener(i, i - 1);
                             }
                         }
-
                     }
 
                     mCurrentPosition = position;
@@ -206,7 +205,6 @@ public class DragRecyclerView extends RecyclerView {
 
                     break;
             }
-
         }
     }
 }

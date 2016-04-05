@@ -4,8 +4,11 @@
     <string name="app_name">Musique</string>
 
     <string name="album">Album</string>
+
     <string name="albums">Albums</string>
+
     <string name="unknown_album">Album inconnu</string>
+
     <string name="album_artwork">Couverture d\'album</string>
 
     <plurals name="albums_count">
@@ -13,7 +16,7 @@
         <item quantity="other">%d albums</item>
     </plurals>
 
-    <string name="titles">Morceaux</string>
+    <string name="titles">Titres</string>
     <string name="title">Titre</string>
 
     <string name="artists">Artistes</string>
@@ -59,7 +62,6 @@
 
     <string name="now_playing">Lecture en cours</string>
 
-    <string name="library">Bibliothèque</string>
 
     <string name="permission">Permission</string>
     <string name="permission_read_external_storage">L\'application doit  pouvoir lire le stockage externe.</string>
@@ -80,7 +82,7 @@
     <string name="sort_order_entry_number_of_songs">Nombre de chansons</string>
     <string name="sort_order_entry_number_of_albums">Nombre d\'albums</string>
 
-    <string name="about">Musique v1.1</string>
+    <string name="about">A propros</string>
 
     <string name="about_message">
     \n\n\n
@@ -88,5 +90,10 @@
         Old Geek, avril 2016
         \n\n\n
     </string>
+
+    <string name="menu">Menu</string>
+    <string name="radio">Radio</string>
+    <string name="exit">Quitter</string>
+
 
 </resources>

@@ -207,10 +207,13 @@ public class SongListFragment extends BaseFragment {
         }
     }
 
+    Context context;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        context = getContext();
     }
 
     @Override
@@ -225,7 +228,6 @@ public class SongListFragment extends BaseFragment {
         mAdapter = new SongListAdapter(getActivity());
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         View headerView = RecyclerViewUtils.inflateChild(inflater, R.layout.shuffle_list_item, mRecyclerView);
-        //ThemeHelper.tintCompoundDrawables(getContext(), (TextView) headerView.findViewById(R.id.text_view));
 
         mAdapter.setHeaderView(headerView);
         mAdapter.setOnHeaderClickListener(mOnHeaderClickListener);
@@ -310,12 +312,6 @@ public class SongListFragment extends BaseFragment {
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_YEAR);
                 load();
                 break;
-/*            case R.id.menu_sort_by_duration:
-                prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_DURATION);
-                load();
-                break;*/
-
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -327,10 +323,11 @@ public class SongListFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
+
         if (visible && isResumed()){
-            getActivity().setTitle("Titres");
+            getActivity().setTitle(context.getString(R.string.titles));
         }else  if (visible){
-            getActivity().setTitle("Titres");
+            getActivity().setTitle(context.getString(R.string.titles));
         }
     }
 

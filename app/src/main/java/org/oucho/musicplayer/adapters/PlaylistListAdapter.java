@@ -5,13 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.utils.ThemeHelper;
 import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.Collections;
@@ -83,7 +81,6 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
 
             itemView.findViewById(R.id.delete_playlist).setOnClickListener(this);
 
-            ThemeHelper.tintImageView(itemView.getContext(), (ImageView) itemView.findViewById(R.id.icon));
             itemView.setOnClickListener(this);
             context = itemView.getContext();
         }

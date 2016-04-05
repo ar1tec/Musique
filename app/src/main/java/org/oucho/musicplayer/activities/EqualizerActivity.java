@@ -1,13 +1,13 @@
 package org.oucho.musicplayer.activities;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,9 +25,8 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.audiofx.AudioEffects;
-import org.oucho.musicplayer.utils.ThemeHelper;
 
-public class EqualizerActivity extends BaseActivity {
+public class EqualizerActivity extends AppCompatActivity {
 
 
     private SwitchCompat mSwitchButton;
@@ -35,23 +34,28 @@ public class EqualizerActivity extends BaseActivity {
 
     private Spinner mSpinner;
 
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equalizer);
 
-        String couleur = BaseActivity.getColor(this);
+        Context context = getApplicationContext();
+
+        int couleur = ContextCompat.getColor(context, R.color.colorPrimary_0);
+
+        ColorDrawable colorDrawable = new ColorDrawable(couleur);
 
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setTitle(Html.fromHtml("<font color='#" + couleur + "'>Egaliseur</font>"));
+        actionBar.setBackgroundDrawable(colorDrawable);
         actionBar.setElevation(0);
 
-        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp);
+/*        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp);
         upArrow.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
         //noinspection ConstantConditions
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);*/
 
         mSwitchBound = false;
         init();

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/transparent"
+    android:background="@color/colorPrimary_0"
     android:orientation="vertical">
 
     <TextView
@@ -10,9 +10,9 @@
         android:layout_height="wrap_content"
         android:paddingLeft="17dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Menu"
+        android:text="@string/menu"
         android:textAlignment="center"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/blanc"
         android:textSize="20sp" />
 
 

@@ -161,18 +161,14 @@ public class FastScroller extends View {
         mScrollerBackground = ContextCompat.getColor(context, R.color.fast_scroller_background);
 
 
-
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setTextSize(mBubbleTextSize);
-
-
     }
 
     public void setRecyclerView(RecyclerView view) {
         mRecyclerView = view;
         mRecyclerView.addOnScrollListener(mOnScrollListener);
-
     }
 
     public void setShowBubble(boolean show) {
@@ -183,15 +179,12 @@ public class FastScroller extends View {
         mSectionIndexer = si;
     }
 
-
-
     private void moveHandleTo(float proportion) {
         int height = getHeight();
 
         mHandleY = proportion * (height - mHandleHeight);
 
         invalidate();
-
     }
 
 
@@ -212,7 +205,6 @@ public class FastScroller extends View {
         updateBubble(itemPos);
 
         invalidate();
-
     }
 
     private void updateBubble(int position) {
@@ -223,7 +215,6 @@ public class FastScroller extends View {
 
         mBubbleText = mSectionIndexer.getSectionForPosition(position);
         mPaint.getTextBounds(mBubbleText, 0, mBubbleText.length(), mBubbleTextBounds);
-
     }
 
 

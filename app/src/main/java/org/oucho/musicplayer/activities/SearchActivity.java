@@ -1,12 +1,14 @@
 package org.oucho.musicplayer.activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -38,7 +40,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends AppCompatActivity {
 
     private static final String FILTER = "filter";
 
@@ -184,17 +186,19 @@ public class SearchActivity extends BaseActivity {
      * Création de l'activité
      * ********************************************************************************************/
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        String couleur = BaseActivity.getColor(this);
+        Context context = getApplicationContext();
 
         ActionBar actionBar = getSupportActionBar();
 
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#" + couleur));
+        int couleur = ContextCompat.getColor(context, R.color.colorPrimary_0);
+
+        ColorDrawable colorDrawable = new ColorDrawable(couleur);
         assert actionBar != null;
         actionBar.setBackgroundDrawable(colorDrawable);
 

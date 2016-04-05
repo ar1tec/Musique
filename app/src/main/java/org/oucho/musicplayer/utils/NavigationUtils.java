@@ -9,7 +9,6 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.activities.EqualizerActivity;
 import org.oucho.musicplayer.activities.PlayerActivity;
 import org.oucho.musicplayer.activities.SearchActivity;
-import org.oucho.musicplayer.activities.ThemeActivity;
 
 
 public class NavigationUtils {
@@ -20,11 +19,6 @@ public class NavigationUtils {
 
     public static void showEqualizer(Context context) {
         Intent i = new Intent(context, EqualizerActivity.class);
-        context.startActivity(i);
-    }
-
-    public static void showTheme(Context context) {
-        Intent i = new Intent(context, ThemeActivity.class);
         context.startActivity(i);
     }
 

@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -159,15 +158,17 @@ public class AlbumListFragment extends BaseFragment {
 
     }
 
+    Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        context = getContext();
+
     }
 
-    ActionBar actionBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -243,10 +244,12 @@ public class AlbumListFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
+
+
         if (visible && isResumed()){
-            getActivity().setTitle("Albums");
-        }else  if (visible){
-            getActivity().setTitle("Albums");
+            getActivity().setTitle(context.getString(R.string.albums));
+        } else  if (visible) {
+            getActivity().setTitle(context.getString(R.string.albums));
         }
     }
 

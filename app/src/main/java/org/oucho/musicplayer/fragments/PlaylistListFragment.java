@@ -1,6 +1,7 @@
 package org.oucho.musicplayer.fragments;
 
 
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,7 +46,6 @@ public class PlaylistListFragment extends BaseFragment {
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             //  Auto-generated method stub
-
         }
 
         @Override
@@ -71,7 +71,6 @@ public class PlaylistListFragment extends BaseFragment {
                         return c.compare(lhs.getName(), rhs.getName());
                     }
                 });
-
             }
 
             mAdapter.setData(list);
@@ -99,10 +98,13 @@ public class PlaylistListFragment extends BaseFragment {
         return new PlaylistListFragment();
     }
 
+    Context context;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        context = getContext();
     }
 
     @Override
@@ -176,10 +178,11 @@ public class PlaylistListFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
+
         if (visible && isResumed()){
-            getActivity().setTitle("Listes de lecture");
+            getActivity().setTitle(context.getString(R.string.playlists));
         }else  if (visible){
-            getActivity().setTitle("Listes de lecture");
+            getActivity().setTitle(context.getString(R.string.playlists));
         }
     }
 
@@ -187,12 +190,7 @@ public class PlaylistListFragment extends BaseFragment {
         @Override
         public void onItemClick(int position, View view) {
             Playlist playlist = mAdapter.getItem(position);
-/*            switch (view.getId()) {
-                case R.id.delete_playlist:
-                    deletePlaylist(mAdapter.getSectionForPosition(position));
-                    break;
 
-            }*/
 
             PlaylistFragment fragment = PlaylistFragment.newInstance(playlist);
 

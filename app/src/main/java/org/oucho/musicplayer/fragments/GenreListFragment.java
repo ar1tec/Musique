@@ -1,6 +1,7 @@
 package org.oucho.musicplayer.fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -108,6 +109,16 @@ public class GenreListFragment extends BaseFragment {
         return new GenreListFragment();
     }
 
+    Context context;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        context = getContext();
+
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -144,10 +155,11 @@ public class GenreListFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
+
         if (visible && isResumed()){
-            getActivity().setTitle("Genre");
+            getActivity().setTitle(context.getString(R.string.genre));
         }else  if (visible){
-            getActivity().setTitle("Genre");
+            getActivity().setTitle(context.getString(R.string.genre));
         }
     }
 

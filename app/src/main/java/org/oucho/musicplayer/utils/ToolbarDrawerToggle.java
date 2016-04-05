@@ -73,6 +73,4 @@ public class ToolbarDrawerToggle implements DrawerLayout.DrawerListener {
     public void onDrawerStateChanged(int newState) {
 
     }
-
-
 }
