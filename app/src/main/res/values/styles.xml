@@ -8,7 +8,6 @@
 
         <item name="controlsBackground">@color/controls_bg_light</item>
         <item name="controlsTint">@color/controls_tint_light</item>
-        <item name="cardStyle">@style/CardView.Light</item>
 
         <item name="ImageControlColor">@color/controls_tint_light</item>
 

@@ -52,11 +52,6 @@ public class EqualizerActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(colorDrawable);
         actionBar.setElevation(0);
 
-/*        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp);
-        upArrow.setColorFilter(ThemeHelper.getStyleColor(this, R.attr.ImageControlColor), PorterDuff.Mode.SRC_ATOP);
-        //noinspection ConstantConditions
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);*/
-
         mSwitchBound = false;
         init();
     }

@@ -158,7 +158,7 @@ public class FastScroller extends View {
                 a.recycle();
             }
         }
-        mScrollerBackground = ContextCompat.getColor(context, R.color.fast_scroller_background);
+        mScrollerBackground = ContextCompat.getColor(context, R.color.transparent);
 
 
         mPaint = new Paint();

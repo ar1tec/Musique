@@ -9,7 +9,7 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/artwork0"
-        style="?attr/cardStyle"
+        style="@style/CardView.Light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
@@ -45,7 +45,7 @@
             android:gravity="bottom"
             android:paddingLeft="@dimen/big_content_padding"
             android:singleLine="true"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
         <TextView
@@ -57,7 +57,7 @@
             android:gravity="top"
             android:paddingLeft="@dimen/big_content_padding"
             android:singleLine="true"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="@color/secondary_text"
             android:textSize="14sp" />
 
     </LinearLayout>

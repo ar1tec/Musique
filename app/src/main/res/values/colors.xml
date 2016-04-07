@@ -4,7 +4,7 @@
    <color name="colorPrimary_0">#546e7a</color>
     <color name="colorPrimary">#00000000</color>
     <color name="colorPrimaryDark">#455a64</color>
-    <color name="colorAccent">#19729a</color>
+    <color name="colorAccent">#9a1d19</color>
 
     <color name="controls_bg_light">#fffafafa</color>
     <color name="controls_bg_dark">#ff212121</color>
@@ -23,8 +23,6 @@
     <color name="transparent">#00000000</color>
 
     <color name="default_artwork_bg">#002a2a2a</color>
-
-    <color name="fast_scroller_background">#00ffffff</color>
 
     <color name="blanc">#ffffff</color>
 

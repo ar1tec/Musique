@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/cardStyle"
+    style="@style/CardView.Light"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="3dp"
@@ -63,7 +63,7 @@
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:text="TEST test"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="@color/primary_text"
                 android:textSize="17sp"
                 card_view:ignore="HardcodedText" />
         </LinearLayout>

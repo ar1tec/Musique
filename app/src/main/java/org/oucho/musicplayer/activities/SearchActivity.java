@@ -495,7 +495,7 @@ public class SearchActivity extends AppCompatActivity {
                 case SECTION_ALBUMS:
                 case SECTION_ARTISTS:
                 case SECTION_SONGS:
-                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section, parent, false);
+                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_section, parent, false);
                     viewHolder = new SectionViewHolder(itemView);
                     return viewHolder;
             }

@@ -164,6 +164,4 @@ public class AlbumEditorDialog extends DialogFragment {
 
         void onEditionSuccess();
     }
-
-
 }

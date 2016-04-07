@@ -5,8 +5,8 @@
     android:gravity="center_vertical"
     android:maxLines="1"
     android:padding="@dimen/small_content_padding"
-    android:textColor="?android:attr/textColorPrimary"
-    android:textSize="16sp" />
+    android:textSize="22sp"
+    android:textColor="@color/colorAccent" />
 
 
 

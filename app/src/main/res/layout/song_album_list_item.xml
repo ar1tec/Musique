@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/big_content_padding"
             android:singleLine="true"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/primary_text"
             android:textSize="17sp" />
 
     </LinearLayout>
