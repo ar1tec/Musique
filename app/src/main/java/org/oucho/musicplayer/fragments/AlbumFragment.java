@@ -136,7 +136,6 @@ public class AlbumFragment extends BaseFragment {
         mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
 
         getActivity().setTitle(Titre);
-
     }
 
 
@@ -175,11 +174,6 @@ public class AlbumFragment extends BaseFragment {
         mAdapter = new SongAlbumListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
 
-        View headerView = RecyclerViewUtils.inflateChild(inflater, R.layout.shuffle_list_item, mRecyclerView);
-
-        mAdapter.setHeaderView(headerView);
-        mAdapter.setOnHeaderClickListener(mOnHeaderClickListener);
-
         mRecyclerView.setAdapter(mAdapter);
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
@@ -195,7 +189,6 @@ public class AlbumFragment extends BaseFragment {
             switch (view.getId()) {
                 case R.id.item_view:
                     selectSong(position);
-
                     break;
                 case R.id.menu_button:
                     showMenu(position, view);
@@ -204,28 +197,16 @@ public class AlbumFragment extends BaseFragment {
         }
     };
 
-    private final AdapterWithHeader.OnHeaderClickListener mOnHeaderClickListener = new AdapterWithHeader.OnHeaderClickListener() {
-        @Override
-        public void onHeaderClick() {
-            if (mActivity != null) {
-                mActivity.onShuffleRequested(mAdapter.getSongList(), true);
-            }
-        }
-    };
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(0, null, mLoaderCallbacks);
-
     }
 
     @Override
     public void load() {
         getLoaderManager().restartLoader(0, null, mLoaderCallbacks);
     }
-
-
 
     private void selectSong(int position) {
 
@@ -234,7 +215,8 @@ public class AlbumFragment extends BaseFragment {
         }
     }
 
-    private final ID3TagEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener = new ID3TagEditorDialog.OnTagsEditionSuccessListener() {
+    private final ID3TagEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
+            = new ID3TagEditorDialog.OnTagsEditionSuccessListener() {
         @Override
         public void onTagsEditionSuccess() {
             ((MainActivity) getActivity()).refresh();
@@ -294,7 +276,5 @@ public class AlbumFragment extends BaseFragment {
             throw new ClassCastException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-
     }
-
 }

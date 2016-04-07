@@ -21,11 +21,6 @@
             android:icon="@drawable/ic_radio"
             android:title="@string/radio" />
 
-<!--        <item
-            android:id="@+id/action_theme"
-            android:icon="@drawable/ic_menu_theme"
-            android:title="Thème" />-->
-
     </group>
 
     <group android:id="@+id/menu_bottom">

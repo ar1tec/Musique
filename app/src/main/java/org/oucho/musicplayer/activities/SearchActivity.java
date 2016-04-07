@@ -10,20 +10,25 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.dialog.PlaylistPicker;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.loaders.AlbumLoader;
@@ -32,7 +37,9 @@ import org.oucho.musicplayer.loaders.BaseLoader;
 import org.oucho.musicplayer.loaders.SongLoader;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
+import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.ArrayList;
@@ -265,8 +272,6 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-
-
     /* *********************************************************************************************
      * Vue liste album
      * ********************************************************************************************/
@@ -361,6 +366,9 @@ public class SearchActivity extends AppCompatActivity {
             vArtist = (TextView) itemView.findViewById(R.id.artist);
             vArtwork = (ImageView) itemView.findViewById(R.id.artwork);
             itemView.findViewById(R.id.item_view).setOnClickListener(this);
+
+            ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
+            menuButton.setOnClickListener(this);
         }
 
         @Override
@@ -372,7 +380,47 @@ public class SearchActivity extends AppCompatActivity {
                 case R.id.item_view:
                     selectSong(song);
                     break;
+                case R.id.menu_button:
+                    showMenu(song, v);
+                    break;
             }
+        }
+
+
+        private void showMenu(final Song song, View v) {
+            PopupMenu popup = new PopupMenu(SearchActivity.this, v);
+            MenuInflater inflater = popup.getMenuInflater();
+            inflater.inflate(R.menu.search_song_list_item, popup.getMenu());
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Bundle data;
+                    switch (item.getItemId()) {
+                        case R.id.action_add_to_queue:
+                            data = songToBundle(song);
+                            returnToMain(MainActivity.ACTION_ADD_TO_QUEUE, data);
+                            return true;
+                        case R.id.action_add_to_playlist:
+                            showPlaylistPicker(song);
+                            return true;
+                    }
+                    return false;
+                }
+            });
+            popup.show();
+        }
+
+        private void showPlaylistPicker(final Song song) {
+            PlaylistPicker picker = PlaylistPicker.newInstance();
+            picker.setListener(new PlaylistPicker.OnPlaylistPickedListener() {
+                @Override
+                public void onPlaylistPicked(Playlist playlist) {
+                    PlaylistsUtils.addSongToPlaylist(getContentResolver(), playlist.getId(), song.getId());
+                }
+            });
+            picker.show(getSupportFragmentManager(), "pick_playlist");
+
         }
 
         private void selectSong(Song song) {

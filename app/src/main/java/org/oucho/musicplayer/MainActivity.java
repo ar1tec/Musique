@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final String ACTION_SHOW_ALBUM = "show_album";
     public static final String ACTION_SHOW_ARTIST = "show_artist";
     public static final String ACTION_PLAY_SONG = "play_song";
-    private static final String ACTION_ADD_TO_QUEUE = "add_to_queue";
+    public static final String ACTION_ADD_TO_QUEUE = "add_to_queue";
     private static final String ACTION_SET_AS_NEXT_TRACK = "set_as_next_track";
 
     private static final int SEARCH_ACTIVITY = 234;
@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements
     private final String fichier_préférence = "org.oucho.musicplayer_preferences";
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
-    private boolean favorite = false;
     private SharedPreferences préférences = null;
 
     private Intent mOnActivityResultIntent;
@@ -307,13 +306,6 @@ public class MainActivity extends AppCompatActivity implements
             mServiceBound = false;
         }
         mHandler.removeCallbacks(mUpdateProgressBar);
-
-        préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = préférences.edit();
-
-        editor.putBoolean("favorite_state", favorite);
-        editor.commit();
     }
 
     @Override
@@ -333,9 +325,6 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             updateAll();
         }
-
-        préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
-        favorite = préférences.getBoolean("favorite_state", false);
     }
 
     @Override
@@ -720,18 +709,6 @@ public class MainActivity extends AppCompatActivity implements
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             return true;
-        }
-
-
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            if (favorite) {
-                favorite = false;
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, LibraryFragment.newInstance())
-                        .commit();
-                return true;
-            }
         }
 
         return super.onKeyDown(keyCode, event);

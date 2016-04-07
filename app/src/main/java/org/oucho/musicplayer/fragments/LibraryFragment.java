@@ -18,7 +18,6 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.utils.ToolbarDrawerToggle;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -96,10 +95,6 @@ public class LibraryFragment extends BaseFragment {
                     return AlbumListFragment.newInstance();
                 case 1:
                     return SongListFragment.newInstance();
-/*                case 2:
-                    return ArtistListFragment.newInstance();*/
-/*                case 2:
-                    return GenreListFragment.newInstance();*/
                 case 2:
                     return PlaylistListFragment.newInstance();
             }
@@ -129,25 +124,6 @@ public class LibraryFragment extends BaseFragment {
         @Override
         public int getCount() {
             return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.albums).toUpperCase(l);
-                case 1:
-                    return getString(R.string.titles).toUpperCase(l);
-/*                case 2:
-                    return getString(R.string.artists).toUpperCase(l);*/
-/*                case 2:
-                    return getString(R.string.genres).toUpperCase(l);*/
-                case 2:
-                    return getString(R.string.playlists).toUpperCase(l);
-
-            }
-            return null;
         }
     }
 }

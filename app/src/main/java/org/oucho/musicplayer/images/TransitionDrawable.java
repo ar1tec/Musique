@@ -11,7 +11,7 @@ import android.os.SystemClock;
 
 public class TransitionDrawable extends Drawable {
 
-    private static final float TRANSITION_DURATION = 200F;
+    private static final float TRANSITION_DURATION = 100F;
 
     private static final long FRAMERATE = 1000 / 60;
 
