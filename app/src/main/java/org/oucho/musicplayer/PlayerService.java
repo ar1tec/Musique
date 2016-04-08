@@ -104,6 +104,7 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     private boolean mPlayImmediately = false;
 
+
     @SuppressLint("HandlerLeak")
     private final Handler mDelayedStopHandler = new Handler() {
         @Override
@@ -214,9 +215,7 @@ public class PlayerService extends Service implements OnPreparedListener,
 
         restoreState();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setupMediaSession();
-        }
+        setupMediaSession();
     }
 
     @SuppressLint("CommitPrefEdits")

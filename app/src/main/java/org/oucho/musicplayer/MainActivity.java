@@ -94,10 +94,8 @@ public class MainActivity extends AppCompatActivity implements
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
 
     private final Handler mHandler = new Handler();
-    private final String fichier_préférence = "org.oucho.musicplayer_preferences";
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
-    private SharedPreferences préférences = null;
 
     private Intent mOnActivityResultIntent;
 

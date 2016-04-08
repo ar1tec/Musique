@@ -12,8 +12,8 @@ import android.os.SystemClock;
 import org.oucho.musicplayer.PlayerService;
 
 public class SleepTimer {
-    private static final String KEY_TIMER_SET = "org.oucho.musicplayer.KEY_TIMER_SET";
-    private static final String KEY_TIMER_EXPIRATION = "org.oucho.musicplayer.KEY_TIMER_EXPIRATION";
+    private static final String KEY_TIMER_SET = "KEY_TIMER_SET";
+    private static final String KEY_TIMER_EXPIRATION = "KEY_TIMER_EXPIRATION";
 
     public static boolean isTimerSet(SharedPreferences prefs) {
         return prefs.getBoolean(KEY_TIMER_SET, false) && SystemClock.elapsedRealtime() - prefs.getLong(KEY_TIMER_EXPIRATION, 0) < 0;
