@@ -532,8 +532,10 @@ public class MainActivity extends AppCompatActivity implements
         if (mPlaybackService != null) {
             ImageButton quickButton = (ImageButton) findViewById(R.id.quick_play_pause_toggle);
             if (mPlaybackService.isPlaying()) {
+                assert quickButton != null;
                 quickButton.setImageResource(R.drawable.musicplayer_pause);
             } else {
+                assert quickButton != null;
                 quickButton.setImageResource(R.drawable.musicplayer_play);
             }
         }
@@ -610,6 +612,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (mPlaybackService != null && mPlaybackService.hasPlaylist()) {
 
+            assert trackInfoLayout != null;
             if (trackInfoLayout.getVisibility() != View.VISIBLE) {
                 trackInfoLayout.setVisibility(View.VISIBLE);
                 trackInfoLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_grow_fade_in_from_bottom));
@@ -619,11 +622,13 @@ public class MainActivity extends AppCompatActivity implements
             String artist = mPlaybackService.getArtistName();
 
             if (title != null) {
+                assert ((TextView) findViewById(R.id.song_title)) != null;
                 ((TextView) findViewById(R.id.song_title)).setText(title);
 
             }
 
             if (artist != null) {
+                assert ((TextView) findViewById(R.id.song_artist)) != null;
                 ((TextView) findViewById(R.id.song_artist)).setText(artist);
             }
 
@@ -636,6 +641,7 @@ public class MainActivity extends AppCompatActivity implements
             }
 
         } else {
+            assert trackInfoLayout != null;
             trackInfoLayout.setVisibility(View.GONE);
         }
     }
@@ -725,6 +731,7 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        assert drawer != null;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             return true;

@@ -70,6 +70,7 @@ public class PlayerActivity extends AppCompatActivity
     private static final String fichier_préférence = "PlaybackState";
 
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +104,9 @@ public class PlayerActivity extends AppCompatActivity
         ImageView button_prev = (ImageView) findViewById(R.id.prev);
 
 
+        assert button_next != null;
         button_next.setColorFilter(couleur, PorterDuff.Mode.SRC_ATOP);
+        assert button_prev != null;
         button_prev.setColorFilter(couleur, PorterDuff.Mode.SRC_ATOP);
 
 
@@ -439,8 +442,10 @@ public class PlayerActivity extends AppCompatActivity
         if (mPlaybackService != null) {
             ImageView button = (ImageView) findViewById(R.id.play_pause_toggle);
             if (mPlaybackService.isPlaying()) {
+                assert button != null;
                 button.setImageResource(R.drawable.musicplayer_pause);
             } else {
+                assert button != null;
                 button.setImageResource(R.drawable.musicplayer_play);
             }
 
@@ -454,9 +459,11 @@ public class PlayerActivity extends AppCompatActivity
         Log.d("shuffle", "shuffle " + String.valueOf(shuffle));
         ImageView shuffleButton = (ImageView) findViewById(R.id.shuffle);
         if (shuffle) {
+            assert shuffleButton != null;
             shuffleButton.setImageResource(R.drawable.musicplayer_shuffle_on);
 
         } else {
+            assert shuffleButton != null;
             shuffleButton.setImageResource(R.drawable.musicplayer_shuffle);
 
         }
@@ -466,10 +473,13 @@ public class PlayerActivity extends AppCompatActivity
         ImageView repeatButton = (ImageView) findViewById(R.id.repeat);
         int mode = mPlaybackService.getRepeatMode();
         if (mode == PlayerService.NO_REPEAT) {
+            assert repeatButton != null;
             repeatButton.setImageResource(R.drawable.musicplayer_repeat_no);
         } else if (mode == PlayerService.REPEAT_ALL) {
+            assert repeatButton != null;
             repeatButton.setImageResource(R.drawable.musicplayer_repeat);
         } else if (mode == PlayerService.REPEAT_CURRENT) {
+            assert repeatButton != null;
             repeatButton.setImageResource(R.drawable.musicplayer_repeat_once);
 
         }

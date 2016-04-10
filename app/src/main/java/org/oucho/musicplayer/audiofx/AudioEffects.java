@@ -147,6 +147,7 @@ public class AudioEffects {
         if (sEqualizer == null && sEqualizerValues.levelsSet && sEqualizerValues.bandLevels.length > band) {
             return sEqualizerValues.bandLevels[band];
         }
+        assert sEqualizer != null;
         return sEqualizer.getBandLevel(band);
     }
 

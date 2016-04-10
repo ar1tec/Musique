@@ -97,7 +97,7 @@ public class ArtworkCache extends BitmapCache<Long> {
                 ContentResolver res = mContext.getContentResolver();
                 return BitmapHelper.decode(res.openInputStream(uri), reqWidth, reqHeight);
             }
-        } catch (IOException e) {}
+        } catch (IOException ignored) {}
         return null;
     }
 

@@ -126,6 +126,7 @@ public class EqualizerActivity extends AppCompatActivity {
 
     private void initBassBoost() {
         SeekBar bassBoost = (SeekBar) findViewById(R.id.bassboost_slider);
+        assert bassBoost != null;
         bassBoost.setMax(AudioEffects.BASSBOOST_MAX_STRENGTH);
         bassBoost.setProgress(AudioEffects.getBassBoostStrength());
         bassBoost.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -203,6 +204,7 @@ public class EqualizerActivity extends AppCompatActivity {
                     }
                 });
 
+                assert layout != null;
                 layout.addView(v, band, lp);
             }
     }
@@ -216,6 +218,7 @@ public class EqualizerActivity extends AppCompatActivity {
 
         for (short band = 0; band < bands; band++) {
 
+            assert layout != null;
             View v = layout.getChildAt(band);
 
             final TextView freqTextView = (TextView) v.findViewById(R.id.frequency);
