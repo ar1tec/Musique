@@ -79,7 +79,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
     }
 
     @Nullable
-    private Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter, String orderBy) {
+    Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter, String orderBy) {
         if (!Permissions.checkPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return null;
         }

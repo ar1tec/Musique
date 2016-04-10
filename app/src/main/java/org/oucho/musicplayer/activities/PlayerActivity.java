@@ -523,8 +523,8 @@ public class PlayerActivity extends AppCompatActivity
 
         TextView vTitle;
         TextView vArtist;
-        ImageButton vReorderButton;
-        final View itemView;
+        /* private missing */ ImageButton vReorderButton;
+        /* private missing */ View itemView;
 
         public QueueItemViewHolder(View itemView) {
             super(itemView);

@@ -88,8 +88,8 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
     class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView vArtwork;
-        TextView vName;
+        /* private missing */ ImageView vArtwork;
+        /* private missing */ TextView vName;
 
         TextView vArtist;
 
