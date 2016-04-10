@@ -63,7 +63,7 @@ public class PlaylistFragment extends BaseFragment {
 
         @Override
         public void onLoaderReset(Loader<List<Song>> loader) {
-
+            // This constructor is intentionally empty, pourquoi ? parce que !
         }
     };
 
@@ -177,9 +177,9 @@ public class PlaylistFragment extends BaseFragment {
 
 
         final View itemView;
-        final TextView vTitle;
-        final TextView vArtist;
-        final ImageButton vReorderButton;
+        TextView vTitle;
+        TextView vArtist;
+        ImageButton vReorderButton;
 
         public SongViewHolder(View itemView) {
             super(itemView);
