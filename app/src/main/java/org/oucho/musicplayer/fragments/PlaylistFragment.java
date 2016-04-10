@@ -176,10 +176,10 @@ public class PlaylistFragment extends BaseFragment {
     private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener, OnTouchListener {
 
 
-        View itemView;
-        TextView vTitle;
-        TextView vArtist;
-        ImageButton vReorderButton;
+        View itemView; // NOPMD
+        TextView vTitle; // NOPMD
+        TextView vArtist; // NOPMD
+        ImageButton vReorderButton; // NOPMD
 
         public SongViewHolder(View itemView) {
             super(itemView);

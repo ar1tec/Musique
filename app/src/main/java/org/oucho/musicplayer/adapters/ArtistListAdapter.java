@@ -82,9 +82,9 @@ public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewH
 
     class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView vName;
-        TextView vAlbumCount;
-        ImageView vArtistImage;
+        TextView vName; // NOPMD
+        TextView vAlbumCount; // NOPMD
+        ImageView vArtistImage; // NOPMD
 
         public ArtistViewHolder(View itemView) {
             super(itemView);
