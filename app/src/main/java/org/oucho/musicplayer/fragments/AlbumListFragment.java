@@ -106,10 +106,6 @@ public class AlbumListFragment extends BaseFragment {
     private boolean mShowScrollerBubble = true;
     private FastScroller mFastScroller;
 
-    public AlbumListFragment() {
-        // Required empty public constructor
-    }
-
     public static AlbumListFragment newInstance() {
 
         return new AlbumListFragment();

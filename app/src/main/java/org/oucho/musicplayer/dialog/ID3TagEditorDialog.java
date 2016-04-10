@@ -41,11 +41,6 @@ public class ID3TagEditorDialog extends DialogFragment {
     private EditText mGenreEditText;
     private OnTagsEditionSuccessListener mListener;
 
-
-    public ID3TagEditorDialog() {
-        // Required empty public constructor
-    }
-
     public static ID3TagEditorDialog newInstance(Song song) {
         ID3TagEditorDialog fragment = new ID3TagEditorDialog();
         Bundle args = new Bundle();

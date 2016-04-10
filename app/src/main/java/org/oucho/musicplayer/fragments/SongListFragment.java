@@ -122,10 +122,6 @@ public class SongListFragment extends BaseFragment {
         }
     };
 
-    public SongListFragment() {
-        // Required empty public constructor
-    }
-
     public static SongListFragment newInstance() {
 
         return new SongListFragment();

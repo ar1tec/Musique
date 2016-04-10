@@ -18,10 +18,6 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
 
     private List<Song> mSongList = Collections.emptyList();
 
-    public SongAlbumListAdapter() {
-
-    }
-
     public void setData(List<Song> data) {
         mSongList = data;
         notifyDataSetChanged();

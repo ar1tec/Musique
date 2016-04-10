@@ -57,9 +57,6 @@ public class AlbumFragment extends BaseFragment {
     private String Année = "";
     private String nb_Morceaux = "";
 
-    public AlbumFragment() {
-        // Required empty public constructor
-    }
 
     public static AlbumFragment newInstance(Album album) {
         AlbumFragment fragment = new AlbumFragment();

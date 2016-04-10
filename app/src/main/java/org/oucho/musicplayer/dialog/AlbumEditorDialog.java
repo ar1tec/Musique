@@ -40,11 +40,6 @@ public class AlbumEditorDialog extends DialogFragment {
     private EditText mYearEditText;
     private OnEditionSuccessListener mListener;
 
-
-    public AlbumEditorDialog() {
-        // Required empty public constructor
-    }
-
     public static AlbumEditorDialog newInstance(Album album) {
         AlbumEditorDialog fragment = new AlbumEditorDialog();
         Bundle args = new Bundle();

@@ -38,9 +38,6 @@ public class GenreFragment extends SongListFragment {
         }
     };
 
-    public GenreFragment() {
-        super();
-    }
 
     public static GenreFragment newInstance(Genre genre) {
 

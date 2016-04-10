@@ -11,9 +11,6 @@ public class AudioEffectsReceiver extends BroadcastReceiver {
     public static final String ACTION_OPEN_AUDIO_EFFECT_SESSION = "org.oucho.musicplayer.OPEN_AUDIO_EFFECT_SESSION";
     public static final String ACTION_CLOSE_AUDIO_EFFECT_SESSION = "org.oucho.musicplayer.CLOSE_AUDIO_EFFECT_SESSION";
 
-    public AudioEffectsReceiver() {
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();

@@ -100,9 +100,6 @@ public class GenreListFragment extends BaseFragment {
         }
     };
 
-    public GenreListFragment() {
-        // Required empty public constructor
-    }
 
     public static GenreListFragment newInstance() {
 

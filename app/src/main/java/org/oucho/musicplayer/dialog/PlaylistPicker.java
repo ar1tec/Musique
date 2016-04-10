@@ -120,10 +120,6 @@ public class PlaylistPicker extends DialogFragment {
         }
     };
 
-    public PlaylistPicker() {
-        // Required empty public constructor
-    }
-
     public static PlaylistPicker newInstance() {
 
         return new PlaylistPicker();

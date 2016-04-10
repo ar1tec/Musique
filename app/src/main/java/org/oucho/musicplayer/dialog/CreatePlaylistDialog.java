@@ -18,10 +18,6 @@ public class CreatePlaylistDialog extends DialogFragment {
 
     private OnPlaylistCreatedListener mListener;
 
-    public CreatePlaylistDialog() {
-        // Required empty public constructor
-    }
-
     public static CreatePlaylistDialog newInstance() {
 
         return new CreatePlaylistDialog();

@@ -146,9 +146,6 @@ public class ArtistFragment extends BaseFragment {
     private int mThumbHeight;
     private int mArtworkSize;
 
-    public ArtistFragment() {
-        // Required empty public constructor
-    }
 
     public static ArtistFragment newInstance(Artist artist) {
         ArtistFragment fragment = new ArtistFragment();

@@ -82,11 +82,6 @@ public class ArtistListFragment extends BaseFragment {
     private boolean mShowScrollerBubble = true;
     private FastScroller mFastScroller;
 
-
-    public ArtistListFragment() {
-        // Required empty public constructor
-    }
-
     public static ArtistListFragment newInstance() {
 
         return new ArtistListFragment();
