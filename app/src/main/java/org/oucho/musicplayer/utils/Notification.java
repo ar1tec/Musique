@@ -94,11 +94,14 @@ public class Notification {
     }
 
     private static void setBitmapAndBuild(Bitmap bitmap, @NonNull PlayerService playbackService, NotificationCompat.Builder builder) {
-        if (bitmap == null) {
+
+        Bitmap image = bitmap;
+
+        if (image == null) {
             BitmapDrawable d = ((BitmapDrawable) ContextCompat.getDrawable(playbackService, R.drawable.ic_stat_note));
-            bitmap = d.getBitmap();
+            image = d.getBitmap();
         }
-        builder.setLargeIcon(bitmap);
+        builder.setLargeIcon(image);
 
 
         builder.setStyle(new NotificationCompat.MediaStyle()

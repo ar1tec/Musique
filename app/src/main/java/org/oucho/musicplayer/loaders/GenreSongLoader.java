@@ -12,9 +12,9 @@ public class GenreSongLoader extends SongLoader {
         mGenreId = genreId;
     }
 
-    @Override
-    protected Uri getContentUri() {
+/*    @Override
+    public  Uri getContentUri() {
         return MediaStore.Audio.Genres.Members.getContentUri(
                 "external", mGenreId);
-    }
+    }*/
 }

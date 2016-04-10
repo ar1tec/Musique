@@ -60,8 +60,8 @@ public abstract class AdapterWithHeader<V extends RecyclerView.ViewHolder> exten
         return getItemViewTypeImpl(position - (mHeaderView != null ? 1 : 0));
     }
 
-    @Override
-    void triggerOnItemClickListener(int position, View view) {
+    //@Override
+    public void triggerOnItemClickListener(int position, View view) {
         super.triggerOnItemClickListener(position - (mHeaderView != null ? 1 : 0), view);
     }
 

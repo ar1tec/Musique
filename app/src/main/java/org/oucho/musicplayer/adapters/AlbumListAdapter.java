@@ -88,8 +88,9 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
     class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView vArtwork;
-        TextView vName;
+        final ImageView vArtwork;
+        final TextView vName;
+
         TextView vArtist;
 
         public AlbumViewHolder(View itemView) {
@@ -98,6 +99,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
             vName = (TextView) itemView.findViewById(R.id.album_name);
             vArtwork.setOnClickListener(this);
             if (mLayoutId != R.layout.small_album_grid_item) {
+
                 vArtist = (TextView) itemView.findViewById(R.id.artist_name);
                 itemView.findViewById(R.id.album_info).setOnClickListener(this);
             } else {

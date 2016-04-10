@@ -84,7 +84,7 @@ public class SongLoader extends BaseLoader<List<Song>> {
         return mSongList;
     }
 
-    Uri getContentUri() {
+    private Uri getContentUri() {
         return MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
     }
 
