@@ -87,7 +87,7 @@ public class SongListFragment extends BaseFragment {
     private boolean mShowScrollerBubble = true;
     private FastScroller mFastScroller;
 
-    void populateAdapter(List<Song> songList) {
+    public void populateAdapter(List<Song> songList) {
         mAdapter.setData(songList);
     }
 
@@ -316,7 +316,7 @@ public class SongListFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    LoaderCallbacks<List<Song>> getLoaderCallbacks() {
+    private LoaderCallbacks<List<Song>> getLoaderCallbacks() {
         return mLoaderCallbacks;
     }
 

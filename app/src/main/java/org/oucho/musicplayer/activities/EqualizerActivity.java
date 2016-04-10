@@ -34,8 +34,6 @@ public class EqualizerActivity extends AppCompatActivity {
 
     private Spinner mSpinner;
 
-    Context context;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

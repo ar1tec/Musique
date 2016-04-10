@@ -1,8 +1,6 @@
 package org.oucho.musicplayer.loaders;
 
 import android.content.Context;
-import android.net.Uri;
-import android.provider.MediaStore;
 
 public class GenreSongLoader extends SongLoader {
     private final long mGenreId;

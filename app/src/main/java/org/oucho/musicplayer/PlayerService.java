@@ -17,7 +17,6 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -580,7 +579,7 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
         mCurrentPosition = position;
         Song song = mPlayList.get(position);
-        if (song != mCurrentSong) {
+        if (!song.equals(mCurrentSong)) {
             mCurrentSong = song;
             if (play) {
                 openAndPlay();

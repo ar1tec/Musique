@@ -63,8 +63,8 @@ public class GenreFragment extends SongListFragment {
         }
     }
 
-    @Override
+/*    //@Override
     protected LoaderManager.LoaderCallbacks<List<Song>> getLoaderCallbacks() {
         return mLoaderCallbacks;
-    }
+    }*/
 }

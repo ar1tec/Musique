@@ -278,7 +278,7 @@ public class SearchActivity extends AppCompatActivity {
 
     class AlbumViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
-        ImageView vArtwork;
+        final ImageView vArtwork;
         TextView vName;
         TextView vArtist;
 
@@ -324,8 +324,8 @@ public class SearchActivity extends AppCompatActivity {
     class ArtistViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
         final TextView vName;
-        final TextView vAlbumCount;
-        final ImageView vArtistImage;
+        TextView vAlbumCount;
+        ImageView vArtistImage;
 
         public ArtistViewHolder(View itemView) {
             super(itemView);
@@ -359,8 +359,8 @@ public class SearchActivity extends AppCompatActivity {
     class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
         final TextView vTitle;
-        final TextView vArtist;
-        final ImageView vArtwork;
+        TextView vArtist;
+        ImageView vArtwork;
 
         public SongViewHolder(View itemView) {
             super(itemView);
@@ -450,7 +450,7 @@ public class SearchActivity extends AppCompatActivity {
 
     class SectionViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView vSection;
+        TextView vSection;
 
         public SectionViewHolder(View itemView) {
             super(itemView);

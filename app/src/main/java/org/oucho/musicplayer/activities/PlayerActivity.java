@@ -144,7 +144,7 @@ public class PlayerActivity extends AppCompatActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // handle the preference change here
 
-        if (key.equals("currentPosition")) {
+        if ("currentPosition".equals(key)) {
             total_track = getSizeQueue();
 
             SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
@@ -482,7 +482,7 @@ public class PlayerActivity extends AppCompatActivity
         }
 
         List<Song> queue = mPlaybackService.getPlayList();
-        if (queue != mQueue) {
+        if (!queue.equals(mQueue)) {
 
             Log.d("eee", "testt");
             mQueue = queue;
@@ -521,9 +521,9 @@ public class PlayerActivity extends AppCompatActivity
 
     class QueueItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnTouchListener {
 
-        final TextView vTitle;
-        final TextView vArtist;
-        final ImageButton vReorderButton;
+        TextView vTitle;
+        TextView vArtist;
+        ImageButton vReorderButton;
         final View itemView;
 
         public QueueItemViewHolder(View itemView) {

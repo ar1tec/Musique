@@ -69,7 +69,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
     }
 
 
-    String getSelectionString() {
+    public String getSelectionString() {
         return mSelectionString;
 
     }
@@ -86,7 +86,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
 
         Cursor cursor;
         if (filter != null) {
-            if (filter.equals("")) {
+            if ("".equals(filter)) {
                 return null; // empty filter means that we don't want any result
             }
             selection = DatabaseUtilsCompat.concatenateWhere(selection, filteredFieldName + " LIKE ?");
