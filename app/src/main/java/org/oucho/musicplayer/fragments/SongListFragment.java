@@ -52,6 +52,7 @@ public class SongListFragment extends BaseFragment {
     private boolean mShowToolbar = false;
     private boolean mShowFastScroller = true;
 
+    private Context context;
 
     private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderCallbacks<List<Song>>() {
 
@@ -102,12 +103,12 @@ public class SongListFragment extends BaseFragment {
         public void onItemClick(int position, View view) {
             switch (view.getId()) {
                 case R.id.item_view:
-
-
                     selectSong(position);
                     break;
                 case R.id.menu_button:
                     showMenu(position, view);
+                    break;
+                default: //do nothing
                     break;
             }
         }
@@ -148,6 +149,8 @@ public class SongListFragment extends BaseFragment {
                     case R.id.action_add_to_playlist:
                         showPlaylistPicker(song);
                         return true;
+                    default: //do nothing
+                        break;
                 }
                 return false;
             }
@@ -203,7 +206,6 @@ public class SongListFragment extends BaseFragment {
         }
     }
 
-    Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

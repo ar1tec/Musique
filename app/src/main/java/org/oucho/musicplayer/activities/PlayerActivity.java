@@ -234,6 +234,8 @@ public class PlayerActivity extends AppCompatActivity
                     mPlaybackService.setRepeatMode(mode);
                     updateRepeatButton();
                     break;
+                default: //do nothing
+                    break;
             }
         }
     };
@@ -293,6 +295,8 @@ public class PlayerActivity extends AppCompatActivity
                     Log.d("eee", "position_changed");
                     updateQueue();
                     break;
+                default: //do nothing
+                    break;
             }
         }
     };
@@ -319,9 +323,9 @@ public class PlayerActivity extends AppCompatActivity
             case R.id.action_view_queue:
                 toggleQueue();
                 return true;
-/*            case R.id.action_settings:
-                NavigationUtils.showPreferencesActivity(this);
-                return true;*/
+
+            default: //do nothing
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -556,6 +560,8 @@ public class PlayerActivity extends AppCompatActivity
                         if (mQueueAdapter.getItemCount() > 0) {
                             mQueueAdapter.removeItem(position);
                         }
+                        break;
+                    default: //do nothing
                         break;
                 }
 

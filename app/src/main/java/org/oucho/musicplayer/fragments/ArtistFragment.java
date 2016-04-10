@@ -135,6 +135,8 @@ public class ArtistFragment extends BaseFragment {
                 case R.id.menu_button:
                     showAlbumMenu(position, view);
                     break;
+                default: //do nothing
+                    break;
 
             }
         }
@@ -184,6 +186,8 @@ public class ArtistFragment extends BaseFragment {
                     case R.id.action_add_to_playlist:
                         showPlaylistPicker(song);
                         return true;
+                    default: //do nothing
+                        break;
                 }
                 return false;
             }
@@ -230,6 +234,8 @@ public class ArtistFragment extends BaseFragment {
                     case R.id.action_add_to_playlist:
                         showPlaylistPicker(album);
                         return true;
+                    default: //do nothing
+                        break;
                 }
                 return false;
             }
@@ -364,6 +370,8 @@ public class ArtistFragment extends BaseFragment {
                     break;
                 case R.id.menu_button:
                     showSongMenu(position, v);
+                    break;
+                default: //do nothing
                     break;
             }
         }

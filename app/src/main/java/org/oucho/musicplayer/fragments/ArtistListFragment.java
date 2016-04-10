@@ -37,6 +37,8 @@ public class ArtistListFragment extends BaseFragment {
 
     private boolean mShowFastScroller = true;
 
+    private Context context;
+
     private final LoaderManager.LoaderCallbacks<List<Artist>> mLoaderCallbacks = new LoaderCallbacks<List<Artist>>() {
 
         @Override
@@ -87,7 +89,7 @@ public class ArtistListFragment extends BaseFragment {
         return new ArtistListFragment();
     }
 
-    Context context;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -161,6 +163,8 @@ public class ArtistListFragment extends BaseFragment {
             case R.id.menu_sort_by_number_of_albums:
                 prefUtils.setArtistSortOrder(SortOrder.ArtistSortOrder.ARTIST_NUMBER_OF_ALBUMS);
                 load();
+                break;
+            default: //do nothing
                 break;
 
 

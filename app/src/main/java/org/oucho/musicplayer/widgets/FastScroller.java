@@ -251,6 +251,8 @@ public class FastScroller extends View {
                         RecyclerView.SCROLL_STATE_IDLE);
 
                 break;
+            default: //do nothing
+                break;
         }
         return mScrolling;
     }

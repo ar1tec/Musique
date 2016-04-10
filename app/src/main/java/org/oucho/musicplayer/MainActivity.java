@@ -183,6 +183,8 @@ public class MainActivity extends AppCompatActivity implements
                 killNotif();
                 System.exit(0);
                 break;
+            default: //do nothing
+                break;
         }
         return true;
     }
@@ -236,6 +238,8 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.track_info:
                     NavigationUtils.showPlaybackActivity(MainActivity.this, true);
                     break;
+                default: //do nothing
+                    break;
             }
         }
     };
@@ -268,6 +272,8 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.action_search:
                 NavigationUtils.showSearchActivity(this, SEARCH_ACTIVITY);
                 return true;
+            default: //do nothing
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -676,6 +682,8 @@ public class MainActivity extends AppCompatActivity implements
                     break;
                 case DialogInterface.BUTTON_NEUTRAL:
                     break;
+                default: //do nothing
+                    break;
             }
         }
     };
@@ -772,6 +780,8 @@ public class MainActivity extends AppCompatActivity implements
                     mPlaybackService.setAutoPauseEnabled(true);
                 }
                 editor.commit();
+                break;
+            default: //do nothing
                 break;
         }
     }

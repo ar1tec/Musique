@@ -102,6 +102,8 @@ public class PlaylistPicker extends DialogFragment {
                     });
                     dialog.show(getChildFragmentManager(), "create_playlist");
                     break;
+                default: //do nothing
+                    break;
             }
 
 

@@ -144,6 +144,8 @@ public class PlayerService extends Service implements OnPreparedListener,
                 case TelephonyManager.CALL_STATE_RINGING:
                     pause();
                     break;
+                default: //do nothing
+                    break;
             }
         }
     };
@@ -177,6 +179,8 @@ public class PlayerService extends Service implements OnPreparedListener,
                     mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);
                     pause();
                     mPausedByFocusLoss = false;
+                    break;
+                default: //do nothing
                     break;
             }
         }
@@ -632,6 +636,8 @@ public class PlayerService extends Service implements OnPreparedListener,
                 return REPEAT_CURRENT;
             case REPEAT_CURRENT:
                 return NO_REPEAT;
+            default: //do nothing
+                break;
         }
         return NO_REPEAT;
     }

@@ -40,6 +40,8 @@ public class GenreListFragment extends BaseFragment {
     private final List<Genre> mGenreList = new ArrayList<>();
     private GenreListAdapter mAdapter;
 
+    private Context context;
+
     private final LoaderManager.LoaderCallbacks<Cursor> mLoaderCallbacks = new LoaderCallbacks<Cursor>() {
 
         @Override
@@ -106,7 +108,6 @@ public class GenreListFragment extends BaseFragment {
         return new GenreListFragment();
     }
 
-    Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
