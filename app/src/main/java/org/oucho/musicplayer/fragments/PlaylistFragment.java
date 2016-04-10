@@ -173,13 +173,13 @@ public class PlaylistFragment extends BaseFragment {
         getLoaderManager().restartLoader(0, null, mLoaderCallbacks);
     }
 
-    class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener, OnTouchListener {
+    private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener, OnTouchListener {
 
 
-        /* private missing */ View itemView;
+        View itemView;
         TextView vTitle;
         TextView vArtist;
-        /* private missing */ ImageButton vReorderButton;
+        ImageButton vReorderButton;
 
         public SongViewHolder(View itemView) {
             super(itemView);

@@ -419,8 +419,7 @@ public class PlayerActivity extends AppCompatActivity
             int duration = mPlaybackService.getTrackDuration();
             if (duration != -1) {
                 mSeekBar.setMax(duration);
-                ((TextView) findViewById(R.id.track_duration))
-                        .setText(msToText(duration));
+                ((TextView) findViewById(R.id.track_duration)).setText(msToText(duration));
                 updateSeekBar();
             }
 
