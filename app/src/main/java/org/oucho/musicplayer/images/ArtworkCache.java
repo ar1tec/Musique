@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.graphics.BitmapCompat;
 import android.support.v4.util.LruCache;
-import android.util.Log;
 
 import org.oucho.musicplayer.R;
 
@@ -19,7 +18,6 @@ public class ArtworkCache extends BitmapCache<Long> {
 
 
     private static final LruCache<Long, Bitmap> sThumbCache;
-    private static final String TAG = "ArtworkCache";
     private static ArtworkCache sInstance;
 
     static {
@@ -99,9 +97,7 @@ public class ArtworkCache extends BitmapCache<Long> {
                 ContentResolver res = mContext.getContentResolver();
                 return BitmapHelper.decode(res.openInputStream(uri), reqWidth, reqHeight);
             }
-        } catch (IOException e) {
-            Log.e(TAG, "get image from contentresolver", e);
-        }
+        } catch (IOException e) {}
         return null;
     }
 

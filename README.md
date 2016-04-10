@@ -1,6 +1,8 @@
 # Musique
  ![Icône](/app/src/main/res/mipmap-xxhdpi/ic_launcher.png) 
  
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/3297d1140d784847a1c617da31a86c51)](https://www.codacy.com/app/icare-slak/Radio)
+
   Music player for Android
 
 Lecteur de fichiers musicaux pour android
@@ -18,3 +20,7 @@ Lecteur de fichiers musicaux pour android
  <img alt="screenshot" src="/screenshots/4.jpg?raw=true" width="250px" />
  <img alt="screenshot" src="/screenshots/5.jpg?raw=true" width="250px" />
  <img alt="screenshot" src="/screenshots/6.jpg?raw=true" width="250px" />
+
+
+
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/3297d1140d784847a1c617da31a86c51)](https://www.codacy.com/app/icare-slak/Radio)

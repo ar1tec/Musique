@@ -80,10 +80,15 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="Album"
+                    android:text="Artiste"
                     android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorAccent"
                     android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:shadowColor="@color/appwidget_bg"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"
                     card_view:ignore="HardcodedText" />
 
                 <TextView
@@ -97,7 +102,11 @@
                     android:text="Artiste"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="@android:color/black"
-                    android:visibility="visible"
+                    android:textSize="18sp"
+                    android:shadowColor="@color/appwidget_bg"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"
                     card_view:ignore="HardcodedText" />
 
                 <TextView
@@ -109,6 +118,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="Année"
+                    android:textSize="16sp"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:visibility="visible"
                     card_view:ignore="HardcodedText" />
@@ -117,6 +127,8 @@
                     android:id="@+id/line4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24.0dip"
+                    android:textSize="16sp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="Nombre morceaux"

@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.AdapterWithHeader;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
 import org.oucho.musicplayer.dialog.ID3TagEditorDialog;
@@ -32,7 +31,6 @@ import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.utils.RecyclerViewUtils;
 
 import java.util.List;
 
@@ -135,7 +133,7 @@ public class AlbumFragment extends BaseFragment {
         mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.artist_image_req_width);
         mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
 
-        getActivity().setTitle(Titre);
+        getActivity().setTitle(R.string.album);
     }
 
 

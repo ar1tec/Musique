@@ -591,6 +591,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
+
+    /******************************************************
+     * Mise à jour des informations de la barre de lecture
+     ******************************************************/
+
     @SuppressLint("PrivateResource")
     private void updateTrackInfo() {
         View trackInfoLayout = findViewById(R.id.track_info);
@@ -626,6 +631,12 @@ public class MainActivity extends AppCompatActivity implements
             trackInfoLayout.setVisibility(View.GONE);
         }
     }
+
+
+
+    /***********************
+     * Barre de progression
+     ***********************/
 
     private void updateProgressBar() {
         if (mPlaybackService != null) {
@@ -729,6 +740,9 @@ public class MainActivity extends AppCompatActivity implements
         } catch (RuntimeException ignore){}
     }
 
+    /***********************************************************************************************
+     * Purge du cache des images
+     **********************************************************************************************/
     private void clearCache() {
         ArtistImageCache.getInstance().clear();
         ArtworkCache.getInstance().clear();
