@@ -278,9 +278,9 @@ public class SearchActivity extends AppCompatActivity {
 
     class AlbumViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
-        final ImageView vArtwork;
-        final TextView vName;
-        final TextView vArtist;
+        ImageView vArtwork;
+        TextView vName;
+        TextView vArtist;
 
 
         public AlbumViewHolder(View itemView) {
@@ -308,6 +308,8 @@ public class SearchActivity extends AppCompatActivity {
                     data.putInt(MainActivity.ALBUM_YEAR, album.getYear());
                     data.putInt(MainActivity.ALBUM_TRACK_COUNT, album.getTrackCount());
                     returnToMain(MainActivity.ACTION_SHOW_ALBUM, data);
+                    break;
+                default: //do nothing
                     break;
             }
         }
@@ -383,6 +385,8 @@ public class SearchActivity extends AppCompatActivity {
                 case R.id.menu_button:
                     showMenu(song, v);
                     break;
+                default: //do nothing
+                    break;
             }
         }
 
@@ -404,6 +408,8 @@ public class SearchActivity extends AppCompatActivity {
                         case R.id.action_add_to_playlist:
                             showPlaylistPicker(song);
                             return true;
+                        default: //do nothing
+                            break;
                     }
                     return false;
                 }
@@ -546,6 +552,8 @@ public class SearchActivity extends AppCompatActivity {
                     itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_section, parent, false);
                     viewHolder = new SectionViewHolder(itemView);
                     return viewHolder;
+                default: //do nothing
+                    break;
             }
             return null;
         }
@@ -602,6 +610,8 @@ public class SearchActivity extends AppCompatActivity {
                 case SECTION_SONGS:
                     ((SectionViewHolder) viewHolder).vSection.setText(R.string.titles);
 
+                    break;
+                default: //do nothing
                     break;
             }
         }

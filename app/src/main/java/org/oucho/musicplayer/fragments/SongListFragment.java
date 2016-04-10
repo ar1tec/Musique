@@ -310,6 +310,8 @@ public class SongListFragment extends BaseFragment {
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_YEAR);
                 load();
                 break;
+            default: //do nothing
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

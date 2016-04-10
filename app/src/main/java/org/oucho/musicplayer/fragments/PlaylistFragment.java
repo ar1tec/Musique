@@ -204,7 +204,8 @@ public class PlaylistFragment extends BaseFragment {
                 case R.id.delete_button:
                     mAdapter.removeItem(position);
                     break;
-
+                default: //do nothing
+                    break;
             }
         }
 

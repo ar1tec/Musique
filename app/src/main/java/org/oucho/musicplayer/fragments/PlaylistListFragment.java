@@ -36,10 +36,14 @@ import java.util.Locale;
 
 public class PlaylistListFragment extends BaseFragment {
 
+    private Context context;
+
     private static final String[] sProjection = {
             MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME};
 
     private PlaylistListAdapter mAdapter;
+
+
 
     private final LoaderManager.LoaderCallbacks<Cursor> mLoaderCallbacks = new LoaderCallbacks<Cursor>() {
 
@@ -92,7 +96,6 @@ public class PlaylistListFragment extends BaseFragment {
         return new PlaylistListFragment();
     }
 
-    Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,6 +149,8 @@ public class PlaylistListFragment extends BaseFragment {
         switch (item.getItemId()) {
             case R.id.action_create_playlist:
                 showCreatePlaylistDialog();
+                break;
+            default: //do nothing
                 break;
         }
         return super.onOptionsItemSelected(item);

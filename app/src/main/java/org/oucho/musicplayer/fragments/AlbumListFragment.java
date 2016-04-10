@@ -41,6 +41,8 @@ public class AlbumListFragment extends BaseFragment {
 
     private AlbumListAdapter mAdapter;
 
+    private Context context;
+
 
     private final LoaderManager.LoaderCallbacks<List<Album>> mLoaderCallbacks = new LoaderCallbacks<List<Album>>() {
 
@@ -98,7 +100,8 @@ public class AlbumListFragment extends BaseFragment {
                 case R.id.menu_button:
                     showMenu(position, view);
                     break;
-
+                default: //do nothing
+                    break;
             }
         }
     };
@@ -129,6 +132,8 @@ public class AlbumListFragment extends BaseFragment {
                     case R.id.action_add_to_playlist:
                         showPlaylistPicker(album);
                         return true;
+                    default: //do nothing
+                        break;
                 }
                 return false;
             }
@@ -154,7 +159,6 @@ public class AlbumListFragment extends BaseFragment {
 
     }
 
-    Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -230,6 +234,8 @@ public class AlbumListFragment extends BaseFragment {
             case R.id.menu_sort_by_year:
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_YEAR);
                 load();
+                break;
+            default: //do nothing
                 break;
         }
         return super.onOptionsItemSelected(item);

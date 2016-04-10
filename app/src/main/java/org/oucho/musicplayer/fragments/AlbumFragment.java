@@ -188,6 +188,8 @@ public class AlbumFragment extends BaseFragment {
                 case R.id.menu_button:
                     showMenu(position, view);
                     break;
+                default: //do nothing
+                    break;
             }
         }
     };
@@ -238,6 +240,8 @@ public class AlbumFragment extends BaseFragment {
                     case R.id.action_add_to_playlist:
                         showPlaylistPicker(song);
                         return true;
+                    default: //do nothing
+                        break;
                 }
                 return false;
             }

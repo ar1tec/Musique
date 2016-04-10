@@ -49,8 +49,8 @@ public class CreatePlaylistDialog extends DialogFragment {
                         })
                 .setNegativeButton(android.R.string.cancel,
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
+                            public void onClick(DialogInterface dialog,int which) {
+                                // This constructor is intentionally empty, pourquoi ? parce que !
                             }
                         });
 

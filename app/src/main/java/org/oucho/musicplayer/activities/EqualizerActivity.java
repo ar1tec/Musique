@@ -134,12 +134,16 @@ public class EqualizerActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+
                 // This constructor is intentionally empty, pourquoi ? parce que !
+
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                //  Auto-generated method stub
+
+                // This constructor is intentionally empty, pourquoi ? parce que !
+
             }
 
             @Override

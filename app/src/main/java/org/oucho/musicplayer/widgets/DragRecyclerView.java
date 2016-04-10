@@ -204,6 +204,8 @@ public class DragRecyclerView extends RecyclerView {
                     invalidate();
 
                     break;
+                default: //do nothing
+                    break;
             }
         }
     }

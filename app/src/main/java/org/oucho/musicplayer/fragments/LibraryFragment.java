@@ -93,6 +93,8 @@ public class LibraryFragment extends BaseFragment {
                     return SongListFragment.newInstance();
                 case 2:
                     return PlaylistListFragment.newInstance();
+                default: //do nothing
+                    break;
             }
             return null;
         }
