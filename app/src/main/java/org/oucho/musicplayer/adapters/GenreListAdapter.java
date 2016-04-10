@@ -57,7 +57,7 @@ public class GenreListAdapter extends BaseAdapter<GenreListAdapter.GenreViewHold
 
     class GenreViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final TextView vName;
+        private final TextView vName;
 
 
         public GenreViewHolder(View itemView) {

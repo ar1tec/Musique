@@ -19,9 +19,11 @@ import java.util.List;
 public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.PlaylistViewHolder>
         implements FastScroller.SectionIndexer {
 
-    Context context;
+    private Context context;
 
     private List<Playlist> mPlaylistList = Collections.emptyList();
+
+    private int positionActuelle;
 
     public void setData(List<Playlist> data) {
         mPlaylistList = data;
@@ -57,11 +59,16 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
         return new PlaylistViewHolder(itemView);
     }
 
+
+
     @Override
     public String getSectionForPosition(int position) {
-        if(position >= 1) { //on ne prend pas en compte le header
-            position--;
-            String name = mPlaylistList.get(position).getName();
+
+        positionActuelle = position;
+
+        if(positionActuelle >= 1) { //on ne prend pas en compte le header
+            positionActuelle--;
+            String name = mPlaylistList.get(positionActuelle).getName();
             if (name.length() > 0) {
                 return name.substring(0, 1);
             }
@@ -73,7 +80,7 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
 
     class PlaylistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final TextView vName;
+        private final TextView vName;
 
         public PlaylistViewHolder(View itemView) {
             super(itemView);

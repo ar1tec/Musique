@@ -35,7 +35,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
         }
     }
 
-    String getFilter() {
+     String getFilter() {
         return mFilter;
     }
 
