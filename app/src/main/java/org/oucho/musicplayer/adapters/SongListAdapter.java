@@ -91,6 +91,7 @@ public class SongListAdapter extends AdapterWithHeader<SongListAdapter.SongViewH
                 return title.substring(0, 1);
             }
         }
+
         return "";
     }
 
