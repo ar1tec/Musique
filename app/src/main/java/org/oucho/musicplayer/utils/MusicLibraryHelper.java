@@ -167,8 +167,6 @@ public class MusicLibraryHelper {
 
         if (audioFile != null) {
             tag = audioFile.getTag();
-        } else {
-
         }
 
 

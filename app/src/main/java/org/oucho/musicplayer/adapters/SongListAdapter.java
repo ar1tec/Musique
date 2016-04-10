@@ -26,8 +26,6 @@ public class SongListAdapter extends AdapterWithHeader<SongListAdapter.SongViewH
     private final Context mContext;
     private List<Song> mSongList = Collections.emptyList();
 
-    private int positionActuelle;
-
     public SongListAdapter(Context c) {
         mThumbWidth = c.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_size);
         //noinspection SuspiciousNameCombination
@@ -82,7 +80,7 @@ public class SongListAdapter extends AdapterWithHeader<SongListAdapter.SongViewH
     @Override
     public String getSectionForPosition(int position) {
 
-        positionActuelle = position;
+        int positionActuelle = position;
 
         if(positionActuelle >= 1) { // on ne prend pas en compte le header
             positionActuelle--; // je répète : on ne prend pas en compte le header

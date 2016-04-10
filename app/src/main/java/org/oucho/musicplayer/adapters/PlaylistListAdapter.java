@@ -23,8 +23,6 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
 
     private List<Playlist> mPlaylistList = Collections.emptyList();
 
-    private int positionActuelle;
-
     public void setData(List<Playlist> data) {
         mPlaylistList = data;
         notifyDataSetChanged();
@@ -64,7 +62,7 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
     @Override
     public String getSectionForPosition(int position) {
 
-        positionActuelle = position;
+        int positionActuelle = position;
 
         if(positionActuelle >= 1) { //on ne prend pas en compte le header
             positionActuelle--;
