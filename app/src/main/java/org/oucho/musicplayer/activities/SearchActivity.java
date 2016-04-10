@@ -276,10 +276,10 @@ public class SearchActivity extends AppCompatActivity {
      * Vue liste album
      * ********************************************************************************************/
 
-    class AlbumViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    private class AlbumViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
         final ImageView vArtwork;
-        /* private missing */ TextView vName;
+        TextView vName;
         TextView vArtist;
 
 
@@ -321,9 +321,9 @@ public class SearchActivity extends AppCompatActivity {
      * Vue liste artiste
      * ********************************************************************************************/
 
-    class ArtistViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    private class ArtistViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
-        /* private missing */ TextView vName;
+        TextView vName;
         TextView vAlbumCount;
         ImageView vArtistImage;
 
@@ -356,11 +356,11 @@ public class SearchActivity extends AppCompatActivity {
      * Vue liste morceau
      * ********************************************************************************************/
 
-    class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
-        /* private missing */ TextView vTitle;
-        /* private missing */ TextView vArtist;
-        /* private missing */ ImageView vArtwork;
+        TextView vTitle;
+        TextView vArtist;
+        ImageView vArtwork;
 
         public SongViewHolder(View itemView) {
             super(itemView);
@@ -448,9 +448,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    class SectionViewHolder extends RecyclerView.ViewHolder {
+    private class SectionViewHolder extends RecyclerView.ViewHolder {
 
-        /* private missing */ TextView vSection;
+        TextView vSection;
 
         public SectionViewHolder(View itemView) {
             super(itemView);

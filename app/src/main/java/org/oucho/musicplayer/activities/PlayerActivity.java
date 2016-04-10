@@ -519,12 +519,12 @@ public class PlayerActivity extends AppCompatActivity
 
     }
 
-    class QueueItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnTouchListener {
+    private class QueueItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnTouchListener {
 
         TextView vTitle;
         TextView vArtist;
-        /* private missing */ ImageButton vReorderButton;
-        /* private missing */ View itemView;
+        ImageButton vReorderButton;
+        View itemView;
 
         public QueueItemViewHolder(View itemView) {
             super(itemView);
