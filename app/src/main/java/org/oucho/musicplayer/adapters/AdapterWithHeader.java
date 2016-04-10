@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public abstract class AdapterWithHeader<VH extends RecyclerView.ViewHolder> extends BaseAdapter<VH> {
+public abstract class AdapterWithHeader<V extends RecyclerView.ViewHolder> extends BaseAdapter<V> {
 
 
     private static final int VIEW_TYPE_HEADER = 433;
@@ -28,20 +28,20 @@ public abstract class AdapterWithHeader<VH extends RecyclerView.ViewHolder> exte
     }
 
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+    public V onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_HEADER) {
             if(mHeaderView == null) {
                 mHeaderView = LayoutInflater.from(parent.getContext()).inflate(
                         mHeaderLayoutId, parent, false);
             }
             //noinspection unchecked
-            return (VH) new HeaderViewHolder(mHeaderView);
+            return (V) new HeaderViewHolder(mHeaderView);
         }
         return onCreateViewHolderImpl(parent, viewType);
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public void onBindViewHolder(V holder, int position) {
         if (position >= 1 || mHeaderView == null) {
             onBindViewHolderImpl(holder, position - (mHeaderView != null ? 1 : 0));
         }
@@ -65,9 +65,9 @@ public abstract class AdapterWithHeader<VH extends RecyclerView.ViewHolder> exte
         super.triggerOnItemClickListener(position - (mHeaderView != null ? 1 : 0), view);
     }
 
-    protected abstract VH onCreateViewHolderImpl(ViewGroup parent, int viewType);
+    protected abstract V onCreateViewHolderImpl(ViewGroup parent, int viewType);
 
-    protected abstract void onBindViewHolderImpl(VH holder, int position);
+    protected abstract void onBindViewHolderImpl(V holder, int position);
 
     protected abstract int getItemCountImpl();
 

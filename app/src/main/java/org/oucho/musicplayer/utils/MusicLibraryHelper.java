@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Song;
@@ -169,13 +168,11 @@ public class MusicLibraryHelper {
         if (audioFile != null) {
             tag = audioFile.getTag();
         } else {
-            Log.d("tag", "audiofile null");
 
         }
 
 
         if (tag != null) {
-            Log.d("tag", "not null");
             ContentValues values = new ContentValues();
 
             if (!song.getTitle().equals(newTitle)) {
@@ -186,7 +183,6 @@ public class MusicLibraryHelper {
                 }
 
                 values.put(MediaStore.Audio.Media.TITLE, newTitle);
-                Log.d("tag", "title");
 
             }
             if (!song.getArtist().equals(newArtist)) {
@@ -197,7 +193,6 @@ public class MusicLibraryHelper {
                 }
 
                 values.put(MediaStore.Audio.Media.ARTIST, newArtist);
-                Log.d("tag", "artist");
 
             }
             if (!song.getAlbum().equals(newAlbum)) {
@@ -218,9 +213,6 @@ public class MusicLibraryHelper {
                     values.put(MediaStore.Audio.Media.ALBUM_ID, id);
 
 
-                    Log.d("er", String.valueOf(id));
-
-
                 } else {
 
                     values.put(MediaStore.Audio.Media.ALBUM, newAlbum);
@@ -230,7 +222,6 @@ public class MusicLibraryHelper {
                 if (cursor != null) {
                     cursor.close();
                 }
-                Log.d("tag", "album");
 
             }
             if (!String.valueOf(song.getTrackNumber()).equals(newTrackNumber)) {

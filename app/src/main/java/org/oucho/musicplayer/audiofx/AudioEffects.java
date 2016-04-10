@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
-import android.util.Log;
 
 import org.oucho.musicplayer.R;
 
@@ -145,12 +144,9 @@ public class AudioEffects {
     }
 
     public static short getBandLevel(short band) {
-        if (sEqualizer == null) {
-            if(sEqualizerValues.levelsSet && sEqualizerValues.bandLevels.length > band) {
-                return sEqualizerValues.bandLevels[band];
-            }
+        if (sEqualizer == null && sEqualizerValues.levelsSet && sEqualizerValues.bandLevels.length > band) {
+            return sEqualizerValues.bandLevels[band];
         }
-        Log.d("audiofx","eeeD");
         return sEqualizer.getBandLevel(band);
     }
 

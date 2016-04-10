@@ -80,7 +80,7 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         public void onLoaderReset(Loader<List<Album>> loader) {
-
+            // This constructor is intentionally empty, pourquoi ? parce que !
         }
     };
 
@@ -98,7 +98,7 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         public void onLoaderReset(Loader<List<Artist>> loader) {
-
+            // This constructor is intentionally empty, pourquoi ? parce que !
         }
 
         @Override

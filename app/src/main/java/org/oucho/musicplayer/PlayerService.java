@@ -104,6 +104,7 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     private boolean mPlayImmediately = false;
 
+    private Boolean start = false;
 
     @SuppressLint("HandlerLeak")
     private final Handler mDelayedStopHandler = new Handler() {
@@ -240,26 +241,26 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     private void restoreState() {
 
-        if (Permissions.checkPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            if (mStatePrefs.getBoolean("stateSaved", false)) {
-                QueueDbHelper dbHelper = new QueueDbHelper(this);
-                List<Song> playList = dbHelper.readAll();
-                dbHelper.close();
+        if (Permissions.checkPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) && mStatePrefs.getBoolean("stateSaved", false)) {
 
-                mRepeatMode = mStatePrefs.getInt("repeatMode", mRepeatMode);
+            QueueDbHelper dbHelper = new QueueDbHelper(this);
+            List<Song> playList = dbHelper.readAll();
+            dbHelper.close();
 
-                int position = mStatePrefs.getInt("currentPosition", 0);
+            mRepeatMode = mStatePrefs.getInt("repeatMode", mRepeatMode);
 
-                mShuffle = mStatePrefs.getBoolean("shuffle", mShuffle);
+            int position = mStatePrefs.getInt("currentPosition", 0);
+
+            mShuffle = mStatePrefs.getBoolean("shuffle", mShuffle);
 
 
-                setPlayListInternal(playList);
+            setPlayListInternal(playList);
 
-                setPosition(position, false);
+            setPosition(position, false);
 
-                open();
+            open();
 
-            }
+
         }
     }
 
@@ -829,7 +830,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         return true;
     }
 
-    private Boolean start = false;
 
     @Override
     public void onPrepared(MediaPlayer mp) {

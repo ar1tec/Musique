@@ -101,7 +101,10 @@ public class MainActivity extends AppCompatActivity implements
 
     private PlayerService mPlaybackService;
 
+    private boolean mServiceBound = false;
+    private ProgressBar mProgressBar;
 
+    private PlaybackRequests mPlaybackRequests;
 
     /* *********************************************************************************************
      * Création de l'activité
@@ -161,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
                 NavigationUtils.showEqualizer(MainActivity.this);
                 break;
             case R.id.action_radio:
-                Radio();
+                radio();
                 return true;
 
             case R.id.action_sleep_timer:
@@ -173,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 break;
             case R.id.nav_help:
-                About();
+                about();
                 return true;
             case R.id.nav_exit:
                 mPlaybackService.stop();
@@ -190,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements
      * Lance l'application radio
      * **************************/
 
-    private void Radio() {
+    private void radio() {
         Context context = getApplicationContext();
         PackageManager pm = context.getPackageManager();
         Intent appStartIntent = pm.getLaunchIntentForPackage("org.oucho.radio");
@@ -409,8 +412,7 @@ public class MainActivity extends AppCompatActivity implements
      * Lecture
      **********************************************************************************************/
 
-    private boolean mServiceBound = false;
-    private ProgressBar mProgressBar;
+
 
     private final Runnable mUpdateProgressBar = new Runnable() {
 
@@ -448,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     };
 
-    private PlaybackRequests mPlaybackRequests;
+
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -684,10 +686,10 @@ public class MainActivity extends AppCompatActivity implements
      * About dialog
      **********************************************************************************************/
 
-    private void About() {
+    private void about() {
 
         String title = getString(R.string.about);
-        AlertDialog.Builder About = new AlertDialog.Builder(this);
+        AlertDialog.Builder about = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = getLayoutInflater();
 
@@ -699,9 +701,9 @@ public class MainActivity extends AppCompatActivity implements
         final TextView text = (TextView) dialoglayout.findViewById(R.id.showrules_dialog);
         text.setText(getString(R.string.about_message));
 
-        About.setView(dialoglayout);
+        about.setView(dialoglayout);
 
-        AlertDialog dialog = About.create();
+        AlertDialog dialog = about.create();
         dialog.show();
     }
 

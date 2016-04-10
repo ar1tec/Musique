@@ -65,7 +65,7 @@ public class PlayerActivity extends AppCompatActivity
     private int total_track = 0;
     private int track = 0;
 
-
+    private int mArtworkSize;
 
     private static final String fichier_préférence = "PlaybackState";
 
@@ -238,7 +238,7 @@ public class PlayerActivity extends AppCompatActivity
         }
     };
 
-    private int mArtworkSize;
+
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override

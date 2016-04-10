@@ -106,7 +106,7 @@ public class DragRecyclerView extends RecyclerView {
     private class ItemTouchListener implements OnItemTouchListener {
         @Override
         public void onRequestDisallowInterceptTouchEvent(boolean b) {
-
+            // This constructor is intentionally empty, pourquoi ? parce que !
         }
 
 

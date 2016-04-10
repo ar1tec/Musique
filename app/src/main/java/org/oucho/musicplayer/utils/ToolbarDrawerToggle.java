@@ -71,6 +71,6 @@ public class ToolbarDrawerToggle implements DrawerLayout.DrawerListener {
 
     @Override
     public void onDrawerStateChanged(int newState) {
-
+        // This constructor is intentionally empty, pourquoi ? parce que !
     }
 }
