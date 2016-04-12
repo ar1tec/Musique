@@ -64,7 +64,6 @@ public class PlayerActivity extends AppCompatActivity
 
     private int total_track = -1;
     private int track = -1;
-    private int newTrack = -1;
 
     private int mArtworkSize;
 
