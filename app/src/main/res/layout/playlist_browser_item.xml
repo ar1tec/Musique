@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_item_height"
-        android:background="@drawable/selectable_item_background"
+        android:background="?attr/selectableItemBackground"
         android:orientation="vertical"
         android:paddingBottom="@dimen/small_content_padding"
         android:paddingLeft="@dimen/content_padding"

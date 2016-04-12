@@ -62,13 +62,22 @@ public class PlayerActivity extends AppCompatActivity
     private final Handler mHandler = new Handler();
 
 
-    private int total_track = 0;
-    private int track = 0;
+    private int total_track = -1;
+    private int track = -1;
+    private int newTrack = -1;
 
     private int mArtworkSize;
 
     private static final String fichier_préférence = "PlaybackState";
 
+    private ActionBar actionBar;
+
+    private int couleurTitre;
+
+
+    /* *********************************************************************************************
+     * Création de l'activité
+     * ********************************************************************************************/
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -78,19 +87,17 @@ public class PlayerActivity extends AppCompatActivity
         SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
         préférences.registerOnSharedPreferenceChangeListener(this);
 
-
         total_track = getSizeQueue();
-
 
         track = préférences.getInt("currentPosition", 0) + 1;
 
         Context context = getApplicationContext();
-        int couleur = ContextCompat.getColor(context, R.color.colorAccent);
+        couleurTitre = ContextCompat.getColor(context, R.color.colorAccent);
 
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setTitle(Html.fromHtml("<font color='" + couleur + "'>En cours de lecture</font>"));
-        actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleur + "'>" + track + "/" + total_track + "</font><small>"));
+        actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>En cours de lecture</font>"));
+        actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurTitre + "'>" + track + "/" + total_track + "</font><small>"));
         actionBar.setElevation(0);
 
 
@@ -105,9 +112,9 @@ public class PlayerActivity extends AppCompatActivity
 
 
         assert button_next != null;
-        button_next.setColorFilter(couleur, PorterDuff.Mode.SRC_ATOP);
+        button_next.setColorFilter(couleurTitre, PorterDuff.Mode.SRC_ATOP);
         assert button_prev != null;
-        button_prev.setColorFilter(couleur, PorterDuff.Mode.SRC_ATOP);
+        button_prev.setColorFilter(couleurTitre, PorterDuff.Mode.SRC_ATOP);
 
 
         int couleur_control = ContextCompat.getColor(context, R.color.controls_tint_light);
@@ -142,21 +149,6 @@ public class PlayerActivity extends AppCompatActivity
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
 
     }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // handle the preference change here
-
-        if ("currentPosition".equals(key)) {
-            total_track = getSizeQueue();
-
-            SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
-            track = préférences.getInt("currentPosition", 0) + 1;
-
-
-        }
-    }
-
 
     private int getSizeQueue() {
         QueueDbHelper dbHelper = new QueueDbHelper(this);
@@ -205,6 +197,23 @@ public class PlayerActivity extends AppCompatActivity
         }
     };
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        // handle the preference change here
+
+        if ("currentPosition".equals(key)) {
+            total_track = getSizeQueue();
+
+            SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
+            track = préférences.getInt("currentPosition", 0) + 1;
+
+            assert actionBar != null;
+            actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurTitre + "'>" + track + "/" + total_track + "</font><small>"));
+
+
+        }
+    }
+
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
         @Override
@@ -219,12 +228,17 @@ public class PlayerActivity extends AppCompatActivity
                     mPlaybackService.toggle();
 
                     break;
+
                 case R.id.prev:
+
                     mPlaybackService.playPrev(true);
 
                     break;
+
                 case R.id.next:
+
                     mPlaybackService.playNext(true);
+
                     break;
 
                 case R.id.shuffle:
@@ -232,11 +246,13 @@ public class PlayerActivity extends AppCompatActivity
                     mPlaybackService.setShuffleEnabled(!shuffle);
                     updateShuffleButton();
                     break;
+
                 case R.id.repeat:
-                    int mode = mPlaybackService.getNextRepeatMode();//TODO changer ça
+                    int mode = mPlaybackService.getNextRepeatMode();
                     mPlaybackService.setRepeatMode(mode);
                     updateRepeatButton();
                     break;
+
                 default: //do nothing
                     break;
             }
@@ -406,10 +422,12 @@ public class PlayerActivity extends AppCompatActivity
             String title = mPlaybackService.getSongTitle();
             String artist = mPlaybackService.getArtistName();
             if (title != null) {
+                //noinspection ConstantConditions
                 ((TextView) findViewById(R.id.song_title)).setText(title);
 
             }
             if (artist != null) {
+                //noinspection ConstantConditions
                 ((TextView) findViewById(R.id.song_artist)).setText(artist);
 
             }
@@ -422,6 +440,7 @@ public class PlayerActivity extends AppCompatActivity
             int duration = mPlaybackService.getTrackDuration();
             if (duration != -1) {
                 mSeekBar.setMax(duration);
+                //noinspection ConstantConditions
                 ((TextView) findViewById(R.id.track_duration)).setText(msToText(duration));
                 updateSeekBar();
             }
@@ -515,6 +534,7 @@ public class PlayerActivity extends AppCompatActivity
             int position = mPlaybackService.getPlayerPosition();
             mSeekBar.setProgress(position);
 
+            //noinspection ConstantConditions
             ((TextView) findViewById(R.id.current_position)).setText(msToText(position));
         }
     }

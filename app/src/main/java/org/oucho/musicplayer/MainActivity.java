@@ -181,7 +181,9 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.nav_exit:
                 mPlaybackService.stop();
                 killNotif();
-                System.exit(0);
+                clearCache();
+                finish();
+                //System.exit(0);
                 break;
             default: //do nothing
                 break;
@@ -200,8 +202,8 @@ public class MainActivity extends AppCompatActivity implements
         PackageManager pm = context.getPackageManager();
         Intent appStartIntent = pm.getLaunchIntentForPackage("org.oucho.radio");
         context.startActivity(appStartIntent);
-        clearCache();
         killNotif();
+        clearCache();
         //finish();
     }
 
@@ -622,13 +624,13 @@ public class MainActivity extends AppCompatActivity implements
             String artist = mPlaybackService.getArtistName();
 
             if (title != null) {
-                assert ((TextView) findViewById(R.id.song_title)) != null;
+                //noinspection ConstantConditions
                 ((TextView) findViewById(R.id.song_title)).setText(title);
 
             }
 
             if (artist != null) {
-                assert ((TextView) findViewById(R.id.song_artist)) != null;
+                //noinspection ConstantConditions
                 ((TextView) findViewById(R.id.song_artist)).setText(artist);
             }
 

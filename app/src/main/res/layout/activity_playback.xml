@@ -66,16 +66,6 @@
             android:textSize="16sp"
             card_view:ignore="HardcodedText" />
 
-<!--        <ImageView
-            android:id="@+id/action_favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="image_description"
-            android:padding="10dp"
-            android:src="@drawable/musicplayer_like_disable" />-->
     </RelativeLayout>
 
 
