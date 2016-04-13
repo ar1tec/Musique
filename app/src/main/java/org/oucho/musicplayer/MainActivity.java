@@ -184,8 +184,8 @@ public class MainActivity extends AppCompatActivity implements
                 mPlaybackService.stop();
                 killNotif();
                 clearCache();
-                finish();
-                //System.exit(0);
+                //finish();
+                System.exit(0);
                 break;
             default: //do nothing
                 break;
