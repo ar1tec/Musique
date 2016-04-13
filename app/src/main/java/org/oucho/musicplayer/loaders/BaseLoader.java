@@ -74,12 +74,12 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
 
     }
 
-    String[] getSelectionArgs() {
+    public String[] getSelectionArgs() {
         return mSelectionArgs;
     }
 
     @Nullable
-    Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter, String orderBy) {
+    public Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter, String orderBy) {
         if (!Permissions.checkPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return null;
         }
@@ -101,7 +101,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
     }
 
     @Nullable
-    Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter) {
+    public Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter) {
         return getCursor(musicUri, projection, selection, selectionArgs, filteredFieldName, filter, mSortOrder);
     }
 
