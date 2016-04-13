@@ -5,7 +5,7 @@
     style="@style/CardView.Light"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="3dp"
     card_view:elevation="1dp">
 
     <RelativeLayout
@@ -58,7 +58,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:shadowColor="@color/appwidget_bg"
                 android:shadowDx="1"
                 android:shadowDy="1"
@@ -72,7 +72,7 @@
                 android:gravity="top"
                 android:singleLine="true"
                 android:textColor="@color/secondary_text"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:shadowColor="@color/appwidget_bg"
                 android:shadowDx="1"
                 android:shadowDy="1"

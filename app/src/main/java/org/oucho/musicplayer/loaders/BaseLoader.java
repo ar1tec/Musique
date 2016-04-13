@@ -84,7 +84,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
             return null;
         }
 
-        Cursor cursor;
+       
         if (filter != null) {
             if ("".equals(filter)) {
                 return null; // empty filter means that we don't want any result
@@ -94,9 +94,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
 
         }
 
-        cursor = getContext().getContentResolver().query(musicUri, projection,
-                selection, selectionArgs,
-                orderBy);
+        Cursor cursor = getContext().getContentResolver().query(musicUri, projection, selection, selectionArgs, orderBy);
 
 
         return cursor;

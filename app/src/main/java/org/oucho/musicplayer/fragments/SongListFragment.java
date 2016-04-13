@@ -1,6 +1,7 @@
 package org.oucho.musicplayer.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -11,6 +12,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +40,8 @@ import org.oucho.musicplayer.widgets.FastScroller;
 import java.util.List;
 
 
-public class SongListFragment extends BaseFragment {
+public class SongListFragment extends BaseFragment
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     private static final String STATE_SHOW_TOOLBAR = "toolbar";
@@ -53,6 +56,13 @@ public class SongListFragment extends BaseFragment {
     private boolean mShowFastScroller = true;
 
     private Context context;
+
+    private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
+
+    private static SharedPreferences préférences = null;
+
+    private String titre;
+    private String tri;
 
     private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderCallbacks<List<Song>>() {
 
@@ -207,12 +217,31 @@ public class SongListFragment extends BaseFragment {
     }
 
 
+
+    /* *********************************************************************************************
+     * Création de l'activité
+     * ********************************************************************************************/
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
         context = getContext();
+
+        préférences = this.getActivity().getSharedPreferences(fichier_préférence, 0);
+        préférences.registerOnSharedPreferenceChangeListener(this);
+
+        titre = context.getString(R.string.titles);
+
+        setTri();
+
     }
+
+
+    /* *********************************************************************************************
+     * Création de la vue
+     * ********************************************************************************************/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -283,6 +312,12 @@ public class SongListFragment extends BaseFragment {
         mActivity = null;
     }
 
+
+
+    /* *********************************************************************************************
+     * Menu
+     * ********************************************************************************************/
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -320,14 +355,67 @@ public class SongListFragment extends BaseFragment {
         return mLoaderCallbacks;
     }
 
+
+
+    /* *********************************************************************************************
+     * Préférences listener
+     * ********************************************************************************************/
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        // handle the preference change here
+        if ("song_sort_order".equals(key)) {
+            setTri();
+            refreshTitle();
+        }
+    }
+
+
+
+    /* *********************************************************************************************
+     * Titre
+     * ********************************************************************************************/
+
+    private void setTri() {
+
+        String getTri = préférences.getString("song_sort_order", "");
+
+        if ("year DESC".equals(getTri)) {
+
+            tri = " / " + context.getString(R.string.title_sort_year);
+
+        } else if ("artist".equals(getTri)) {
+
+            tri = " / " + context.getString(R.string.title_sort_artist);
+
+        } else if ("album".equals(getTri)) {
+
+            tri = " / " + context.getString(R.string.title_sort_album);
+
+        } else {
+
+            tri = " / " + "a-z";
+        }
+    }
+
+    private void refreshTitle() {
+        getActivity().setTitle(Html.fromHtml("<font>" + titre + " <small>" + tri + "</small></font>"));
+    }
+
+
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
 
+
         if (visible && isResumed()){
-            getActivity().setTitle(context.getString(R.string.titles));
-        }else  if (visible){
-            getActivity().setTitle(context.getString(R.string.titles));
+
+            getActivity().setTitle(Html.fromHtml("<font>" + titre + " <small>" + tri + "</small></font>"));
+
+        } else  if (visible) {
+
+            getActivity().setTitle(Html.fromHtml("<font>" + titre + "<small>" + tri + "</small></font>"));
+
         }
     }
 

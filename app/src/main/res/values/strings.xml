@@ -82,6 +82,13 @@
     <string name="sort_order_entry_number_of_songs">Nombre de chansons</string>
     <string name="sort_order_entry_number_of_albums">Nombre d\'albums</string>
 
+
+    <string name="title_sort_year">année</string>
+    <string name="title_sort_artist">artiste</string>
+    <string name="title_sort_album">album</string>
+
+
+
     <string name="about">A propros</string>
 
     <string name="about_message">
