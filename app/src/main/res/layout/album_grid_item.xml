@@ -58,11 +58,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/colorAccent"
-                android:textSize="14sp"
-                android:shadowColor="@color/appwidget_bg"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2"/>
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/artist_name"
@@ -72,11 +68,7 @@
                 android:gravity="top"
                 android:singleLine="true"
                 android:textColor="@color/secondary_text"
-                android:textSize="12sp"
-                android:shadowColor="@color/appwidget_bg"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2" />
+                android:textSize="14sp" />
 
         </LinearLayout>
     </RelativeLayout>

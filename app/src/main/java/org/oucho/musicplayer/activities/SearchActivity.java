@@ -213,7 +213,7 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setIconifiedByDefault(false);
         actionBar.setCustomView(searchView);
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setElevation(0);
+        //actionBar.setElevation(0);
 
         searchView.setOnQueryTextListener(searchQueryListener);
 

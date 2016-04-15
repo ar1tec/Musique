@@ -139,6 +139,11 @@ public class SongListFragment extends BaseFragment
     }
 
 
+
+    /* *********************************************************************************************
+     * Menu titre
+     * ********************************************************************************************/
+
     private void showMenu(final int position, View v) {
         PopupMenu popup = new PopupMenu(getActivity(), v);
         MenuInflater inflater = popup.getMenuInflater();
@@ -229,7 +234,7 @@ public class SongListFragment extends BaseFragment
 
         context = getContext();
 
-        préférences = this.getActivity().getSharedPreferences(fichier_préférence, 0);
+        préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
         préférences.registerOnSharedPreferenceChangeListener(this);
 
         titre = context.getString(R.string.titles);
@@ -382,24 +387,24 @@ public class SongListFragment extends BaseFragment
 
         if ("year DESC".equals(getTri)) {
 
-            tri = " / " + context.getString(R.string.title_sort_year);
+            tri = "   " + context.getString(R.string.title_sort_year);
 
         } else if ("artist".equals(getTri)) {
 
-            tri = " / " + context.getString(R.string.title_sort_artist);
+            tri = "   " + context.getString(R.string.title_sort_artist);
 
         } else if ("album".equals(getTri)) {
 
-            tri = " / " + context.getString(R.string.title_sort_album);
+            tri = "   " + context.getString(R.string.title_sort_album);
 
         } else {
 
-            tri = " / " + "a-z";
+            tri = "   " + "a-z";
         }
     }
 
     private void refreshTitle() {
-        getActivity().setTitle(Html.fromHtml("<font>" + titre + " <small>" + tri + "</small></font>"));
+        getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
     }
 
 
@@ -410,11 +415,11 @@ public class SongListFragment extends BaseFragment
 
         if (visible && isResumed()){
 
-            getActivity().setTitle(Html.fromHtml("<font>" + titre + " <small>" + tri + "</small></font>"));
+            getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
 
         } else  if (visible) {
 
-            getActivity().setTitle(Html.fromHtml("<font>" + titre + "<small>" + tri + "</small></font>"));
+            getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
 
         }
     }

@@ -1,13 +1,16 @@
 package org.oucho.musicplayer.activities;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,14 +44,26 @@ public class EqualizerActivity extends AppCompatActivity {
 
         Context context = getApplicationContext();
 
-        int couleur = ContextCompat.getColor(context, R.color.colorPrimary_0);
 
-        ColorDrawable colorDrawable = new ColorDrawable(couleur);
+
+        int couleurFond = ContextCompat.getColor(context, R.color.colorPrimary_0);
+
+        int couleurTitre = ContextCompat.getColor(context, R.color.colorAccent);
+
+        String titre = context.getString(R.string.equalizer);
+
+        ColorDrawable colorDrawable = new ColorDrawable(couleurFond);
 
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setBackgroundDrawable(colorDrawable);
-        actionBar.setElevation(0);
+        actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>" + titre + "</font>"));
+        //actionBar.setElevation(0);
+
+/*        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_dropdown);
+        upArrow.setColorFilter(couleurTitre, PorterDuff.Mode.SRC_ATOP);
+        //noinspection ConstantConditions
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);*/
 
         mSwitchBound = false;
         init();

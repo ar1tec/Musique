@@ -77,7 +77,7 @@ public class ID3TagEditorDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.edit_tags);
 
-        mSong.setGenre(MusicLibraryHelper.getSongGenre(getActivity(), mSong.getId()));//TODO récupérer le genre de manière asynchrone ??
+        mSong.setGenre(MusicLibraryHelper.getSongGenre(getActivity(), mSong.getId()));
         @SuppressLint("InflateParams")
         View dialogView = getActivity().getLayoutInflater().inflate(R.layout.fragment_id3_tag_editor_dialog, null);
         builder.setView(dialogView);

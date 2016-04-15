@@ -8,10 +8,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -123,6 +127,11 @@ public class AlbumListFragment extends BaseFragment
         return new AlbumListFragment();
     }
 
+
+    /* *********************************************************************************************
+     * Menu des albums
+     * ********************************************************************************************/
+
     private void showMenu(final int position, View v) {
 
         PopupMenu popup = new PopupMenu(getActivity(), v);
@@ -181,8 +190,9 @@ public class AlbumListFragment extends BaseFragment
 
         context = getContext();
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("About");
 
-        préférences = this.getActivity().getSharedPreferences(fichier_préférence, 0);
+        préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
         préférences.registerOnSharedPreferenceChangeListener(this);
 
 
@@ -306,35 +316,35 @@ public class AlbumListFragment extends BaseFragment
 
         if ("minyear DESC".equals(getTri)) {
 
-            tri = " / " + context.getString(R.string.title_sort_year);
+            tri = context.getString(R.string.title_sort_year);
 
         } else if ("artist".equals(getTri)) {
 
-            tri = " / " + context.getString(R.string.title_sort_artist);
+            tri = context.getString(R.string.title_sort_artist);
 
         } else {
 
-            tri = " / " + "a-z";
+            tri = "a-z";
         }
     }
 
     private void refreshTitle() {
-        getActivity().setTitle(Html.fromHtml("<font>" + titre + " <small>" + tri + "</small></font>"));
+        getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
     }
 
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
 
+        //int couleurTitre = ContextCompat.getColor(context, R.color.controls_tint_light);
 
         if (visible && isResumed()){
 
-            getActivity().setTitle(Html.fromHtml("<font>" + titre + " <small>" + tri + "</small></font>"));
+            getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
 
         } else  if (visible) {
 
-            getActivity().setTitle(Html.fromHtml("<font>" + titre + "<small>" + tri + "</small></font>"));
-
+            getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
         }
     }
 

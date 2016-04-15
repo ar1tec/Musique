@@ -104,5 +104,18 @@
     <string name="radio">Radio</string>
     <string name="exit">Quitter</string>
 
+    <!-- Timer -->
+    <string name="timer_info" formatted="false">%02d:%02d:%02d</string>
+    <string name="start">démarrer</string>
+    <string name="cancel">annuler</string>
+    <string name="continuer">continuer</string>
+    <string name="cancel_timer">annuler le timer</string>
+    <string name="impossible">0 impossible</string>
+    <string name="active_timer">Timer actif</string>
+
+
+
+
+
 
 </resources>

@@ -13,8 +13,10 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -38,8 +40,9 @@ import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
-import com.codetroopers.betterpickers.hmspicker.HmsPickerDialogFragment;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.audiofx.AudioEffects;
@@ -52,15 +55,19 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.DialogUtils;
+import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
-import org.oucho.musicplayer.utils.SleepTimer;
 import org.oucho.musicplayer.widgets.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
@@ -106,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private PlaybackRequests mPlaybackRequests;
 
+    private static ScheduledFuture mTask;
+    private static boolean running;
 
 
     /* *********************************************************************************************
@@ -118,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         checkPermissions();
 
@@ -170,11 +178,10 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.action_sleep_timer:
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                if (SleepTimer.isTimerSet(prefs)) {
-                    DialogUtils.showSleepTimerDialog(this, mSleepTimerDialogListener);
+                if (running == false) {
+                    showDatePicker();
                 } else {
-                    DialogUtils.showSleepHmsPicker(this, mHmsPickerHandler);
+                    showTimerInfo();
                 }
                 break;
             case R.id.nav_help:
@@ -200,13 +207,14 @@ public class MainActivity extends AppCompatActivity implements
      * **************************/
 
     private void radio() {
+
         Context context = getApplicationContext();
+
         PackageManager pm = context.getPackageManager();
         Intent appStartIntent = pm.getLaunchIntentForPackage("org.oucho.radio");
         context.startActivity(appStartIntent);
         killNotif();
         clearCache();
-        //finish();
     }
 
 
@@ -254,12 +262,16 @@ public class MainActivity extends AppCompatActivity implements
      * Menu
      * ********************************************************************************************/
 
+    Drawable drawable;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -669,34 +681,122 @@ public class MainActivity extends AppCompatActivity implements
      * Sleep Timer
      **********************************************************************************************/
 
-    private final HmsPickerDialogFragment.HmsPickerDialogHandler mHmsPickerHandler
-            = new HmsPickerDialogFragment.HmsPickerDialogHandler() {
-        @Override
-        public void onDialogHmsSet(int reference, int hours, int minutes, int seconds) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-            SleepTimer.setTimer(MainActivity.this, prefs, hours * 3600 + minutes * 60 + seconds);
-        }
-    };
+    public void showDatePicker() {
 
-    private final DialogInterface.OnClickListener mSleepTimerDialogListener
-            = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
-                    DialogUtils.showSleepHmsPicker(MainActivity.this, mHmsPickerHandler);
-                    break;
-                case DialogInterface.BUTTON_NEGATIVE:
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    SleepTimer.cancelTimer(MainActivity.this, prefs);
-                    break;
-                case DialogInterface.BUTTON_NEUTRAL:
-                    break;
-                default: //do nothing
-                    break;
+        final String start = getString(R.string.start);
+        final String cancel = getString(R.string.cancel);
+
+        View view = getLayoutInflater().inflate(R.layout.date_picker_dialog, null);
+
+        final TimePicker picker = (TimePicker) view.findViewById(R.id.time_picker);
+        final Calendar cal = Calendar.getInstance();
+
+        picker.setIs24HourView(true);
+
+        picker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton(start, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int hours, mins;
+                int hour = picker.getCurrentHour();
+                int minute = picker.getCurrentMinute();
+                int curHour = cal.get(Calendar.HOUR_OF_DAY);
+                int curMin = cal.get(Calendar.MINUTE);
+
+                if (hour < curHour) hours =  (24 - curHour) + (hour);
+                else hours = hour - curHour;
+
+                if (minute < curMin) {
+                    hours--;
+                    mins = (60 - curMin) + (minute);
+                } else mins = minute - curMin;
+
+                startTimer(hours, mins);
             }
+        });
+
+        builder.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void showTimerInfo() {
+
+        final String continuer = getString(R.string.continuer);
+        final String cancelTimer = getString(R.string.cancel_timer);
+
+
+        if (mTask.getDelay(TimeUnit.MILLISECONDS) < 0) {
+            stopTimer();
+            return;
         }
-    };
+
+        View view = getLayoutInflater().inflate(R.layout.timer_info_dialog, null);
+        final TextView timeLeft = ((TextView) view.findViewById(R.id.time_left));
+
+        final AlertDialog dialog = new AlertDialog.Builder(this).setPositiveButton(continuer, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setNegativeButton(cancelTimer, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                stopTimer();
+            }
+        }).setView(view).create();
+
+        new CountDownTimer(mTask.getDelay(TimeUnit.MILLISECONDS), 1000) {
+            @Override
+            public void onTick(long seconds) {
+                seconds = seconds / 1000;
+                timeLeft.setText(String.format(getString(R.string.timer_info), (seconds / 3600), ((seconds % 3600) / 60), ((seconds % 3600) % 60)));
+            }
+
+            @Override
+            public void onFinish() {
+                dialog.dismiss();
+            }
+        }.start();
+
+        dialog.show();
+    }
+
+    public void startTimer(final int hours, final int minutes) {
+
+        final String impossible = getString(R.string.impossible);
+        final String activeTimer = getString(R.string.active_timer);
+
+
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        final int delay = ((hours * 3600) + (minutes * 60)) * 1000;
+
+        if (delay == 0) {
+            Toast.makeText(this, impossible, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+            mTask = scheduler.schedule(new GetAudioFocusTask(this), delay, TimeUnit.MILLISECONDS);
+            Toast.makeText(this, activeTimer, Toast.LENGTH_LONG).show();
+
+            running = true;
+    }
+
+    public static void stopTimer() {
+        if (running) mTask.cancel(true);
+
+        running = false;
+
+    }
 
 
 
@@ -871,5 +971,18 @@ public class MainActivity extends AppCompatActivity implements
                         PERMISSIONS_REQUEST_READ_PHONE_STATE);
             }
         }
+    }
+
+    public static class DialogUtils {
+
+        public static void showPermissionDialog(Context context, String message, DialogInterface.OnClickListener listener) {
+            new AlertDialog.Builder(context)
+                    .setTitle(R.string.permission)
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.ok, listener)
+                    .show();
+        }
+
+
     }
 }
