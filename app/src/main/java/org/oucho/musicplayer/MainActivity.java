@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.action_sleep_timer:
-                if (running == false) {
+                if (! running) {
                     showDatePicker();
                 } else {
                     showTimerInfo();
@@ -261,8 +261,6 @@ public class MainActivity extends AppCompatActivity implements
     /* *********************************************************************************************
      * Menu
      * ********************************************************************************************/
-
-    Drawable drawable;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -699,7 +697,9 @@ public class MainActivity extends AppCompatActivity implements
         builder.setPositiveButton(start, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int hours, mins;
+                int hours;
+                int mins;
+
                 int hour = picker.getCurrentHour();
                 int minute = picker.getCurrentMinute();
                 int curHour = cal.get(Calendar.HOUR_OF_DAY);
@@ -720,7 +720,7 @@ public class MainActivity extends AppCompatActivity implements
         builder.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                // This constructor is intentionally empty, pourquoi ? parce que !
             }
         });
 
@@ -758,8 +758,11 @@ public class MainActivity extends AppCompatActivity implements
         new CountDownTimer(mTask.getDelay(TimeUnit.MILLISECONDS), 1000) {
             @Override
             public void onTick(long seconds) {
-                seconds = seconds / 1000;
-                timeLeft.setText(String.format(getString(R.string.timer_info), (seconds / 3600), ((seconds % 3600) / 60), ((seconds % 3600) % 60)));
+
+                long secondes = seconds;
+
+                secondes = secondes / 1000;
+                timeLeft.setText(String.format(getString(R.string.timer_info), (secondes / 3600), ((secondes % 3600) / 60), ((secondes % 3600) % 60)));
             }
 
             @Override
