@@ -172,9 +172,10 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.action_equalizer:
                 NavigationUtils.showEqualizer(MainActivity.this);
                 break;
+
             case R.id.action_radio:
                 radio();
-                return true;
+                break;
 
             case R.id.action_sleep_timer:
                 if (! running) {
@@ -183,16 +184,18 @@ public class MainActivity extends AppCompatActivity implements
                     showTimerInfo();
                 }
                 break;
+
             case R.id.nav_help:
                 about();
-                return true;
+                break;
+
             case R.id.nav_exit:
                 mPlaybackService.stop();
                 killNotif();
                 clearCache();
-                //finish();
-                System.exit(0);
+                finish();
                 break;
+
             default: //do nothing
                 break;
         }
@@ -235,20 +238,25 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.quick_play_pause_toggle:
                     mPlaybackService.toggle();
                     break;
+
                 case R.id.quick_prev:
                 case R.id.prev:
                     mPlaybackService.playPrev(true);
                     break;
+
                 case R.id.quick_next:
                 case R.id.next:
                     mPlaybackService.playNext(true);
                     break;
+
                 case R.id.action_equalizer:
                     NavigationUtils.showEqualizer(MainActivity.this);
                     break;
+
                 case R.id.track_info:
                     NavigationUtils.showPlaybackActivity(MainActivity.this, true);
                     break;
+
                 default: //do nothing
                     break;
             }
@@ -315,7 +323,6 @@ public class MainActivity extends AppCompatActivity implements
         super.onPause();
 
         killNotif();
-        clearCache();
 
         if (mServiceBound) {
             mPlaybackService = null;
@@ -871,7 +878,11 @@ public class MainActivity extends AppCompatActivity implements
         ArtworkCache.getInstance().clear();
     }
 
-
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        clearCache();
+    }
 
     /* *********************************************************************************************
     * Gestion des permissions (Android >= 6.0)
