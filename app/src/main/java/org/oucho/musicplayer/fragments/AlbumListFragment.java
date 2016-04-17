@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -40,12 +39,14 @@ import org.oucho.musicplayer.widgets.FastScroller;
 import java.util.List;
 
 
-public class AlbumListFragment extends BaseFragment
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class AlbumListFragment extends BaseFragment {
 
     private AlbumListAdapter mAdapter;
 
     private Context context;
+
+    private boolean mShowScrollerBubble = true;
+    private FastScroller mFastScroller;
 
     private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
 
@@ -116,8 +117,6 @@ public class AlbumListFragment extends BaseFragment
         }
     };
 
-    private boolean mShowScrollerBubble = true;
-    private FastScroller mFastScroller;
 
     public static AlbumListFragment newInstance() {
 
@@ -187,11 +186,7 @@ public class AlbumListFragment extends BaseFragment
 
         context = getContext();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("About");
-
         préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
-        préférences.registerOnSharedPreferenceChangeListener(this);
-
 
         titre = context.getString(R.string.albums);
 
@@ -269,36 +264,27 @@ public class AlbumListFragment extends BaseFragment
                 item.setChecked(true);
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_A_Z);
                 load();
+                tri = "a-z";
+                setUserVisibleHint(true);
                 break;
             case R.id.menu_sort_by_artist:
                 item.setChecked(true);
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_ARTIST);
                 load();
+                tri = context.getString(R.string.title_sort_artist);
+                setUserVisibleHint(true);
                 break;
             case R.id.menu_sort_by_year:
                 item.setChecked(true);
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_YEAR);
                 load();
+                tri = context.getString(R.string.title_sort_year);
+                setUserVisibleHint(true);
                 break;
             default: //do nothing
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-    /* *********************************************************************************************
-     * Préférences listener
-     * ********************************************************************************************/
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // handle the preference change here
-        if ("album_sort_order".equals(key)) {
-            setTri();
-            refreshTitle();
-        }
     }
 
 
@@ -325,24 +311,13 @@ public class AlbumListFragment extends BaseFragment
         }
     }
 
-    private void refreshTitle() {
-        getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
-    }
 
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
 
-        //int couleurTitre = ContextCompat.getColor(context, R.color.controls_tint_light);
-
-        if (visible && isResumed()){
-
-            getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
-
-        } else  if (visible) {
-
-            getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
-        }
+        if (visible || isResumed())
+            getActivity().setTitle(Html.fromHtml("<font>" + titre + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
     }
 
 }

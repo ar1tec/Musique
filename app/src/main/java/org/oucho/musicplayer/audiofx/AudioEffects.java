@@ -1,6 +1,5 @@
 package org.oucho.musicplayer.audiofx;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.audiofx.BassBoost;
@@ -229,7 +228,6 @@ public class AudioEffects {
         return sEqualizer.getCenterFreq(band);
     }
 
-    @SuppressLint("CommitPrefEdits")
     public static void savePrefs(Context context) {
         if (sEqualizer == null || sBassBoost == null) {
             return;
@@ -254,7 +252,7 @@ public class AudioEffects {
         editor.putBoolean(PREF_EQ_ENABLED,
                 sEqualizer.getEnabled());
 
-        editor.commit();
+        editor.apply();
     }
 
     private static class BassBoostValues {

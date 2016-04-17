@@ -7,7 +7,7 @@ import org.oucho.musicplayer.MainActivity;
 
 
 public class GetAudioFocusTask implements Runnable {
-	public MainActivity context;
+	private final MainActivity context;
 
 	public GetAudioFocusTask(MainActivity context) {
 		this.context = context;

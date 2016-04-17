@@ -68,13 +68,6 @@
     <string name="permission_write_external_storage">L\'application doit pouvoir écrire sur le stockage externe pour sauvegarder les images téléchargées.</string>
     <string name="permission_read_phone_state">Il est recommandé (mais pas nécessaire) de donner la permission "READ_PHONE_STATE" à l\'application. Le lecteur pourrait ainsi se mettre en pause automatiquement lorsque vous recevez un appel.</string>
 
-    <!-- Timer -->
-    <string name="action_sleep_timer">Minuteur sommeil</string>
-    <string name="action_cancel_current">Annuler le minuteur actuel</string>
-    <string name="action_set_timer">Régler</string>
-    <string name="sleep_timer_dialog_title">Régler le minuteur</string>
-    <string name="back">Retour</string>
-
     <string name="sort_order_entry_az">Ordre alphabétique</string>
     <string name="sort_order_entry_year">Année</string>
     <string name="sort_order_entry_artist">Artiste</string>
@@ -111,11 +104,20 @@
     <string name="continuer">continuer</string>
     <string name="cancel_timer">annuler le timer</string>
     <string name="impossible">0 impossible</string>
-    <string name="active_timer">Timer actif</string>
 
 
+    <string name="heure_singulier">heure</string>
+    <string name="heure_pluriel">heures</string>
 
+    <string name="minute_singulier">minute</string>
+    <string name="minute_pluriel">minutes</string>
 
+    <string name="arret">Arrêt dans</string>
+    <string name="et">et</string>
+
+    <string name="stop_timer">Timer arrêté</string>
+
+    <string name="action_sleep_timer">Minuteur sommeil</string>
 
 
 </resources>

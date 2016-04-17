@@ -349,12 +349,12 @@ public class FastScroller extends View {
         String getSectionForPosition(int position);
     }
 
-    public static int applyAlpha(int color, float alpha) {
+    private static int applyAlpha(int color, float alpha) {
         int colorAlpha  = ((color & 0xFF000000) >> 24) + 256;
         return (color & 0x00FFFFFF) | ((int) (colorAlpha * alpha) << 24);
     }
 
-    public static float getValueInRange(float val, float min, float max) {
+    private static float getValueInRange(float val, float min, float max) {
         return Math.min(max, Math.max(min, val));
     }
 }

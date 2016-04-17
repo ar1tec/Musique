@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements
                 mPlaybackService.stop();
                 killNotif();
                 clearCache();
-                finish();
+                moveTaskToBack(true);
                 break;
 
             default: //do nothing
@@ -216,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements
         Intent appStartIntent = pm.getLaunchIntentForPackage("org.oucho.radio");
         context.startActivity(appStartIntent);
         killNotif();
-        clearCache();
     }
 
 
@@ -317,7 +316,6 @@ public class MainActivity extends AppCompatActivity implements
      * Pause, resume etc.
      * ********************************************************************************************/
 
-    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onPause() {
         super.onPause();
@@ -332,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements
             unbindService(mServiceConnection);
             mServiceBound = false;
         }
+
         mHandler.removeCallbacks(mUpdateProgressBar);
     }
 
@@ -352,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             updateAll();
         }
+
     }
 
     @Override
@@ -369,8 +369,8 @@ public class MainActivity extends AppCompatActivity implements
                 Artist artist = getArtistFromBundle(bundle);
                 ArtistFragment fragment = ArtistFragment.newInstance(artist);
                 setFragment(fragment);
-            } else {
 
+            } else {
 
                 Song song = getSongFromBundle(bundle);
 
@@ -384,6 +384,7 @@ public class MainActivity extends AppCompatActivity implements
                     mPlaybackRequests.requestAsNextTrack(song);
                 }
             }
+
             mOnActivityResultIntent = null;
         }
     }
@@ -402,7 +403,6 @@ public class MainActivity extends AppCompatActivity implements
 
         return new Album(id, title, artist, year, trackCount);
     }
-
 
 
     private Artist getArtistFromBundle(Bundle bundle) {
@@ -685,12 +685,12 @@ public class MainActivity extends AppCompatActivity implements
      * Sleep Timer
      **********************************************************************************************/
 
-    public void showDatePicker() {
+    private void showDatePicker() {
 
         final String start = getString(R.string.start);
         final String cancel = getString(R.string.cancel);
 
-        View view = getLayoutInflater().inflate(R.layout.date_picker_dialog, null);
+        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.date_picker_dialog, null);
 
         final TimePicker picker = (TimePicker) view.findViewById(R.id.time_picker);
         final Calendar cal = Calendar.getInstance();
@@ -735,7 +735,7 @@ public class MainActivity extends AppCompatActivity implements
         dialog.show();
     }
 
-    public void showTimerInfo() {
+    private void showTimerInfo() {
 
         final String continuer = getString(R.string.continuer);
         final String cancelTimer = getString(R.string.cancel_timer);
@@ -745,9 +745,11 @@ public class MainActivity extends AppCompatActivity implements
             stopTimer();
             return;
         }
-
-        View view = getLayoutInflater().inflate(R.layout.timer_info_dialog, null);
+        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.timer_info_dialog, null);
         final TextView timeLeft = ((TextView) view.findViewById(R.id.time_left));
+
+
+        final String stopTimer = getString(R.string.stop_timer);
 
         final AlertDialog dialog = new AlertDialog.Builder(this).setPositiveButton(continuer, new DialogInterface.OnClickListener() {
             @Override
@@ -758,6 +760,10 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 stopTimer();
+
+                Context context = getApplicationContext();
+
+                Toast.makeText(context, stopTimer, Toast.LENGTH_LONG).show();
             }
         }).setView(view).create();
 
@@ -780,11 +786,21 @@ public class MainActivity extends AppCompatActivity implements
         dialog.show();
     }
 
-    public void startTimer(final int hours, final int minutes) {
+    private void startTimer(final int hours, final int minutes) {
 
         final String impossible = getString(R.string.impossible);
-        final String activeTimer = getString(R.string.active_timer);
 
+        final String heureSingulier = getString(R.string.heure_singulier);
+        final String heurePluriel = getString(R.string.heure_pluriel);
+
+        final String minuteSingulier = getString(R.string.minute_singulier);
+        final String minutePluriel = getString(R.string.minute_pluriel);
+
+        final String arret = getString(R.string.arret);
+        final String et = getString(R.string.et);
+
+        final String heureTxt;
+        final String minuteTxt;
 
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         final int delay = ((hours * 3600) + (minutes * 60)) * 1000;
@@ -794,8 +810,26 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
+        if (hours == 1) {
+            heureTxt = heureSingulier;
+        } else {
+            heureTxt = heurePluriel;
+        }
+
+        if (minutes == 1) {
+            minuteTxt = minuteSingulier;
+        } else {
+            minuteTxt = minutePluriel;
+        }
             mTask = scheduler.schedule(new GetAudioFocusTask(this), delay, TimeUnit.MILLISECONDS);
-            Toast.makeText(this, activeTimer, Toast.LENGTH_LONG).show();
+
+        if (hours == 0) {
+            Toast.makeText(this, arret + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
+        } else if (minutes == 0) {
+            Toast.makeText(this, arret + " " + hours + " " + heureTxt, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, arret + " " + hours + " " + heureTxt + " " + et + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
+        }
 
             running = true;
     }
@@ -871,7 +905,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /***********************************************************************************************
-     * Purge du cache des images
+     * Purge du cache
      **********************************************************************************************/
     private void clearCache() {
         ArtistImageCache.getInstance().clear();
@@ -888,7 +922,6 @@ public class MainActivity extends AppCompatActivity implements
     * Gestion des permissions (Android >= 6.0)
     * *********************************************************************************************/
 
-    @SuppressLint("CommitPrefEdits")
     @Override
     public void onRequestPermissionsResult(
             int requestCode,
@@ -903,7 +936,7 @@ public class MainActivity extends AppCompatActivity implements
                 if (mPlaybackService != null) {
                     mPlaybackService.setAutoPauseEnabled(true);
                 }
-                editor.commit();
+                editor.apply();
                 break;
             default: //do nothing
                 break;
@@ -937,14 +970,14 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-                DialogUtils.showPermissionDialog(this, getString(R.string.permission_write_external_storage), new DialogInterface.OnClickListener() {
+                DialogUtils.showPermissionDialog(this, getString(R.string.permission_write_external_storage),
+                        new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions(MainActivity.this,
@@ -969,7 +1002,8 @@ public class MainActivity extends AppCompatActivity implements
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_PHONE_STATE)) {
 
-                DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state), new DialogInterface.OnClickListener() {
+                DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
+                        new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions(MainActivity.this,

@@ -51,20 +51,20 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     public static final String PREF_AUTO_PAUSE = "org.oucho.musicplayer.AUTO_PAUSE";//pause automatique quand on détecte un appel entrant
 
-    public static final String ACTION_PAUSE = "org.oucho.musicplayer.ACTION_PAUSE";
+    private static final String ACTION_PAUSE = "org.oucho.musicplayer.ACTION_PAUSE";
     public static final String ACTION_TOGGLE = "org.oucho.musicplayer.ACTION_TOGGLE";
     public static final String ACTION_NEXT = "org.oucho.musicplayer.ACTION_NEXT";
     public static final String ACTION_PREVIOUS = "org.oucho.musicplayer.ACTION_PREVIOUS";
-    public static final String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
-    public static final String ACTION_CHOOSE_SONG = "org.oucho.musicplayer.ACTION_CHOOSE_SONG";
+    private static final String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
+    private static final String ACTION_CHOOSE_SONG = "org.oucho.musicplayer.ACTION_CHOOSE_SONG";
     public static final String META_CHANGED = "org.oucho.musicplayer.META_CHANGED";
     public static final String PLAYSTATE_CHANGED = "org.oucho.musicplayer.PLAYSTATE_CHANGED";
     public static final String QUEUE_CHANGED = "org.oucho.musicplayer.QUEUE_CHANGED";
     public static final String POSITION_CHANGED = "org.oucho.musicplayer.POSITION_CHANGED";
     public static final String ITEM_ADDED = "org.oucho.musicplayer.ITEM_ADDED";
     public static final String ORDER_CHANGED = "org.oucho.musicplayer.ORDER_CHANGED";
-    public static final String REPEAT_MODE_CHANGED = "org.oucho.musicplayer.REPEAT_MODE_CHANGED";
-    public static final String EXTRA_POSITION = "org.oucho.musicplayer.POSITION";
+    private static final String REPEAT_MODE_CHANGED = "org.oucho.musicplayer.REPEAT_MODE_CHANGED";
+    private static final String EXTRA_POSITION = "org.oucho.musicplayer.POSITION";
 
     private static final String TAG = "PlaybackService";
 
@@ -222,7 +222,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         setupMediaSession();
     }
 
-    @SuppressLint("CommitPrefEdits")
     private void saveState(boolean saveQueue) {
         if (mPlayList.size() > 0) {
             SharedPreferences.Editor editor = mStatePrefs.edit();
@@ -238,7 +237,7 @@ public class PlayerService extends Service implements OnPreparedListener,
             editor.putInt("currentPosition", mCurrentPosition);
             editor.putInt("repeatMode", mRepeatMode);
             editor.putBoolean("shuffle", mShuffle);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -267,16 +266,14 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
     private void saveSeekPos() {
         Log.d(TAG, "save seek pos");
         SharedPreferences.Editor editor = mStatePrefs.edit();
         editor.putBoolean("seekPosSaved", true);
         editor.putInt("seekPos", mMediaPlayer.getCurrentPosition());
-        editor.commit();
+        editor.apply();
     }
 
-    @SuppressLint("CommitPrefEdits")
     private void restoreSeekPos() {
         if (mStatePrefs.getBoolean("seekPosSaved", false)) {
             int seekPos = mStatePrefs.getInt("seekPos", 0);
@@ -286,7 +283,7 @@ public class PlayerService extends Service implements OnPreparedListener,
             SharedPreferences.Editor editor = mStatePrefs.edit();
             editor.putBoolean("seekPosSaved", false);
             editor.putInt("seekPos", 0);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -449,7 +446,7 @@ public class PlayerService extends Service implements OnPreparedListener,
         return null;
     }
 
-    public String getAlbumName() {
+    private String getAlbumName() {
         if (mCurrentSong != null) {
             return mCurrentSong.getAlbum();
         }

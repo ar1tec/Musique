@@ -310,7 +310,7 @@ public class MusicLibraryHelper {
 
     }
 
-    public static String getRealPathFromUri(Context context, Uri contentUri) {
+    private static String getRealPathFromUri(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
             String[] proj = { MediaStore.Images.Media.DATA };

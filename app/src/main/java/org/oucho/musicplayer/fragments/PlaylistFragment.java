@@ -79,16 +79,6 @@ public class PlaylistFragment extends BaseFragment {
         return fragment;
     }
 
-/*    public static PlaylistFragment newFavoritesFragment() {
-        PlaylistFragment fragment = new PlaylistFragment();
-
-        Bundle args = new Bundle();
-
-        args.putBoolean(PARAM_PLAYLIST_FAVORITES, true);
-
-        fragment.setArguments(args);
-        return fragment;
-    }*/
 
     private void selectSong(int position) {
 
@@ -176,10 +166,10 @@ public class PlaylistFragment extends BaseFragment {
     private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener, OnTouchListener {
 
 
-        View itemView; // NOPMD
-        TextView vTitle; // NOPMD
-        TextView vArtist; // NOPMD
-        ImageButton vReorderButton; // NOPMD
+        final View itemView; // NOPMD
+        final TextView vTitle; // NOPMD
+        final TextView vArtist; // NOPMD
+        final ImageButton vReorderButton; // NOPMD
 
         public SongViewHolder(View itemView) {
             super(itemView);

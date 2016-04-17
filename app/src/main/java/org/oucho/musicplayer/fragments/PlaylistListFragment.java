@@ -174,17 +174,6 @@ public class PlaylistListFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void setUserVisibleHint(boolean visible){
-        super.setUserVisibleHint(visible);
-
-        if (visible && isResumed()){
-            getActivity().setTitle(context.getString(R.string.playlists));
-        }else  if (visible){
-            getActivity().setTitle(context.getString(R.string.playlists));
-        }
-    }
-
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position, View view) {
@@ -197,5 +186,13 @@ public class PlaylistListFragment extends BaseFragment {
         }
     };
 
+    @Override
+    public void setUserVisibleHint(boolean visible){
+        super.setUserVisibleHint(visible);
+
+        if (visible || isResumed()){
+            getActivity().setTitle(context.getString(R.string.playlists));
+        }
+    }
 
 }

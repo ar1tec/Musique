@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,20 +38,15 @@ import org.oucho.musicplayer.widgets.FastScroller;
 import java.util.List;
 
 
-public class SongListFragment extends BaseFragment
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
-
-
-    private static final String STATE_SHOW_TOOLBAR = "toolbar";
-    private static final String STATE_SHOW_FASTSCROLLER = "fastscroller";
+public class SongListFragment extends BaseFragment {
 
 
     private MainActivity mActivity;
 
     private SongListAdapter mAdapter;
 
-    private boolean mShowToolbar = false;
-    private boolean mShowFastScroller = true;
+    private boolean mShowScrollerBubble = true;
+    private FastScroller mFastScroller;
 
     private Context context;
 
@@ -94,10 +87,9 @@ public class SongListFragment extends BaseFragment
 
         }
     };
-    private boolean mShowScrollerBubble = true;
-    private FastScroller mFastScroller;
 
-    public void populateAdapter(List<Song> songList) {
+
+    private void populateAdapter(List<Song> songList) {
         mAdapter.setData(songList);
     }
 
@@ -191,11 +183,6 @@ public class SongListFragment extends BaseFragment
 
     }
 
-    public SongListFragment showToolbar(boolean show) {
-        mShowToolbar = show;
-        return this;
-    }
-
     private void selectSong(int position) {
 
         if (mActivity != null) {
@@ -235,7 +222,6 @@ public class SongListFragment extends BaseFragment
         context = getContext();
 
         préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
-        préférences.registerOnSharedPreferenceChangeListener(this);
 
         titre = context.getString(R.string.titles);
 
@@ -266,33 +252,11 @@ public class SongListFragment extends BaseFragment
         mRecyclerView.setAdapter(mAdapter);
 
 
-        if (savedInstanceState != null) {
-            mShowToolbar = savedInstanceState.getBoolean(STATE_SHOW_TOOLBAR)
-                    || mShowToolbar;
-            mShowFastScroller = savedInstanceState
-                    .getBoolean(STATE_SHOW_FASTSCROLLER) || mShowFastScroller;
-        }
-
-        mFastScroller = (FastScroller) rootView
-                .findViewById(R.id.fastscroller);
+        mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         mFastScroller.setShowBubble(mShowScrollerBubble);
+        mFastScroller.setSectionIndexer(mAdapter);
+        mFastScroller.setRecyclerView(mRecyclerView);
 
-
-        if (mShowFastScroller) {
-            mFastScroller.setRecyclerView(mRecyclerView);
-            mFastScroller.setSectionIndexer(mAdapter);
-        } else {
-            mFastScroller.setVisibility(View.GONE);
-        }
-
-        if (mShowToolbar) {
-            Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-            toolbar.setVisibility(View.VISIBLE);
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
-            activity.setSupportActionBar(toolbar);
-            //noinspection ConstantConditions
-            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
         return rootView;
     }
 
@@ -300,14 +264,6 @@ public class SongListFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(0, null, getLoaderCallbacks());
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_SHOW_TOOLBAR, mShowToolbar);
-        outState.putBoolean(STATE_SHOW_FASTSCROLLER, mShowFastScroller);
 
     }
 
@@ -336,20 +292,31 @@ public class SongListFragment extends BaseFragment
             case R.id.menu_sort_by_az:
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_A_Z);
                 load();
+                tri = "a-z";
+                setUserVisibleHint(true);
                 break;
 
             case R.id.menu_sort_by_album:
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_ALBUM);
                 load();
+                tri = context.getString(R.string.title_sort_album);
+                setUserVisibleHint(true);
                 break;
+
             case R.id.menu_sort_by_artist:
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_ARTIST);
                 load();
+                tri = context.getString(R.string.title_sort_artist);
+                setUserVisibleHint(true);
                 break;
+
             case R.id.menu_sort_by_year:
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_YEAR);
                 load();
+                tri = context.getString(R.string.title_sort_year);
+                setUserVisibleHint(true);
                 break;
+
             default: //do nothing
                 break;
         }
@@ -360,20 +327,6 @@ public class SongListFragment extends BaseFragment
         return mLoaderCallbacks;
     }
 
-
-
-    /* *********************************************************************************************
-     * Préférences listener
-     * ********************************************************************************************/
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // handle the preference change here
-        if ("song_sort_order".equals(key)) {
-            setTri();
-            refreshTitle();
-        }
-    }
 
 
 
@@ -387,41 +340,29 @@ public class SongListFragment extends BaseFragment
 
         if ("year DESC".equals(getTri)) {
 
-            tri = "   " + context.getString(R.string.title_sort_year);
+            tri = context.getString(R.string.title_sort_year);
 
         } else if ("artist".equals(getTri)) {
 
-            tri = "   " + context.getString(R.string.title_sort_artist);
+            tri = context.getString(R.string.title_sort_artist);
 
         } else if ("album".equals(getTri)) {
 
-            tri = "   " + context.getString(R.string.title_sort_album);
+            tri = context.getString(R.string.title_sort_album);
 
         } else {
 
-            tri = "   " + "a-z";
+            tri = "a-z";
         }
     }
-
-    private void refreshTitle() {
-        getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
-    }
-
 
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
 
+        if (visible || isResumed())
+            getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
 
-        if (visible && isResumed()){
-
-            getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
-
-        } else  if (visible) {
-
-            getActivity().setTitle(Html.fromHtml("<font>" + titre +   "   </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
-
-        }
     }
 
 }

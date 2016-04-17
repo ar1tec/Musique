@@ -71,7 +71,7 @@ public class PlayerActivity extends AppCompatActivity
 
     private ActionBar actionBar;
 
-    private int couleurTitre;
+    private int couleurSousTitre;
 
 
     /* *********************************************************************************************
@@ -91,12 +91,13 @@ public class PlayerActivity extends AppCompatActivity
         track = préférences.getInt("currentPosition", 0) + 1;
 
         Context context = getApplicationContext();
-        couleurTitre = ContextCompat.getColor(context, R.color.colorAccent);
+        int couleurTitre = ContextCompat.getColor(context, R.color.colorAccent);
+        couleurSousTitre = ContextCompat.getColor(context, R.color.secondary_text);
 
         actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>En cours de lecture</font>"));
-        actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurTitre + "'>" + track + "/" + total_track + "</font><small>"));
+        actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>"));
         actionBar.setElevation(0);
 
 
@@ -207,7 +208,7 @@ public class PlayerActivity extends AppCompatActivity
             track = préférences.getInt("currentPosition", 0) + 1;
 
             assert actionBar != null;
-            actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurTitre + "'>" + track + "/" + total_track + "</font><small>"));
+            actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>"));
 
 
         }
@@ -549,10 +550,10 @@ public class PlayerActivity extends AppCompatActivity
 
     private class QueueItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnTouchListener {
 
-        TextView vTitle; // NOPMD
-        TextView vArtist; // NOPMD
-        ImageButton vReorderButton; // NOPMD
-        View itemView; // NOPMD
+        final TextView vTitle; // NOPMD
+        final TextView vArtist; // NOPMD
+        final ImageButton vReorderButton; // NOPMD
+        final View itemView; // NOPMD
 
         public QueueItemViewHolder(View itemView) {
             super(itemView);
