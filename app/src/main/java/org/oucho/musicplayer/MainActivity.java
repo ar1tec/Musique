@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements
                 mPlaybackService.stop();
                 killNotif();
                 clearCache();
-                moveTaskToBack(true);
+                finish();
                 break;
 
             default: //do nothing
