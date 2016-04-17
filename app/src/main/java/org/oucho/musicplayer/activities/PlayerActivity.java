@@ -57,7 +57,7 @@ public class PlayerActivity extends AppCompatActivity
     private QueueAdapter mQueueAdapter = new QueueAdapter();
 
     private boolean mServiceBound;
-    private PlayerService mPlaybackService;
+    private PlayerService mPlayerService;
 
     private final Handler mHandler = new Handler();
 
@@ -103,7 +103,7 @@ public class PlayerActivity extends AppCompatActivity
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        setContentView(R.layout.activity_playback);
+        setContentView(R.layout.activity_player);
 
         mArtworkSize = getResources().getDimensionPixelSize(R.dimen.playback_activity_art_size);
 
@@ -118,7 +118,7 @@ public class PlayerActivity extends AppCompatActivity
 
 
         int couleur_control = ContextCompat.getColor(context, R.color.controls_tint_light);
-        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_dropdown);
+        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_spinner_black);
         upArrow.setColorFilter(couleur_control, PorterDuff.Mode.SRC_ATOP);
         //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -175,10 +175,10 @@ public class PlayerActivity extends AppCompatActivity
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if (fromUser
-                    && mPlaybackService != null
-                    && (mPlaybackService.isPlaying() || mPlaybackService
+                    && mPlayerService != null
+                    && (mPlayerService.isPlaying() || mPlayerService
                     .isPaused())) {
-                mPlaybackService.seekTo(seekBar.getProgress());
+                mPlayerService.seekTo(seekBar.getProgress());
             }
         }
 
@@ -190,7 +190,7 @@ public class PlayerActivity extends AppCompatActivity
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            if (mPlaybackService != null && mPlaybackService.isPlaying()) {
+            if (mPlayerService != null && mPlayerService.isPlaying()) {
                 mHandler.post(mUpdateSeekBarRunnable);
             }
 
@@ -219,37 +219,37 @@ public class PlayerActivity extends AppCompatActivity
         @Override
         public void onClick(View v) {
 
-            if (mPlaybackService == null) {
+            if (mPlayerService == null) {
                 return;
             }
             switch (v.getId()) {
                 case R.id.play_pause_toggle:
 
-                    mPlaybackService.toggle();
+                    mPlayerService.toggle();
 
                     break;
 
                 case R.id.prev:
 
-                    mPlaybackService.playPrev(true);
+                    mPlayerService.playPrev(true);
 
                     break;
 
                 case R.id.next:
 
-                    mPlaybackService.playNext(true);
+                    mPlayerService.playNext(true);
 
                     break;
 
                 case R.id.shuffle:
-                    boolean shuffle = mPlaybackService.isShuffleEnabled();
-                    mPlaybackService.setShuffleEnabled(!shuffle);
+                    boolean shuffle = mPlayerService.isShuffleEnabled();
+                    mPlayerService.setShuffleEnabled(!shuffle);
                     updateShuffleButton();
                     break;
 
                 case R.id.repeat:
-                    int mode = mPlaybackService.getNextRepeatMode();
-                    mPlaybackService.setRepeatMode(mode);
+                    int mode = mPlayerService.getNextRepeatMode();
+                    mPlayerService.setRepeatMode(mode);
                     updateRepeatButton();
                     break;
 
@@ -266,8 +266,8 @@ public class PlayerActivity extends AppCompatActivity
         public void onServiceConnected(ComponentName name, IBinder service) {
 
             PlayerService.PlaybackBinder binder = (PlayerService.PlaybackBinder) service;
-            mPlaybackService = binder.getService();
-            if (mPlaybackService == null || !mPlaybackService.hasPlaylist()) {
+            mPlayerService = binder.getService();
+            if (mPlayerService == null || !mPlayerService.hasPlaylist()) {
                 finish();
             }
             mServiceBound = true;
@@ -288,7 +288,7 @@ public class PlayerActivity extends AppCompatActivity
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (mPlaybackService == null) {
+            if (mPlayerService == null) {
                 return;
             }
             String action = intent.getAction();
@@ -296,7 +296,7 @@ public class PlayerActivity extends AppCompatActivity
             switch (action) {
                 case PlayerService.PLAYSTATE_CHANGED:
                     setButtonDrawable();
-                    if (mPlaybackService.isPlaying()) {
+                    if (mPlayerService.isPlaying()) {
                         mHandler.post(mUpdateSeekBarRunnable);
                     } else {
                         mHandler.removeCallbacks(mUpdateSeekBarRunnable);
@@ -371,7 +371,7 @@ public class PlayerActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mServiceListener);
-        mPlaybackService = null;
+        mPlayerService = null;
 
         if (mServiceBound) {
             unbindService(mServiceConnection);
@@ -402,12 +402,12 @@ public class PlayerActivity extends AppCompatActivity
     }
 
     private void updateAll() {
-        if (mPlaybackService != null) {
-            Log.d("playlist", "hasplaylist " + mPlaybackService.hasPlaylist());
+        if (mPlayerService != null) {
+            Log.d("playlist", "hasplaylist " + mPlayerService.hasPlaylist());
             updateQueue();
             updateTrackInfo();
             setButtonDrawable();
-            if (mPlaybackService.isPlaying()) {
+            if (mPlayerService.isPlaying()) {
                 mHandler.post(mUpdateSeekBarRunnable);
             }
             updateShuffleButton();
@@ -417,10 +417,10 @@ public class PlayerActivity extends AppCompatActivity
 
 
     private void updateTrackInfo() {
-        if (mPlaybackService != null) {
+        if (mPlayerService != null) {
 
-            String title = mPlaybackService.getSongTitle();
-            String artist = mPlaybackService.getArtistName();
+            String title = mPlayerService.getSongTitle();
+            String artist = mPlayerService.getArtistName();
             if (title != null) {
                 //noinspection ConstantConditions
                 ((TextView) findViewById(R.id.song_title)).setText(title);
@@ -434,10 +434,10 @@ public class PlayerActivity extends AppCompatActivity
 
 
                 ImageView artworkView = (ImageView) findViewById(R.id.artwork);
-                ArtworkCache.getInstance().loadBitmap(mPlaybackService.getAlbumId(), artworkView, mArtworkSize, mArtworkSize);
+                ArtworkCache.getInstance().loadBitmap(mPlayerService.getAlbumId(), artworkView, mArtworkSize, mArtworkSize);
 
 
-            int duration = mPlaybackService.getTrackDuration();
+            int duration = mPlayerService.getTrackDuration();
             if (duration != -1) {
                 mSeekBar.setMax(duration);
                 //noinspection ConstantConditions
@@ -446,7 +446,7 @@ public class PlayerActivity extends AppCompatActivity
             }
 
 
-            setQueueSelection(mPlaybackService.getPositionWithinPlayList());
+            setQueueSelection(mPlayerService.getPositionWithinPlayList());
 
         }
     }
@@ -458,9 +458,9 @@ public class PlayerActivity extends AppCompatActivity
 
         int couleur = ContextCompat.getColor(context, R.color.colorAccent);
 
-        if (mPlaybackService != null) {
+        if (mPlayerService != null) {
             ImageView button = (ImageView) findViewById(R.id.play_pause_toggle);
-            if (mPlaybackService.isPlaying()) {
+            if (mPlayerService.isPlaying()) {
                 assert button != null;
                 button.setImageResource(R.drawable.musicplayer_pause);
             } else {
@@ -474,7 +474,7 @@ public class PlayerActivity extends AppCompatActivity
     }
 
     private void updateShuffleButton() {
-        boolean shuffle = mPlaybackService.isShuffleEnabled();
+        boolean shuffle = mPlayerService.isShuffleEnabled();
         Log.d("shuffle", "shuffle " + String.valueOf(shuffle));
         ImageView shuffleButton = (ImageView) findViewById(R.id.shuffle);
         if (shuffle) {
@@ -490,7 +490,7 @@ public class PlayerActivity extends AppCompatActivity
 
     private void updateRepeatButton() {
         ImageView repeatButton = (ImageView) findViewById(R.id.repeat);
-        int mode = mPlaybackService.getRepeatMode();
+        int mode = mPlayerService.getRepeatMode();
         if (mode == PlayerService.NO_REPEAT) {
             assert repeatButton != null;
             repeatButton.setImageResource(R.drawable.musicplayer_repeat_no);
@@ -505,11 +505,11 @@ public class PlayerActivity extends AppCompatActivity
     }
 
     private void updateQueue() {
-        if (mPlaybackService == null) {
+        if (mPlayerService == null) {
             return;
         }
 
-        List<Song> queue = mPlaybackService.getPlayList();
+        List<Song> queue = mPlayerService.getPlayList();
         if (!queue.equals(mQueue)) {
 
             Log.d("eee", "testt");
@@ -521,7 +521,7 @@ public class PlayerActivity extends AppCompatActivity
         mQueueAdapter.notifyDataSetChanged();
 
 
-        setQueueSelection(mPlaybackService.getPositionWithinPlayList());
+        setQueueSelection(mPlayerService.getPositionWithinPlayList());
     }
 
     private String msToText(int msec) {
@@ -530,8 +530,8 @@ public class PlayerActivity extends AppCompatActivity
     }
 
     private void updateSeekBar() {
-        if (mPlaybackService != null) {
-            int position = mPlaybackService.getPlayerPosition();
+        if (mPlayerService != null) {
+            int position = mPlayerService.getPlayerPosition();
             mSeekBar.setProgress(position);
 
             //noinspection ConstantConditions
@@ -576,13 +576,13 @@ public class PlayerActivity extends AppCompatActivity
 
         @Override
         public void onClick(View v) {
-            if (mPlaybackService != null) {
+            if (mPlayerService != null) {
 
                 int position = getAdapterPosition();
 
                 switch (v.getId()) {
                     case R.id.song_info:
-                        mPlaybackService.setPosition(position, true);
+                        mPlayerService.setPosition(position, true);
 
                         break;
                     case R.id.delete_button:
@@ -691,22 +691,22 @@ public class PlayerActivity extends AppCompatActivity
 
 
         public void sendRequests() {
-            if (mPlaybackService == null) {
+            if (mPlayerService == null) {
                 return;
             }
 
             if (mPlayList != null) {
-                mPlaybackService.setPlayList(mPlayList, mIndex, mAutoPlay);
+                mPlayerService.setPlayList(mPlayList, mIndex, mAutoPlay);
                 mPlayList = null;
             }
 
             if (mAddToQueue != null) {
-                mPlaybackService.addToQueue(mAddToQueue);
+                mPlayerService.addToQueue(mAddToQueue);
                 mAddToQueue = null;
             }
 
             if (mNextTrack != null) {
-                mPlaybackService.setAsNextTrack(mNextTrack);
+                mPlayerService.setAsNextTrack(mNextTrack);
                 mNextTrack = null;
             }
         }

@@ -62,14 +62,11 @@ public class PlaylistsUtils {
 
         if (cursor != null && cursor.moveToFirst()) {
 
-
             do {
                 int songId = cursor.getInt(0);
                 insert(resolver, uri, songId, index);
                 index++;
             } while (cursor.moveToNext());
-
-
         }
 
         if (cursor != null) {
@@ -80,8 +77,7 @@ public class PlaylistsUtils {
     public static void removeFromPlaylist(ContentResolver resolver, long playlistId, long audioId) {
         Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
 
-        resolver.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID
-                + " = " + audioId, null);
+        resolver.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + audioId, null);
     }
 
     public static boolean moveItem(ContentResolver res, long playlistId,
@@ -90,6 +86,7 @@ public class PlaylistsUtils {
                 .getContentUri("external", playlistId).buildUpon()
                 .appendEncodedPath(String.valueOf(from))
                 .appendQueryParameter("move", "true").build();
+
         ContentValues values = new ContentValues();
         values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, to);
         return res.update(uri, values, null, null) != 0;

@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private Intent mOnActivityResultIntent;
 
-    private PlayerService mPlaybackService;
+    private PlayerService mPlayerService;
 
     private boolean mServiceBound = false;
     private ProgressBar mProgressBar;
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case R.id.nav_exit:
-                mPlaybackService.stop();
+                mPlayerService.stop();
                 killNotif();
                 clearCache();
                 finish();
@@ -201,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements
         }
         return true;
     }
-
 
 
     /* **************************
@@ -229,23 +228,23 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public void onClick(View v) {
 
-            if (mPlaybackService == null) {
+            if (mPlayerService == null) {
                 return;
             }
             switch (v.getId()) {
                 case R.id.play_pause_toggle:
                 case R.id.quick_play_pause_toggle:
-                    mPlaybackService.toggle();
+                    mPlayerService.toggle();
                     break;
 
                 case R.id.quick_prev:
                 case R.id.prev:
-                    mPlaybackService.playPrev(true);
+                    mPlayerService.playPrev(true);
                     break;
 
                 case R.id.quick_next:
                 case R.id.next:
-                    mPlaybackService.playNext(true);
+                    mPlayerService.playNext(true);
                     break;
 
                 case R.id.action_equalizer:
@@ -320,10 +319,11 @@ public class MainActivity extends AppCompatActivity implements
     protected void onPause() {
         super.onPause();
 
-        killNotif();
+        if (!mPlayerService.isPlaying())
+            killNotif();
 
         if (mServiceBound) {
-            mPlaybackService = null;
+            mPlayerService = null;
 
             unregisterReceiver(mServiceListener);
 
@@ -456,14 +456,14 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (mPlaybackService == null) {
+            if (mPlayerService == null) {
                 return;
             }
             String action = intent.getAction();
 
             if (action.equals(PlayerService.PLAYSTATE_CHANGED)) {
                 setButtonDrawable();
-                if (mPlaybackService.isPlaying()) {
+                if (mPlayerService.isPlaying()) {
                     mHandler.post(mUpdateProgressBar);
                 } else {
                     mHandler.removeCallbacks(mUpdateProgressBar);
@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements
         public void onServiceConnected(ComponentName name, IBinder service) {
 
             PlayerService.PlaybackBinder binder = (PlaybackBinder) service;
-            mPlaybackService = binder.getService();
+            mPlayerService = binder.getService();
             mServiceBound = true;
 
             mPlaybackRequests.sendRequests();
@@ -501,25 +501,25 @@ public class MainActivity extends AppCompatActivity implements
     };
 
     public void onSongSelected(List<Song> songList, int position) {
-        if (mPlaybackService == null) {
+        if (mPlayerService == null) {
             return;
         }
-        mPlaybackService.setPlayList(songList, position, true);
-        // mPlaybackService.play();
+        mPlayerService.setPlayList(songList, position, true);
+        // mPlayerService.play();
     }
 
     public void onShuffleRequested(List<Song> songList, boolean play) {
-        if (mPlaybackService == null) {
+        if (mPlayerService == null) {
             return;
         }
-        mPlaybackService.setPlayListAndShuffle(songList, play);
+        mPlayerService.setPlayListAndShuffle(songList, play);
 
 
     }
 
     public void addToQueue(Song song) {
-        if (mPlaybackService != null) {
-            mPlaybackService.addToQueue(song);
+        if (mPlayerService != null) {
+            mPlayerService.addToQueue(song);
         }
     }
 
@@ -533,10 +533,10 @@ public class MainActivity extends AppCompatActivity implements
 
 
     private void updateAll() {
-        if (mPlaybackService != null) {
+        if (mPlayerService != null) {
             updateTrackInfo();
             setButtonDrawable();
-            if (mPlaybackService.isPlaying()) {
+            if (mPlayerService.isPlaying()) {
                 mHandler.post(mUpdateProgressBar);
             }
         }
@@ -549,9 +549,9 @@ public class MainActivity extends AppCompatActivity implements
      **********************************************************************************************/
 
     private void setButtonDrawable() {
-        if (mPlaybackService != null) {
+        if (mPlayerService != null) {
             ImageButton quickButton = (ImageButton) findViewById(R.id.quick_play_pause_toggle);
-            if (mPlaybackService.isPlaying()) {
+            if (mPlayerService.isPlaying()) {
                 assert quickButton != null;
                 quickButton.setImageResource(R.drawable.musicplayer_pause);
             } else {
@@ -573,8 +573,8 @@ public class MainActivity extends AppCompatActivity implements
         private Song mAddToQueue;
 
         private void requestPlayList(List<Song> playList) {
-            if (mPlaybackService != null) {
-                mPlaybackService.setPlayList(playList, 0, true);
+            if (mPlayerService != null) {
+                mPlayerService.setPlayList(playList, 0, true);
             } else {
                 mPlayList = playList;
                 mIndex = 0;
@@ -583,38 +583,38 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         public void requestAddToQueue(Song song) {
-            if (mPlaybackService != null) {
-                mPlaybackService.addToQueue(song);
+            if (mPlayerService != null) {
+                mPlayerService.addToQueue(song);
             } else {
                 mAddToQueue = song;
             }
         }
 
         public void requestAsNextTrack(Song song) {
-            if (mPlaybackService != null) {
-                mPlaybackService.setAsNextTrack(song);
+            if (mPlayerService != null) {
+                mPlayerService.setAsNextTrack(song);
             } else {
                 mNextTrack = song;
             }
         }
 
         public void sendRequests() {
-            if (mPlaybackService == null) {
+            if (mPlayerService == null) {
                 return;
             }
 
             if (mPlayList != null) {
-                mPlaybackService.setPlayList(mPlayList, mIndex, mAutoPlay);
+                mPlayerService.setPlayList(mPlayList, mIndex, mAutoPlay);
                 mPlayList = null;
             }
 
             if (mAddToQueue != null) {
-                mPlaybackService.addToQueue(mAddToQueue);
+                mPlayerService.addToQueue(mAddToQueue);
                 mAddToQueue = null;
             }
 
             if (mNextTrack != null) {
-                mPlaybackService.setAsNextTrack(mNextTrack);
+                mPlayerService.setAsNextTrack(mNextTrack);
                 mNextTrack = null;
             }
         }
@@ -630,7 +630,7 @@ public class MainActivity extends AppCompatActivity implements
     private void updateTrackInfo() {
         View trackInfoLayout = findViewById(R.id.track_info);
 
-        if (mPlaybackService != null && mPlaybackService.hasPlaylist()) {
+        if (mPlayerService != null && mPlayerService.hasPlaylist()) {
 
             assert trackInfoLayout != null;
             if (trackInfoLayout.getVisibility() != View.VISIBLE) {
@@ -638,8 +638,8 @@ public class MainActivity extends AppCompatActivity implements
                 trackInfoLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_grow_fade_in_from_bottom));
             }
 
-            String title = mPlaybackService.getSongTitle();
-            String artist = mPlaybackService.getArtistName();
+            String title = mPlayerService.getSongTitle();
+            String artist = mPlayerService.getArtistName();
 
             if (title != null) {
                 //noinspection ConstantConditions
@@ -652,7 +652,7 @@ public class MainActivity extends AppCompatActivity implements
                 ((TextView) findViewById(R.id.song_artist)).setText(artist);
             }
 
-            int duration = mPlaybackService.getTrackDuration();
+            int duration = mPlayerService.getTrackDuration();
 
             if (duration != -1) {
                 mProgressBar.setMax(duration);
@@ -673,8 +673,8 @@ public class MainActivity extends AppCompatActivity implements
      ***********************/
 
     private void updateProgressBar() {
-        if (mPlaybackService != null) {
-            int position = mPlaybackService.getPlayerPosition();
+        if (mPlayerService != null) {
+            int position = mPlayerService.getPlayerPosition();
             mProgressBar.setProgress(position);
         }
     }
@@ -894,15 +894,20 @@ public class MainActivity extends AppCompatActivity implements
      **********************************************************************************************/
 
     private void killNotif() {
-        NotificationManager notificationManager;
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
 
-        try {
-            if (!mPlaybackService.isPlaying()) {
+
+            @SuppressLint("SetTextI18n")
+            public void run() {
+                NotificationManager notificationManager;
                 notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 notificationManager.cancel(Notification.NOTIFY_ID);
+
             }
-        } catch (RuntimeException ignore){}
+        }, 500);
     }
+
 
     /***********************************************************************************************
      * Purge du cache
@@ -933,8 +938,8 @@ public class MainActivity extends AppCompatActivity implements
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(PlayerService.PREF_AUTO_PAUSE, true);
-                if (mPlaybackService != null) {
-                    mPlaybackService.setAutoPauseEnabled(true);
+                if (mPlayerService != null) {
+                    mPlayerService.setAutoPauseEnabled(true);
                 }
                 editor.apply();
                 break;

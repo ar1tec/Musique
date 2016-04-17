@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.images.ArtworkCache;
+import org.oucho.musicplayer.images.ArtworkHelper;
 import org.oucho.musicplayer.loaders.PlaylistLoader;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
@@ -59,6 +61,7 @@ public class PlaylistFragment extends BaseFragment {
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> data) {
             mSongList = new ArrayList<>(data);
             mAdapter.notifyDataSetChanged();
+
         }
 
         @Override
@@ -106,19 +109,18 @@ public class PlaylistFragment extends BaseFragment {
         setHasOptionsMenu(true);
         if (args != null) {
 
-
             long id = args.getLong(PARAM_PLAYLIST_ID);
             String name = args.getString(PARAM_PLAYLIST_NAME);
             mPlaylist = new Playlist(id, name);
 
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_playlist, container,
-                false);
+        View rootView = inflater.inflate(R.layout.fragment_playlist, container, false);
 
         mRecyclerView = (DragRecyclerView) rootView.findViewById(R.id.list_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -135,6 +137,7 @@ public class PlaylistFragment extends BaseFragment {
         FastScroller scroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         scroller.setSectionIndexer(mAdapter);
         scroller.setRecyclerView(mRecyclerView);
+        scroller.setShowBubble(false);
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         toolbar.setVisibility(View.VISIBLE);
@@ -176,6 +179,7 @@ public class PlaylistFragment extends BaseFragment {
             this.itemView = itemView;
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vArtist = (TextView) itemView.findViewById(R.id.artist);
+
             vReorderButton = (ImageButton) itemView
                     .findViewById(R.id.reorder_button);
             itemView.findViewById(R.id.song_info).setOnClickListener(this);
@@ -210,6 +214,7 @@ public class PlaylistFragment extends BaseFragment {
     class SongListAdapter extends RecyclerView.Adapter<SongViewHolder>
             implements FastScroller.SectionIndexer {
 
+        private Context mContext;
 
         @Override
         public SongViewHolder onCreateViewHolder(ViewGroup parent, int type) {
@@ -222,9 +227,18 @@ public class PlaylistFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(SongViewHolder viewHolder, int position) {
+
+            mContext = getContext();
+
+            final int mThumbWidth = mContext.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_playlist_size);
+            final int mThumbHeight = mThumbWidth;
+
+
             Song song = mSongList.get(position);
             viewHolder.vTitle.setText(song.getTitle());
             viewHolder.vArtist.setText(song.getArtist());
+
+            ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), viewHolder.vReorderButton, mThumbWidth, mThumbHeight, ArtworkHelper.getDefaultThumbDrawable(mContext));
 
         }
 
@@ -259,5 +273,4 @@ public class PlaylistFragment extends BaseFragment {
             return mSongList.get(position).getTitle().substring(0, 1);
         }
     }
-
 }
