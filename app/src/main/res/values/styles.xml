@@ -11,7 +11,7 @@
 
         <item name="ImageControlColor">@color/controls_tint_light</item>
 
-        <item name="android:colorBackground">@color/controls_tint_dark</item>
+        <item name="android:colorBackground">@color/blanc</item>
 
         <item name="ToolBar">@style/ToolBarTitleColor</item>
     </style>

@@ -15,5 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_new_playlist"
-        android:text="@string/new_playlist" />
+        android:text="@string/new_playlist"
+        android:textColor="@color/blanc"
+        android:background="@color/colorAccent"/>
 </LinearLayout>

@@ -237,8 +237,7 @@ public class SongListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_song_list,
-                container, false);
+        View rootView = inflater.inflate(R.layout.fragment_song_list, container, false);
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

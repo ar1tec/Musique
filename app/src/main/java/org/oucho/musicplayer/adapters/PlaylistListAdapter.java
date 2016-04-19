@@ -1,6 +1,8 @@
 package org.oucho.musicplayer.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +77,6 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
     }
 
 
-
     class PlaylistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView vName;
@@ -96,14 +97,28 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
 
             int id = v.getId();
 
-            //noinspection SimplifiableIfStatement
             if (id == R.id.delete_playlist) {
-                long playlist = mPlaylistList.get(position).getId();
 
-                PlaylistsUtils.deletePlaylist(context.getContentResolver(), playlist);
+                deletePlaylist(position);
+
             } else {
                 triggerOnItemClickListener(position, v);
             }
         }
+    }
+
+    private void deletePlaylist(int position) {
+
+        final long playlist = mPlaylistList.get(position).getId();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(context.getString(R.string.deletePlaylistConfirm));
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                PlaylistsUtils.deletePlaylist(context.getContentResolver(), playlist);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.show();
     }
 }

@@ -62,7 +62,6 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
-                android:text="TEST test"
                 android:textColor="@color/primary_text"
                 android:textSize="17sp"
                 card_view:ignore="HardcodedText" />

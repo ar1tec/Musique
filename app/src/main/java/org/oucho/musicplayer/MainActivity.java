@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements
         Context context = getApplicationContext();
 
         PackageManager pm = context.getPackageManager();
-        Intent appStartIntent = pm.getLaunchIntentForPackage("org.oucho.radio");
+        Intent appStartIntent = pm.getLaunchIntentForPackage("org.oucho.radio2");
         context.startActivity(appStartIntent);
         killNotif();
     }

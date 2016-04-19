@@ -37,11 +37,13 @@
     <string name="bass_boost">Amplificateur de basses</string>
 
     <string name="playlists">Listes de lecture</string>
-    <string name="choose_playlist">Choisir une playlist</string>
+    <string name="choose_playlist">Choisir une liste</string>
     <string name="new_playlist">Nouvelle liste de lecture</string>
     <string name="playlist_name">Nom de la liste de lecture</string>
     <string name="create_playlist">Créer une liste de lecture</string>
-    <string name="action_add_to_playlist">Ajouter à une playlist</string>
+    <string name="action_add_to_playlist">Ajouter à une liste de lecture</string>
+
+    <string name="deletePlaylistConfirm">Supprimer cette liste de lecture ?</string>
 
     <string name="view_queue">Voir la file de lecture</string>
     <string name="action_add_to_queue">Ajouter à la file de lecture</string>
@@ -61,6 +63,8 @@
     <string name="no_results">Aucun résultat</string>
 
     <string name="now_playing">Lecture en cours</string>
+    <string name="delete">supprimer</string>
+
 
 
     <string name="permission">Permission</string>
