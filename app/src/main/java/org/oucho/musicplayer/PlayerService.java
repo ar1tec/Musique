@@ -512,6 +512,13 @@ public class PlayerService extends Service implements OnPreparedListener,
 
         if (PLAYSTATE_CHANGED.equals(what) || META_CHANGED.equals(what)) {
                 Notification.updateNotification(this);
+
+            if (isPlaying()) {
+                Intent intent = new Intent();
+                intent.setAction("org.oucho.radio2.STOP");
+		        intent.putExtra("halt", "stop");
+                sendBroadcast(intent);
+            }
         }
 
         sendBroadcast(what, null);
@@ -639,12 +646,17 @@ public class PlayerService extends Service implements OnPreparedListener,
     }
 
     private void play() {
+
+
+
         int result = mAudioManager.requestAudioFocus(mAudioFocusChangeListener,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN);
         if(result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             mMediaPlayer.start();
             mIsPlaying = true;
             mIsPaused = false;
             notifyChange(PLAYSTATE_CHANGED);
+
+
         }
     }
 

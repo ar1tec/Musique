@@ -86,13 +86,14 @@
 
 
 
-    <string name="about">A propros</string>
+    <string name="about">A propos</string>
 
     <string name="about_message">
+        \n
+        Musique 1.5, GPL v3
         \n\n
-        Musique 1.4
-    \n\n
-
+        Code source: https://github.com/Old-Geek/Musique
+        \n\n\n
         Old Geek, avril 2016
         \n
     </string>
