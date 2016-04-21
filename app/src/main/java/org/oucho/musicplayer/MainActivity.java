@@ -190,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case R.id.nav_exit:
-                mPlayerService.stop();
                 killNotif();
                 clearCache();
                 finish();
@@ -201,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         return true;
     }
+
 
 
     /* **************************
@@ -633,6 +633,7 @@ public class MainActivity extends AppCompatActivity implements
         if (mPlayerService != null && mPlayerService.hasPlaylist()) {
 
             assert trackInfoLayout != null;
+
             if (trackInfoLayout.getVisibility() != View.VISIBLE) {
                 trackInfoLayout.setVisibility(View.VISIBLE);
                 trackInfoLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_grow_fade_in_from_bottom));

@@ -84,6 +84,14 @@
             </intent-filter>
         </receiver>
 
+
+        <receiver
+            android:name=".utils.StopReceive">
+            <intent-filter>
+                <action android:name="org.oucho.musicplayer.STOP"/>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".activities.PlayerActivity"
             android:label="@string/now_playing"

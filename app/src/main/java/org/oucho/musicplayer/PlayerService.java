@@ -852,6 +852,7 @@ public class PlayerService extends Service implements OnPreparedListener,
             start = true;
         } else {
             notifyChange(META_CHANGED);
+
         }
 
         restoreSeekPos();
