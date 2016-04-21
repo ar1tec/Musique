@@ -24,33 +24,43 @@ public class Notification {
 
     private static boolean sIsServiceForeground = false;
 
-    public static void updateNotification(@NonNull final PlayerService playbackService) {
+    private static boolean timer = false;
 
-        if (!playbackService.hasPlaylist()) {
-            removeNotification(playbackService);
+    public static void setState(boolean onOff){
+        timer = onOff;
+    }
+
+    static Context playback;
+
+    public static void updateNotification(@NonNull final PlayerService playerbackService) {
+
+        playback = playerbackService;
+
+        if (!playerbackService.hasPlaylist()) {
+            removeNotification(playerbackService);
             return; // no need to go further since there is nothing to display
         }
 
-        PendingIntent togglePlayIntent = PendingIntent.getService(playbackService, 0,
-                new Intent(playbackService, PlayerService.class)
+        PendingIntent togglePlayIntent = PendingIntent.getService(playerbackService, 0,
+                new Intent(playerbackService, PlayerService.class)
                         .setAction(PlayerService.ACTION_TOGGLE), 0);
 
 
 
-        PendingIntent nextIntent = PendingIntent.getService(playbackService, 0, new Intent(playbackService, PlayerService.class)
+        PendingIntent nextIntent = PendingIntent.getService(playerbackService, 0, new Intent(playerbackService, PlayerService.class)
                         .setAction(PlayerService.ACTION_NEXT), 0);
 
-        PendingIntent previousIntent = PendingIntent.getService(playbackService, 0,
-                new Intent(playbackService, PlayerService.class)
+        PendingIntent previousIntent = PendingIntent.getService(playerbackService, 0,
+                new Intent(playerbackService, PlayerService.class)
                         .setAction(PlayerService.ACTION_PREVIOUS), 0);
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(playbackService);
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(playerbackService);
 
 
-        builder.setContentTitle(playbackService.getSongTitle())
-                .setContentText(playbackService.getArtistName());
+        builder.setContentTitle(playerbackService.getSongTitle())
+                .setContentText(playerbackService.getArtistName());
 
-        int toggleResId = playbackService.isPlaying() ? R.drawable.notification_pause : R.drawable.notification_play;
+        int toggleResId = playerbackService.isPlaying() ? R.drawable.notification_pause : R.drawable.notification_play;
 
         builder.addAction(R.drawable.notification_previous, "", previousIntent)
                 .addAction(toggleResId, "", togglePlayIntent)
@@ -59,18 +69,24 @@ public class Notification {
                 .setVisibility(android.app.Notification.VISIBILITY_PUBLIC);
 
 
-        Intent intent = new Intent(playbackService, MainActivity.class);
+        Intent intent = new Intent(playerbackService, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendInt = PendingIntent.getActivity(playbackService, 0, intent,
+        PendingIntent pendInt = PendingIntent.getActivity(playerbackService, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pendInt)
-                .setSmallIcon(R.drawable.ic_stat_note)
-                .setShowWhen(false)
-                .setColor(ContextCompat.getColor(playbackService, R.color.controls_bg_dark));
+        builder.setContentIntent(pendInt);
+
+        if (!timer) {
+            builder.setSmallIcon(R.drawable.notification);
+        } else {
+            builder.setSmallIcon(R.drawable.notification_sleeptimer);
+        }
+
+        builder.setShowWhen(false);
+        builder.setColor(ContextCompat.getColor(playerbackService, R.color.controls_bg_dark));
 
 
-        Resources res = playbackService.getResources();
+        Resources res = playerbackService.getResources();
 
          @SuppressLint("PrivateResource")
          int height = (int) res.getDimension(R.dimen.notification_large_icon_height);
@@ -79,46 +95,46 @@ public class Notification {
         final int width = (int) res.getDimension(R.dimen.notification_large_icon_width);
 
         ArtworkCache artworkCache = ArtworkCache.getInstance();
-        Bitmap b = artworkCache.getCachedBitmap(playbackService.getAlbumId(), width, height);
+        Bitmap b = artworkCache.getCachedBitmap(playerbackService.getAlbumId(), width, height);
         if (b != null) {
-            setBitmapAndBuild(b, playbackService, builder);
+            setBitmapAndBuild(b, playerbackService, builder);
 
         } else {
-            ArtworkCache.getInstance().loadBitmap(playbackService.getAlbumId(), width, height, new BitmapCache.Callback() {
+            ArtworkCache.getInstance().loadBitmap(playerbackService.getAlbumId(), width, height, new BitmapCache.Callback() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap) {
-                    setBitmapAndBuild(bitmap, playbackService, builder);
+                    setBitmapAndBuild(bitmap, playerbackService, builder);
                 }
             });
         }
     }
 
-    private static void setBitmapAndBuild(Bitmap bitmap, @NonNull PlayerService playbackService, NotificationCompat.Builder builder) {
+    private static void setBitmapAndBuild(Bitmap bitmap, @NonNull PlayerService playerbackService, NotificationCompat.Builder builder) {
 
         Bitmap image = bitmap;
 
         if (image == null) {
-            BitmapDrawable d = ((BitmapDrawable) ContextCompat.getDrawable(playbackService, R.drawable.ic_stat_note));
+            BitmapDrawable d = ((BitmapDrawable) ContextCompat.getDrawable(playerbackService, R.drawable.notification));
             image = d.getBitmap();
         }
         builder.setLargeIcon(image);
 
 
         builder.setStyle(new NotificationCompat.MediaStyle()
-                .setMediaSession(playbackService.getMediaSession().getSessionToken())
+                .setMediaSession(playerbackService.getMediaSession().getSessionToken())
                 .setShowActionsInCompactView(0, 1, 2));
 
 
         android.app.Notification notification = builder.build();
 
-        boolean startForeground = playbackService.isPlaying();
+        boolean startForeground = playerbackService.isPlaying();
         if (startForeground) {
-            playbackService.startForeground(NOTIFY_ID, notification);
+            playerbackService.startForeground(NOTIFY_ID, notification);
         } else {
             if (sIsServiceForeground) {
-                playbackService.stopForeground(false);
+                playerbackService.stopForeground(false);
             }
-            NotificationManager notificationManager = (NotificationManager) playbackService.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) playerbackService.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(NOTIFY_ID, notification);
         }
 

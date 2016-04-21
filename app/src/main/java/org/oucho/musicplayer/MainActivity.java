@@ -483,6 +483,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
+
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -748,7 +749,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
         if (mTask.getDelay(TimeUnit.MILLISECONDS) < 0) {
-            stopTimer();
+            annulTimer();
             return;
         }
         @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.timer_info_dialog, null);
@@ -765,7 +766,7 @@ public class MainActivity extends AppCompatActivity implements
         }).setNegativeButton(cancelTimer, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                stopTimer();
+                annulTimer();
 
                 Context context = getApplicationContext();
 
@@ -837,15 +838,34 @@ public class MainActivity extends AppCompatActivity implements
             Toast.makeText(this, arret + " " + hours + " " + heureTxt + " " + et + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
         }
 
-            running = true;
+        running = true;
+
+        Notification.setState(true);
+
+        Notification.updateNotification(mPlayerService);
+
     }
 
     public static void stopTimer() {
         if (running) mTask.cancel(true);
 
+        Notification.setState(false);
+
         running = false;
 
     }
+
+    private  void annulTimer() {
+
+        if (running) mTask.cancel(true);
+
+        running = false;
+
+        Notification.setState(false);
+
+        Notification.updateNotification(mPlayerService);
+    }
+
 
 
 
