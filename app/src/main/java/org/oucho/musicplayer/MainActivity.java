@@ -190,9 +190,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case R.id.nav_exit:
-                killNotif();
-                clearCache();
-                finish();
+                exit();
                 break;
 
             default: //do nothing
@@ -201,7 +199,14 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    private void exit() {
+        if (mPlayerService.isPlaying())
+            mPlayerService.toggle();
 
+        killNotif();
+        clearCache();
+        finish();
+    }
 
     /* **************************
      * Lance l'application radio
