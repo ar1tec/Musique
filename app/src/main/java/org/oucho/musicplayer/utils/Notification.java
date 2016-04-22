@@ -30,11 +30,7 @@ public class Notification {
         timer = onOff;
     }
 
-    static Context playback;
-
     public static void updateNotification(@NonNull final PlayerService playerbackService) {
-
-        playback = playerbackService;
 
         if (!playerbackService.hasPlaylist()) {
             removeNotification(playerbackService);
