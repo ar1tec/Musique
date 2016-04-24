@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter.SongViewHolder> {
+public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewHolder> {
 
     private List<Song> mSongList = Collections.emptyList();
 
@@ -85,7 +85,5 @@ public class SongAlbumListAdapter extends AdapterWithHeader<SongAlbumListAdapter
             triggerOnItemClickListener(position, v);
         }
     }
-
-
 
 }

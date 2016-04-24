@@ -25,7 +25,7 @@ abstract public class BitmapCache<K> {
     private final ThreadPoolExecutor mExecutor;
     private final Handler mHandler;
 
-    public BitmapCache() {
+    BitmapCache() {
         LinkedBlockingQueue<Runnable> mWorkQueue = new LinkedBlockingQueue<>();
         mExecutor = new ThreadPoolExecutor(NUMBER_OF_CORES, NUMBER_OF_CORES, KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_UNIT, mWorkQueue);
         mHandler = new Handler(Looper.getMainLooper());
@@ -35,7 +35,7 @@ abstract public class BitmapCache<K> {
         return bitmap != null && bitmap.getWidth() >= reqWidth && bitmap.getHeight() >= reqHeight;
     }
 
-    abstract public Bitmap getCachedBitmap(K key, int reqWidth, int reqHeight);
+    protected abstract Bitmap getCachedBitmap(K key, int reqWidth, int reqHeight);
 
     abstract protected Bitmap retrieveBitmap(K key, int reqWidth, int reqHeight);
 

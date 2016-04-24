@@ -14,8 +14,6 @@
         <attr name="scrollerColor" format="color" />
         <attr name="handleHeight" format="dimension" />
         <attr name="handleWidth" format="dimension" />
-        <attr name="bubbleTextSize" format="dimension" />
-        <attr name="bubbleRadius" format="dimension" />
     </declare-styleable>
 
 

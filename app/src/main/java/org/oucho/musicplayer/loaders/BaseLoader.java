@@ -35,7 +35,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
         }
     }
 
-     public String getFilter() {
+     String getFilter() {
         return mFilter;
     }
 
@@ -69,17 +69,17 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
     }
 
 
-    public String getSelectionString() {
+    String getSelectionString() {
         return mSelectionString;
 
     }
 
-    public String[] getSelectionArgs() {
+    String[] getSelectionArgs() {
         return mSelectionArgs;
     }
 
     @Nullable
-    public Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter, String orderBy) {
+    private Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter, String orderBy) {
         if (!Permissions.checkPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return null;
         }
@@ -94,14 +94,12 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
 
         }
 
-        Cursor cursor = getContext().getContentResolver().query(musicUri, projection, selection, selectionArgs, orderBy);
 
-
-        return cursor;
+        return getContext().getContentResolver().query(musicUri, projection, selection, selectionArgs, orderBy);
     }
 
     @Nullable
-    public Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter) {
+    Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter) {
         return getCursor(musicUri, projection, selection, selectionArgs, filteredFieldName, filter, mSortOrder);
     }
 

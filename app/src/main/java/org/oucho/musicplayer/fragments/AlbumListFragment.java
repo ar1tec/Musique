@@ -45,9 +45,6 @@ public class AlbumListFragment extends BaseFragment {
 
     private Context context;
 
-    private boolean mShowScrollerBubble = true;
-    private FastScroller mFastScroller;
-
     private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
 
     private static SharedPreferences préférences = null;
@@ -70,16 +67,6 @@ public class AlbumListFragment extends BaseFragment {
         @Override
         public void onLoadFinished(Loader<List<Album>> loader, List<Album> data) {
             mAdapter.setData(data);
-
-            PrefUtils prefUtils = PrefUtils.getInstance();
-            String sortOrder = prefUtils.getAlbumSortOrder();
-
-            mShowScrollerBubble = SortOrder.AlbumSortOrder.ALBUM_A_Z.equals(sortOrder);
-
-            if (mFastScroller != null) {
-                mFastScroller.setShowBubble(mShowScrollerBubble);
-            }
-
 
         }
 
@@ -224,8 +211,7 @@ public class AlbumListFragment extends BaseFragment {
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
 
-        mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        mFastScroller.setShowBubble(mShowScrollerBubble);
+        FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         mFastScroller.setSectionIndexer(mAdapter);
         mFastScroller.setRecyclerView(mRecyclerView);
 
@@ -261,21 +247,18 @@ public class AlbumListFragment extends BaseFragment {
         PrefUtils prefUtils = PrefUtils.getInstance();
         switch (item.getItemId()) {
             case R.id.menu_sort_by_az:
-                item.setChecked(true);
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_A_Z);
                 load();
                 tri = "a-z";
                 setUserVisibleHint(true);
                 break;
             case R.id.menu_sort_by_artist:
-                item.setChecked(true);
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_ARTIST);
                 load();
                 tri = context.getString(R.string.title_sort_artist);
                 setUserVisibleHint(true);
                 break;
             case R.id.menu_sort_by_year:
-                item.setChecked(true);
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_YEAR);
                 load();
                 tri = context.getString(R.string.title_sort_year);

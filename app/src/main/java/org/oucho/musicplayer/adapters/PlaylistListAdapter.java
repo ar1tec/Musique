@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.PlaylistViewHolder>
+public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistViewHolder>
         implements FastScroller.SectionIndexer {
 
     private Context context;
@@ -64,15 +64,9 @@ public class PlaylistListAdapter extends AdapterWithHeader<PlaylistListAdapter.P
     @Override
     public String getSectionForPosition(int position) {
 
-        int positionActuelle = position;
+/*        String title = getItem(position).getTitle();
+        return title.substring(0, 1);*/
 
-        if(positionActuelle >= 1) { //on ne prend pas en compte le header
-            positionActuelle--;
-            String name = mPlaylistList.get(positionActuelle).getName();
-            if (name.length() > 0) {
-                return name.substring(0, 1);
-            }
-        }
         return "";
     }
 

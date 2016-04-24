@@ -137,7 +137,6 @@ public class PlaylistFragment extends BaseFragment {
         FastScroller scroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         scroller.setSectionIndexer(mAdapter);
         scroller.setRecyclerView(mRecyclerView);
-        scroller.setShowBubble(false);
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         toolbar.setVisibility(View.VISIBLE);
@@ -230,15 +229,14 @@ public class PlaylistFragment extends BaseFragment {
 
             mContext = getContext();
 
-            final int mThumbWidth = mContext.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_playlist_size);
-            final int mThumbHeight = mThumbWidth;
+            final int mThumbSize = mContext.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_playlist_size);
 
 
             Song song = mSongList.get(position);
             viewHolder.vTitle.setText(song.getTitle());
             viewHolder.vArtist.setText(song.getArtist());
 
-            ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), viewHolder.vReorderButton, mThumbWidth, mThumbHeight, ArtworkHelper.getDefaultThumbDrawable(mContext));
+            ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), viewHolder.vReorderButton, mThumbSize, mThumbSize, ArtworkHelper.getDefaultThumbDrawable(mContext));
 
         }
 

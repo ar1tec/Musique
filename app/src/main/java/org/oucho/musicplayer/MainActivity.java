@@ -775,6 +775,7 @@ public class MainActivity extends AppCompatActivity implements
         }).setView(view).create();
 
         new CountDownTimer(mTask.getDelay(TimeUnit.MILLISECONDS), 1000) {
+            @SuppressLint("StringFormatInvalid")
             @Override
             public void onTick(long seconds) {
 

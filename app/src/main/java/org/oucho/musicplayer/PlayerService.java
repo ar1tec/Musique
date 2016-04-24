@@ -505,7 +505,7 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    public void notifyChange(String what) {
+    private void notifyChange(String what) {
             updateMediaSession(what);
 
         saveState(QUEUE_CHANGED.equals(what) || ITEM_ADDED.equals(what) || ORDER_CHANGED.equals(what));

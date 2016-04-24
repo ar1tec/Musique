@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.AdapterWithHeader;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.SongListAdapter;
 import org.oucho.musicplayer.dialog.ID3TagEditorDialog;
@@ -32,7 +31,6 @@ import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
-import org.oucho.musicplayer.utils.RecyclerViewUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.List;
@@ -44,9 +42,6 @@ public class SongListFragment extends BaseFragment {
     private MainActivity mActivity;
 
     private SongListAdapter mAdapter;
-
-    private boolean mShowScrollerBubble = true;
-    private FastScroller mFastScroller;
 
     private Context context;
 
@@ -71,14 +66,6 @@ public class SongListFragment extends BaseFragment {
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
             populateAdapter(songList);
 
-            PrefUtils prefUtils = PrefUtils.getInstance();
-            String sortOrder = prefUtils.getSongSortOrder();
-
-            mShowScrollerBubble = SortOrder.SongSortOrder.SONG_A_Z.equals(sortOrder);
-
-            if (mFastScroller != null) {
-                mFastScroller.setShowBubble(mShowScrollerBubble);
-            }
         }
 
         @Override
@@ -112,15 +99,6 @@ public class SongListFragment extends BaseFragment {
                     break;
                 default: //do nothing
                     break;
-            }
-        }
-    };
-
-    private final AdapterWithHeader.OnHeaderClickListener mOnHeaderClickListener = new AdapterWithHeader.OnHeaderClickListener() {
-        @Override
-        public void onHeaderClick() {
-            if (mActivity != null) {
-                mActivity.onShuffleRequested(mAdapter.getSongList(), true);
             }
         }
     };
@@ -244,15 +222,12 @@ public class SongListFragment extends BaseFragment {
 
         mAdapter = new SongListAdapter(getActivity());
         mAdapter.setOnItemClickListener(mOnItemClickListener);
-        View headerView = RecyclerViewUtils.inflateChild(inflater, R.layout.shuffle_list_item, mRecyclerView);
 
-        mAdapter.setHeaderView(headerView);
-        mAdapter.setOnHeaderClickListener(mOnHeaderClickListener);
+        //mAdapter.setOnHeaderClickListener(mOnHeaderClickListener);
         mRecyclerView.setAdapter(mAdapter);
 
 
-        mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        mFastScroller.setShowBubble(mShowScrollerBubble);
+        FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         mFastScroller.setSectionIndexer(mAdapter);
         mFastScroller.setRecyclerView(mRecyclerView);
 

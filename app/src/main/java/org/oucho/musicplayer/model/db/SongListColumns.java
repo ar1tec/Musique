@@ -3,7 +3,7 @@ package org.oucho.musicplayer.model.db;
 import android.provider.BaseColumns;
 
 
-public interface SongListColumns extends BaseColumns {
+interface SongListColumns extends BaseColumns {
     String COLUMN_NAME_SONG_ID = "song_id";
     String COLUMN_NAME_TITLE = "title";
     String COLUMN_NAME_ARTIST = "artist";

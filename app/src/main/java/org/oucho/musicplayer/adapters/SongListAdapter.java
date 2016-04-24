@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class SongListAdapter extends AdapterWithHeader<SongListAdapter.SongViewHolder> implements FastScroller.SectionIndexer {
+public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> implements FastScroller.SectionIndexer {
 
     private final int mThumbWidth;
     private final int mThumbHeight;
@@ -80,15 +80,8 @@ public class SongListAdapter extends AdapterWithHeader<SongListAdapter.SongViewH
     @Override
     public String getSectionForPosition(int position) {
 
-        int positionActuelle = position;
-
-        if(positionActuelle >= 1) { // on ne prend pas en compte le header
-            positionActuelle--; // je répète : on ne prend pas en compte le header
-            String title = getItem(positionActuelle).getTitle();
-            if (title.length() > 0) {
-                return title.substring(0, 1);
-            }
-        }
+/*        String title = getItem(position).getTitle();
+        return title.substring(0, 1);*/
 
         return "";
     }

@@ -40,8 +40,6 @@
         <item name="scrollerColor">@color/colorAccent</item>
         <item name="handleHeight">64dp</item>
         <item name="handleWidth">3dp</item>
-        <item name="bubbleTextSize">48sp</item>
-        <item name="bubbleRadius">36dp</item>
     </style>
 
 </resources>

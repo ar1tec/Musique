@@ -9,7 +9,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 
 
-public class TransitionDrawable extends Drawable {
+class TransitionDrawable extends Drawable {
 
     private static final float TRANSITION_DURATION = 100F;
 

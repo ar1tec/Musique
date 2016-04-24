@@ -51,14 +51,6 @@ public class ArtistListFragment extends BaseFragment {
         public void onLoadFinished(Loader<List<Artist>> loader, List<Artist> data) {
             mAdapter.setData(data);
 
-            PrefUtils prefUtils = PrefUtils.getInstance();
-            String sortOrder = prefUtils.getArtistSortOrder();
-
-            mShowScrollerBubble = SortOrder.ArtistSortOrder.ARTIST_A_Z.equals(sortOrder);
-
-            if(mFastScroller != null) {
-                mFastScroller.setShowBubble(mShowScrollerBubble);
-            }
         }
 
         @Override
@@ -81,8 +73,6 @@ public class ArtistListFragment extends BaseFragment {
             ((MainActivity) getActivity()).setFragment(fragment);
         }
     };
-    private boolean mShowScrollerBubble = true;
-    private FastScroller mFastScroller;
 
     public static ArtistListFragment newInstance() {
 
@@ -122,9 +112,8 @@ public class ArtistListFragment extends BaseFragment {
                     .getBoolean(STATE_SHOW_FASTSCROLLER) || mShowFastScroller;
         }
 
-        mFastScroller = (FastScroller) rootView
-                .findViewById(R.id.fastscroller);
-        mFastScroller.setShowBubble(mShowScrollerBubble);
+        FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
+
         if (mShowFastScroller) {
             mFastScroller.setRecyclerView(mRecyclerView);
             mFastScroller.setSectionIndexer(mAdapter);
