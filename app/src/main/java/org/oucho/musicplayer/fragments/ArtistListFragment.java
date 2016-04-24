@@ -116,7 +116,6 @@ public class ArtistListFragment extends BaseFragment {
 
         if (mShowFastScroller) {
             mFastScroller.setRecyclerView(mRecyclerView);
-            mFastScroller.setSectionIndexer(mAdapter);
         } else {
             mFastScroller.setVisibility(View.GONE);
         }

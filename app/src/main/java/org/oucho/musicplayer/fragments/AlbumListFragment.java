@@ -212,7 +212,6 @@ public class AlbumListFragment extends BaseFragment {
         mRecyclerView.setAdapter(mAdapter);
 
         FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        mFastScroller.setSectionIndexer(mAdapter);
         mFastScroller.setRecyclerView(mRecyclerView);
 
 

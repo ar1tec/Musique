@@ -458,8 +458,7 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-            implements FastScroller.SectionIndexer {
+    class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private static final int ALBUM = 1;
         private static final int ARTIST = 2;
@@ -473,11 +472,11 @@ public class SearchActivity extends AppCompatActivity {
         private final List<Artist> mArtistList = Collections.synchronizedList(new ArrayList<Artist>());
         private final List<Song> mSongList = Collections.synchronizedList(new ArrayList<Song>());
 
-        @Override
+/*        @Override
         public String getSectionForPosition(int position) {
 
             return "";
-        }
+        }*/
 
         public void setAlbumList(List<Album> albumList) {
             mAlbumList.clear();

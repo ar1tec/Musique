@@ -1,10 +1,12 @@
 package org.oucho.musicplayer.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -135,13 +137,13 @@ public class PlaylistFragment extends BaseFragment {
         });
 
         FastScroller scroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        scroller.setSectionIndexer(mAdapter);
         scroller.setRecyclerView(mRecyclerView);
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         toolbar.setVisibility(View.VISIBLE);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
+
         //noinspection ConstantConditions
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return rootView;
@@ -167,6 +169,7 @@ public class PlaylistFragment extends BaseFragment {
 
     private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener, OnTouchListener {
 
+        Context context = getContext();
 
         final View itemView; // NOPMD
         final TextView vTitle; // NOPMD
@@ -179,11 +182,13 @@ public class PlaylistFragment extends BaseFragment {
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vArtist = (TextView) itemView.findViewById(R.id.artist);
 
-            vReorderButton = (ImageButton) itemView
-                    .findViewById(R.id.reorder_button);
+            vReorderButton = (ImageButton) itemView.findViewById(R.id.reorder_button);
+
             itemView.findViewById(R.id.song_info).setOnClickListener(this);
             itemView.findViewById(R.id.delete_button).setOnClickListener(this);
+
             vReorderButton.setOnTouchListener(this);
+
         }
 
         @Override
@@ -195,9 +200,9 @@ public class PlaylistFragment extends BaseFragment {
                     selectSong(position);
                     break;
                 case R.id.delete_button:
-                    mAdapter.removeItem(position);
+                    deleteSong(position);
                     break;
-                default: //do nothing
+                default:
                     break;
             }
         }
@@ -208,17 +213,33 @@ public class PlaylistFragment extends BaseFragment {
 
             return false;
         }
+
+        private void deleteSong(int position) {
+
+
+            final int song = position;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(context.getString(R.string.deletePlaylistConfirm));
+            builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                    mAdapter.removeItem(song);
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, null);
+            builder.show();
+        }
     }
 
-    class SongListAdapter extends RecyclerView.Adapter<SongViewHolder>
-            implements FastScroller.SectionIndexer {
 
-        private Context mContext;
+    class SongListAdapter extends RecyclerView.Adapter<SongViewHolder> {
+
+        Context context = getContext();
 
         @Override
         public SongViewHolder onCreateViewHolder(ViewGroup parent, int type) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.playlist_item, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_item, parent, false);
 
 
             return new SongViewHolder(itemView);
@@ -227,16 +248,14 @@ public class PlaylistFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(SongViewHolder viewHolder, int position) {
 
-            mContext = getContext();
-
-            final int mThumbSize = mContext.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_playlist_size);
+            final int mThumbSize = context.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_playlist_size);
 
 
             Song song = mSongList.get(position);
             viewHolder.vTitle.setText(song.getTitle());
             viewHolder.vArtist.setText(song.getArtist());
 
-            ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), viewHolder.vReorderButton, mThumbSize, mThumbSize, ArtworkHelper.getDefaultThumbDrawable(mContext));
+            ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), viewHolder.vReorderButton, mThumbSize, mThumbSize, ArtworkHelper.getDefaultThumbDrawable(context));
 
         }
 
@@ -253,7 +272,7 @@ public class PlaylistFragment extends BaseFragment {
             Collections.swap(mSongList, oldPosition, newPosition);
 
 
-                PlaylistsUtils.moveItem(getActivity().getContentResolver(), mPlaylist.getId(), oldPosition, newPosition);
+            PlaylistsUtils.moveItem(getActivity().getContentResolver(), mPlaylist.getId(), oldPosition, newPosition);
 
             notifyItemMoved(oldPosition, newPosition);
 
@@ -264,11 +283,6 @@ public class PlaylistFragment extends BaseFragment {
 
             PlaylistsUtils.removeFromPlaylist(getActivity().getContentResolver(), mPlaylist.getId(), s.getId());
             notifyItemRemoved(position);
-        }
-
-        @Override
-        public String getSectionForPosition(int position) {
-            return mSongList.get(position).getTitle().substring(0, 1);
         }
     }
 }

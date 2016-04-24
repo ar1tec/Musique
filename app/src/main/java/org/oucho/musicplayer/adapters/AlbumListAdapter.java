@@ -19,8 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHolder>
-        implements FastScroller.SectionIndexer {
+public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHolder> {
 
     private final int mArtworkWidth;
     private final int mArtworkHeight;
@@ -72,7 +71,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         return mAlbumList.size();
     }
 
-    @Override
+/*    @Override
     public String getSectionForPosition(int position) {
         String name = getItem(position).getAlbumName();
         if (name.length() > 0) {
@@ -80,7 +79,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         }
 
         return "";
-    }
+    }*/
 
     public Album getItem(int position) {
         return mAlbumList.get(position);

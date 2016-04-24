@@ -18,8 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewHolder>
-        implements FastScroller.SectionIndexer {
+public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewHolder> {
 
     private final int mThumbWidth;
     private final int mThumbHeight;
@@ -64,16 +63,6 @@ public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewH
         mArtistList = data;
         notifyDataSetChanged();
 
-    }
-
-    @Override
-    public String getSectionForPosition(int position) {
-        String name = getItem(position).getName();
-        if (name.length() > 0) {
-            return name.substring(0, 1);
-        }
-
-        return "";
     }
 
     public Artist getItem(int position) {

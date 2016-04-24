@@ -126,10 +126,8 @@ public class PlaylistListFragment extends BaseFragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-        FastScroller scroller = (FastScroller) rootView
-                .findViewById(R.id.fastscroller);
+        FastScroller scroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         scroller.setRecyclerView(mRecyclerView);
-        scroller.setSectionIndexer(mAdapter);
         return rootView;
     }
 

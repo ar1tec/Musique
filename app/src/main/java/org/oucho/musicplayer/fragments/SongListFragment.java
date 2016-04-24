@@ -223,12 +223,10 @@ public class SongListFragment extends BaseFragment {
         mAdapter = new SongListAdapter(getActivity());
         mAdapter.setOnItemClickListener(mOnItemClickListener);
 
-        //mAdapter.setOnHeaderClickListener(mOnHeaderClickListener);
         mRecyclerView.setAdapter(mAdapter);
 
 
         FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        mFastScroller.setSectionIndexer(mAdapter);
         mFastScroller.setRecyclerView(mRecyclerView);
 
         return rootView;

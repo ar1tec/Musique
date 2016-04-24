@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> implements FastScroller.SectionIndexer {
+public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
 
     private final int mThumbWidth;
     private final int mThumbHeight;
@@ -77,14 +77,6 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> imp
         return 0;
     }
 
-    @Override
-    public String getSectionForPosition(int position) {
-
-/*        String title = getItem(position).getTitle();
-        return title.substring(0, 1);*/
-
-        return "";
-    }
 
     public class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

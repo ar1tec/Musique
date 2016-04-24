@@ -12,14 +12,12 @@ import android.widget.TextView;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.Collections;
 import java.util.List;
 
 
-public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistViewHolder>
-        implements FastScroller.SectionIndexer {
+public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistViewHolder> {
 
     private Context context;
 
@@ -57,17 +55,6 @@ public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistVie
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.playlist_browser_item, parent, false);
         return new PlaylistViewHolder(itemView);
-    }
-
-
-
-    @Override
-    public String getSectionForPosition(int position) {
-
-/*        String title = getItem(position).getTitle();
-        return title.substring(0, 1);*/
-
-        return "";
     }
 
 

@@ -30,7 +30,6 @@ public class FastScroller extends View {
 
     private boolean mScrollerVisible = false;
 
-
     private Paint mPaint;
     private int mScrollerColor;
 
@@ -137,9 +136,6 @@ public class FastScroller extends View {
     public void setRecyclerView(RecyclerView view) {
         mRecyclerView = view;
         mRecyclerView.addOnScrollListener(mOnScrollListener);
-    }
-
-    public void setSectionIndexer(SectionIndexer si) {
     }
 
     private void moveHandleTo(float proportion) {
@@ -253,10 +249,6 @@ public class FastScroller extends View {
             mPaint.setColor(applyAlpha(mScrollerColor, mScrollerAlpha));
             canvas.drawRect(scrollerX, mHandleY, width, mHandleY + mHandleHeight, mPaint);
         }
-    }
-
-    public interface SectionIndexer {
-        String getSectionForPosition(int position);
     }
 
     private static int applyAlpha(int color, float alpha) {
