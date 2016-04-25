@@ -169,7 +169,7 @@ public class PlaylistFragment extends BaseFragment {
 
     private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener, OnTouchListener {
 
-        private Context context = getContext(); // NOPMD
+        private final Context context = getContext(); // NOPMD
 
         final View itemView; // NOPMD
         final TextView vTitle; // NOPMD
@@ -235,7 +235,7 @@ public class PlaylistFragment extends BaseFragment {
 
     class SongListAdapter extends RecyclerView.Adapter<SongViewHolder> {
 
-        private Context context = getContext(); // NOPMD
+        private final Context context = getContext(); // NOPMD
 
         @Override
         public SongViewHolder onCreateViewHolder(ViewGroup parent, int type) {

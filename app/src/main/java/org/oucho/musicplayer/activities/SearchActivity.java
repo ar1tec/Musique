@@ -160,6 +160,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
     };
+
     private RecyclerView mRecyclerView;
 
 
