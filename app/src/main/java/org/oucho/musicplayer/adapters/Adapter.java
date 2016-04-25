@@ -31,7 +31,7 @@ public abstract class Adapter<V extends RecyclerView.ViewHolder> extends BaseAda
     }
 
     @Override
-    void triggerOnItemClickListener(int position, View view) {
+    public void triggerOnItemClickListener(int position, View view) {
         super.triggerOnItemClickListener(position, view);
     }
 

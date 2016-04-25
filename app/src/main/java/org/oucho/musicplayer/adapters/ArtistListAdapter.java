@@ -12,7 +12,6 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtistImageHelper;
 import org.oucho.musicplayer.model.Artist;
-import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.Collections;
 import java.util.List;

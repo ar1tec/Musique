@@ -13,7 +13,6 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.images.ArtworkHelper;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.Collections;
 import java.util.List;

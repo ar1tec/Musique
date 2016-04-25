@@ -35,7 +35,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
         }
     }
 
-     String getFilter() {
+    public String getFilter() {
         return mFilter;
     }
 
@@ -69,12 +69,12 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
     }
 
 
-    String getSelectionString() {
+    public String getSelectionString() {
         return mSelectionString;
 
     }
 
-    String[] getSelectionArgs() {
+    public String[] getSelectionArgs() {
         return mSelectionArgs;
     }
 
