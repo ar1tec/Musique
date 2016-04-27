@@ -58,10 +58,10 @@ import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
+import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.widgets.ProgressBar;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -699,34 +699,50 @@ public class MainActivity extends AppCompatActivity implements
 
         @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.date_picker_dialog, null);
 
-        final TimePicker picker = (TimePicker) view.findViewById(R.id.time_picker);
-        final Calendar cal = Calendar.getInstance();
+        final SeekArc mSeekArc;
+        final TextView mSeekArcProgress;
 
-        picker.setIs24HourView(true);
+        mSeekArc = (SeekArc) view.findViewById(R.id.seekArc);
+        mSeekArcProgress = (TextView) view.findViewById(R.id.seekArcProgress);
 
-        picker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
+
+        mSeekArc.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekArc seekArc) {
+                // vide, obligatoire
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekArc seekArc) {
+                // vide, obligatoire
+            }
+
+            @Override
+            public void onProgressChanged(SeekArc seekArc, int progress, boolean fromUser) {
+
+                String minute;
+
+                if (progress <= 1){
+                    minute = "minute";
+                } else {
+                    minute = "minutes";
+                }
+
+                String temps = String.valueOf(progress) + " " + minute;
+
+                mSeekArcProgress.setText(temps);
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton(start, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int hours;
-                int mins;
 
-                int hour = picker.getCurrentHour();
-                int minute = picker.getCurrentMinute();
-                int curHour = cal.get(Calendar.HOUR_OF_DAY);
-                int curMin = cal.get(Calendar.MINUTE);
+                int mins = mSeekArc.getProgress();
 
-                if (hour < curHour) hours =  (24 - curHour) + (hour);
-                else hours = hour - curHour;
-
-                if (minute < curMin) {
-                    hours--;
-                    mins = (60 - curMin) + (minute);
-                } else mins = minute - curMin;
-
-                startTimer(hours, mins);
+                startTimer(mins);
             }
         });
 
@@ -782,7 +798,7 @@ public class MainActivity extends AppCompatActivity implements
                 long secondes = seconds;
 
                 secondes = secondes / 1000;
-                timeLeft.setText(String.format(getString(R.string.timer_info), (secondes / 3600), ((secondes % 3600) / 60), ((secondes % 3600) % 60)));
+                timeLeft.setText(String.format(getString(R.string.timer_info), ((secondes % 3600) / 60), ((secondes % 3600) % 60)));
             }
 
             @Override
@@ -794,34 +810,24 @@ public class MainActivity extends AppCompatActivity implements
         dialog.show();
     }
 
-    private void startTimer(final int hours, final int minutes) {
+    private void startTimer(final int minutes) {
 
         final String impossible = getString(R.string.impossible);
 
-        final String heureSingulier = getString(R.string.heure_singulier);
-        final String heurePluriel = getString(R.string.heure_pluriel);
 
         final String minuteSingulier = getString(R.string.minute_singulier);
         final String minutePluriel = getString(R.string.minute_pluriel);
 
         final String arret = getString(R.string.arret);
-        final String et = getString(R.string.et);
 
-        final String heureTxt;
         final String minuteTxt;
 
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        final int delay = ((hours * 3600) + (minutes * 60)) * 1000;
+        final int delay = (minutes * 60) * 1000;
 
         if (delay == 0) {
             Toast.makeText(this, impossible, Toast.LENGTH_LONG).show();
             return;
-        }
-
-        if (hours == 1) {
-            heureTxt = heureSingulier;
-        } else {
-            heureTxt = heurePluriel;
         }
 
         if (minutes == 1) {
@@ -831,13 +837,9 @@ public class MainActivity extends AppCompatActivity implements
         }
             mTask = scheduler.schedule(new GetAudioFocusTask(this), delay, TimeUnit.MILLISECONDS);
 
-        if (hours == 0) {
+
             Toast.makeText(this, arret + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
-        } else if (minutes == 0) {
-            Toast.makeText(this, arret + " " + hours + " " + heureTxt, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, arret + " " + hours + " " + heureTxt + " " + et + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
-        }
+
 
         running = true;
 

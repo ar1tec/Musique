@@ -6,7 +6,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="controlsBackground">@color/controls_bg_light</item>
         <item name="controlsTint">@color/controls_tint_light</item>
 
         <item name="ImageControlColor">@color/controls_tint_light</item>
