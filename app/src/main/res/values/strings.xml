@@ -47,6 +47,8 @@
     <string name="action_add_to_playlist">Ajouter à une liste de lecture</string>
 
     <string name="deletePlaylistConfirm">Supprimer cette liste de lecture ?</string>
+    <string name="deleteTrackConfirm">Supprimer ce titre ?</string>
+
 
     <string name="view_queue">Voir la file de lecture</string>
     <string name="action_add_to_queue">Ajouter à la file de lecture</string>

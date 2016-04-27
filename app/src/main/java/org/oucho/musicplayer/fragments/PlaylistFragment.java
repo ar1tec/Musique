@@ -220,7 +220,7 @@ public class PlaylistFragment extends BaseFragment {
             final int song = position;
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(context.getString(R.string.deletePlaylistConfirm));
+            builder.setMessage(context.getString(R.string.deleteTrackConfirm));
             builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
 

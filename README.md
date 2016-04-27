@@ -1,8 +1,6 @@
 # Musique
  ![Icône](/app/src/main/res/mipmap-xxhdpi/ic_launcher.png) 
  
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/e35b0509b5f94033bc4c0667300e1172)](https://www.codacy.com/app/icare-slak/Musique)
-
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 
   Music player for Android

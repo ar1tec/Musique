@@ -93,7 +93,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="4dp"
                     android:progressDrawable="@drawable/seekbar"
-                    android:thumb="@drawable/scrubber_control" />
+                    android:thumb="@drawable/scrubber_control"
+                    android:background="@color/transparent"/>
 
 
                 <TextView
