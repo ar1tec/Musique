@@ -20,3 +20,21 @@ Lecteur de fichiers musicaux pour android
  <img alt="screenshot" src="/screenshots/4.jpg?raw=true" width="250px" />
  <img alt="screenshot" src="/screenshots/5.jpg?raw=true" width="250px" />
  <img alt="screenshot" src="/screenshots/6.jpg?raw=true" width="250px" />
+
+
+License
+-------
+
+Aucune, profitez, partagez.
+
+
+## Librarie
+
+Jaudiotagger
+(Lesser General Public License)
+http://www.jthink.net/jaudiotagger
+
+
+AppUpdater
+(Apache License 2.0)
+https://github.com/javiersantos/AppUpdater

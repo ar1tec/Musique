@@ -4,7 +4,7 @@
     <string name="app_name">Musique</string>
 
     <!-- nav header activity main -->
-    <string name="version">Musique 1.7</string>
+    <string name="version">Musique 1.7.1</string>
     <string name="by">Old Geek, avril 2016</string>
 
     <string name="album">Album</string>
@@ -97,22 +97,12 @@
         \n
         Musique, Lecteur de fichiers musicaux pour android.\n
         \n
-        Copyright © 2016 Old Geek\n
+        Old Geek, 2016\n
         \n
-        This program is free software: you can redistribute it and/or modify
-        it under the terms of the GNU General Public License as published by
-        the Free Software Foundation, either version 3 of the License, or
-        (at your option) any later version.\n
+        Licence: aucune.\n
         \n
-        This program is distributed in the hope that it will be useful,
-        but WITHOUT ANY WARRANTY; without even the implied warranty of
-        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-        GNU General Public License for more details.\n
         \n
-        You should have received a copy of the GNU General Public License
-        along with this program.\n
-        If not, see http://www.gnu.org/licenses \n
-        \n
+        Librairies:\n
         \n
         Jaudiotagger 2.2.4\n
         Java API for audio metatagging. \n
@@ -120,9 +110,15 @@
         http://www.gnu.org/copyleft/lesser.html \n
         \n
         \n
+        AppUpdater\n
+        Apache License 2.0\n
+        http://www.apache.org/licenses\n
+        \n
+        \n
         Code source\n
-        Musique: https://github.com/Old-Geek/Musique\n
+        Musique: https://github.com/Old-Geek/Radio2\n
         Jaudiotagger: http://www.jthink.net/jaudiotagger\n
+        AppUpdater: https://github.com/javiersantos/AppUpdater\n
         \n
     </string>
 
