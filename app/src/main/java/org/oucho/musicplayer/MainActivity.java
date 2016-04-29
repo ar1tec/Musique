@@ -53,6 +53,10 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.update.AppUpdater;
+import org.oucho.musicplayer.update.enums.Display;
+import org.oucho.musicplayer.update.enums.Duration;
+import org.oucho.musicplayer.update.enums.UpdateFrom;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
@@ -92,11 +96,14 @@ public class MainActivity extends AppCompatActivity implements
     public static final String ACTION_ADD_TO_QUEUE = "add_to_queue";
     private static final String ACTION_SET_AS_NEXT_TRACK = "set_as_next_track";
 
-    private static final int SEARCH_ACTIVITY = 234;
+    public static final int SEARCH_ACTIVITY = 234;
 
     private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
+
+    private static final String updateURL = "http://oucho.free.fr/app_android/Musique/update.xml";
+
 
     private final Handler mHandler = new Handler();
     private NavigationView mNavigationView;
@@ -154,6 +161,8 @@ public class MainActivity extends AppCompatActivity implements
         if (savedInstanceState == null) {
             showLibrary();
         }
+
+        updateOnStart();
     }
 
     /* *********************************************************************************************
@@ -182,6 +191,10 @@ public class MainActivity extends AppCompatActivity implements
                 } else {
                     showTimerInfo();
                 }
+                break;
+
+            case R.id.nav_update:
+                checkUpdate();
                 break;
 
             case R.id.nav_help:
@@ -243,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 case R.id.quick_prev:
                 case R.id.prev:
-                    mPlayerService.playPrev(true);
+                    mPlayerService.playPrev();
                     break;
 
                 case R.id.quick_next:
@@ -256,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements
                     break;
 
                 case R.id.track_info:
-                    NavigationUtils.showPlaybackActivity(MainActivity.this, true);
+                    NavigationUtils.showPlaybackActivity(MainActivity.this);
                     break;
 
                 default: //do nothing
@@ -293,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 return true;
             case R.id.action_search:
-                NavigationUtils.showSearchActivity(this, SEARCH_ACTIVITY);
+                NavigationUtils.showSearchActivity(this);
                 return true;
             default: //do nothing
                 break;
@@ -687,6 +700,32 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
+   /* **********************************************************************************************
+    * Mise à jour
+    * *********************************************************************************************/
+
+    private void updateOnStart(){
+
+        new AppUpdater(this)
+                .setUpdateFrom(UpdateFrom.XML)
+                .setUpdateXML(updateURL)
+                .showEvery(5)
+                .setDisplay(Display.SNACKBAR)
+                .setDuration(Duration.NORMAL)
+                .start();
+    }
+
+    private void checkUpdate() {
+        new AppUpdater(this)
+                .setUpdateFrom(UpdateFrom.XML)
+                .setUpdateXML(updateURL)
+                .setDisplay(Display.DIALOG)
+                .showAppUpdated(true)
+                .start();
+    }
+
+
+
     /***********************************************************************************************
      * Sleep Timer
      **********************************************************************************************/
@@ -967,7 +1006,7 @@ public class MainActivity extends AppCompatActivity implements
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(PlayerService.PREF_AUTO_PAUSE, true);
                 if (mPlayerService != null) {
-                    mPlayerService.setAutoPauseEnabled(true);
+                    mPlayerService.setAutoPauseEnabled();
                 }
                 editor.apply();
                 break;

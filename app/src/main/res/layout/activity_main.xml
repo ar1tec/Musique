@@ -1,6 +1,5 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,8 +19,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/divider"
-                tools:ignore="ContentDescription" />
+                android:background="@color/divider" />
 
             <org.oucho.musicplayer.widgets.ProgressBar
                 android:id="@+id/progress_bar"
@@ -55,8 +53,7 @@
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        tools:ignore="RtlSymmetry" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/song_artist"
@@ -69,8 +66,7 @@
                         android:paddingLeft="5dp"
                         android:singleLine="true"
                         android:textColor="?attr/controlsTint"
-                        android:textSize="15sp"
-                        tools:ignore="RtlSymmetry" />
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <LinearLayout

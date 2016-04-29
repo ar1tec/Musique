@@ -6,7 +6,6 @@
  <color name="colorPrimaryDark">#333638</color>
  <color name="colorAccent">#ec9e24</color>
 
- <color name="controls_bg_light">#fffafafa</color>
  <color name="controls_bg_dark">#ff212121</color>
 
  <color name="controls_tint_light">#606060</color>

@@ -1,7 +1,6 @@
 package org.oucho.musicplayer.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -75,13 +74,12 @@ public class SeekArc extends View {
 	private void init(Context context, AttributeSet attrs, int defStyle) {
 
 		Log.d(TAG, "Initialising SeekArc");
-		final Resources res = getResources();
 		float density = context.getResources().getDisplayMetrics().density;
 
 		int arcColor = ContextCompat.getColor(context, R.color.appwidget_bg);
 		int progressColor0 = ContextCompat.getColor(context, R.color.colorAccent);
-		int thumbHalfheight = 0;
-		int thumbHalfWidth = 0;
+		int thumbHalfheight;
+		int thumbHalfWidth;
 		mThumb = ContextCompat.getDrawable(context, R.drawable.seek_arc_control_selector);
 
 		mProgressWidth = (int) (mProgressWidth * density);
@@ -97,8 +95,8 @@ public class SeekArc extends View {
 			}
 
 			
-			thumbHalfheight = (int) mThumb.getIntrinsicHeight() / 2;
-			thumbHalfWidth = (int) mThumb.getIntrinsicWidth() / 2;
+			thumbHalfheight = mThumb.getIntrinsicHeight() / 2;
+			thumbHalfWidth = mThumb.getIntrinsicWidth() / 2;
 			mThumb.setBounds(-thumbHalfWidth, -thumbHalfheight, thumbHalfWidth, thumbHalfheight);
 
 			mMax = a.getInteger(R.styleable.SeekArc_max, mMax);
@@ -174,9 +172,9 @@ public class SeekArc extends View {
 		final int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
 		final int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
 		final int min = Math.min(width, height);
-		float top = 0;
-		float left = 0;
-		int arcDiameter = 0;
+		float top;
+		float left;
+		int arcDiameter;
 
 		mTranslateX = (int) (width * 0.5f);
 		mTranslateY = (int) (height * 0.5f);
@@ -260,7 +258,7 @@ public class SeekArc extends View {
 		setPressed(true);
         double mTouchAngle = getTouchDegrees(event.getX(), event.getY());
 		int progress = getProgressForAngle(mTouchAngle);
-		onProgressRefresh(progress, true);
+		onProgressRefresh(progress);
 	}
 
 	private boolean ignoreTouch(float xPos, float yPos) {
@@ -302,8 +300,8 @@ public class SeekArc extends View {
 		return (float) mMax / mSweepAngle;
 	}
 
-	private void onProgressRefresh(int progress, boolean fromUser) {
-		updateProgress(progress, fromUser);
+	private void onProgressRefresh(int progress) {
+		updateProgress(progress, true);
 	}
 
 	private void updateThumbPosition() {
@@ -342,8 +340,8 @@ public class SeekArc extends View {
 	}
 
     private void setTouchInSide(boolean isEnabled) {
-		int thumbHalfheight = (int) mThumb.getIntrinsicHeight() / 2;
-		int thumbHalfWidth = (int) mThumb.getIntrinsicWidth() / 2;
+		int thumbHalfheight = mThumb.getIntrinsicHeight() / 2;
+		int thumbHalfWidth = mThumb.getIntrinsicWidth() / 2;
 		mTouchInside = isEnabled;
 		if (mTouchInside) {
 			mTouchIgnoreRadius = (float) mArcRadius / 4;

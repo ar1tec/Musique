@@ -231,7 +231,7 @@ public class PlayerActivity extends AppCompatActivity
 
                 case R.id.prev:
 
-                    mPlayerService.playPrev(true);
+                    mPlayerService.playPrev();
 
                     break;
 
@@ -334,7 +334,7 @@ public class PlayerActivity extends AppCompatActivity
 
         switch (id) {
             case android.R.id.home:
-                NavigationUtils.showMainActivity(this, true);
+                NavigationUtils.showMainActivity(this);
                 return true;
             case R.id.action_equalizer:
                 NavigationUtils.showEqualizer(this);
@@ -363,7 +363,7 @@ public class PlayerActivity extends AppCompatActivity
         if (mQueueLayout.getVisibility() == View.VISIBLE) {
             mQueueLayout.setVisibility(View.GONE);
         } else {
-            NavigationUtils.showMainActivity(this, true);
+            NavigationUtils.showMainActivity(this);
         }
     }
 

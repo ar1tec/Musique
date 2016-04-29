@@ -12,9 +12,9 @@ import org.oucho.musicplayer.activities.SearchActivity;
 
 
 public class NavigationUtils {
-    public static void showSearchActivity(Activity activity, int requestCode) {
+    public static void showSearchActivity(Activity activity) {
         Intent i = new Intent(activity, SearchActivity.class);
-        activity.startActivityForResult(i, requestCode);
+        activity.startActivityForResult(i, MainActivity.SEARCH_ACTIVITY);
     }
 
     public static void showEqualizer(Context context) {
@@ -22,25 +22,17 @@ public class NavigationUtils {
         context.startActivity(i);
     }
 
-    public static void showMainActivity(Activity activity, boolean animate) {
+    public static void showMainActivity(Activity activity) {
         Intent i = new Intent(activity, MainActivity.class);
-        if (animate) {
-            i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        }
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(i);
-        if (animate) {
-            activity.overridePendingTransition(R.anim.fade_in, R.anim.slide_out_bottom);
-        }
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.slide_out_bottom);
     }
 
-    public static void showPlaybackActivity(Activity activity, boolean animate) {
+    public static void showPlaybackActivity(Activity activity) {
         Intent i = new Intent(activity, PlayerActivity.class);
-        if (animate) {
-            i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        }
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(i);
-        if (animate) {
-            activity.overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
-        }
+        activity.overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     }
 }

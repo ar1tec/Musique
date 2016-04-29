@@ -23,8 +23,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_position"
             android:layout_gravity="center_vertical"
-            android:layout_centerVertical="true"
-            card_view:ignore="ContentDescription" />
+            android:layout_centerVertical="true" />
 
         <ImageButton
             android:id="@+id/reorder_button"

@@ -309,7 +309,7 @@ public class PlayerService extends Service implements OnPreparedListener,
 
             @Override
             public void onSkipToPrevious() {
-                playPrev(true);
+                playPrev();
             }
 
             @Override
@@ -352,7 +352,7 @@ public class PlayerService extends Service implements OnPreparedListener,
                 } else if (action.equals(ACTION_NEXT)) {
                     playNext(true);
                 } else if (action.equals(ACTION_PREVIOUS)) {
-                    playPrev(true);
+                    playPrev();
                 }
             }
         }
@@ -414,13 +414,11 @@ public class PlayerService extends Service implements OnPreparedListener,
         return true;
     }
 
-    public void setAutoPauseEnabled(boolean enable) {
-        if (enable == !mAutoPause) {
-            mAutoPause = enable;
+    public void setAutoPauseEnabled() {
+        if (!mAutoPause) {
+            mAutoPause = true;
 
-            if (enable) {
-                initTelephony();
-            }
+            initTelephony();
             //si !enable on a rien à faire à priori
         }
     }
@@ -498,11 +496,9 @@ public class PlayerService extends Service implements OnPreparedListener,
     }
 
     public void addToQueue(Song song) {
-        if (mPlayList != null) {
-            mOriginalSongList.add(song);
-            mPlayList.add(song);
-            notifyChange(ITEM_ADDED);
-        }
+        mOriginalSongList.add(song);
+        mPlayList.add(song);
+        notifyChange(ITEM_ADDED);
     }
 
     private void notifyChange(String what) {
@@ -569,12 +565,10 @@ public class PlayerService extends Service implements OnPreparedListener,
 
 
     public void setAsNextTrack(Song song) {
-        if (mPlayList != null) {
-            mOriginalSongList.add(song);
-            int currentPos = mCurrentPosition;
-            mPlayList.add(currentPos + 1, song);
-            notifyChange(ITEM_ADDED);
-        }
+        mOriginalSongList.add(song);
+        int currentPos = mCurrentPosition;
+        mPlayList.add(currentPos + 1, song);
+        notifyChange(ITEM_ADDED);
     }
 
     public void setPosition(int position, boolean play) {
@@ -691,8 +685,8 @@ public class PlayerService extends Service implements OnPreparedListener,
         notifyChange(PLAYSTATE_CHANGED);
     }
 
-    public void playPrev(boolean force) {
-        int position = getPreviousPosition(force);
+    public void playPrev() {
+        int position = getPreviousPosition(true);
         Log.e("pos", String.valueOf(position));
 
         if (position >= 0 && position < mPlayList.size()) {
@@ -830,10 +824,7 @@ public class PlayerService extends Service implements OnPreparedListener,
     }
 
     public int getPositionWithinPlayList() {
-        if (mPlayList != null) {
-            return mPlayList.indexOf(mCurrentSong);
-        }
-        return -1;
+        return mPlayList.indexOf(mCurrentSong);
     }
 
     @Override

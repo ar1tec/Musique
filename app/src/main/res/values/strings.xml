@@ -4,7 +4,7 @@
     <string name="app_name">Musique</string>
 
     <!-- nav header activity main -->
-    <string name="version">Musique 1.6</string>
+    <string name="version">Musique 1.7</string>
     <string name="by">Old Geek, avril 2016</string>
 
     <string name="album">Album</string>
@@ -126,7 +126,6 @@
         \n
     </string>
 
-    <string name="menu">Menu</string>
     <string name="radio">Radio</string>
     <string name="exit">Quitter</string>
 
@@ -149,5 +148,18 @@
 
     <string name="action_sleep_timer">Minuteur sommeil</string>
 
+    <!-- update -->
+    <string name="appupdater_update_available">Nouvelle mise à jour disponible</string>
+
+    <string name="appupdater_update_available_description_dialog">La mise à jour %1$s est disponible. En téléchargeant cette version de l\'application, vous aurez accès aux dernières fonctionnalités et améliorations de %2$s.</string>
+    <string name="appupdater_update_available_description_dialog_before_release_notes">La mise à jour %1$s est disponible.\n\nNOUVEAUTÉS:\n%2$s</string>
+    <string name="appupdater_update_available_description_snackbar">Mise à jour %1$s disponible.</string>
+    <string name="appupdater_update_available_description_notification">La mise à jour %1$s de %2$s est disponible.</string>
+    <string name="appupdater_update_not_available">Aucune mise à jour disponible</string>
+    <string name="appupdater_update_not_available_description">Vous avez la dernière version disponible de %s.</string>
+    <string name="appupdater_btn_update">Télécharger</string>
+    <string name="appupdater_btn_disable">Ignorer</string>
+    <string name="appupdater_btn_dismiss">Plus tard</string>
+    <string name="update">Mise à jour</string>
 
 </resources>

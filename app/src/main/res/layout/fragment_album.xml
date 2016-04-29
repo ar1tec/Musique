@@ -71,8 +71,7 @@
                     android:text="Album"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold"
-                    android:textSize="20sp"
-                    card_view:ignore="HardcodedText" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/line2"
@@ -84,8 +83,7 @@
                     android:singleLine="true"
                     android:text="Artiste"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp"
-                    card_view:ignore="HardcodedText" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/line3"
@@ -97,8 +95,7 @@
                     android:singleLine="true"
                     android:text="Année"
                     android:textSize="16sp"
-                    android:visibility="visible"
-                    card_view:ignore="HardcodedText" />
+                    android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/line4"
@@ -109,8 +106,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="Nombre morceaux"
-                    android:visibility="visible"
-                    card_view:ignore="HardcodedText" />
+                    android:visibility="visible" />
             </LinearLayout>
 
         </LinearLayout>
