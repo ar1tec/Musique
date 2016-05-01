@@ -21,6 +21,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -72,7 +73,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+        OnNavigationItemSelectedListener {
 
     public static final String ALBUM_ID = "id";
     public static final String ALBUM_NAME = "name";
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
 
-    private static final String updateURL = "http://oucho.free.fr/app_android/Musique/update.xml";
+    private static final String updateURL = "http://oucho.free.fr/app_android/Musique/update_musique.xml";
 
 
     private final Handler mHandler = new Handler();

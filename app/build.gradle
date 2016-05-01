@@ -9,13 +9,14 @@ android {
         applicationId "org.oucho.musicplayer"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 9
-        versionName "1.7.1"
+        versionCode 10
+        versionName "1.7.2"
     }
 
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
         }
