@@ -71,10 +71,12 @@ public class AlbumEditorDialog extends DialogFragment {
         }
     }
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        final Context context = getContext();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.edit_tags);
 
@@ -109,15 +111,11 @@ public class AlbumEditorDialog extends DialogFragment {
                     protected void onPostExecute(Boolean b) {
                         super.onPostExecute(b);
                         if (b) {
-                            if(mListener != null)
-                            {
+                            if(mListener != null) {
                                 mListener.onEditionSuccess();
                             }
-                        }
-                        else
-                        {
-                            Toast.makeText(getActivity(), R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
-
+                        } else {
+                            Toast.makeText(context, R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }.execute();

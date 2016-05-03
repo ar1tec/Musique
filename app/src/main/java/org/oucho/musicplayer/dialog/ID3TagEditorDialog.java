@@ -113,13 +113,11 @@ public class ID3TagEditorDialog extends DialogFragment {
                     protected void onPostExecute(Boolean b) {
                         super.onPostExecute(b);
                         if (b) {
-                            if(mListener != null)
-                            {
+                            if(mListener != null) {
                                 mListener.onTagsEditionSuccess();
                             }
                         }
-                        else
-                        {
+                        else {
                             Toast.makeText(getContext(),R.string.tags_edition_failed,Toast.LENGTH_SHORT).show();
 
                         }
