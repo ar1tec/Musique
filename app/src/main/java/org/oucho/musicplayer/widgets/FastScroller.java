@@ -1,8 +1,5 @@
 package org.oucho.musicplayer.widgets;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -37,16 +34,6 @@ public class FastScroller extends View {
     private float mHandleWidth;
     private float mHandleHeight;
 
-    private ValueAnimator mScrollerAnimator = null;
-
-    private final ValueAnimator.AnimatorUpdateListener mHandleAnimatorListener = new ValueAnimator.AnimatorUpdateListener() {
-        @Override
-        public void onAnimationUpdate(ValueAnimator animation) {
-            mScrollerAlpha = (float) animation.getAnimatedValue();
-            invalidate();
-        }
-    };
-
 
     private final Runnable mHideScrollerRunnable = new Runnable() {
 
@@ -56,6 +43,7 @@ public class FastScroller extends View {
 
         }
     };
+
 
     private final OnScrollListener mOnScrollListener = new OnScrollListener() {
 
@@ -68,6 +56,7 @@ public class FastScroller extends View {
                 mShowScroller = false;
                 return;
             }
+
             if (newState == RecyclerView.SCROLL_STATE_IDLE && !mScrolling) {
                 postDelayed(mHideScrollerRunnable, 1500);
             } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
@@ -85,9 +74,7 @@ public class FastScroller extends View {
                 return;
             }
 
-
             int extent = recyclerView.computeVerticalScrollExtent();
-
 
             int offset = recyclerView.computeVerticalScrollOffset();
             int range = recyclerView.computeVerticalScrollRange() - extent;
@@ -100,20 +87,24 @@ public class FastScroller extends View {
 
     };
 
+
     public FastScroller(Context context) {
         super(context);
         init(context, null);
     }
+
 
     public FastScroller(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
+
     public FastScroller(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
+
 
     private void init(Context context, AttributeSet attrs) {
         if (attrs != null) {
@@ -127,16 +118,19 @@ public class FastScroller extends View {
                 a.recycle();
             }
         }
+
         mScrollerBackground = ContextCompat.getColor(context, R.color.transparent);
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
     }
 
+
     public void setRecyclerView(RecyclerView view) {
         mRecyclerView = view;
         mRecyclerView.addOnScrollListener(mOnScrollListener);
     }
+
 
     private void moveHandleTo(float proportion) {
         int height = getHeight();
@@ -157,12 +151,12 @@ public class FastScroller extends View {
 
         float scrollerPos = pos - (mHandleHeight / 2);
         int height = getHeight();
-        scrollerPos = Math.max(0,
-                Math.min(height - mHandleHeight, scrollerPos));
+        scrollerPos = Math.max(0, Math.min(height - mHandleHeight, scrollerPos));
         mHandleY = scrollerPos;
 
         invalidate();
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -195,8 +189,7 @@ public class FastScroller extends View {
             case MotionEvent.ACTION_UP:
                 scrollTo(y);
                 mScrolling = false;
-                mOnScrollListener.onScrollStateChanged(mRecyclerView,
-                        RecyclerView.SCROLL_STATE_IDLE);
+                mOnScrollListener.onScrollStateChanged(mRecyclerView, RecyclerView.SCROLL_STATE_IDLE);
 
                 break;
 
@@ -213,23 +206,12 @@ public class FastScroller extends View {
         invalidate();
     }
 
+
     private void hideScroller() {
 
-        if (mScrollerAnimator == null) {
-            mScrollerAnimator = ValueAnimator.ofFloat(1.0F, 0.0F);
-            mScrollerAnimator.addUpdateListener(mHandleAnimatorListener);
-            mScrollerAnimator.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mScrollerVisible = false;
-                    invalidate();
-                }
-            });
-        } else {
-            mScrollerAnimator.cancel();
-        }
-
-        mScrollerAnimator.start();
+        mScrollerAlpha = 0.0F;
+        mScrollerVisible = false;
+        invalidate();
 
     }
 
@@ -250,6 +232,7 @@ public class FastScroller extends View {
             canvas.drawRect(scrollerX, mHandleY, width, mHandleY + mHandleHeight, mPaint);
         }
     }
+
 
     private static int applyAlpha(int color, float alpha) {
         int colorAlpha  = ((color & 0xFF000000) >> 24) + 256;

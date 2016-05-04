@@ -24,7 +24,7 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
 import org.oucho.musicplayer.dialog.ID3TagEditorDialog;
-import org.oucho.musicplayer.dialog.PlaylistPicker;
+import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.loaders.SongLoader;
 import org.oucho.musicplayer.model.Album;
@@ -256,8 +256,8 @@ public class AlbumFragment extends BaseFragment {
     }
 
     private void showPlaylistPicker(final Song song) {
-        PlaylistPicker picker = PlaylistPicker.newInstance();
-        picker.setListener(new PlaylistPicker.OnPlaylistPickedListener() {
+        PlaylistPickerDialog picker = PlaylistPickerDialog.newInstance();
+        picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
             @Override
             public void onPlaylistPicked(Playlist playlist) {
                 PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());

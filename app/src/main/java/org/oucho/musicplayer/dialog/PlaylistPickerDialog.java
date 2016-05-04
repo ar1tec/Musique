@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class PlaylistPicker extends DialogFragment {
+public class PlaylistPickerDialog extends DialogFragment {
 
     private static final String[] sProjection = {
             MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME};
@@ -87,6 +87,7 @@ public class PlaylistPicker extends DialogFragment {
                     sProjection, null, null, null);
         }
     };
+
     private final OnClickListener mOnClickListener = new OnClickListener() {
 
         @Override
@@ -109,6 +110,7 @@ public class PlaylistPicker extends DialogFragment {
 
         }
     };
+
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position, View view) {
@@ -122,9 +124,9 @@ public class PlaylistPicker extends DialogFragment {
         }
     };
 
-    public static PlaylistPicker newInstance() {
+    public static PlaylistPickerDialog newInstance() {
 
-        return new PlaylistPicker();
+        return new PlaylistPickerDialog();
     }
 
     @Override

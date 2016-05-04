@@ -36,8 +36,8 @@ public class CreatePlaylistDialog extends DialogFragment {
                 .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                EditText editText = (EditText) layout
-                                        .findViewById(R.id.playlist_name);
+                                EditText editText = (EditText) layout.findViewById(R.id.playlist_name);
+
                                 PlaylistsUtils.createPlaylist(getActivity()
                                         .getContentResolver(), editText
                                         .getText().toString());

@@ -30,9 +30,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +43,7 @@ import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.audiofx.AudioEffects;
+import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.fragments.AlbumFragment;
 import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.fragments.BaseFragment;
@@ -188,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.action_sleep_timer:
                 if (! running) {
-                    showDatePicker();
+                    showTimePicker();
                 } else {
                     showTimerInfo();
                 }
@@ -199,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case R.id.nav_help:
-                about();
+                showAboutDialog();
                 break;
 
             case R.id.nav_exit:
@@ -233,6 +232,16 @@ public class MainActivity extends AppCompatActivity implements
         Intent appStartIntent = pm.getLaunchIntentForPackage("org.oucho.radio2");
         context.startActivity(appStartIntent);
         killNotif();
+    }
+
+
+    /**************
+     * About dialog
+     **************/
+
+    private void showAboutDialog(){
+        AboutDialog dialog = new AboutDialog();
+        dialog.show(getSupportFragmentManager(), "about");
     }
 
 
@@ -731,7 +740,7 @@ public class MainActivity extends AppCompatActivity implements
      * Sleep Timer
      **********************************************************************************************/
 
-    private void showDatePicker() {
+    private void showTimePicker() {
 
         final String start = getString(R.string.start);
         final String cancel = getString(R.string.cancel);
@@ -849,7 +858,7 @@ public class MainActivity extends AppCompatActivity implements
         dialog.show();
     }
 
-    private void startTimer(final int minutes) {
+    public void startTimer(final int minutes) {
 
         final String impossible = getString(R.string.impossible);
 
@@ -906,34 +915,6 @@ public class MainActivity extends AppCompatActivity implements
         Notification.setState(false);
 
         Notification.updateNotification(mPlayerService);
-    }
-
-
-
-
-    /***********************************************************************************************
-     * About dialog
-     **********************************************************************************************/
-
-    private void about() {
-
-        String title = getString(R.string.about);
-        AlertDialog.Builder about = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = getLayoutInflater();
-
-        @SuppressLint("InflateParams") View dialoglayout = inflater.inflate(R.layout.alertdialog_main_noshadow, null);
-        Toolbar toolbar = (Toolbar) dialoglayout.findViewById(R.id.dialog_toolbar_noshadow);
-        toolbar.setTitle(title);
-        toolbar.setTitleTextColor(0xffffffff);
-
-        final TextView text = (TextView) dialoglayout.findViewById(R.id.showrules_dialog);
-        text.setText(getString(R.string.about_message));
-
-        about.setView(dialoglayout);
-
-        AlertDialog dialog = about.create();
-        dialog.show();
     }
 
 
