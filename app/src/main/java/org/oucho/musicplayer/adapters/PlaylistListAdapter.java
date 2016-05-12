@@ -39,7 +39,7 @@ public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistVie
     }
 
     @Override
-    public int getItemViewTypeImpl(int position) {
+    public int getItemViewTypeImpl() {
         return 0;
     }
 
@@ -51,7 +51,7 @@ public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistVie
     }
 
     @Override
-    public PlaylistViewHolder onCreateViewHolderImpl(ViewGroup parent, int type) {
+    public PlaylistViewHolder onCreateViewHolderImpl(ViewGroup parent) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.playlist_browser_item, parent, false);
         return new PlaylistViewHolder(itemView);

@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.Manifest;
 import org.oucho.musicplayer.utils.Permissions;
 import org.oucho.musicplayer.model.db.QueueDbHelper;
 
@@ -243,7 +242,7 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     private void restoreState() {
 
-        if (Permissions.checkPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) && mStatePrefs.getBoolean("stateSaved", false)) {
+        if (Permissions.checkPermission(this) && mStatePrefs.getBoolean("stateSaved", false)) {
 
             QueueDbHelper dbHelper = new QueueDbHelper(this);
             List<Song> playList = dbHelper.readAll();
@@ -423,13 +422,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    public long getSongId() {
-        if (mCurrentSong != null) {
-            return mCurrentSong.getId();
-        }
-        return -1;
-    }
-
     public String getSongTitle() {
         if (mCurrentSong != null) {
             return mCurrentSong.getTitle();
@@ -482,17 +474,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         mPlayList.clear();
         mPlayList.addAll(mOriginalSongList);
         mHasPlaylist = true;
-    }
-
-    public void setPlayListAndShuffle(List<Song> songList, boolean play) {
-        setPlayListInternal(songList);
-        mCurrentSong = null;
-        mShuffle = true;
-        shuffle();
-        notifyChange(QUEUE_CHANGED);
-        if (play) {
-            play();
-        }
     }
 
     public void addToQueue(Song song) {

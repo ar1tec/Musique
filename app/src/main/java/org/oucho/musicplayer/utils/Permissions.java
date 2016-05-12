@@ -7,7 +7,7 @@ import android.support.v4.content.ContextCompat;
 
 
 public class Permissions {
-    public static boolean checkPermission(Context context, String permission) {
-        return Build.VERSION.SDK_INT < 23 || ContextCompat.checkSelfPermission(context,permission) == PackageManager.PERMISSION_GRANTED;
+    public static boolean checkPermission(Context context) {
+        return Build.VERSION.SDK_INT < 23 || ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 }

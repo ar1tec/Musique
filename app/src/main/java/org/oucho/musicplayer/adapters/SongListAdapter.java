@@ -42,7 +42,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
     }
 
     @Override
-    public SongViewHolder onCreateViewHolderImpl(ViewGroup parent, int viewType) {
+    public SongViewHolder onCreateViewHolderImpl(ViewGroup parent) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.song_list_item, parent, false);
 
@@ -72,7 +72,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
     }
 
     @Override
-    public int getItemViewTypeImpl(int position) {
+    public int getItemViewTypeImpl() {
         return 0;
     }
 

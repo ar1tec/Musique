@@ -1,6 +1,5 @@
 package org.oucho.musicplayer.loaders;
 
-import android.Manifest;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -71,7 +70,7 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
     }
 
     private Cursor getPlaylistCursor() {
-        if (!Permissions.checkPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (!Permissions.checkPermission(getContext())) {
             return null;
         }
         Uri musicUri = MediaStore.Audio.Playlists.Members.getContentUri( "external", mPlaylistId);

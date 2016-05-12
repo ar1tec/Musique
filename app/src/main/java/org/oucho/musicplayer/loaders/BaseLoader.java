@@ -1,6 +1,5 @@
 package org.oucho.musicplayer.loaders;
 
-import android.Manifest;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -35,7 +34,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
         }
     }
 
-    public String getFilter() {
+    String getFilter() {
         return mFilter;
     }
 
@@ -69,18 +68,18 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
     }
 
 
-    public String getSelectionString() {
+    String getSelectionString() {
         return mSelectionString;
 
     }
 
-    public String[] getSelectionArgs() {
+    String[] getSelectionArgs() {
         return mSelectionArgs;
     }
 
     @Nullable
     private Cursor getCursor(Uri musicUri, String[] projection, String selection, String[] selectionArgs, String filteredFieldName, String filter, String orderBy) {
-        if (!Permissions.checkPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (!Permissions.checkPermission(getContext())) {
             return null;
         }
 

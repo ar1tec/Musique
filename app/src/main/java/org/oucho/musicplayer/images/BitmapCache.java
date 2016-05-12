@@ -132,8 +132,6 @@ abstract public class BitmapCache<K> {
 
     }
 
-    abstract public void clear();
-
     public interface Callback {
         void onBitmapLoaded(Bitmap bitmap);
     }

@@ -123,8 +123,7 @@ public class DragRecyclerView extends RecyclerView {
             }
             float y = ev.getY();
 
-            View v = recyclerView
-                    .findChildViewUnder(recyclerView.getWidth() / 2, y);
+            View v = recyclerView.findChildViewUnder(recyclerView.getWidth() / 2, y);
             if (v == null) {
                 return;
             }

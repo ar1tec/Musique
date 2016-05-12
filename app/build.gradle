@@ -11,6 +11,7 @@ android {
         targetSdkVersion 23
         versionCode 11
         versionName "1.7.3"
+        setProperty("archivesBaseName", "Musique_$versionName")
     }
 
     buildTypes {

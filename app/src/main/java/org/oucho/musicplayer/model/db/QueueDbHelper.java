@@ -20,30 +20,30 @@ public class QueueDbHelper extends SQLiteOpenHelper {
     private static final String COMMA_SEP = ",";
 
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + QueueContract.QueueEntry.TABLE_NAME + " (" +
-                    QueueContract.QueueEntry._ID + " INTEGER PRIMARY KEY," +
-                    QueueContract.QueueEntry.COLUMN_NAME_SONG_ID + " INTEGER UNIQUE" + COMMA_SEP +
-                    QueueContract.QueueEntry.COLUMN_NAME_TITLE + " TEXT" + COMMA_SEP +
-                    QueueContract.QueueEntry.COLUMN_NAME_ARTIST + " TEXT" + COMMA_SEP +
-                    QueueContract.QueueEntry.COLUMN_NAME_ALBUM + " TEXT" + COMMA_SEP +
-                    QueueContract.QueueEntry.COLUMN_NAME_TRACK_NUMBER + " INTEGER" + COMMA_SEP +
-                    QueueContract.QueueEntry.COLUMN_NAME_ALBUM_ID + " INTEGER" + COMMA_SEP +
-                    QueueContract.QueueEntry.COLUMN_NAME_GENRE + " TEXT" +
+            "CREATE TABLE " + QueueEntry.TABLE_NAME + " (" +
+                    QueueEntry._ID + " INTEGER PRIMARY KEY," +
+                    QueueEntry.COLUMN_NAME_SONG_ID + " INTEGER UNIQUE" + COMMA_SEP +
+                    QueueEntry.COLUMN_NAME_TITLE + " TEXT" + COMMA_SEP +
+                    QueueEntry.COLUMN_NAME_ARTIST + " TEXT" + COMMA_SEP +
+                    QueueEntry.COLUMN_NAME_ALBUM + " TEXT" + COMMA_SEP +
+                    QueueEntry.COLUMN_NAME_TRACK_NUMBER + " INTEGER" + COMMA_SEP +
+                    QueueEntry.COLUMN_NAME_ALBUM_ID + " INTEGER" + COMMA_SEP +
+                    QueueEntry.COLUMN_NAME_GENRE + " TEXT" +
                     " )";
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + QueueContract.QueueEntry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + QueueEntry.TABLE_NAME;
 
     private static final String[] sProjection = new String[]
             {
-                    QueueContract.QueueEntry._ID, //0
-                    QueueContract.QueueEntry.COLUMN_NAME_SONG_ID,
-                    QueueContract.QueueEntry.COLUMN_NAME_TITLE,
-                    QueueContract.QueueEntry.COLUMN_NAME_ARTIST,
-                    QueueContract.QueueEntry.COLUMN_NAME_ALBUM,
-                    QueueContract.QueueEntry.COLUMN_NAME_TRACK_NUMBER,
-                    QueueContract.QueueEntry.COLUMN_NAME_ALBUM_ID,
-                    QueueContract.QueueEntry.COLUMN_NAME_GENRE,
+                    QueueEntry._ID, //0
+                    QueueEntry.COLUMN_NAME_SONG_ID,
+                    QueueEntry.COLUMN_NAME_TITLE,
+                    QueueEntry.COLUMN_NAME_ARTIST,
+                    QueueEntry.COLUMN_NAME_ALBUM,
+                    QueueEntry.COLUMN_NAME_TRACK_NUMBER,
+                    QueueEntry.COLUMN_NAME_ALBUM_ID,
+                    QueueEntry.COLUMN_NAME_GENRE,
             };
 
     public QueueDbHelper(Context context) {
@@ -63,15 +63,15 @@ public class QueueDbHelper extends SQLiteOpenHelper {
     private void addInternal(SQLiteDatabase db, Song song) {
 
         ContentValues values = new ContentValues();
-        values.put(QueueContract.QueueEntry.COLUMN_NAME_SONG_ID, song.getId());
-        values.put(QueueContract.QueueEntry.COLUMN_NAME_TITLE, song.getTitle());
-        values.put(QueueContract.QueueEntry.COLUMN_NAME_ARTIST, song.getArtist());
-        values.put(QueueContract.QueueEntry.COLUMN_NAME_ALBUM, song.getAlbum());
-        values.put(QueueContract.QueueEntry.COLUMN_NAME_TRACK_NUMBER, song.getTrackNumber());
-        values.put(QueueContract.QueueEntry.COLUMN_NAME_ALBUM_ID, song.getAlbumId());
-        values.put(QueueContract.QueueEntry.COLUMN_NAME_GENRE, song.getGenre());
+        values.put(QueueEntry.COLUMN_NAME_SONG_ID, song.getId());
+        values.put(QueueEntry.COLUMN_NAME_TITLE, song.getTitle());
+        values.put(QueueEntry.COLUMN_NAME_ARTIST, song.getArtist());
+        values.put(QueueEntry.COLUMN_NAME_ALBUM, song.getAlbum());
+        values.put(QueueEntry.COLUMN_NAME_TRACK_NUMBER, song.getTrackNumber());
+        values.put(QueueEntry.COLUMN_NAME_ALBUM_ID, song.getAlbumId());
+        values.put(QueueEntry.COLUMN_NAME_GENRE, song.getGenre());
 
-        db.insert(QueueContract.QueueEntry.TABLE_NAME, null, values);
+        db.insert(QueueEntry.TABLE_NAME, null, values);
 
     }
 
@@ -79,7 +79,7 @@ public class QueueDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            db.delete(QueueContract.QueueEntry.TABLE_NAME, null, null);
+            db.delete(QueueEntry.TABLE_NAME, null, null);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -115,20 +115,20 @@ public class QueueDbHelper extends SQLiteOpenHelper {
 
         Cursor cursor;
         if (limit < 0) {
-            cursor = db.query(QueueContract.QueueEntry.TABLE_NAME, sProjection, null, null, null, null, null);
+            cursor = db.query(QueueEntry.TABLE_NAME, sProjection, null, null, null, null, null);
 
         } else {
-            cursor = db.query(QueueContract.QueueEntry.TABLE_NAME, sProjection, null, null, null, null, null, String.valueOf(limit));
+            cursor = db.query(QueueEntry.TABLE_NAME, sProjection, null, null, null, null, null, String.valueOf(limit));
         }
         if (cursor != null && cursor.moveToFirst()) {
 
-            int idCol = cursor.getColumnIndex(QueueContract.QueueEntry.COLUMN_NAME_SONG_ID);
+            int idCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_SONG_ID);
 
-            int titleCol = cursor.getColumnIndex(QueueContract.QueueEntry.COLUMN_NAME_TITLE);
-            int artistCol = cursor.getColumnIndex(QueueContract.QueueEntry.COLUMN_NAME_ARTIST);
-            int albumCol = cursor.getColumnIndex(QueueContract.QueueEntry.COLUMN_NAME_ALBUM);
-            int albumIdCol = cursor.getColumnIndex(QueueContract.QueueEntry.COLUMN_NAME_ALBUM_ID);
-            int trackCol = cursor.getColumnIndex(QueueContract.QueueEntry.COLUMN_NAME_TRACK_NUMBER);
+            int titleCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TITLE);
+            int artistCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_ARTIST);
+            int albumCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_ALBUM);
+            int albumIdCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_ALBUM_ID);
+            int trackCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_NUMBER);
 
             do {
                 long id = cursor.getLong(idCol);
@@ -154,6 +154,10 @@ public class QueueDbHelper extends SQLiteOpenHelper {
         db.close();
 
         return list;
+    }
+
+    private static class QueueEntry implements SongListColumns {
+        public static final String TABLE_NAME = "queue";
     }
 
 }

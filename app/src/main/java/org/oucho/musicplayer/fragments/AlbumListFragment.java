@@ -47,7 +47,7 @@ public class AlbumListFragment extends BaseFragment {
 
     private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
 
-    private static SharedPreferences préférences = null;
+    private SharedPreferences préférences = null;
 
     private String titre;
     private String tri;

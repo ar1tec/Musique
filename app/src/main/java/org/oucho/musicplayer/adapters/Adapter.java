@@ -10,7 +10,7 @@ public abstract class Adapter<V extends RecyclerView.ViewHolder> extends BaseAda
     @Override
     public V onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return onCreateViewHolderImpl(parent, viewType);
+        return onCreateViewHolderImpl(parent);
     }
 
     @Override
@@ -27,20 +27,21 @@ public abstract class Adapter<V extends RecyclerView.ViewHolder> extends BaseAda
     @Override
     public int getItemViewType(int position) {
 
-        return getItemViewTypeImpl(position);
+        return getItemViewTypeImpl();
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
-    public void triggerOnItemClickListener(int position, View view) {
+    void triggerOnItemClickListener(int position, View view) {
         super.triggerOnItemClickListener(position, view);
     }
 
-    protected abstract V onCreateViewHolderImpl(ViewGroup parent, int viewType);
+    protected abstract V onCreateViewHolderImpl(ViewGroup parent);
 
     protected abstract void onBindViewHolderImpl(V holder, int position);
 
     protected abstract int getItemCountImpl();
 
-    protected abstract int getItemViewTypeImpl(int position);
+    protected abstract int getItemViewTypeImpl();
 
 }

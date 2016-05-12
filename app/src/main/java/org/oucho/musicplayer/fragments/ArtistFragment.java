@@ -395,8 +395,8 @@ public class ArtistFragment extends BaseFragment {
 
     class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private final int FIRST = 1;
-        private final int NORMAL = 2;
+        private static final int FIRST = 1;
+        private static final int NORMAL = 2;
 
         private List<Song> mSongList;
 

@@ -49,11 +49,13 @@ public class SeekArc extends View {
 
 	public interface OnSeekArcChangeListener {
 
-		void onProgressChanged(SeekArc seekArc, int progress, boolean fromUser);
+		void onProgressChanged(int progress);
 
-		void onStartTrackingTouch(SeekArc seekArc);
+		@SuppressWarnings("EmptyMethod")
+		void onStartTrackingTouch();
 
-		void onStopTrackingTouch(SeekArc seekArc);
+		@SuppressWarnings("EmptyMethod")
+		void onStopTrackingTouch();
 	}
 
 	public SeekArc(Context context) {
@@ -240,13 +242,13 @@ public class SeekArc extends View {
 
 	private void onStartTrackingTouch() {
 		if (mOnSeekArcChangeListener != null) {
-			mOnSeekArcChangeListener.onStartTrackingTouch(this);
+			mOnSeekArcChangeListener.onStartTrackingTouch();
 		}
 	}
 
 	private void onStopTrackingTouch() {
 		if (mOnSeekArcChangeListener != null) {
-			mOnSeekArcChangeListener.onStopTrackingTouch(this);
+			mOnSeekArcChangeListener.onStopTrackingTouch();
 		}
 	}
 
@@ -301,7 +303,7 @@ public class SeekArc extends View {
 	}
 
 	private void onProgressRefresh(int progress) {
-		updateProgress(progress, true);
+		updateProgress(progress);
 	}
 
 	private void updateThumbPosition() {
@@ -310,7 +312,7 @@ public class SeekArc extends View {
 		mThumbYPos = (int) (mArcRadius * Math.sin(Math.toRadians(thumbAngle)));
 	}
 	
-	private void updateProgress(int progress, boolean fromUser) {
+	private void updateProgress(int progress) {
 
 		if (progress == INVALID_PROGRESS_VALUE) {
 			return;
@@ -321,7 +323,7 @@ public class SeekArc extends View {
 		mProgress = progress;
 
 		if (mOnSeekArcChangeListener != null) {
-			mOnSeekArcChangeListener.onProgressChanged(this, progress, fromUser);
+			mOnSeekArcChangeListener.onProgressChanged(progress);
 		}
 
 		mProgressSweep = (float) progress / mMax * mSweepAngle;

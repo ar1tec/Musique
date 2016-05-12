@@ -41,6 +41,7 @@ public class MusicLibraryHelper {
 
     private static Map<Long, String> getGenres(Context context) {
         HashMap<Long, String> genreIdMap = new HashMap<>();
+
         Cursor c = context.getContentResolver().query(
                 MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Genres._ID, MediaStore.Audio.Genres.NAME},
@@ -83,24 +84,27 @@ public class MusicLibraryHelper {
         return id;
     }
 
+
     public static String getSongGenre(Context context, long songId) {
 
 
         Map<Long, String> genreIdMap = getGenres(context);
 
         String genre = "";
+
         for (Long genreId : genreIdMap.keySet()) {
 
             boolean found = false;
+
             Cursor c = context.getContentResolver().query(
-                    MediaStore.Audio.Genres.Members.getContentUri(
-                            "external", genreId),
+                    MediaStore.Audio.Genres.Members.getContentUri("external", genreId),
                     new String[]{MediaStore.Audio.Genres.Members.AUDIO_ID},
                     MediaStore.Audio.Genres.Members.AUDIO_ID + " = " + songId,
                     null, null);
 
 
             if ((c != null ? c.getCount() : 0) != 0) {
+
                 genre = genreIdMap.get(genreId);
                 found = true;
             }
@@ -112,8 +116,11 @@ public class MusicLibraryHelper {
                 break;
             }
         }
+
+
         return genre;
     }
+
 
     private static long getSongGenreId(Context context, long songId) {
 

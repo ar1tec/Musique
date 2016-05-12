@@ -33,7 +33,7 @@
     <dimen name="artist_image_req_width">200dp</dimen>
     <dimen name="artist_image_req_height">200dp</dimen>
 
-    <dimen name="playback_activity_art_size">600dp</dimen>
+    <dimen name="playback_activity_art_size">350dp</dimen>
 
 
     <dimen name="art_size">150dp</dimen>

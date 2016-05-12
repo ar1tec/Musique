@@ -55,8 +55,6 @@ import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.update.AppUpdater;
 import org.oucho.musicplayer.update.enums.Display;
-import org.oucho.musicplayer.update.enums.Duration;
-import org.oucho.musicplayer.update.enums.UpdateFrom;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
@@ -536,15 +534,6 @@ public class MainActivity extends AppCompatActivity implements
         // mPlayerService.play();
     }
 
-    public void onShuffleRequested(List<Song> songList, boolean play) {
-        if (mPlayerService == null) {
-            return;
-        }
-        mPlayerService.setPlayListAndShuffle(songList, play);
-
-
-    }
-
     public void addToQueue(Song song) {
         if (mPlayerService != null) {
             mPlayerService.addToQueue(song);
@@ -717,20 +706,16 @@ public class MainActivity extends AppCompatActivity implements
     private void updateOnStart(){
 
         new AppUpdater(this)
-                .setUpdateFrom(UpdateFrom.XML)
                 .setUpdateXML(updateURL)
-                .showEvery(5)
                 .setDisplay(Display.SNACKBAR)
-                .setDuration(Duration.NORMAL)
                 .start();
     }
 
     private void checkUpdate() {
         new AppUpdater(this)
-                .setUpdateFrom(UpdateFrom.XML)
                 .setUpdateXML(updateURL)
                 .setDisplay(Display.DIALOG)
-                .showAppUpdated(true)
+                .showAppUpdated()
                 .start();
     }
 
@@ -757,17 +742,17 @@ public class MainActivity extends AppCompatActivity implements
         mSeekArc.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
 
             @Override
-            public void onStopTrackingTouch(SeekArc seekArc) {
+            public void onStopTrackingTouch() {
                 // vide, obligatoire
             }
 
             @Override
-            public void onStartTrackingTouch(SeekArc seekArc) {
+            public void onStartTrackingTouch() {
                 // vide, obligatoire
             }
 
             @Override
-            public void onProgressChanged(SeekArc seekArc, int progress, boolean fromUser) {
+            public void onProgressChanged(int progress) {
 
                 String minute;
 
@@ -858,7 +843,7 @@ public class MainActivity extends AppCompatActivity implements
         dialog.show();
     }
 
-    public void startTimer(final int minutes) {
+    private void startTimer(final int minutes) {
 
         final String impossible = getString(R.string.impossible);
 

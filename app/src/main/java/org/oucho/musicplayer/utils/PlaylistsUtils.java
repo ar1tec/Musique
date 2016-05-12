@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 
 public class PlaylistsUtils {
 
+    @SuppressWarnings("UnusedReturnValue")
     public static Uri createPlaylist(ContentResolver resolver, String playlistName) {
         Uri uri = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
         ContentValues values = new ContentValues();
@@ -80,6 +81,7 @@ public class PlaylistsUtils {
         resolver.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + audioId, null);
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static boolean moveItem(ContentResolver res, long playlistId,
                                    int from, int to) {
         Uri uri = MediaStore.Audio.Playlists.Members

@@ -28,7 +28,7 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
     }
 
     @Override
-    public SongViewHolder onCreateViewHolderImpl(ViewGroup parent, int viewType) {
+    public SongViewHolder onCreateViewHolderImpl(ViewGroup parent) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.song_album_list_item, parent, false);
 
@@ -57,7 +57,7 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
     }
 
     @Override
-    public int getItemViewTypeImpl(int position) {
+    public int getItemViewTypeImpl() {
         return 0;
     }
 
