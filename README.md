@@ -22,7 +22,7 @@ Lecteur de fichiers musicaux pour android
  <img alt="screenshot" src="/screenshots/6.jpg?raw=true" width="250px" />
 
 
-License
+Licence
 -------
 
 Aucune, profitez, partagez.
@@ -33,8 +33,3 @@ Aucune, profitez, partagez.
 Jaudiotagger
 (Lesser General Public License)
 http://www.jthink.net/jaudiotagger
-
-
-AppUpdater
-(Apache License 2.0)
-https://github.com/javiersantos/AppUpdater

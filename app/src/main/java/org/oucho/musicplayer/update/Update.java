@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.update.objects;
+package org.oucho.musicplayer.update;
 
 import java.net.URL;
 

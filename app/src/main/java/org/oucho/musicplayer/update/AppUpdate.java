@@ -5,27 +5,20 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.update.enums.Display;
-import org.oucho.musicplayer.update.enums.Duration;
-import org.oucho.musicplayer.update.objects.Update;
 
-public class AppUpdater {
+public class AppUpdate {
     private final Context context;
-    private final LibraryPreferences libraryPreferences;
     private Display display;
     private String xmlUrl;
-    private final Integer showEvery;
     private Boolean showAppUpdated;
     private final String titleUpdate;
     private final String btnDismiss;
     private final String btnUpdate;
     private final String titleNoUpdate;
 
-    public AppUpdater(Context context) {
+    public AppUpdate(Context context) {
         this.context = context;
-        this.libraryPreferences = new LibraryPreferences(context);
         this.display = Display.DIALOG;
-        this.showEvery = 1;
         this.showAppUpdated = false;
 
         // Dialog
@@ -35,55 +28,53 @@ public class AppUpdater {
         this.btnDismiss = context.getResources().getString(R.string.appupdater_btn_dismiss);
     }
 
-    public AppUpdater setDisplay(Display display) {
+    public AppUpdate setDisplay(Display display) {
         this.display = display;
         return this;
     }
 
     @SuppressWarnings("SameParameterValue")
-    public AppUpdater setUpdateXML(@NonNull String xmlUrl) {
+    public AppUpdate setUpdateXML(@NonNull String xmlUrl) {
         this.xmlUrl = xmlUrl;
         return this;
     }
 
-    public AppUpdater showAppUpdated() {
+    public AppUpdate showAppUpdated() {
         this.showAppUpdated = true;
         return this;
     }
 
     @SuppressWarnings("unused")
-    public AppUpdater init() {
+    public AppUpdate init() {
         start();
         return this;
     }
 
     /**
-     * Execute AppUpdater in background.
+     * Execute AppUpdate in background.
      */
     public void start() {
-        UtilsAsync.LatestAppVersion latestAppVersion = new UtilsAsync.LatestAppVersion(context, false, xmlUrl, new LibraryListener() {
+        CheckAsync.LatestAppVersion latestAppVersion = new CheckAsync.LatestAppVersion(context, xmlUrl, new LibraryListener() {
             @Override
             public void onSuccess(Update update) {
                 if (UtilsLibrary.isUpdateAvailable(UtilsLibrary.getAppInstalledVersion(context), update.getLatestVersion())) {
-                    Integer successfulChecks = libraryPreferences.getSuccessfulChecks();
-                    if (UtilsLibrary.isAbleToShow(successfulChecks, showEvery)) {
+
                         switch (display) {
                             case DIALOG:
                                 UtilsDisplay.showUpdateAvailableDialog(context, titleUpdate, getDescriptionUpdate(context, update, Display.DIALOG), btnDismiss, btnUpdate, update.getUrlToDownload());
                                 break;
                             case SNACKBAR:
-                                UtilsDisplay.showUpdateAvailableSnackbar(context, getDescriptionUpdate(context, update, Display.SNACKBAR), UtilsLibrary.getDurationEnumToBoolean(Duration.NORMAL), update.getUrlToDownload());
+                                UtilsDisplay.showUpdateAvailableSnackbar(context, getDescriptionUpdate(context, update, Display.SNACKBAR), update.getUrlToDownload());
                                 break;
                         }
-                    }
-                    libraryPreferences.setSuccessfulChecks(successfulChecks + 1);
+
                 } else if (showAppUpdated) {
                     switch (display) {
                         case DIALOG:
                             UtilsDisplay.showUpdateNotAvailableDialog(context, titleNoUpdate, getDescriptionNoUpdate(context));
                             break;
                         case SNACKBAR:
-                            UtilsDisplay.showUpdateNotAvailableSnackbar(context, getDescriptionNoUpdate(context), UtilsLibrary.getDurationEnumToBoolean(Duration.NORMAL));
+                            UtilsDisplay.showUpdateNotAvailableSnackbar(context, getDescriptionNoUpdate(context));
                             break;
                     }
                 }

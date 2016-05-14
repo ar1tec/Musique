@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.update.enums;
+package org.oucho.musicplayer.update;
 
 public enum Display {
     DIALOG,

@@ -71,7 +71,6 @@
     <string name="delete">supprimer</string>
 
 
-
     <string name="permission">Permission</string>
     <string name="permission_read_external_storage">L\'application doit  pouvoir lire le stockage externe.</string>
     <string name="permission_write_external_storage">L\'application doit pouvoir écrire sur le stockage externe pour sauvegarder les images téléchargées.</string>
@@ -90,7 +89,6 @@
     <string name="title_sort_album">album</string>
 
 
-
     <string name="about">A propos</string>
 
     <string name="about_message">
@@ -99,7 +97,7 @@
         \n
         Old Geek, 2016\n
         \n
-        Licence: aucune.\n
+        Licence: aucune, profitez, partagez.\n
         \n
         \n
         Librairies:\n
@@ -110,15 +108,9 @@
         http://www.gnu.org/copyleft/lesser.html \n
         \n
         \n
-        AppUpdater\n
-        Apache License 2.0\n
-        http://www.apache.org/licenses\n
-        \n
-        \n
         Code source\n
         Musique: https://github.com/Old-Geek/Radio2\n
         Jaudiotagger: http://www.jthink.net/jaudiotagger\n
-        AppUpdater: https://github.com/javiersantos/AppUpdater\n
         \n
     </string>
 

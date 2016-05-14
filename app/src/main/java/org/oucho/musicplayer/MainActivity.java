@@ -53,8 +53,8 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.update.AppUpdater;
-import org.oucho.musicplayer.update.enums.Display;
+import org.oucho.musicplayer.update.AppUpdate;
+import org.oucho.musicplayer.update.Display;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
@@ -705,14 +705,14 @@ public class MainActivity extends AppCompatActivity implements
 
     private void updateOnStart(){
 
-        new AppUpdater(this)
+        new AppUpdate(this)
                 .setUpdateXML(updateURL)
                 .setDisplay(Display.SNACKBAR)
                 .start();
     }
 
     private void checkUpdate() {
-        new AppUpdater(this)
+        new AppUpdate(this)
                 .setUpdateXML(updateURL)
                 .setDisplay(Display.DIALOG)
                 .showAppUpdated()
