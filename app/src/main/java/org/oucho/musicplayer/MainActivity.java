@@ -53,8 +53,6 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.update.AppUpdate;
-import org.oucho.musicplayer.update.Display;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
@@ -119,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements
     private static ScheduledFuture mTask;
     private static boolean running;
 
+    final Handler handler = new Handler();
 
     /* *********************************************************************************************
      * Création de l'activité
@@ -160,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements
             showLibrary();
         }
 
-        updateOnStart();
     }
 
     /* *********************************************************************************************
@@ -173,7 +171,13 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
-        mDrawerLayout.closeDrawers();
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                mDrawerLayout.closeDrawers();
+            }
+        }, 300);
+
         switch (menuItem.getItemId()) {
             case R.id.action_equalizer:
                 NavigationUtils.showEqualizer(MainActivity.this);
@@ -189,10 +193,6 @@ public class MainActivity extends AppCompatActivity implements
                 } else {
                     showTimerInfo();
                 }
-                break;
-
-            case R.id.nav_update:
-                checkUpdate();
                 break;
 
             case R.id.nav_help:
@@ -313,10 +313,12 @@ public class MainActivity extends AppCompatActivity implements
                     showLibrary();
                 }
                 return true;
+
             case R.id.action_search:
                 NavigationUtils.showSearchActivity(this);
                 return true;
-            default: //do nothing
+
+            default:
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -699,28 +701,6 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
-   /* **********************************************************************************************
-    * Mise à jour
-    * *********************************************************************************************/
-
-    private void updateOnStart(){
-
-        new AppUpdate(this)
-                .setUpdateXML(updateURL)
-                .setDisplay(Display.SNACKBAR)
-                .start();
-    }
-
-    private void checkUpdate() {
-        new AppUpdate(this)
-                .setUpdateXML(updateURL)
-                .setDisplay(Display.DIALOG)
-                .showAppUpdated()
-                .start();
-    }
-
-
-
     /***********************************************************************************************
      * Sleep Timer
      **********************************************************************************************/
@@ -928,7 +908,6 @@ public class MainActivity extends AppCompatActivity implements
      **********************************************************************************************/
 
     private void killNotif() {
-        final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
 

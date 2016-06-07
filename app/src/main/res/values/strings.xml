@@ -4,8 +4,7 @@
     <string name="app_name">Musique</string>
 
     <!-- nav header activity main -->
-    <string name="version">Musique 1.7.3</string>
-    <string name="by">Old Geek, avril 2016</string>
+    <string name="by">Old Geek, juin 2016</string>
 
     <string name="album">Album</string>
 

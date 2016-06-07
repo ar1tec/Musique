@@ -14,12 +14,12 @@ Lecteur de fichiers musicaux pour android
 - pas de surveillance
 
 
- <img alt="screenshot" src="/screenshots/1.jpg?raw=true" width="250px" />
- <img alt="screenshot" src="/screenshots/2.jpg?raw=true" width="250px" />
- <img alt="screenshot" src="/screenshots/3.jpg?raw=true" width="250px" />
- <img alt="screenshot" src="/screenshots/4.jpg?raw=true" width="250px" />
- <img alt="screenshot" src="/screenshots/5.jpg?raw=true" width="250px" />
- <img alt="screenshot" src="/screenshots/6.jpg?raw=true" width="250px" />
+ <img alt="screenshot" src="/screenshots/1.png?raw=true" width="250px" />
+ <img alt="screenshot" src="/screenshots/2.png?raw=true" width="250px" />
+ <img alt="screenshot" src="/screenshots/3.png?raw=true" width="250px" />
+ <img alt="screenshot" src="/screenshots/4.png?raw=true" width="250px" />
+ <img alt="screenshot" src="/screenshots/5.png?raw=true" width="250px" />
+ <img alt="screenshot" src="/screenshots/6.png?raw=true" width="250px" />
 
 
 Licence
