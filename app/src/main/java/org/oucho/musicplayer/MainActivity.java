@@ -98,8 +98,6 @@ public class MainActivity extends AppCompatActivity implements
     private static final int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
 
-    private static final String updateURL = "http://oucho.free.fr/app_android/Musique/update_musique.xml";
-
 
     private final Handler mHandler = new Handler();
     private NavigationView mNavigationView;
@@ -148,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         mNavigationView.setNavigationItemSelectedListener(this);
-
 
         PrefUtils.init(this);
         ArtworkCache.init(this);
@@ -203,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements
                 exit();
                 break;
 
-            default: //do nothing
+            default:
                 break;
         }
         return true;
@@ -280,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements
                     NavigationUtils.showPlaybackActivity(MainActivity.this);
                     break;
 
-                default: //do nothing
+                default:
                     break;
             }
         }
@@ -647,43 +644,29 @@ public class MainActivity extends AppCompatActivity implements
 
     @SuppressLint("PrivateResource")
     private void updateTrackInfo() {
-        View trackInfoLayout = findViewById(R.id.track_info);
 
-        if (mPlayerService != null && mPlayerService.hasPlaylist()) {
+        String title = mPlayerService.getSongTitle();
+        String artist = mPlayerService.getArtistName();
 
-            assert trackInfoLayout != null;
+        if (title != null) {
+            //noinspection ConstantConditions
+            ((TextView) findViewById(R.id.song_title)).setText(title);
 
-            if (trackInfoLayout.getVisibility() != View.VISIBLE) {
-                trackInfoLayout.setVisibility(View.VISIBLE);
-                trackInfoLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_grow_fade_in_from_bottom));
-            }
-
-            String title = mPlayerService.getSongTitle();
-            String artist = mPlayerService.getArtistName();
-
-            if (title != null) {
-                //noinspection ConstantConditions
-                ((TextView) findViewById(R.id.song_title)).setText(title);
-
-            }
-
-            if (artist != null) {
-                //noinspection ConstantConditions
-                ((TextView) findViewById(R.id.song_artist)).setText(artist);
-            }
-
-            int duration = mPlayerService.getTrackDuration();
-
-            if (duration != -1) {
-                mProgressBar.setMax(duration);
-
-                updateProgressBar();
-            }
-
-        } else {
-            assert trackInfoLayout != null;
-            trackInfoLayout.setVisibility(View.GONE);
         }
+
+        if (artist != null) {
+            //noinspection ConstantConditions
+            ((TextView) findViewById(R.id.song_artist)).setText(artist);
+        }
+
+        int duration = mPlayerService.getTrackDuration();
+
+        if (duration != -1) {
+            mProgressBar.setMax(duration);
+
+            updateProgressBar();
+        }
+
     }
 
 

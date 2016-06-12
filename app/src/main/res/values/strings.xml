@@ -92,7 +92,7 @@
 
     <string name="about_message">
         \n
-        Musique, Lecteur de fichiers musicaux pour android.\n
+        Musique 1.8, Lecteur de fichiers musicaux pour android.\n
         \n
         Old Geek, 2016\n
         \n
@@ -101,7 +101,7 @@
         \n
         Librairies:\n
         \n
-        Jaudiotagger 2.2.4\n
+        Jaudiotagger\n
         Java API for audio metatagging. \n
         Lesser General Public License\n
         http://www.gnu.org/copyleft/lesser.html \n
@@ -125,7 +125,6 @@
     <string name="impossible">0 impossible</string>
 
 
-
     <string name="minute_singulier">minute</string>
     <string name="minute_pluriel">minutes</string>
 
@@ -135,16 +134,6 @@
 
     <string name="action_sleep_timer">Minuteur sommeil</string>
 
-    <!-- update -->
-    <string name="appupdater_update_available">Nouvelle mise à jour disponible</string>
 
-    <string name="appupdater_update_available_description_dialog">La mise à jour %1$s est disponible. En téléchargeant cette version de l\'application, vous aurez accès aux dernières fonctionnalités et améliorations de %2$s.</string>
-    <string name="appupdater_update_available_description_dialog_before_release_notes">La mise à jour %1$s est disponible.\n\nNOUVEAUTÉS:\n%2$s</string>
-    <string name="appupdater_update_available_description_snackbar">Mise à jour %1$s disponible.</string>
-    <string name="appupdater_update_not_available">Aucune mise à jour disponible</string>
-    <string name="appupdater_update_not_available_description">Vous avez la dernière version disponible de %s.</string>
-    <string name="appupdater_btn_update">Télécharger</string>
-    <string name="appupdater_btn_dismiss">Plus tard</string>
-    <string name="update">Mise à jour</string>
 
 </resources>
