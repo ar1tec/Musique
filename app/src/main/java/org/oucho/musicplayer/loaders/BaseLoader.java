@@ -83,7 +83,7 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
             return null;
         }
 
-       
+
         if (filter != null) {
             if ("".equals(filter)) {
                 return null; // empty filter means that we don't want any result

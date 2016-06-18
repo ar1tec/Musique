@@ -35,11 +35,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.audiofx.AudioEffects;
@@ -53,6 +51,8 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.update.AppUpdate;
+import org.oucho.musicplayer.update.Display;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
@@ -85,12 +85,12 @@ public class MainActivity extends AppCompatActivity implements
     public static final String SONG_ALBUM = "song_album";
     public static final String SONG_ALBUM_ID = "song_album_id";
     public static final String SONG_TRACK_NUMBER = "song_track_number";
-    private static final String ACTION_REFRESH = "resfresh";
+    public static final String ACTION_REFRESH = "resfresh";
+    public static final String ACTION_PLAY_SONG = "play_song";
     public static final String ACTION_SHOW_ALBUM = "show_album";
     public static final String ACTION_SHOW_ARTIST = "show_artist";
-    public static final String ACTION_PLAY_SONG = "play_song";
     public static final String ACTION_ADD_TO_QUEUE = "add_to_queue";
-    private static final String ACTION_SET_AS_NEXT_TRACK = "set_as_next_track";
+    public static final String ACTION_SET_AS_NEXT_TRACK = "set_as_next_track";
 
     public static final int SEARCH_ACTIVITY = 234;
 
@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity implements
     private static boolean running;
 
     final Handler handler = new Handler();
+
+    private static final String updateURL = "http://oucho.free.fr/app_android/Musique/update_musique.xml";
 
     /* *********************************************************************************************
      * Création de l'activité
@@ -155,6 +157,8 @@ public class MainActivity extends AppCompatActivity implements
         if (savedInstanceState == null) {
             showLibrary();
         }
+
+        updateOnStart();
 
     }
 
@@ -215,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements
         finish();
     }
 
+
     /* **************************
      * Lance l'application radio
      * **************************/
@@ -240,6 +245,18 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
+
+    /* **********************************************************************************************
+    * Mise à jour
+    * *********************************************************************************************/
+
+    private void updateOnStart() {
+
+        new AppUpdate(this)
+                .setUpdateXML(updateURL)
+                .setDisplay(Display.SNACKBAR)
+                .start();
+    }
 
     /* *********************************************************************************************
      * Click listener activity_main layout
@@ -461,8 +478,6 @@ public class MainActivity extends AppCompatActivity implements
     /***********************************************************************************************
      * Lecture
      **********************************************************************************************/
-
-
 
     private final Runnable mUpdateProgressBar = new Runnable() {
 
@@ -831,10 +846,11 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             minuteTxt = minutePluriel;
         }
-            mTask = scheduler.schedule(new GetAudioFocusTask(this), delay, TimeUnit.MILLISECONDS);
+
+        mTask = scheduler.schedule(new GetAudioFocusTask(this), delay, TimeUnit.MILLISECONDS);
 
 
-            Toast.makeText(this, arret + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, arret + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
 
 
         running = true;
@@ -842,6 +858,10 @@ public class MainActivity extends AppCompatActivity implements
         Notification.setState(true);
 
         Notification.updateNotification(mPlayerService);
+
+
+
+        baisseVolume(delay);
 
     }
 
@@ -858,13 +878,106 @@ public class MainActivity extends AppCompatActivity implements
 
         if (running) mTask.cancel(true);
 
+        if (running) {
+
+            mTask.cancel(true);
+
+            minuteurVolume.cancel();
+            mPlayerService.setVolume(1.0f);
+        }
+
         running = false;
 
         Notification.setState(false);
 
         Notification.updateNotification(mPlayerService);
+
+
     }
 
+
+   /* ********************************
+    * Réduction progressive du volume
+    * ********************************/
+
+    boolean tempsMinuterie = false;
+
+    private CountDownTimer minuteurVolume;
+
+    private void baisseVolume(int delay) {
+
+        // définir si le delay est supérieur ou inférieur à 10mn
+
+        final short minutes = (short) ( ( (delay / 1000) % 3600) / 60);
+
+        if (minutes > 10) {
+            tempsMinuterie = true;
+        } else {
+            tempsMinuterie = false;
+        }
+
+        minuteurVolume = new CountDownTimer(delay, 60000) {
+            @Override
+            public void onTick(long mseconds) {
+
+                long toto = ((mTask.getDelay(TimeUnit.MILLISECONDS) / 1000) % 3600) / 60 ;
+
+
+                if (tempsMinuterie) {
+
+                    if (toto < 1) {
+
+                        mPlayerService.setVolume(0.1f);
+
+                    } else if (toto < 2) {
+
+                        mPlayerService.setVolume(0.2f);
+
+                    } else if (toto < 3) {
+
+                        mPlayerService.setVolume(0.3f);
+
+                    } else if (toto < 4) {
+
+                        mPlayerService.setVolume(0.4f);
+
+                    } else if (toto < 5) {
+
+                        mPlayerService.setVolume(0.5f);
+
+                    } else if (toto < 6) {
+
+                        mPlayerService.setVolume(0.6f);
+
+                    } else if (toto < 7) {
+
+                        mPlayerService.setVolume(0.7f);
+
+                    } else if (toto < 8) {
+
+                        mPlayerService.setVolume(0.8f);
+
+                    } else if (toto < 9) {
+
+                        mPlayerService.setVolume(0.9f);
+
+                    } else if (toto < 10) {
+
+                        mPlayerService.setVolume(1.0f);
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onFinish() {
+                mPlayerService.setVolume(1.0f);
+            }
+
+        }.start();
+    }
 
 
     /***********************************************************************************************
@@ -990,33 +1103,25 @@ public class MainActivity extends AppCompatActivity implements
             } else {
 
 
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
             }
         }
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_PHONE_STATE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_PHONE_STATE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
 
                 DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
                         new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(MainActivity.this,
-                                new String[]{Manifest.permission.READ_PHONE_STATE},
-                                PERMISSIONS_REQUEST_READ_PHONE_STATE);
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE);
                     }
                 });
 
             } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        PERMISSIONS_REQUEST_READ_PHONE_STATE);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE);
             }
         }
     }

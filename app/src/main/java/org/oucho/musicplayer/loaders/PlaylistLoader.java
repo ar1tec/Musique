@@ -28,14 +28,18 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
 
     @Override
     public List<Song> loadInBackground() {
+
         List<Song> playlist = new ArrayList<>();
+
         Cursor cursor = getPlaylistCursor();
+
         if (cursor != null && cursor.moveToFirst()) {
             int idCol = cursor
                     .getColumnIndex(MediaStore.Audio.Playlists.Members.AUDIO_ID);
             if (idCol == -1) {
                 idCol = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
             }
+
             int titleCol = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int artistCol = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
             int albumCol = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);

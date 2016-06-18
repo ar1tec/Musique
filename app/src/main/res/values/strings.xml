@@ -92,7 +92,7 @@
 
     <string name="about_message">
         \n
-        Musique 1.8, Lecteur de fichiers musicaux pour android.\n
+        Musique 1.9\n
         \n
         Old Geek, 2016\n
         \n
@@ -107,8 +107,9 @@
         http://www.gnu.org/copyleft/lesser.html \n
         \n
         \n
-        Code source\n
-        Musique: https://github.com/Old-Geek/Radio2\n
+        Code source:\n
+        \n
+        Musique: https://github.com/Old-Geek/Musique\n
         Jaudiotagger: http://www.jthink.net/jaudiotagger\n
         \n
     </string>
@@ -134,6 +135,18 @@
 
     <string name="action_sleep_timer">Minuteur sommeil</string>
 
+    <!-- update -->
 
+    <string name="update">Mise à jour</string>
+
+    <string name="appupdater_update_available">Nouvelle mise à jour disponible</string>
+
+    <string name="appupdater_update_available_description_dialog">La mise à jour %1$s est disponible. En téléchargeant cette version de l\'application, vous aurez accès aux dernières fonctionnalités et améliorations de %2$s.</string>
+    <string name="appupdater_update_available_description_dialog_before_release_notes">La mise à jour %1$s est disponible.\n\nNOUVEAUTÉS:\n%2$s</string>
+    <string name="appupdater_update_available_description_snackbar">Mise à jour %1$s disponible.</string>
+    <string name="appupdater_update_not_available">Aucune mise à jour disponible</string>
+    <string name="appupdater_update_not_available_description">Vous avez la dernière version disponible de %s.</string>
+    <string name="appupdater_btn_update">Télécharger</string>
+    <string name="appupdater_btn_dismiss">Plus tard</string>
 
 </resources>

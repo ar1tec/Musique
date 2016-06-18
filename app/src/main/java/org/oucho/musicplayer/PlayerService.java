@@ -185,6 +185,14 @@ public class PlayerService extends Service implements OnPreparedListener,
     };
 
 
+
+    public void setVolume(float vol) {
+
+        mMediaPlayer.setVolume(vol, vol);
+
+    }
+
+
     private MediaSessionCompat mMediaSession;
 
 
