@@ -18,7 +18,6 @@
         card_view:elevation="1dp">
 
         <ImageView
-            android:id="@+id/updown"
             android:layout_width="8dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_position"

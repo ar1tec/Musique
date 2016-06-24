@@ -36,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -911,11 +910,7 @@ public class MainActivity extends AppCompatActivity implements
 
         final short minutes = (short) ( ( (delay / 1000) % 3600) / 60);
 
-        if (minutes > 10) {
-            tempsMinuterie = true;
-        } else {
-            tempsMinuterie = false;
-        }
+        tempsMinuterie = minutes > 10;
 
         minuteurVolume = new CountDownTimer(delay, 60000) {
             @Override

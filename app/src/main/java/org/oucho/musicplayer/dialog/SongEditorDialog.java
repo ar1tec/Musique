@@ -30,9 +30,7 @@ public class SongEditorDialog extends DialogFragment {
     private static final String ARG_ALBUM_ID = "album_id";
     private static final String ARG_TRACK_NUMBER = "track_number";
 
-
     private Song mSong;
-
 
     private EditText mTitleEditText;
     private EditText mArtistEditText;

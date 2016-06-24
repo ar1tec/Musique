@@ -14,8 +14,6 @@
  <color name="primary_text">#212121</color>
  <color name="secondary_text">#727272</color>
 
- <color name="divider">#B6B6B6</color>
-
  <color name="appwidget_bg">#CCCCCC</color>
 
  <color name="queue_view_bg">#E1000000</color>

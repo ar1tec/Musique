@@ -3,79 +3,151 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/dialogPadding"
+    android:paddingTop="@dimen/dialogPadding"
+    android:paddingBottom="@dimen/dialogPadding"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context=".dialog.SongEditorDialog">
 
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/big_content_padding">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/title"
-            android:inputType="text" />
+            android:src="@drawable/ic_title"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp" />
 
-        <requestFocus />
-    </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title"
+                android:ems="15"
+                android:inputType="text" />
+
+            <requestFocus />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/big_content_padding">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/artist"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/artist"
-            android:inputType="text" />
-    </android.support.design.widget.TextInputLayout>
+            android:src="@drawable/ic_artist"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/artist"
+                android:ems="15"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/big_content_padding">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/album"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/album"
-            android:inputType="text" />
-    </android.support.design.widget.TextInputLayout>
+            android:src="@drawable/ic_album"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/album"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/album"
+                android:ems="15"
+                android:inputType="text" />
+
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/big_content_padding">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/genre"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/genre"
-            android:inputType="text" />
-    </android.support.design.widget.TextInputLayout>
+            android:src="@drawable/ic_genre"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/genre"
+                android:ems="15"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/big_content_padding">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/track_number"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/track_number"
-            android:inputType="number" />
-    </android.support.design.widget.TextInputLayout>
+            android:src="@drawable/ic_track"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/track_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="N°"
+                android:ems="3"
+                android:inputType="number" />
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

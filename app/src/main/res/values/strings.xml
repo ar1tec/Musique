@@ -60,7 +60,6 @@
     <string name="search">Rechercher</string>
     <string name="edit_tags">Editer données</string>
     <string name="action_edit_tags">Editer données</string>
-    <string name="track_number">Numéro de piste</string>
     <string name="tags_edition_failed">L\'édition des données a échoué</string>
     <string name="year">Année</string>
     <string name="action_search">Recherche</string>
@@ -99,18 +98,8 @@
         Licence: aucune, profitez, partagez.\n
         \n
         \n
-        Librairies:\n
-        \n
-        Jaudiotagger\n
-        Java API for audio metatagging. \n
-        Lesser General Public License\n
-        http://www.gnu.org/copyleft/lesser.html \n
-        \n
-        \n
         Code source:\n
-        \n
         Musique: https://github.com/Old-Geek/Musique\n
-        Jaudiotagger: http://www.jthink.net/jaudiotagger\n
         \n
     </string>
 
@@ -135,40 +124,7 @@
 
     <string name="action_sleep_timer">Minuteur sommeil</string>
 
-    <!-- File Picker -->
-    <string name="filePick">FilePicker</string>
-    <string name="filePick_grid">Grille</string>
-    <string name="filePick_list">Liste</string>
-
-    <string name="fp__empty_directory">Ce répertoire est vide</string>
-
-    <string name="fp__action_deselect">Désélectionner</string>
-    <string name="fp__action_select_all">Tout sélectionner</string>
-
-    <string name="fp__action_invert_selection">Inverser la selection</string>
-    <string name="fp__sort">Trier</string>
-
-    <string-array name="fp__sorting_types">
-        <item>Par nom, croissant</item>
-        <item>Par nom, décroissant</item>
-        <item>Par taille, croissant</item>
-        <item>Par taille, décroissant</item>
-        <item>Par date, croissant</item>
-        <item>Par date, décroissant</item>
-    </string-array>
-
-    <string-array name="fp__size_units">
-        <item>o</item>
-        <item>Ko</item>
-        <item>Mo</item>
-        <item>Go</item>
-        <item>To</item>
-        <item>Po</item>
-    </string-array>
-
     <!-- update -->
-
-    <string name="update">Mise à jour</string>
 
     <string name="appupdater_update_available">Nouvelle mise à jour disponible</string>
 
