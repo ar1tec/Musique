@@ -2,7 +2,7 @@
 -keep class android.support.v7.** { *; }
 -keep interface android.support.v7.** { *; }
 
-#jaudiotagger
+#audiotag
 -dontwarn org.jaudiotagger.**
 
 

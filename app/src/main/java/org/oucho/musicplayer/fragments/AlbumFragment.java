@@ -23,7 +23,7 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
-import org.oucho.musicplayer.dialog.ID3TagEditorDialog;
+import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.loaders.SongLoader;
@@ -212,8 +212,8 @@ public class AlbumFragment extends BaseFragment {
         }
     }
 
-    private final ID3TagEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
-            = new ID3TagEditorDialog.OnTagsEditionSuccessListener() {
+    private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
+            = new SongEditorDialog.OnTagsEditionSuccessListener() {
         @Override
         public void onTagsEditionSuccess() {
             ((MainActivity) getActivity()).refresh();
@@ -250,7 +250,7 @@ public class AlbumFragment extends BaseFragment {
     }
 
     private void showID3TagEditor(Song song) {
-        ID3TagEditorDialog dialog = ID3TagEditorDialog.newInstance(song);
+        SongEditorDialog dialog = SongEditorDialog.newInstance(song);
         dialog.setOnTagsEditionSuccessListener(mOnTagsEditionSuccessListener);
         dialog.show(getChildFragmentManager(), "edit_tags");
     }

@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/dialogPadding"
-    tools:context=".dialog.AlbumEditorDialog">
+    tools:context=".dialog.SongEditorDialog">
 
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/big_content_padding">
 
         <EditText
             android:id="@+id/title"
@@ -42,12 +43,39 @@
         android:paddingTop="@dimen/big_content_padding">
 
         <EditText
-            android:id="@+id/year"
+            android:id="@+id/album"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/year"
-            android:inputType="number" />
+            android:hint="@string/album"
+            android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
 
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/big_content_padding">
+
+        <EditText
+            android:id="@+id/genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/genre"
+            android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/big_content_padding">
+
+        <EditText
+            android:id="@+id/track_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/track_number"
+            android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>

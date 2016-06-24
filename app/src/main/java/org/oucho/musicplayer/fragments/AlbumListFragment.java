@@ -98,7 +98,7 @@ public class AlbumListFragment extends BaseFragment {
                 case R.id.menu_button:
                     showMenu(position, view);
                     break;
-                default: //do nothing
+                default:
                     break;
             }
         }

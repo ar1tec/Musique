@@ -14,14 +14,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.oucho.musicplayer.utils.MusicLibraryHelper;
+import org.oucho.musicplayer.audiotag.TagEdit;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Song;
 
 import java.util.HashMap;
 
 
-public class ID3TagEditorDialog extends DialogFragment {
+public class SongEditorDialog extends DialogFragment {
 
     private static final String ARG_ID = "id";
     private static final String ARG_TITLE = "title";
@@ -41,8 +41,10 @@ public class ID3TagEditorDialog extends DialogFragment {
     private EditText mGenreEditText;
     private OnTagsEditionSuccessListener mListener;
 
-    public static ID3TagEditorDialog newInstance(Song song) {
-        ID3TagEditorDialog fragment = new ID3TagEditorDialog();
+    private Context context;
+
+    public static SongEditorDialog newInstance(Song song) {
+        SongEditorDialog fragment = new SongEditorDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, song.getId());
         args.putString(ARG_TITLE, song.getTitle());
@@ -58,6 +60,9 @@ public class ID3TagEditorDialog extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
+
+        context = getContext();
+
         if (args != null) {
 
             long id = args.getLong(ARG_ID);
@@ -77,9 +82,9 @@ public class ID3TagEditorDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.edit_tags);
 
-        mSong.setGenre(MusicLibraryHelper.getSongGenre(getActivity(), mSong.getId()));
+        mSong.setGenre(TagEdit.getSongGenre(getActivity(), mSong.getId()));
         @SuppressLint("InflateParams")
-        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.fragment_id3_tag_editor_dialog, null);
+        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_song_tag_editor, null);
         builder.setView(dialogView);
 
         mTitleEditText = (EditText) dialogView.findViewById(R.id.title);
@@ -118,7 +123,7 @@ public class ID3TagEditorDialog extends DialogFragment {
                             }
                         }
                         else {
-                            Toast.makeText(getContext(),R.string.tags_edition_failed,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,R.string.tags_edition_failed,Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -139,16 +144,16 @@ public class ID3TagEditorDialog extends DialogFragment {
 
     private boolean saveTags(Context context) {
 
+
         HashMap<String,String> tags = new HashMap<>();
 
-        tags.put(MusicLibraryHelper.TITLE, mTitleEditText.getText().toString());
-        tags.put(MusicLibraryHelper.ARTIST, mArtistEditText.getText().toString());
-        tags.put(MusicLibraryHelper.ALBUM, mAlbumEditText.getText().toString());
-        tags.put(MusicLibraryHelper.TRACK, mTrackEditText.getText().toString());
-        tags.put(MusicLibraryHelper.GENRE, mGenreEditText.getText().toString());
+        tags.put(TagEdit.TITLE, mTitleEditText.getText().toString());
+        tags.put(TagEdit.ARTIST, mArtistEditText.getText().toString());
+        tags.put(TagEdit.ALBUM, mAlbumEditText.getText().toString());
+        tags.put(TagEdit.TRACK, mTrackEditText.getText().toString());
+        tags.put(TagEdit.GENRE, mGenreEditText.getText().toString());
 
-
-        return MusicLibraryHelper.editSongTags(context, mSong, tags);
+        return TagEdit.editSongTags(context, mSong, tags);
 
     }
 
@@ -164,6 +169,5 @@ public class ID3TagEditorDialog extends DialogFragment {
 
         void onTagsEditionSuccess();
     }
-
 
 }
