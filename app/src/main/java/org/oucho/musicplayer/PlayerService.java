@@ -33,6 +33,7 @@ import android.util.Log;
 import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.utils.GlobalVar;
 import org.oucho.musicplayer.utils.Notification;
 
 import java.io.IOException;
@@ -639,7 +640,7 @@ public class PlayerService extends Service implements OnPreparedListener,
             mIsPaused = false;
             notifyChange(PLAYSTATE_CHANGED);
 
-
+            ((GlobalVar) this.getApplication()).setCurrentSongPlay(mCurrentSong.getId());
         }
     }
 

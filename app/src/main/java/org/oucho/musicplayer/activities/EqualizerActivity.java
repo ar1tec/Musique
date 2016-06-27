@@ -203,8 +203,7 @@ public class EqualizerActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress,
-                                                  boolean fromUser) {
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
                         if (fromUser) {
                             short band = (Short) seekBar.getTag();

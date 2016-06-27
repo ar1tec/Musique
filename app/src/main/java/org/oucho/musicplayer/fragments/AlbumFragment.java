@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,8 +22,8 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
-import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
+import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.loaders.SongLoader;
 import org.oucho.musicplayer.model.Album;
@@ -84,7 +83,6 @@ public class AlbumFragment extends BaseFragment {
         @Override
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
             mAdapter.setData(songList);
-            Log.e("test", "" + mAdapter.getItemCount());
         }
 
         @Override
@@ -163,13 +161,18 @@ public class AlbumFragment extends BaseFragment {
         morceaux.setText(nb_Morceaux);
 
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
+        final RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new SongAlbumListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
 
         mRecyclerView.setAdapter(mAdapter);
+
+
+        //mRecyclerView.smoothScrollToPosition(mAdapter.getPosition());
+
+
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
 
@@ -182,13 +185,16 @@ public class AlbumFragment extends BaseFragment {
         @Override
         public void onItemClick(int position, View view) {
             switch (view.getId()) {
+
                 case R.id.item_view:
                     selectSong(position);
                     break;
+
                 case R.id.menu_button:
                     showMenu(position, view);
                     break;
-                default: //do nothing
+
+                default:
                     break;
             }
         }
@@ -199,6 +205,9 @@ public class AlbumFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(0, null, mLoaderCallbacks);
     }
+
+
+
 
     @Override
     public void load() {

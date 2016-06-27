@@ -77,7 +77,6 @@ public class ArtistFragment extends BaseFragment {
         @Override
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
             mSongListAdapter.setData(songList);
-            Log.e("test", "" + mSongListAdapter.getItemCount());
         }
 
 

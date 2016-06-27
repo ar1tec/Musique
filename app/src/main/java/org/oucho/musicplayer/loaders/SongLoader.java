@@ -65,21 +65,11 @@ public class SongLoader extends BaseLoader<List<Song>> {
                 mSongList.add(new Song(id, title, artist, album, albumId, track));
             } while (cursor.moveToNext());
 
-         /*   Collections.sort(mSongList, new Comparator<Song>() {
-                @Override
-                public int compare(Song lhs, Song rhs) {
-                    Collator c = Collator.getInstance(Locale.getDefault());
-                    c.setStrength(Collator.PRIMARY);
-                    return c.compare(lhs.getTitle(), rhs.getTitle());
-                }
-            });*/
-
         }
 
         if (cursor != null) {
             cursor.close();
         }
-        Log.e("test", "  d " + mSongList.size());
 
         return mSongList;
     }

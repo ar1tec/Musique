@@ -31,11 +31,11 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import org.oucho.musicplayer.model.db.QueueDbHelper;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.model.db.QueueDbHelper;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 
@@ -136,6 +136,7 @@ public class PlayerActivity extends AppCompatActivity
                 mQueueAdapter.moveItem(oldPosition, newPosition);
             }
         });
+
         mQueueView.setAdapter(mQueueAdapter);
 
         findViewById(R.id.prev).setOnClickListener(mOnClickListener);
@@ -143,7 +144,6 @@ public class PlayerActivity extends AppCompatActivity
         findViewById(R.id.play_pause_toggle).setOnClickListener(mOnClickListener);
         findViewById(R.id.shuffle).setOnClickListener(mOnClickListener);
         findViewById(R.id.repeat).setOnClickListener(mOnClickListener);
-
 
         mSeekBar = (SeekBar) findViewById(R.id.seek_bar);
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
@@ -156,7 +156,6 @@ public class PlayerActivity extends AppCompatActivity
         dbHelper.close();
 
         return playList.size();
-
     }
 
     private final Runnable mUpdateSeekBarRunnable = new Runnable() {
@@ -209,7 +208,6 @@ public class PlayerActivity extends AppCompatActivity
 
             assert actionBar != null;
             actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>"));
-
 
         }
     }
@@ -543,24 +541,24 @@ public class PlayerActivity extends AppCompatActivity
         mQueueAdapter.setSelection(position);
 
         if (position >= 0 && position < mQueue.size()) {
-            mQueueView.scrollToPosition(position);
+            mQueueView.smoothScrollToPosition(position);
         }
 
     }
 
+
     private class QueueItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnTouchListener {
 
-        final TextView vTitle; // NOPMD
-        final TextView vArtist; // NOPMD
-        final ImageButton vReorderButton; // NOPMD
-        final View itemView; // NOPMD
+        final TextView vTitle;
+        final TextView vArtist;
+        final ImageButton vReorderButton;
+        final View itemView;
 
         public QueueItemViewHolder(View itemView) {
             super(itemView);
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vArtist = (TextView) itemView.findViewById(R.id.artist);
-            vReorderButton = (ImageButton) itemView
-                    .findViewById(R.id.reorder_button);
+            vReorderButton = (ImageButton) itemView.findViewById(R.id.reorder_button);
             vReorderButton.setOnTouchListener(this);
             itemView.findViewById(R.id.song_info).setOnClickListener(this);
             itemView.findViewById(R.id.delete_button).setOnClickListener(this);
@@ -585,12 +583,14 @@ public class PlayerActivity extends AppCompatActivity
                         mPlayerService.setPosition(position, true);
 
                         break;
+
                     case R.id.delete_button:
                         if (mQueueAdapter.getItemCount() > 0) {
                             mQueueAdapter.removeItem(position);
                         }
                         break;
-                    default: //do nothing
+
+                    default:
                         break;
                 }
 
@@ -619,9 +619,9 @@ public class PlayerActivity extends AppCompatActivity
         }
 
         @Override
-        public void onBindViewHolder(QueueItemViewHolder viewHolder,
-                                     int position) {
+        public void onBindViewHolder(QueueItemViewHolder viewHolder, int position) {
             Song song = mQueue.get(position);
+
             if (position == mSelectedItemPosition) {
                 viewHolder.itemView.setSelected(true);
             } else {
@@ -672,8 +672,7 @@ public class PlayerActivity extends AppCompatActivity
                 notifyItemChanged(oldSelection);
             }
 
-            if (mSelectedItemPosition >= 0
-                    && mSelectedItemPosition < mQueue.size()) {
+            if (mSelectedItemPosition >= 0 && mSelectedItemPosition < mQueue.size()) {
                 notifyItemChanged(mSelectedItemPosition);
             }
         }

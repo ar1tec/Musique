@@ -40,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
+import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
 import org.oucho.musicplayer.audiofx.AudioEffects;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.fragments.AlbumFragment;
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements
     private static boolean running;
 
     final Handler handler = new Handler();
+
 
     private static final String updateURL = "http://oucho.free.fr/app_android/Musique/update_musique.xml";
 
