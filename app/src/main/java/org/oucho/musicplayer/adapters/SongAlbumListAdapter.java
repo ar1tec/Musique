@@ -20,8 +20,6 @@ import java.util.List;
 public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewHolder> {
 
 
-    int currentPosition = 0;
-
     private List<Song> mSongList = Collections.emptyList();
 
     public void setData(List<Song> data) {
@@ -50,10 +48,7 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
 
         holder.vTrackNumber.setText(String.valueOf(position + 1));
 
-
         if (song.getId() == GlobalVar.getCurrentSongPlay()) {
-
-            currentPosition = position;
 
             holder.vTrackNumber.setVisibility(View.INVISIBLE);
             holder.PlayView.setVisibility(View.VISIBLE);
@@ -69,11 +64,6 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
         return mSongList.get(position);
     }
 
-    public int getPosition() {
-        //return mSongList.indexOf(song);
-
-        return currentPosition;
-    }
 
     @Override
     public int getItemCountImpl() {

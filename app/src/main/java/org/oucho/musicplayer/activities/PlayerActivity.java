@@ -509,11 +509,8 @@ public class PlayerActivity extends AppCompatActivity
 
         List<Song> queue = mPlayerService.getPlayList();
         if (!queue.equals(mQueue)) {
-
-            Log.d("eee", "testt");
             mQueue = queue;
             mQueueAdapter.setQueue(mQueue);
-
         }
 
         mQueueAdapter.notifyDataSetChanged();
@@ -537,12 +534,11 @@ public class PlayerActivity extends AppCompatActivity
         }
     }
 
+
     private void setQueueSelection(int position) {
         mQueueAdapter.setSelection(position);
 
-        if (position >= 0 && position < mQueue.size()) {
-            mQueueView.smoothScrollToPosition(position);
-        }
+        mQueueView.scrollToPosition(position);
 
     }
 

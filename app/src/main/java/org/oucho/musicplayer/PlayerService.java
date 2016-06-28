@@ -644,6 +644,7 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
+
     private void pause() {
         mMediaPlayer.pause();
         mIsPlaying = false;

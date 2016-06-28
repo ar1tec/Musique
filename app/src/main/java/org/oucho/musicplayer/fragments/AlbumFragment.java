@@ -2,6 +2,7 @@ package org.oucho.musicplayer.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -29,6 +30,7 @@ import org.oucho.musicplayer.loaders.SongLoader;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.utils.GlobalVar;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 
 import java.util.List;
@@ -69,6 +71,8 @@ public class AlbumFragment extends BaseFragment {
         return fragment;
     }
 
+    List<Song> listeTitre;
+
     private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Song>>() {
 
         @Override
@@ -83,6 +87,8 @@ public class AlbumFragment extends BaseFragment {
         @Override
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
             mAdapter.setData(songList);
+
+            listeTitre = songList;
         }
 
         @Override
@@ -169,9 +175,18 @@ public class AlbumFragment extends BaseFragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
 
-        //mRecyclerView.smoothScrollToPosition(mAdapter.getPosition());
+                for (int i = 0; i < listeTitre.size(); i++) {
 
+                    if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongPlay())
+                        mRecyclerView.smoothScrollToPosition( i );
+                }
+
+            }
+        }, 100);
 
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);

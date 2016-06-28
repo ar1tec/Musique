@@ -40,7 +40,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
-import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
 import org.oucho.musicplayer.audiofx.AudioEffects;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.fragments.AlbumFragment;
@@ -281,11 +280,13 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.quick_prev:
                 case R.id.prev:
                     mPlayerService.playPrev();
+
                     break;
 
                 case R.id.quick_next:
                 case R.id.next:
                     mPlayerService.playNext(true);
+
                     break;
 
                 case R.id.action_equalizer:
@@ -349,8 +350,10 @@ public class MainActivity extends AppCompatActivity implements
     private void showLibrary() {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, LibraryFragment.newInstance()).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, LibraryFragment.newInstance())
+                .commit();
     }
 
 
