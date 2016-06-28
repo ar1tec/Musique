@@ -902,69 +902,118 @@ public class MainActivity extends AppCompatActivity implements
     * Réduction progressive du volume
     * ********************************/
 
-    boolean tempsMinuterie = false;
-
     private CountDownTimer minuteurVolume;
 
-    private void baisseVolume(int delay) {
+    private void baisseVolume(final int delay) {
 
         // définir si le delay est supérieur ou inférieur à 10mn
 
         final short minutes = (short) ( ( (delay / 1000) % 3600) / 60);
 
-        tempsMinuterie = minutes > 10;
+        final boolean tempsMinuterie = minutes > 10;
 
-        minuteurVolume = new CountDownTimer(delay, 60000) {
+        int cycle;
+
+        if (tempsMinuterie) {
+            cycle = 60000;
+        } else {
+            cycle = 1000;
+        }
+
+        minuteurVolume = new CountDownTimer(delay, cycle) {
             @Override
             public void onTick(long mseconds) {
 
-                long toto = ((mTask.getDelay(TimeUnit.MILLISECONDS) / 1000) % 3600) / 60 ;
+                long temps1 = ((mTask.getDelay(TimeUnit.MILLISECONDS) / 1000) % 3600) / 60 ;
 
+                long temps2 = mTask.getDelay(TimeUnit.MILLISECONDS) / 1000;
 
                 if (tempsMinuterie) {
 
-                    if (toto < 1) {
+                    if (temps1 < 1) {
 
                         mPlayerService.setVolume(0.1f);
 
-                    } else if (toto < 2) {
+                    } else if (temps1 < 2) {
 
                         mPlayerService.setVolume(0.2f);
 
-                    } else if (toto < 3) {
+                    } else if (temps1 < 3) {
 
                         mPlayerService.setVolume(0.3f);
 
-                    } else if (toto < 4) {
+                    } else if (temps1 < 4) {
 
                         mPlayerService.setVolume(0.4f);
 
-                    } else if (toto < 5) {
+                    } else if (temps1 < 5) {
 
                         mPlayerService.setVolume(0.5f);
 
-                    } else if (toto < 6) {
+                    } else if (temps1 < 6) {
 
                         mPlayerService.setVolume(0.6f);
 
-                    } else if (toto < 7) {
+                    } else if (temps1 < 7) {
 
                         mPlayerService.setVolume(0.7f);
 
-                    } else if (toto < 8) {
+                    } else if (temps1 < 8) {
 
                         mPlayerService.setVolume(0.8f);
 
-                    } else if (toto < 9) {
+                    } else if (temps1 < 9) {
 
                         mPlayerService.setVolume(0.9f);
 
-                    } else if (toto < 10) {
+                    } else if (temps1 < 10) {
 
                         mPlayerService.setVolume(1.0f);
                     }
 
+                } else {
 
+
+                    if (temps2 < 6) {
+
+                        mPlayerService.setVolume(0.1f);
+
+                    } else if (temps2 < 12) {
+
+                        mPlayerService.setVolume(0.2f);
+
+                    } else if (temps2 < 18) {
+
+                        mPlayerService.setVolume(0.3f);
+
+                    } else if (temps2 < 24) {
+
+                        mPlayerService.setVolume(0.4f);
+
+                    } else if (temps2 < 30) {
+
+                        mPlayerService.setVolume(0.5f);
+
+                    } else if (temps2 < 36) {
+
+                        mPlayerService.setVolume(0.6f);
+
+                    } else if (temps2 < 42) {
+
+                        mPlayerService.setVolume(0.7f);
+
+                    } else if (temps2 < 48) {
+
+                        mPlayerService.setVolume(0.8f);
+
+                    } else if (temps2 < 54) {
+
+                        mPlayerService.setVolume(0.9f);
+
+                    } else if (temps2 < 60) {
+
+                        mPlayerService.setVolume(1.0f);
+                    }
                 }
 
             }
