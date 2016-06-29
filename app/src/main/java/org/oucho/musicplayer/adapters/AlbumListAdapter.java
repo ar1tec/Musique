@@ -70,15 +70,6 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         return mAlbumList.size();
     }
 
-/*    @Override
-    public String getSectionForPosition(int position) {
-        String name = getItem(position).getAlbumName();
-        if (name.length() > 0) {
-            return name.substring(0, 1);
-        }
-
-        return "";
-    }*/
 
     public Album getItem(int position) {
         return mAlbumList.get(position);
@@ -86,10 +77,10 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
     class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final ImageView vArtwork; // NOPMD
-        final TextView vName; // NOPMD
+        final ImageView vArtwork;
+        final TextView vName;
 
-        TextView vArtist; // NOPMD
+        TextView vArtist;
 
         public AlbumViewHolder(View itemView) {
             super(itemView);

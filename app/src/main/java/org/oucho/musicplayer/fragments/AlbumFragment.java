@@ -1,6 +1,9 @@
 package org.oucho.musicplayer.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -50,6 +53,14 @@ public class AlbumFragment extends BaseFragment {
 
     private MainActivity mActivity;
 
+    private RecyclerView mRecyclerView;
+
+    private Etat_player Etat_player_Receiver;
+    private boolean isRegistered = false;
+
+    private static final String STATE = "org.oucho.musicplayer.STATE";
+
+
     private int mArtworkWidth;
     private int mArtworkHeight;
 
@@ -58,6 +69,8 @@ public class AlbumFragment extends BaseFragment {
     private String Année = "";
     private String nb_Morceaux = "";
 
+
+    private Context context;
 
     public static AlbumFragment newInstance(Album album) {
         AlbumFragment fragment = new AlbumFragment();
@@ -106,6 +119,13 @@ public class AlbumFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
 
+        context = getContext();
+
+        Etat_player_Receiver = new Etat_player();
+        IntentFilter filter = new IntentFilter(STATE);
+
+        context.registerReceiver(Etat_player_Receiver, filter);
+        isRegistered = true;
 
         if (args != null) {
 
@@ -138,7 +158,6 @@ public class AlbumFragment extends BaseFragment {
     }
 
 
-
     /* *********************************************************************************************
      * Création du visuel
      * ********************************************************************************************/
@@ -167,7 +186,7 @@ public class AlbumFragment extends BaseFragment {
         morceaux.setText(nb_Morceaux);
 
 
-        final RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new SongAlbumListAdapter();
@@ -296,8 +315,62 @@ public class AlbumFragment extends BaseFragment {
         try {
             mActivity = (MainActivity) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(context.toString() + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (isRegistered) {
+            context.unregisterReceiver(Etat_player_Receiver);
+            isRegistered = false;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!isRegistered) {
+            IntentFilter filter = new IntentFilter(STATE);
+            context.registerReceiver(Etat_player_Receiver, filter);
+            isRegistered = true;
+        }
+    }
+
+    private class Etat_player extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+
+            String receiveIntent = intent.getAction();
+
+            if (STATE.equals(receiveIntent)
+                    && intent.getStringExtra("state").equals("prev")
+                    || intent.getStringExtra("state").equals("next")) {
+
+
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+
+                        for (int i = 0; i < listeTitre.size(); i++) {
+
+                            if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongPlay())
+                                mRecyclerView.scrollToPosition( i );
+
+                        }
+
+                        mAdapter.notifyItemRangeChanged(0, listeTitre.size(), null);
+
+                    }
+                }, 100);
+
+            }
         }
     }
 }

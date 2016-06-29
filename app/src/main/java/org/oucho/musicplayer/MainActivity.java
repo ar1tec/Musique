@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String updateURL = "http://oucho.free.fr/app_android/Musique/update_musique.xml";
 
+    private static final String intent_state = "org.oucho.musicplayer.STATE";
+
     /* *********************************************************************************************
      * Création de l'activité
      * ********************************************************************************************/
@@ -281,11 +283,19 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.prev:
                     mPlayerService.playPrev();
 
+                    Intent intentP = new Intent(intent_state);
+                    intentP.putExtra("state", "prev");
+                    sendBroadcast(intentP);
+
                     break;
 
                 case R.id.quick_next:
                 case R.id.next:
                     mPlayerService.playNext(true);
+
+                    Intent intentN = new Intent(intent_state);
+                    intentN.putExtra("state", "next");
+                    sendBroadcast(intentN);
 
                     break;
 

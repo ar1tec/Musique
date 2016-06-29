@@ -764,6 +764,11 @@ public class PlayerService extends Service implements OnPreparedListener,
             mCurrentPosition = position;
             mCurrentSong = mPlayList.get(position);
             openAndPlay();
+
+            Intent intentN = new Intent("org.oucho.musicplayer.STATE");
+            intentN.putExtra("state", "next");
+            sendBroadcast(intentN);
+
         }
     }
 
