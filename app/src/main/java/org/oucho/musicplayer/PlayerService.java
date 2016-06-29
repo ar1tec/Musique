@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -26,11 +27,13 @@ import android.preference.PreferenceManager;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.app.AlertDialog;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
+import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.GlobalVar;
@@ -632,16 +635,23 @@ public class PlayerService extends Service implements OnPreparedListener,
     private void play() {
 
 
-
         int result = mAudioManager.requestAudioFocus(mAudioFocusChangeListener,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN);
-        if(result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            mMediaPlayer.start();
-            mIsPlaying = true;
-            mIsPaused = false;
-            notifyChange(PLAYSTATE_CHANGED);
 
-            ((GlobalVar) this.getApplication()).setCurrentSongPlay(mCurrentSong.getId());
-        }
+        // previent crash lors du premier lancement à vide de l'application
+        // et qu' aucun titre n'a été sélectionné
+        try {
+
+            if(result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                mMediaPlayer.start();
+                mIsPlaying = true;
+                mIsPaused = false;
+                notifyChange(PLAYSTATE_CHANGED);
+
+                ((GlobalVar) this.getApplication()).setCurrentSongPlay(mCurrentSong.getId());
+            }
+
+        } catch (NullPointerException ignored) {}
+
     }
 
 

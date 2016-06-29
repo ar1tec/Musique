@@ -214,6 +214,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void exit() {
+
+        if (running)
+            annulTimer();
+
         if (mPlayerService.isPlaying())
             mPlayerService.toggle();
 
