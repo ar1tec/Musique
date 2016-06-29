@@ -16,7 +16,6 @@ import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -36,6 +35,7 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.model.db.QueueDbHelper;
+import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 
@@ -128,7 +128,10 @@ public class PlayerActivity extends AppCompatActivity
 
         mQueueView = (DragRecyclerView) findViewById(R.id.queue_view);
 
-        mQueueView.setLayoutManager(new LinearLayoutManager(this));
+        //mQueueView.setLayoutManager(new LinearLayoutManager(this));
+
+        mQueueView.setLayoutManager(new CustomLayoutManager(this));
+
         mQueueAdapter = new QueueAdapter();
         mQueueView.setOnItemMovedListener(new DragRecyclerView.OnItemMovedListener() {
             @Override
@@ -538,7 +541,7 @@ public class PlayerActivity extends AppCompatActivity
     private void setQueueSelection(int position) {
         mQueueAdapter.setSelection(position);
 
-        mQueueView.scrollToPosition(position);
+        mQueueView.smoothScrollToPosition(position);
 
     }
 

@@ -10,7 +10,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +33,7 @@ import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.GlobalVar;
+import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 
 import java.util.List;
@@ -193,7 +193,8 @@ public class AlbumFragment extends BaseFragment {
 
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mRecyclerView.setLayoutManager(new CustomLayoutManager(getActivity()));
 
         mAdapter = new SongAlbumListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
@@ -355,7 +356,7 @@ public class AlbumFragment extends BaseFragment {
                         for (int i = 0; i < listeTitre.size(); i++) {
 
                             if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongPlay())
-                                mRecyclerView.scrollToPosition( i );
+                                mRecyclerView.smoothScrollToPosition( i );
 
                         }
 
@@ -367,4 +368,7 @@ public class AlbumFragment extends BaseFragment {
             }
         }
     }
+
+
+
 }
