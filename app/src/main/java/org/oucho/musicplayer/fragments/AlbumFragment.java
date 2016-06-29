@@ -69,6 +69,7 @@ public class AlbumFragment extends BaseFragment {
     private String Année = "";
     private String nb_Morceaux = "";
 
+    private List<Song> listeTitre;
 
     private Context context;
 
@@ -84,7 +85,6 @@ public class AlbumFragment extends BaseFragment {
         return fragment;
     }
 
-    List<Song> listeTitre;
 
     private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Song>>() {
 
@@ -102,6 +102,12 @@ public class AlbumFragment extends BaseFragment {
             mAdapter.setData(songList);
 
             listeTitre = songList;
+
+            for (int i = 0; i < listeTitre.size(); i++) {
+
+                if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongPlay())
+                    mRecyclerView.smoothScrollToPosition( i );
+            }
         }
 
         @Override
@@ -194,18 +200,6 @@ public class AlbumFragment extends BaseFragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-
-                for (int i = 0; i < listeTitre.size(); i++) {
-
-                    if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongPlay())
-                        mRecyclerView.smoothScrollToPosition( i );
-                }
-
-            }
-        }, 100);
 
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
