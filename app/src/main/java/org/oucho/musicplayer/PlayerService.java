@@ -430,10 +430,10 @@ public class PlayerService extends Service implements OnPreparedListener,
     }
 
     public String getSongTitle() {
-        //if (mCurrentSong != null) {
+        if (mCurrentSong != null) {
             return mCurrentSong.getTitle();
-        //}
-        //return null;
+        }
+        return null;
     }
 
     public String getArtistName() {
