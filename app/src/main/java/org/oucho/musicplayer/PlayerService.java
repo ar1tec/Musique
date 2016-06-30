@@ -5,7 +5,6 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -27,13 +26,11 @@ import android.preference.PreferenceManager;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.app.AlertDialog;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
-import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.GlobalVar;
@@ -146,7 +143,7 @@ public class PlayerService extends Service implements OnPreparedListener,
                 case TelephonyManager.CALL_STATE_RINGING:
                     pause();
                     break;
-                default: //do nothing
+                default:
                     break;
             }
         }
@@ -182,7 +179,7 @@ public class PlayerService extends Service implements OnPreparedListener,
                     pause();
                     mPausedByFocusLoss = false;
                     break;
-                default: //do nothing
+                default:
                     break;
             }
         }
@@ -278,7 +275,6 @@ public class PlayerService extends Service implements OnPreparedListener,
     }
 
     private void saveSeekPos() {
-        Log.d(TAG, "save seek pos");
         SharedPreferences.Editor editor = mStatePrefs.edit();
         editor.putBoolean("seekPosSaved", true);
         editor.putInt("seekPos", mMediaPlayer.getCurrentPosition());
@@ -288,7 +284,6 @@ public class PlayerService extends Service implements OnPreparedListener,
     private void restoreSeekPos() {
         if (mStatePrefs.getBoolean("seekPosSaved", false)) {
             int seekPos = mStatePrefs.getInt("seekPos", 0);
-            Log.d(TAG, "restore seek pos " + seekPos + "ms");
             seekTo(seekPos);
 
             SharedPreferences.Editor editor = mStatePrefs.edit();
@@ -435,10 +430,10 @@ public class PlayerService extends Service implements OnPreparedListener,
     }
 
     public String getSongTitle() {
-        if (mCurrentSong != null) {
+        //if (mCurrentSong != null) {
             return mCurrentSong.getTitle();
-        }
-        return null;
+        //}
+        //return null;
     }
 
     public String getArtistName() {
@@ -548,7 +543,7 @@ public class PlayerService extends Service implements OnPreparedListener,
     }
 
     private void sendBroadcast(String action, Bundle data) {
-        Log.d("action", action + "2");
+
         Intent i = new Intent(action);
         if (data != null) {
             i.putExtras(data);
@@ -620,13 +615,17 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     public int getNextRepeatMode() {
         switch (mRepeatMode) {
+
             case NO_REPEAT:
                 return REPEAT_ALL;
+
             case REPEAT_ALL:
                 return REPEAT_CURRENT;
+
             case REPEAT_CURRENT:
                 return NO_REPEAT;
-            default: //do nothing
+
+            default:
                 break;
         }
         return NO_REPEAT;
@@ -647,7 +646,10 @@ public class PlayerService extends Service implements OnPreparedListener,
                 mIsPaused = false;
                 notifyChange(PLAYSTATE_CHANGED);
 
-                ((GlobalVar) this.getApplication()).setCurrentSongPlay(mCurrentSong.getId());
+                ((GlobalVar) this.getApplication()).setCurrentSongID(mCurrentSong.getId());
+                ((GlobalVar) this.getApplication()).setCurrentSongTitle(mCurrentSong.getTitle());
+                ((GlobalVar) this.getApplication()).setCurrentSongArtist(mCurrentSong.getArtist());
+
             }
 
         } catch (NullPointerException ignored) {}
@@ -688,7 +690,6 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     public void playPrev() {
         int position = getPreviousPosition(true);
-        Log.e("pos", String.valueOf(position));
 
         if (position >= 0 && position < mPlayList.size()) {
             mCurrentPosition = position;
@@ -752,7 +753,7 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        Log.d(TAG, "onCompletion");
+
         playNext(false);
 
         if (mCurrentPosition+1 == mPlayList.size()) {
@@ -769,7 +770,7 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     public void playNext(boolean force) {
         int position = getNextPosition(force);
-        Log.e("pos", String.valueOf(position));
+
         if (position >= 0 && position < mPlayList.size()) {
             mCurrentPosition = position;
             mCurrentSong = mPlayList.get(position);
@@ -795,7 +796,7 @@ public class PlayerService extends Service implements OnPreparedListener,
             if (mRepeatMode == REPEAT_ALL) {
                 return 0;
             }
-            return -1;// NO_REPEAT;
+            return -1;
         }
         return position + 1;
     }
@@ -823,9 +824,11 @@ public class PlayerService extends Service implements OnPreparedListener,
             mMediaPlayer.setDataSource(getApplicationContext(), songUri);
             mMediaPlayer.prepareAsync();
 
-        } catch (IllegalArgumentException | SecurityException
-                | IllegalStateException | IOException e) {
-            Log.e("ee", "ee", e);
+        } catch (IllegalArgumentException
+                | SecurityException
+                | IllegalStateException
+                | IOException e) {
+            Log.e("open() ee", "ee", e);
         }
     }
 
@@ -835,8 +838,7 @@ public class PlayerService extends Service implements OnPreparedListener,
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        Log.d(TAG,
-                "onError " + String.valueOf(what) + " " + String.valueOf(extra));
+        Log.d(TAG, "onError " + String.valueOf(what) + " " + String.valueOf(extra));
 
         return true;
     }

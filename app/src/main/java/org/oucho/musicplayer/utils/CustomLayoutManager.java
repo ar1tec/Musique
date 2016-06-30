@@ -10,8 +10,8 @@ import android.util.DisplayMetrics;
 
 
 public class CustomLayoutManager extends LinearLayoutManager {
-    private static final float MILLISECONDS_PER_INCH = 150f;
-    private Context mContext;
+    private static final float MILLISECONDS_PER_INCH = 120f;
+    private final Context mContext;
 
     public CustomLayoutManager(Context context) {
         super(context);

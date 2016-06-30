@@ -27,9 +27,3 @@ Licence
 
 Aucune, profitez, partagez.
 
-
-## Librarie
-
-Jaudiotagger
-(Lesser General Public License)
-http://www.jthink.net/jaudiotagger

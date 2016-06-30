@@ -48,7 +48,7 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
 
         holder.vTrackNumber.setText(String.valueOf(position + 1));
 
-        if (song.getId() == GlobalVar.getCurrentSongPlay()) {
+        if (song.getId() == GlobalVar.getCurrentSongID()) {
 
             holder.vTrackNumber.setVisibility(View.INVISIBLE);
             holder.PlayView.setVisibility(View.VISIBLE);
@@ -81,7 +81,7 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
         private final TextView vTitle;
         private final TextView vTrackNumber;
 
-        ImageView PlayView;
+        final ImageView PlayView;
 
         public SongViewHolder(View itemView) {
             super(itemView);

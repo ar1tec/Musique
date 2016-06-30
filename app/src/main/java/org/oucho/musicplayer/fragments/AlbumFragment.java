@@ -105,7 +105,7 @@ public class AlbumFragment extends BaseFragment {
 
             for (int i = 0; i < listeTitre.size(); i++) {
 
-                if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongPlay())
+                if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongID())
                     mRecyclerView.smoothScrollToPosition( i );
             }
         }
@@ -259,10 +259,15 @@ public class AlbumFragment extends BaseFragment {
     };
 
     private void showMenu(final int position, View v) {
+
         PopupMenu popup = new PopupMenu(getActivity(), v);
+
         MenuInflater inflater = popup.getMenuInflater();
+
         final Song song = mAdapter.getItem(position);
+
         inflater.inflate(R.menu.song_list_item, popup.getMenu());
+
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
             @Override
@@ -284,6 +289,7 @@ public class AlbumFragment extends BaseFragment {
                 return false;
             }
         });
+
         popup.show();
     }
 
@@ -355,7 +361,7 @@ public class AlbumFragment extends BaseFragment {
 
                         for (int i = 0; i < listeTitre.size(); i++) {
 
-                            if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongPlay())
+                            if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongID())
                                 mRecyclerView.smoothScrollToPosition( i );
 
                         }

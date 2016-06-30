@@ -54,6 +54,7 @@ import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.update.AppUpdate;
 import org.oucho.musicplayer.update.Display;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
+import org.oucho.musicplayer.utils.GlobalVar;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements
     private static ScheduledFuture mTask;
     private static boolean running;
 
-    final Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
 
     private static final String updateURL = "http://oucho.free.fr/app_android/Musique/update_musique.xml";
@@ -681,6 +682,10 @@ public class MainActivity extends AppCompatActivity implements
 
         String title = mPlayerService.getSongTitle();
         String artist = mPlayerService.getArtistName();
+
+        //String title = GlobalVar.getCurrentSongTitle();
+        //String artist = GlobalVar.getCurrentSongArtist();
+
 
         if (title != null) {
             //noinspection ConstantConditions
