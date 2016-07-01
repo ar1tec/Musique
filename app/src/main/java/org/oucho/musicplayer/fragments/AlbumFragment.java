@@ -119,7 +119,12 @@ public class AlbumFragment extends BaseFragment {
 
             }
 
-            durée.setText(msToText(duréeTotal) + " minutes");
+            if (msToText(duréeTotal).equals("0") || msToText(duréeTotal).equals("1")) {
+                durée.setText(msToText(duréeTotal) + " minute");
+            } else {
+                durée.setText(msToText(duréeTotal) + " minutes");
+            }
+
         }
 
         @Override
@@ -161,8 +166,6 @@ public class AlbumFragment extends BaseFragment {
             Titre = title;
             Artiste = artist;
             Année = String.valueOf(year);
-
-
 
             String singulier = getString(R.string.title);
             String pluriel = getString(R.string.titles);
