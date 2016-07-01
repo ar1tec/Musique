@@ -31,7 +31,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/appwidget_bg" />
+        android:layout_marginRight="6dp"
+        android:layout_marginLeft="6dp"
+        android:background="@color/filet_song_album_list_item" />
 
     <ImageButton
         android:id="@+id/menu_button"
@@ -63,6 +65,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/big_content_padding"
             android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="@color/primary_text"
             android:textSize="17sp" />
 

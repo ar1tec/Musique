@@ -19,7 +19,8 @@ public class SongLoader extends BaseLoader<List<Song>> {
     private static final String[] sProjection = {MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ALBUM_ID,
-            MediaStore.Audio.Media.ARTIST_ID, MediaStore.Audio.Media.TRACK};
+            MediaStore.Audio.Media.ARTIST_ID, MediaStore.Audio.Media.TRACK,
+            MediaStore.Audio.Media.DURATION};
 
     public SongLoader(Context context) {
         super(context);
@@ -37,16 +38,14 @@ public class SongLoader extends BaseLoader<List<Song>> {
             if (idCol == -1) {
                 idCol = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
             }
-            int titleCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.TITLE);
-            int artistCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.ARTIST);
-            int albumCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.ALBUM);
-            int albumIdCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
-            int trackCol = cursor
-                    .getColumnIndex(MediaStore.Audio.Media.TRACK);
+
+            int titleCol = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
+            int artistCol = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+            int albumCol = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+            int albumIdCol = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
+            int trackCol = cursor.getColumnIndex(MediaStore.Audio.Media.TRACK);
+
+            int trackDur = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
 
             do {
                 long id = cursor.getLong(idCol);
@@ -60,8 +59,10 @@ public class SongLoader extends BaseLoader<List<Song>> {
 
                 int track = cursor.getInt(trackCol);
 
+                int duration = cursor.getInt(trackDur);
 
-                mSongList.add(new Song(id, title, artist, album, albumId, track));
+
+                mSongList.add(new Song(id, title, artist, album, albumId, track, duration));
             } while (cursor.moveToNext());
 
         }

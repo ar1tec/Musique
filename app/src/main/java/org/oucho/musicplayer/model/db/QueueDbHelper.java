@@ -27,6 +27,7 @@ public class QueueDbHelper extends SQLiteOpenHelper {
                     QueueEntry.COLUMN_NAME_ARTIST + " TEXT" + COMMA_SEP +
                     QueueEntry.COLUMN_NAME_ALBUM + " TEXT" + COMMA_SEP +
                     QueueEntry.COLUMN_NAME_TRACK_NUMBER + " INTEGER" + COMMA_SEP +
+                    QueueEntry.COLUMN_NAME_TRACK_DURATION + " INTEGER" + COMMA_SEP +
                     QueueEntry.COLUMN_NAME_ALBUM_ID + " INTEGER" + COMMA_SEP +
                     QueueEntry.COLUMN_NAME_GENRE + " TEXT" +
                     " )";
@@ -42,6 +43,7 @@ public class QueueDbHelper extends SQLiteOpenHelper {
                     QueueEntry.COLUMN_NAME_ARTIST,
                     QueueEntry.COLUMN_NAME_ALBUM,
                     QueueEntry.COLUMN_NAME_TRACK_NUMBER,
+                    QueueEntry.COLUMN_NAME_TRACK_DURATION,
                     QueueEntry.COLUMN_NAME_ALBUM_ID,
                     QueueEntry.COLUMN_NAME_GENRE,
             };
@@ -68,6 +70,7 @@ public class QueueDbHelper extends SQLiteOpenHelper {
         values.put(QueueEntry.COLUMN_NAME_ARTIST, song.getArtist());
         values.put(QueueEntry.COLUMN_NAME_ALBUM, song.getAlbum());
         values.put(QueueEntry.COLUMN_NAME_TRACK_NUMBER, song.getTrackNumber());
+        values.put(QueueEntry.COLUMN_NAME_TRACK_DURATION, song.getDuration());
         values.put(QueueEntry.COLUMN_NAME_ALBUM_ID, song.getAlbumId());
         values.put(QueueEntry.COLUMN_NAME_GENRE, song.getGenre());
 
@@ -129,6 +132,7 @@ public class QueueDbHelper extends SQLiteOpenHelper {
             int albumCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_ALBUM);
             int albumIdCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_ALBUM_ID);
             int trackCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_NUMBER);
+            int trackDur = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_DURATION);
 
             do {
                 long id = cursor.getLong(idCol);
@@ -142,8 +146,9 @@ public class QueueDbHelper extends SQLiteOpenHelper {
 
                 int track = cursor.getInt(trackCol);
 
+                int duration = cursor.getInt(trackDur);
 
-                list.add(new Song(id, title, artist, album, albumId, track));
+                list.add(new Song(id, title, artist, album, albumId, track, duration));
             } while (cursor.moveToNext());
         }
 

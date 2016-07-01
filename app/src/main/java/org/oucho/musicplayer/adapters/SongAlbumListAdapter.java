@@ -81,6 +81,7 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
         private final TextView vTitle;
         private final TextView vTrackNumber;
 
+
         final ImageView PlayView;
 
         public SongViewHolder(View itemView) {
@@ -113,7 +114,5 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
 
         }
     }
-
-
 
 }

@@ -37,6 +37,7 @@ import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 
 public class AlbumFragment extends BaseFragment {
@@ -68,6 +69,9 @@ public class AlbumFragment extends BaseFragment {
     private String Artiste = "";
     private String Année = "";
     private String nb_Morceaux = "";
+
+
+    private TextView durée;
 
     private List<Song> listeTitre;
 
@@ -103,11 +107,19 @@ public class AlbumFragment extends BaseFragment {
 
             listeTitre = songList;
 
+
+            int duréeTotal = 0;
+
             for (int i = 0; i < listeTitre.size(); i++) {
 
                 if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongID())
                     mRecyclerView.smoothScrollToPosition( i );
+
+                duréeTotal =  duréeTotal + listeTitre.get(i).getDuration();
+
             }
+
+            durée.setText(msToText(duréeTotal) + " minutes");
         }
 
         @Override
@@ -116,6 +128,9 @@ public class AlbumFragment extends BaseFragment {
         }
     };
 
+    private String msToText(int msec) {
+        return String.format(Locale.getDefault(), "%d", msec / 60000, (msec % 60000) / 1000);
+    }
 
     /* *********************************************************************************************
      * Création du fragment
@@ -146,6 +161,8 @@ public class AlbumFragment extends BaseFragment {
             Titre = title;
             Artiste = artist;
             Année = String.valueOf(year);
+
+
 
             String singulier = getString(R.string.title);
             String pluriel = getString(R.string.titles);
@@ -191,6 +208,8 @@ public class AlbumFragment extends BaseFragment {
         TextView morceaux = (TextView) rootView.findViewById(R.id.line4);
         morceaux.setText(nb_Morceaux);
 
+        durée = (TextView) rootView.findViewById(R.id.duration);
+
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
 
@@ -200,8 +219,6 @@ public class AlbumFragment extends BaseFragment {
         mAdapter.setOnItemClickListener(mOnItemClickListener);
 
         mRecyclerView.setAdapter(mAdapter);
-
-
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
 

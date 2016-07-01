@@ -10,8 +10,9 @@ public class Song {
     private final int trackNumber;
     private final long albumId;
     private String genre;
+    private final int duration;
 
-    public Song(long id, String title, String artist, String album, long albumId, int trackNumber) {
+    public Song(long id, String title, String artist, String album, long albumId, int trackNumber, int duration) {
         super();
         this.id = id;
         this.title = title == null ? MediaStore.UNKNOWN_STRING : title;
@@ -19,6 +20,7 @@ public class Song {
         this.album = album == null ? MediaStore.UNKNOWN_STRING : album;
         this.albumId = albumId;
         this.trackNumber = trackNumber;
+        this.duration = duration;
 
     }
 
@@ -48,6 +50,10 @@ public class Song {
 
     public String getGenre() {
         return genre;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 
     public void setGenre(String genre) {

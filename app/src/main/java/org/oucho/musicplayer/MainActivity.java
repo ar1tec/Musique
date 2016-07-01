@@ -54,7 +54,6 @@ import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.update.AppUpdate;
 import org.oucho.musicplayer.update.Display;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
-import org.oucho.musicplayer.utils.GlobalVar;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
@@ -82,10 +81,12 @@ public class MainActivity extends AppCompatActivity implements
     public static final String ARTIST_TRACK_COUNT = "track_count";
     public static final String SONG_ID = "song_id";
     public static final String SONG_TITLE = "song_title";
-    public static final String SONG_ARTIST = "song_artist";
     public static final String SONG_ALBUM = "song_album";
+    public static final String SONG_ARTIST = "song_artist";
     public static final String SONG_ALBUM_ID = "song_album_id";
+    public static final String SONG_DURATION = "song_duration";
     public static final String SONG_TRACK_NUMBER = "song_track_number";
+
     public static final String ACTION_REFRESH = "resfresh";
     public static final String ACTION_PLAY_SONG = "play_song";
     public static final String ACTION_SHOW_ALBUM = "show_album";
@@ -482,7 +483,9 @@ public class MainActivity extends AppCompatActivity implements
         long albumId = bundle.getLong(SONG_ALBUM_ID);
         int trackNumber = bundle.getInt(SONG_TRACK_NUMBER);
 
-        return new Song(id, title, artist, album, albumId, trackNumber);
+        int duration = bundle.getInt(SONG_DURATION);
+
+        return new Song(id, title, artist, album, albumId, trackNumber, duration);
     }
 
     public void refresh() {
