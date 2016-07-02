@@ -371,7 +371,8 @@ public class AlbumFragment extends BaseFragment {
 
             if (STATE.equals(receiveIntent)
                     && intent.getStringExtra("state").equals("prev")
-                    || intent.getStringExtra("state").equals("next")) {
+                    || intent.getStringExtra("state").equals("next")
+                    || intent.getStringExtra("state").equals("play")) {
 
 
 

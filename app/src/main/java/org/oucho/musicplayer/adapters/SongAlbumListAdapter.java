@@ -104,6 +104,7 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
             final int position = getAdapterPosition();
             triggerOnItemClickListener(position, v);
 
+            // delai pour onBindViewHolderImpl
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {

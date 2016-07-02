@@ -283,6 +283,11 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.play_pause_toggle:
                 case R.id.quick_play_pause_toggle:
                     mPlayerService.toggle();
+
+                    Intent intentPl = new Intent(intent_state);
+                    intentPl.putExtra("state", "play");
+                    sendBroadcast(intentPl);
+
                     break;
 
                 case R.id.quick_prev:
@@ -472,6 +477,7 @@ public class MainActivity extends AppCompatActivity implements
         String name = bundle.getString(ARTIST_ARTIST_NAME);
         int albumCount = bundle.getInt(ARTIST_ALBUM_COUNT);
         int trackCount = bundle.getInt(ARTIST_TRACK_COUNT);
+
         return new Artist(id, name, albumCount, trackCount);
     }
 
@@ -482,7 +488,6 @@ public class MainActivity extends AppCompatActivity implements
         String album = bundle.getString(SONG_ALBUM);
         long albumId = bundle.getLong(SONG_ALBUM_ID);
         int trackNumber = bundle.getInt(SONG_TRACK_NUMBER);
-
         int duration = bundle.getInt(SONG_DURATION);
 
         return new Song(id, title, artist, album, albumId, trackNumber, duration);
@@ -956,91 +961,51 @@ public class MainActivity extends AppCompatActivity implements
                 if (tempsMinuterie) {
 
                     if (temps1 < 1) {
-
                         mPlayerService.setVolume(0.1f);
-
                     } else if (temps1 < 2) {
-
                         mPlayerService.setVolume(0.2f);
-
                     } else if (temps1 < 3) {
-
                         mPlayerService.setVolume(0.3f);
-
                     } else if (temps1 < 4) {
-
                         mPlayerService.setVolume(0.4f);
-
                     } else if (temps1 < 5) {
-
                         mPlayerService.setVolume(0.5f);
-
                     } else if (temps1 < 6) {
-
                         mPlayerService.setVolume(0.6f);
-
                     } else if (temps1 < 7) {
-
                         mPlayerService.setVolume(0.7f);
-
                     } else if (temps1 < 8) {
-
                         mPlayerService.setVolume(0.8f);
-
                     } else if (temps1 < 9) {
-
                         mPlayerService.setVolume(0.9f);
-
                     } else if (temps1 < 10) {
-
                         mPlayerService.setVolume(1.0f);
                     }
 
                 } else {
 
-
                     if (temps2 < 6) {
-
                         mPlayerService.setVolume(0.1f);
-
                     } else if (temps2 < 12) {
-
                         mPlayerService.setVolume(0.2f);
-
                     } else if (temps2 < 18) {
-
                         mPlayerService.setVolume(0.3f);
-
                     } else if (temps2 < 24) {
-
                         mPlayerService.setVolume(0.4f);
-
                     } else if (temps2 < 30) {
-
                         mPlayerService.setVolume(0.5f);
-
                     } else if (temps2 < 36) {
-
                         mPlayerService.setVolume(0.6f);
-
                     } else if (temps2 < 42) {
-
                         mPlayerService.setVolume(0.7f);
-
                     } else if (temps2 < 48) {
-
                         mPlayerService.setVolume(0.8f);
-
                     } else if (temps2 < 54) {
-
                         mPlayerService.setVolume(0.9f);
-
                     } else if (temps2 < 60) {
-
                         mPlayerService.setVolume(1.0f);
                     }
                 }
-
             }
 
             @Override
