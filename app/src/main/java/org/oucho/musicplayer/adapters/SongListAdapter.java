@@ -16,6 +16,7 @@ import org.oucho.musicplayer.model.Song;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 
 public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
@@ -55,6 +56,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
 
         holder.vTitle.setText(song.getTitle());
         holder.vArtist.setText(song.getArtist());
+        holder.vDuration.setText("(" + msToText(song.getDuration()) + ")");
 
         //évite de charger des images dans les mauvaises vues si elles sont recyclées
         holder.vArtwork.setTag(position);
@@ -81,6 +83,8 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
 
         private final TextView vTitle;
         private final TextView vArtist;
+        private final TextView vDuration;
+
         private final ImageView vArtwork;
 
 
@@ -88,6 +92,8 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
             super(itemView);
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vArtist = (TextView) itemView.findViewById(R.id.artist);
+            vDuration = (TextView) itemView.findViewById(R.id.duration);
+
             vArtwork = (ImageView) itemView.findViewById(R.id.artwork);
             itemView.setOnClickListener(this);
 
@@ -103,5 +109,9 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
 
 
         }
+    }
+
+    private String msToText(int msec) {
+        return String.format(Locale.getDefault(), "%d:%02d", msec / 60000, (msec % 60000) / 1000);
     }
 }
