@@ -40,6 +40,7 @@ import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ArtistFragment extends BaseFragment {
 
@@ -341,12 +342,15 @@ public class ArtistFragment extends BaseFragment {
         private final TextView vTitle;
         private final TextView vArtist;
         private final ImageView vArtwork;
+        private final TextView vDuration;
 
         public SongViewHolder(View itemView) {
             super(itemView);
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vArtist = (TextView) itemView.findViewById(R.id.artist);
             vArtwork = (ImageView) itemView.findViewById(R.id.artwork);
+            vDuration = (TextView) itemView.findViewById(R.id.duration);
+
             itemView.findViewById(R.id.item_view).setOnClickListener(this);
 
             ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
@@ -406,12 +410,10 @@ public class ArtistFragment extends BaseFragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == FIRST) {
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.horizontal_recycler_view, parent, false);
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_recycler_view, parent, false);
                 return new RecyclerViewHolder(itemView);
             }
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.song_list_item, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_list_item, parent, false);
 
             return new SongViewHolder(itemView);
         }
@@ -429,7 +431,7 @@ public class ArtistFragment extends BaseFragment {
 
                 ((SongViewHolder) holder).vTitle.setText(song.getTitle());
                 ((SongViewHolder) holder).vArtist.setText(song.getArtist());
-
+                ((SongViewHolder) holder).vDuration.setText("(" + msToText(song.getDuration()) + ")");
 
                 ImageView artworkView = ((SongViewHolder) holder).vArtwork;
 
@@ -439,6 +441,8 @@ public class ArtistFragment extends BaseFragment {
                 ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), artworkView, mThumbWidth, mThumbHeight);
             }
         }
+
+
 
         public Song getItem(int position) {
             return mSongList == null ? null : mSongList.get(position);
@@ -453,6 +457,10 @@ public class ArtistFragment extends BaseFragment {
         public int getItemCount() {
             return mSongList == null ? 1 : mSongList.size() + 1;
         }
+    }
+
+    private String msToText(int msec) {
+        return String.format(Locale.getDefault(), "%d:%02d", msec / 60000, (msec % 60000) / 1000);
     }
 
 }
