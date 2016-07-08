@@ -51,8 +51,7 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.update.AppUpdate;
-import org.oucho.musicplayer.update.Display;
+import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
@@ -100,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements
     private static final int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
 
-
     private final Handler mHandler = new Handler();
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
@@ -119,8 +117,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private final Handler handler = new Handler();
 
-
-    private static final String updateURL = "http://oucho.free.fr/app_android/Musique/update_musique.xml";
 
     private static final String intent_state = "org.oucho.musicplayer.STATE";
 
@@ -163,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements
             showLibrary();
         }
 
-        updateOnStart();
+        CheckUpdate.onStart(this);
 
     }
 
@@ -191,6 +187,11 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.action_radio:
                 radio();
+                break;
+
+
+            case R.id.nav_update:
+                CheckUpdate.withInfo(this);
                 break;
 
             case R.id.action_sleep_timer:
@@ -254,18 +255,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-
-    /* **********************************************************************************************
-    * Mise à jour
-    * *********************************************************************************************/
-
-    private void updateOnStart() {
-
-        new AppUpdate(this)
-                .setUpdateXML(updateURL)
-                .setDisplay(Display.SNACKBAR)
-                .start();
-    }
 
     /* *********************************************************************************************
      * Click listener activity_main layout
@@ -691,14 +680,10 @@ public class MainActivity extends AppCompatActivity implements
         String title = mPlayerService.getSongTitle();
         String artist = mPlayerService.getArtistName();
 
-        //String title = GlobalVar.getCurrentSongTitle();
-        //String artist = GlobalVar.getCurrentSongArtist();
-
 
         if (title != null) {
             //noinspection ConstantConditions
             ((TextView) findViewById(R.id.song_title)).setText(title);
-
         }
 
         if (artist != null) {
@@ -1077,8 +1062,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onRequestPermissionsResult(
             int requestCode,
             @NonNull String permissions[],
-            @NonNull int[] grantResults)
-    {
+            @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_READ_PHONE_STATE:
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -1096,12 +1080,9 @@ public class MainActivity extends AppCompatActivity implements
 
 
     private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
                 DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_external_storage), new DialogInterface.OnClickListener() {
                     @Override
@@ -1121,11 +1102,9 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
                 DialogUtils.showPermissionDialog(this, getString(R.string.permission_write_external_storage),
                         new DialogInterface.OnClickListener() {
@@ -1144,8 +1123,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
 
@@ -1161,6 +1139,7 @@ public class MainActivity extends AppCompatActivity implements
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE);
             }
         }
+
     }
 
     public static class DialogUtils {

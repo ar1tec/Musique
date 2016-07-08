@@ -128,8 +128,6 @@ public class PlayerActivity extends AppCompatActivity
 
         mQueueView = (DragRecyclerView) findViewById(R.id.queue_view);
 
-        //mQueueView.setLayoutManager(new LinearLayoutManager(this));
-
         mQueueView.setLayoutManager(new CustomLayoutManager(this));
 
         mQueueAdapter = new QueueAdapter();
@@ -178,8 +176,7 @@ public class PlayerActivity extends AppCompatActivity
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if (fromUser
                     && mPlayerService != null
-                    && (mPlayerService.isPlaying() || mPlayerService
-                    .isPaused())) {
+                    && (mPlayerService.isPlaying() || mPlayerService.isPaused())) {
                 mPlayerService.seekTo(seekBar.getProgress());
             }
         }
@@ -302,12 +299,12 @@ public class PlayerActivity extends AppCompatActivity
                     } else {
                         mHandler.removeCallbacks(mUpdateSeekBarRunnable);
                     }
-
-
                     break;
+
                 case PlayerService.META_CHANGED:
                     updateTrackInfo();
                     break;
+
                 case PlayerService.QUEUE_CHANGED:
                 case PlayerService.POSITION_CHANGED:
                 case PlayerService.ITEM_ADDED:
@@ -315,7 +312,7 @@ public class PlayerActivity extends AppCompatActivity
                     Log.d("eee", "position_changed");
                     updateQueue();
                     break;
-                default: //do nothing
+                default:
                     break;
             }
         }
@@ -344,7 +341,7 @@ public class PlayerActivity extends AppCompatActivity
                 toggleQueue();
                 return true;
 
-            default: //do nothing
+            default:
                 break;
         }
 
@@ -446,7 +443,6 @@ public class PlayerActivity extends AppCompatActivity
                 updateSeekBar();
             }
 
-
             setQueueSelection(mPlayerService.getPositionWithinPlayList());
 
         }
@@ -542,7 +538,6 @@ public class PlayerActivity extends AppCompatActivity
         mQueueAdapter.setSelection(position);
 
         mQueueView.smoothScrollToPosition(position);
-
     }
 
 

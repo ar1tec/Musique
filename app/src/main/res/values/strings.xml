@@ -72,7 +72,8 @@
     <string name="permission">Permission</string>
     <string name="permission_read_external_storage">L\'application doit  pouvoir lire le stockage externe.</string>
     <string name="permission_write_external_storage">L\'application doit pouvoir écrire sur le stockage externe pour sauvegarder les tags.</string>
-    <string name="permission_read_phone_state">Il est recommandé (mais pas nécessaire) de donner la permission "READ_PHONE_STATE" à l\'application. Le lecteur pourrait ainsi se mettre en pause automatiquement lorsque vous recevez un appel.</string>
+    <string name="permission_read_phone_state">Il est recommandé (mais pas nécessaire) de donner la permission "READ_PHONE_STATE" à l\'application.
+        Le lecteur pourrait ainsi se mettre en pause automatiquement lorsque vous recevez un appel.</string>
 
     <string name="sort_order_entry_az">Ordre alphabétique</string>
     <string name="sort_order_entry_year">Année</string>
@@ -91,7 +92,7 @@
 
     <string name="about_message">
         \n
-        Musique 1.9.8\n
+        Musique 1.9.7\n
         \n
         Old Geek, 2016\n
         \n
@@ -125,6 +126,7 @@
     <string name="action_sleep_timer">Minuteur sommeil</string>
 
     <!-- update -->
+    <string name="update">Mise à jour</string>
 
     <string name="appupdater_update_available">Nouvelle mise à jour disponible</string>
 
