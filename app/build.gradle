@@ -9,8 +9,8 @@ android {
         applicationId "org.oucho.musicplayer"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 21
-        versionName "1.9.9"
+        versionCode 22
+        versionName "1.9.10"
         setProperty("archivesBaseName", "Musique_$versionName")
     }
 

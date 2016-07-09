@@ -198,7 +198,6 @@ public class PlayerActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // handle the preference change here
 
         if ("currentPosition".equals(key)) {
             total_track = getSizeQueue();
@@ -208,7 +207,6 @@ public class PlayerActivity extends AppCompatActivity
 
             assert actionBar != null;
             actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>"));
-
         }
     }
 
@@ -251,7 +249,7 @@ public class PlayerActivity extends AppCompatActivity
                     updateRepeatButton();
                     break;
 
-                default: //do nothing
+                default:
                     break;
             }
         }
@@ -376,7 +374,6 @@ public class PlayerActivity extends AppCompatActivity
             mServiceBound = false;
         }
         mHandler.removeCallbacks(mUpdateSeekBarRunnable);
-
     }
 
     @Override
@@ -419,20 +416,20 @@ public class PlayerActivity extends AppCompatActivity
 
             String title = mPlayerService.getSongTitle();
             String artist = mPlayerService.getArtistName();
+
             if (title != null) {
                 //noinspection ConstantConditions
                 ((TextView) findViewById(R.id.song_title)).setText(title);
-
             }
+
             if (artist != null) {
                 //noinspection ConstantConditions
                 ((TextView) findViewById(R.id.song_artist)).setText(artist);
-
             }
 
 
-                ImageView artworkView = (ImageView) findViewById(R.id.artwork);
-                ArtworkCache.getInstance().loadBitmap(mPlayerService.getAlbumId(), artworkView, mArtworkSize, mArtworkSize);
+            ImageView artworkView = (ImageView) findViewById(R.id.artwork);
+            ArtworkCache.getInstance().loadBitmap(mPlayerService.getAlbumId(), artworkView, mArtworkSize, mArtworkSize);
 
 
             int duration = mPlayerService.getTrackDuration();

@@ -85,7 +85,7 @@ public class PlayerService extends Service implements OnPreparedListener,
     private Song mCurrentSong;
 
 
-    private boolean mIsPlaying = false;
+    private static boolean mIsPlaying = false;
     private boolean mIsPaused = false;
     private boolean mHasPlaylist = false;
     private boolean mShuffle = false;
@@ -747,7 +747,7 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    public boolean isPlaying() {
+    public static boolean isPlaying() {
         return mIsPlaying;
     }
 

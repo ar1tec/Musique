@@ -25,7 +25,6 @@
         android:layout_marginTop="18dp"
         android:layout_marginLeft="15dp"
         android:src="@drawable/ic_play_list_song_album"
-        android:tint="@color/colorAccent"
         android:visibility="gone"/>
 
     <ImageView

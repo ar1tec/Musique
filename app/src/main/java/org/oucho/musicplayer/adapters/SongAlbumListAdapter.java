@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.GlobalVar;
@@ -50,8 +51,15 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
 
         if (song.getId() == GlobalVar.getCurrentSongID()) {
 
-            holder.vTrackNumber.setVisibility(View.INVISIBLE);
-            holder.PlayView.setVisibility(View.VISIBLE);
+            if (PlayerService.isPlaying()) {
+
+                holder.vTrackNumber.setVisibility(View.INVISIBLE);
+                holder.PlayView.setVisibility(View.VISIBLE);
+            } else {
+                holder.vTrackNumber.setVisibility(View.INVISIBLE);
+                holder.PlayView.setImageResource(R.drawable.ic_pause_list_song_album);
+                holder.PlayView.setVisibility(View.VISIBLE);
+            }
 
         } else {
             holder.PlayView.setVisibility(View.INVISIBLE);

@@ -995,7 +995,7 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onFinish() {
-                mPlayerService.setVolume(1.0f);
+                exit();
             }
 
         }.start();
