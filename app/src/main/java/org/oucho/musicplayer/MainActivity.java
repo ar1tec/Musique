@@ -216,19 +216,6 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-    private void exit() {
-
-        if (running)
-            annulTimer();
-
-        if (PlayerService.isPlaying())
-            mPlayerService.toggle();
-
-        killNotif();
-        clearCache();
-        finish();
-    }
-
 
     /* **************************
      * Lance l'application radio
@@ -1001,6 +988,20 @@ public class MainActivity extends AppCompatActivity implements
         }.start();
     }
 
+    private void exit() {
+
+        if (running)
+            annulTimer();
+
+        if (PlayerService.isPlaying())
+            mPlayerService.toggle();
+
+        PlayerService.setVolume(1.0f);
+
+        killNotif();
+        clearCache();
+        finish();
+    }
 
     /***********************************************************************************************
      * Touche retour
