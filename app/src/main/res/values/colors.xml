@@ -14,8 +14,6 @@
  <color name="primary_text">#212121</color>
  <color name="secondary_text">#727272</color>
 
- <color name="appwidget_bg">#CCCCCC</color>
-
  <color name="queue_view_bg">#E1000000</color>
  <color name="transparent">#00000000</color>
 
@@ -27,5 +25,6 @@
 
  <color name="filet_song_album_list_item">#e6e6e6</color>
 
+ <color name="arcColor">#cccccc</color>
 
 </resources>

@@ -40,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_delete"
-            android:tint="@color/appwidget_bg" />
+            android:tint="@color/arcColor" />
 
         <LinearLayout
             android:id="@+id/playlist_name"

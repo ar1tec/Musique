@@ -47,7 +47,7 @@
         android:padding="@dimen/small_content_padding"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_delete"
-        android:tint="@color/appwidget_bg"/>
+        android:tint="@color/arcColor"/>
 
     <LinearLayout
         android:id="@+id/song_info"

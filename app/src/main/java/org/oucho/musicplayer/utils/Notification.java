@@ -56,7 +56,7 @@ public class Notification {
         builder.setContentTitle(playerbackService.getSongTitle())
                 .setContentText(playerbackService.getArtistName());
 
-        int toggleResId = playerbackService.isPlaying() ? R.drawable.notification_pause : R.drawable.notification_play;
+        int toggleResId = PlayerService.isPlaying() ? R.drawable.notification_pause : R.drawable.notification_play;
 
         builder.addAction(R.drawable.notification_previous, "", previousIntent)
                 .addAction(toggleResId, "", togglePlayIntent)
@@ -123,7 +123,7 @@ public class Notification {
 
         android.app.Notification notification = builder.build();
 
-        boolean startForeground = playerbackService.isPlaying();
+        boolean startForeground = PlayerService.isPlaying();
         if (startForeground) {
             playerbackService.startForeground(NOTIFY_ID, notification);
         } else {

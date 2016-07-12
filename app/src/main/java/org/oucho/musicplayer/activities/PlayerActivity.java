@@ -176,7 +176,7 @@ public class PlayerActivity extends AppCompatActivity
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if (fromUser
                     && mPlayerService != null
-                    && (mPlayerService.isPlaying() || mPlayerService.isPaused())) {
+                    && (PlayerService.isPlaying() || mPlayerService.isPaused())) {
                 mPlayerService.seekTo(seekBar.getProgress());
             }
         }
@@ -189,7 +189,7 @@ public class PlayerActivity extends AppCompatActivity
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            if (mPlayerService != null && mPlayerService.isPlaying()) {
+            if (mPlayerService != null && PlayerService.isPlaying()) {
                 mHandler.post(mUpdateSeekBarRunnable);
             }
 
@@ -292,7 +292,7 @@ public class PlayerActivity extends AppCompatActivity
             switch (action) {
                 case PlayerService.PLAYSTATE_CHANGED:
                     setButtonDrawable();
-                    if (mPlayerService.isPlaying()) {
+                    if (PlayerService.isPlaying()) {
                         mHandler.post(mUpdateSeekBarRunnable);
                     } else {
                         mHandler.removeCallbacks(mUpdateSeekBarRunnable);
@@ -402,7 +402,7 @@ public class PlayerActivity extends AppCompatActivity
             updateQueue();
             updateTrackInfo();
             setButtonDrawable();
-            if (mPlayerService.isPlaying()) {
+            if (PlayerService.isPlaying()) {
                 mHandler.post(mUpdateSeekBarRunnable);
             }
             updateShuffleButton();
@@ -454,7 +454,7 @@ public class PlayerActivity extends AppCompatActivity
 
         if (mPlayerService != null) {
             ImageView button = (ImageView) findViewById(R.id.play_pause_toggle);
-            if (mPlayerService.isPlaying()) {
+            if (PlayerService.isPlaying()) {
                 assert button != null;
                 button.setImageResource(R.drawable.musicplayer_pause);
             } else {

@@ -32,8 +32,7 @@
             android:paddingLeft="@dimen/content_padding"
             android:paddingRight="@dimen/content_padding"
             android:paddingTop="15sp"
-            android:src="@drawable/ic_spinner_black_small"
-            android:tint="@color/appwidget_bg" />
+            android:src="@drawable/ic_spinner_black_small" />
 
         <LinearLayout
             android:id="@+id/album_info"

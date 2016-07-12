@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements
         if (running)
             annulTimer();
 
-        if (mPlayerService.isPlaying())
+        if (PlayerService.isPlaying())
             mPlayerService.toggle();
 
         killNotif();
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onPause() {
         super.onPause();
 
-        if (!mPlayerService.isPlaying())
+        if (!PlayerService.isPlaying())
             killNotif();
 
         if (mServiceBound) {
@@ -519,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements
 
             if (action.equals(PlayerService.PLAYSTATE_CHANGED)) {
                 setButtonDrawable();
-                if (mPlayerService.isPlaying()) {
+                if (PlayerService.isPlaying()) {
                     mHandler.post(mUpdateProgressBar);
                 } else {
                     mHandler.removeCallbacks(mUpdateProgressBar);
@@ -584,7 +584,7 @@ public class MainActivity extends AppCompatActivity implements
         if (mPlayerService != null) {
             updateTrackInfo();
             setButtonDrawable();
-            if (mPlayerService.isPlaying()) {
+            if (PlayerService.isPlaying()) {
                 mHandler.post(mUpdateProgressBar);
             }
         }
@@ -599,7 +599,7 @@ public class MainActivity extends AppCompatActivity implements
     private void setButtonDrawable() {
         if (mPlayerService != null) {
             ImageButton quickButton = (ImageButton) findViewById(R.id.quick_play_pause_toggle);
-            if (mPlayerService.isPlaying()) {
+            if (PlayerService.isPlaying()) {
                 assert quickButton != null;
                 quickButton.setImageResource(R.drawable.musicplayer_pause);
             } else {
