@@ -267,25 +267,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    private void saveSeekPos() {
-        SharedPreferences.Editor editor = mStatePrefs.edit();
-        editor.putBoolean("seekPosSaved", true);
-        editor.putInt("seekPos", mMediaPlayer.getCurrentPosition());
-        editor.apply();
-    }
-
-    private void restoreSeekPos() {
-        if (mStatePrefs.getBoolean("seekPosSaved", false)) {
-            int seekPos = mStatePrefs.getInt("seekPos", 0);
-            seekTo(seekPos);
-
-            SharedPreferences.Editor editor = mStatePrefs.edit();
-            editor.putBoolean("seekPosSaved", false);
-            editor.putInt("seekPos", 0);
-            editor.apply();
-        }
-    }
-
 
     private void setupMediaSession() {
         mMediaSession = new MediaSessionCompat(this, TAG);
@@ -371,8 +352,6 @@ public class PlayerService extends Service implements OnPreparedListener,
             mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_NONE);
         }
 
-        saveSeekPos();
-
         mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);
 
         mMediaPlayer.stop();
@@ -397,11 +376,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         if (isPlaying()) {
             return true;
         }
-
-        if(isPaused()) {
-            saveSeekPos();
-        }
-
 
         if (mPlayList.size() > 0) {
             Message msg = mDelayedStopHandler.obtainMessage();
@@ -779,7 +753,6 @@ public class PlayerService extends Service implements OnPreparedListener,
 
         }
 
-        restoreSeekPos();
         if (mPlayImmediately) {
             play();
             mPlayImmediately = false;
