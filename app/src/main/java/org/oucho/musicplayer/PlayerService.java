@@ -33,7 +33,6 @@ import android.util.Log;
 import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.GlobalVar;
 import org.oucho.musicplayer.utils.Notification;
 
 import java.io.IOException;
@@ -77,22 +76,25 @@ public class PlayerService extends Service implements OnPreparedListener,
     private static final int IDLE_DELAY = 60000;
 
     private final PlaybackBinder mBinder = new PlaybackBinder();
-    private MediaPlayer mMediaPlayer;
+    private static MediaPlayer mMediaPlayer;
+
+    private static MediaSessionCompat mMediaSession;
+
 
     private List<Song> mOriginalSongList = new ArrayList<>();
-    private final List<Song> mPlayList = new ArrayList<>();
+    private static final List<Song> mPlayList = new ArrayList<>();
 
-    private Song mCurrentSong;
+    private static Song mCurrentSong;
 
 
     private static boolean mIsPlaying = false;
-    private boolean mIsPaused = false;
-    private boolean mHasPlaylist = false;
-    private boolean mShuffle = false;
+    private static boolean mIsPaused = false;
+    private static boolean mHasPlaylist = false;
+    private static boolean mShuffle = false;
 
     private int mStartId;
 
-    private int mRepeatMode = NO_REPEAT;
+    private static int mRepeatMode = NO_REPEAT;
 
     private int mCurrentPosition;
 
@@ -186,15 +188,6 @@ public class PlayerService extends Service implements OnPreparedListener,
     };
 
 
-
-    public void setVolume(float vol) {
-
-        mMediaPlayer.setVolume(vol, vol);
-
-    }
-
-
-    private MediaSessionCompat mMediaSession;
 
 
     @Override
@@ -429,35 +422,8 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    public String getSongTitle() {
-        if (mCurrentSong != null) {
-            return mCurrentSong.getTitle();
-        }
-        return null;
-    }
 
-    public String getArtistName() {
-        if (mCurrentSong != null) {
-            return mCurrentSong.getArtist();
-        }
-        return null;
-    }
-
-    private String getAlbumName() {
-        if (mCurrentSong != null) {
-            return mCurrentSong.getAlbum();
-        }
-        return null;
-    }
-
-    public long getAlbumId() {
-        if (mCurrentSong != null) {
-            return mCurrentSong.getAlbumId();
-        }
-        return -1;
-    }
-
-    public List<Song> getPlayList() {
+    public static List<Song> getPlayList() {
         return mPlayList;
     }
 
@@ -577,21 +543,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    public boolean hasPlaylist() {
-        return mHasPlaylist;
-    }
-
-    public int getTrackDuration() {
-        return mMediaPlayer.getDuration();
-    }
-
-    public int getPlayerPosition() {
-        return mMediaPlayer.getCurrentPosition();
-    }
-
-    public void seekTo(int msec) {
-        mMediaPlayer.seekTo(msec);
-    }
 
     private int getPreviousPosition(boolean force) {
 
@@ -612,6 +563,7 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
         return position - 1;
     }
+
 
     public int getNextRepeatMode() {
         switch (mRepeatMode) {
@@ -646,16 +598,11 @@ public class PlayerService extends Service implements OnPreparedListener,
                 mIsPaused = false;
                 notifyChange(PLAYSTATE_CHANGED);
 
-                ((GlobalVar) this.getApplication()).setCurrentSongID(mCurrentSong.getId());
-                ((GlobalVar) this.getApplication()).setCurrentSongTitle(mCurrentSong.getTitle());
-                ((GlobalVar) this.getApplication()).setCurrentSongArtist(mCurrentSong.getArtist());
-
             }
 
         } catch (NullPointerException ignored) {}
 
     }
-
 
     private void pause() {
         mMediaPlayer.pause();
@@ -676,9 +623,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    public boolean isPaused() {
-        return mIsPaused;
-    }
 
     public void stop() {
         mMediaPlayer.stop();
@@ -698,20 +642,8 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    public int getRepeatMode() {
-        return mRepeatMode;
-    }
 
-    public void setRepeatMode(int mode) {
-        mRepeatMode = mode;
 
-        notifyChange(REPEAT_MODE_CHANGED);
-
-    }
-
-    public boolean isShuffleEnabled() {
-        return mShuffle;
-    }
 
     public void setShuffleEnabled(boolean enable) {
 
@@ -747,9 +679,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    public static boolean isPlaying() {
-        return mIsPlaying;
-    }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
@@ -759,7 +688,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         if (mCurrentPosition+1 == mPlayList.size()) {
             fin();
         }
-
     }
 
     private void fin() {
@@ -832,9 +760,6 @@ public class PlayerService extends Service implements OnPreparedListener,
         }
     }
 
-    public int getPositionWithinPlayList() {
-        return mPlayList.indexOf(mCurrentSong);
-    }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -867,7 +792,90 @@ public class PlayerService extends Service implements OnPreparedListener,
         startActivity(dialogIntent);
     }
 
-    public MediaSessionCompat getMediaSession() {
+
+    public static void seekTo(int msec) {
+        mMediaPlayer.seekTo(msec);
+    }
+
+    public static boolean isPlaying() {
+        return mIsPlaying;
+    }
+
+
+    public static boolean isPaused() {
+        return mIsPaused;
+    }
+
+    public static boolean hasPlaylist() {
+        return mHasPlaylist;
+    }
+
+    public static boolean isShuffleEnabled() {
+        return mShuffle;
+    }
+
+    public static void setVolume(float vol) {
+        mMediaPlayer.setVolume(vol, vol);
+    }
+
+    public void setRepeatMode(int mode) {
+        mRepeatMode = mode;
+        notifyChange(REPEAT_MODE_CHANGED);
+    }
+
+    public static int getRepeatMode() {
+        return mRepeatMode;
+    }
+
+
+    public static String getSongTitle() {
+        if (mCurrentSong != null) {
+            return mCurrentSong.getTitle();
+        }
+        return null;
+    }
+
+    public static String getArtistName() {
+        if (mCurrentSong != null) {
+            return mCurrentSong.getArtist();
+        }
+        return null;
+    }
+
+    private static String getAlbumName() {
+        if (mCurrentSong != null) {
+            return mCurrentSong.getAlbum();
+        }
+        return null;
+    }
+
+    public static long getAlbumId() {
+        if (mCurrentSong != null) {
+            return mCurrentSong.getAlbumId();
+        }
+        return -1;
+    }
+
+    public static long getSongID() {
+        if (mCurrentSong != null) {
+            return mCurrentSong.getId();
+        }
+        return -1;
+    }
+
+    public static int getTrackDuration() {
+        return mMediaPlayer.getDuration();
+    }
+
+    public static int getPlayerPosition() {
+        return mMediaPlayer.getCurrentPosition();
+    }
+
+    public static int getPositionWithinPlayList() {
+        return mPlayList.indexOf(mCurrentSong);
+    }
+
+    public static MediaSessionCompat getMediaSession() {
         return mMediaSession;
     }
 

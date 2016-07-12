@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
+import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
@@ -32,7 +33,6 @@ import org.oucho.musicplayer.loaders.SongLoader;
 import org.oucho.musicplayer.model.Album;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.GlobalVar;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 
@@ -112,7 +112,7 @@ public class AlbumFragment extends BaseFragment {
 
             for (int i = 0; i < listeTitre.size(); i++) {
 
-                if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongID())
+                if (listeTitre.get(i).getId() == PlayerService.getSongID())
                     mRecyclerView.smoothScrollToPosition( i );
 
                 duréeTotal =  duréeTotal + listeTitre.get(i).getDuration();
@@ -382,7 +382,7 @@ public class AlbumFragment extends BaseFragment {
 
                         for (int i = 0; i < listeTitre.size(); i++) {
 
-                            if (listeTitre.get(i).getId() == GlobalVar.getCurrentSongID())
+                            if (listeTitre.get(i).getId() == PlayerService.getSongID())
                                 mRecyclerView.smoothScrollToPosition( i );
 
                         }

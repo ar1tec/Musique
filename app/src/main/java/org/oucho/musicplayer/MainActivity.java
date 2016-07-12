@@ -677,8 +677,8 @@ public class MainActivity extends AppCompatActivity implements
     @SuppressLint("PrivateResource")
     private void updateTrackInfo() {
 
-        String title = mPlayerService.getSongTitle();
-        String artist = mPlayerService.getArtistName();
+        String title = PlayerService.getSongTitle();
+        String artist = PlayerService.getArtistName();
 
 
         if (title != null) {
@@ -691,7 +691,7 @@ public class MainActivity extends AppCompatActivity implements
             ((TextView) findViewById(R.id.song_artist)).setText(artist);
         }
 
-        int duration = mPlayerService.getTrackDuration();
+        int duration = PlayerService.getTrackDuration();
 
         if (duration != -1) {
             mProgressBar.setMax(duration);
@@ -709,7 +709,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void updateProgressBar() {
         if (mPlayerService != null) {
-            int position = mPlayerService.getPlayerPosition();
+            int position = PlayerService.getPlayerPosition();
             mProgressBar.setProgress(position);
         }
     }
@@ -900,7 +900,7 @@ public class MainActivity extends AppCompatActivity implements
             mTask.cancel(true);
 
             minuteurVolume.cancel();
-            mPlayerService.setVolume(1.0f);
+            PlayerService.setVolume(1.0f);
         }
 
         running = false;
@@ -946,49 +946,49 @@ public class MainActivity extends AppCompatActivity implements
                 if (tempsMinuterie) {
 
                     if (temps1 < 1) {
-                        mPlayerService.setVolume(0.1f);
+                        PlayerService.setVolume(0.1f);
                     } else if (temps1 < 2) {
-                        mPlayerService.setVolume(0.2f);
+                        PlayerService.setVolume(0.2f);
                     } else if (temps1 < 3) {
-                        mPlayerService.setVolume(0.3f);
+                        PlayerService.setVolume(0.3f);
                     } else if (temps1 < 4) {
-                        mPlayerService.setVolume(0.4f);
+                        PlayerService.setVolume(0.4f);
                     } else if (temps1 < 5) {
-                        mPlayerService.setVolume(0.5f);
+                        PlayerService.setVolume(0.5f);
                     } else if (temps1 < 6) {
-                        mPlayerService.setVolume(0.6f);
+                        PlayerService.setVolume(0.6f);
                     } else if (temps1 < 7) {
-                        mPlayerService.setVolume(0.7f);
+                        PlayerService.setVolume(0.7f);
                     } else if (temps1 < 8) {
-                        mPlayerService.setVolume(0.8f);
+                        PlayerService.setVolume(0.8f);
                     } else if (temps1 < 9) {
-                        mPlayerService.setVolume(0.9f);
+                        PlayerService.setVolume(0.9f);
                     } else if (temps1 < 10) {
-                        mPlayerService.setVolume(1.0f);
+                        PlayerService.setVolume(1.0f);
                     }
 
                 } else {
 
                     if (temps2 < 6) {
-                        mPlayerService.setVolume(0.1f);
+                        PlayerService.setVolume(0.1f);
                     } else if (temps2 < 12) {
-                        mPlayerService.setVolume(0.2f);
+                        PlayerService.setVolume(0.2f);
                     } else if (temps2 < 18) {
-                        mPlayerService.setVolume(0.3f);
+                        PlayerService.setVolume(0.3f);
                     } else if (temps2 < 24) {
-                        mPlayerService.setVolume(0.4f);
+                        PlayerService.setVolume(0.4f);
                     } else if (temps2 < 30) {
-                        mPlayerService.setVolume(0.5f);
+                        PlayerService.setVolume(0.5f);
                     } else if (temps2 < 36) {
-                        mPlayerService.setVolume(0.6f);
+                        PlayerService.setVolume(0.6f);
                     } else if (temps2 < 42) {
-                        mPlayerService.setVolume(0.7f);
+                        PlayerService.setVolume(0.7f);
                     } else if (temps2 < 48) {
-                        mPlayerService.setVolume(0.8f);
+                        PlayerService.setVolume(0.8f);
                     } else if (temps2 < 54) {
-                        mPlayerService.setVolume(0.9f);
+                        PlayerService.setVolume(0.9f);
                     } else if (temps2 < 60) {
-                        mPlayerService.setVolume(1.0f);
+                        PlayerService.setVolume(1.0f);
                     }
                 }
             }

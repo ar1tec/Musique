@@ -32,7 +32,7 @@ public class Notification {
 
     public static void updateNotification(@NonNull final PlayerService playerbackService) {
 
-        if (!playerbackService.hasPlaylist()) {
+        if (!PlayerService.hasPlaylist()) {
             removeNotification(playerbackService);
             return; // no need to go further since there is nothing to display
         }
@@ -53,8 +53,8 @@ public class Notification {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(playerbackService);
 
 
-        builder.setContentTitle(playerbackService.getSongTitle())
-                .setContentText(playerbackService.getArtistName());
+        builder.setContentTitle(PlayerService.getSongTitle())
+                .setContentText(PlayerService.getArtistName());
 
         int toggleResId = PlayerService.isPlaying() ? R.drawable.notification_pause : R.drawable.notification_play;
 
@@ -91,12 +91,12 @@ public class Notification {
         final int width = (int) res.getDimension(R.dimen.notification_large_icon_width);
 
         ArtworkCache artworkCache = ArtworkCache.getInstance();
-        Bitmap b = artworkCache.getCachedBitmap(playerbackService.getAlbumId(), width, height);
+        Bitmap b = artworkCache.getCachedBitmap(PlayerService.getAlbumId(), width, height);
         if (b != null) {
             setBitmapAndBuild(b, playerbackService, builder);
 
         } else {
-            ArtworkCache.getInstance().loadBitmap(playerbackService.getAlbumId(), width, height, new BitmapCache.Callback() {
+            ArtworkCache.getInstance().loadBitmap(PlayerService.getAlbumId(), width, height, new BitmapCache.Callback() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap) {
                     setBitmapAndBuild(bitmap, playerbackService, builder);
@@ -117,7 +117,7 @@ public class Notification {
 
 
         builder.setStyle(new NotificationCompat.MediaStyle()
-                .setMediaSession(playerbackService.getMediaSession().getSessionToken())
+                .setMediaSession(PlayerService.getMediaSession().getSessionToken())
                 .setShowActionsInCompactView(0, 1, 2));
 
 

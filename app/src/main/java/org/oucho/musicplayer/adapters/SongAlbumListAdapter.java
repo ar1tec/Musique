@@ -12,7 +12,6 @@ import android.widget.TextView;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.utils.GlobalVar;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +48,7 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
 
         holder.vTrackNumber.setText(String.valueOf(position + 1));
 
-        if (song.getId() == GlobalVar.getCurrentSongID()) {
+        if (song.getId() == PlayerService.getSongID()) {
 
             if (PlayerService.isPlaying()) {
 
