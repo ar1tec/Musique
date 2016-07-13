@@ -14,11 +14,6 @@
             android:icon="@drawable/ic_sleep_timer"
             android:title="@string/action_sleep_timer" />
 
-        <item
-            android:id="@+id/action_radio"
-            android:icon="@drawable/ic_radio"
-            android:title="@string/radio" />
-
     </group>
 
     <group android:id="@+id/menu_bottom">

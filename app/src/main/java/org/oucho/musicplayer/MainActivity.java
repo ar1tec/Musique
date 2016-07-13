@@ -185,11 +185,6 @@ public class MainActivity extends AppCompatActivity implements
                 NavigationUtils.showEqualizer(MainActivity.this);
                 break;
 
-            case R.id.action_radio:
-                radio();
-                break;
-
-
             case R.id.nav_update:
                 CheckUpdate.withInfo(this);
                 break;
@@ -214,21 +209,6 @@ public class MainActivity extends AppCompatActivity implements
                 break;
         }
         return true;
-    }
-
-
-    /* **************************
-     * Lance l'application radio
-     * **************************/
-
-    private void radio() {
-
-        Context context = getApplicationContext();
-
-        PackageManager pm = context.getPackageManager();
-        Intent appStartIntent = pm.getLaunchIntentForPackage("org.oucho.radio2");
-        context.startActivity(appStartIntent);
-        killNotif();
     }
 
 
