@@ -10,7 +10,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 22
-        versionName "1.9.10"
+        versionName "1.9.11"
         setProperty("archivesBaseName", "Musique_$versionName")
     }
 

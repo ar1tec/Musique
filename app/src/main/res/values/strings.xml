@@ -4,7 +4,7 @@
     <string name="app_name">Musique</string>
 
     <!-- nav header activity main -->
-    <string name="by">Old Geek, juillet 2016</string>
+    <string name="by">Old Geek, août 2016</string>
 
     <string name="album">Album</string>
 
@@ -92,7 +92,7 @@
 
     <string name="about_message">
         \n
-        Musique 1.9.10\n
+        Musique 1.9.11\n
         \n
         Old Geek, 2016\n
         \n
