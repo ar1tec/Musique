@@ -30,7 +30,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -1049,16 +1048,12 @@ public class MainActivity extends AppCompatActivity implements
 
             case PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
 
-                Log.d("onRequest", "PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE");
-
                 refresh();
-
 
                 break;
 
             case PERMISSIONS_REQUEST_READ_PHONE_STATE:
 
-                Log.d("onRequest", "PERMISSIONS_REQUEST_READ_PHONE_STATE");
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(PlayerService.PREF_AUTO_PAUSE, true);
@@ -1066,6 +1061,7 @@ public class MainActivity extends AppCompatActivity implements
                     mPlayerService.setAutoPauseEnabled();
                 }
                 editor.apply();
+
                 break;
             default: //do nothing
                 break;

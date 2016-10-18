@@ -39,9 +39,6 @@ import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.List;
 
-import static android.text.Html.FROM_HTML_OPTION_USE_CSS_COLORS;
-
-
 public class AlbumListFragment extends BaseFragment {
 
     private AlbumListAdapter mAdapter;
