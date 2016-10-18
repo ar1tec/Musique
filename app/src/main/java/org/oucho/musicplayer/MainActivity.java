@@ -30,6 +30,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -159,9 +160,11 @@ public class MainActivity extends AppCompatActivity implements
             showLibrary();
         }
 
+//        refresh();
         CheckUpdate.onStart(this);
 
     }
+
 
     /* *********************************************************************************************
      * Navigation Drawer
@@ -1040,12 +1043,22 @@ public class MainActivity extends AppCompatActivity implements
     * *********************************************************************************************/
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode,
-            @NonNull String permissions[],
-            @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+
         switch (requestCode) {
+
+            case PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+
+                Log.d("onRequest", "PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE");
+
+                refresh();
+
+
+                break;
+
             case PERMISSIONS_REQUEST_READ_PHONE_STATE:
+
+                Log.d("onRequest", "PERMISSIONS_REQUEST_READ_PHONE_STATE");
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(PlayerService.PREF_AUTO_PAUSE, true);
@@ -1061,27 +1074,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
     private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-                DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_external_storage), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(MainActivity.this,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    }
-                });
-
-            } else {
-
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-            }
-        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -1103,6 +1096,7 @@ public class MainActivity extends AppCompatActivity implements
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
             }
         }
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
 

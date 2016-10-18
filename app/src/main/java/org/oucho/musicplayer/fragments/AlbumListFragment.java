@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -38,6 +39,8 @@ import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.List;
 
+import static android.text.Html.FROM_HTML_OPTION_USE_CSS_COLORS;
+
 
 public class AlbumListFragment extends BaseFragment {
 
@@ -51,6 +54,8 @@ public class AlbumListFragment extends BaseFragment {
 
     private String titre;
     private String tri;
+
+    private boolean run = false;
 
     private final LoaderManager.LoaderCallbacks<List<Album>> mLoaderCallbacks = new LoaderCallbacks<List<Album>>() {
 
@@ -294,12 +299,30 @@ public class AlbumListFragment extends BaseFragment {
     }
 
 
+
     @Override
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
 
-        if (visible || isResumed())
-            getActivity().setTitle(Html.fromHtml("<font>" + titre + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
+        if (visible || isResumed()) {
+
+            // délai affichage lors du premier chargement nom appli --> tri actuel
+            if (run) {
+                getActivity().setTitle(Html.fromHtml("<font>" + titre + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
+            } else {
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        // Actions to do after xx seconds
+                        getActivity().setTitle(Html.fromHtml("<font>" + titre + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
+                    }
+                }, 1000);
+
+                run = true;
+            }
+
+        }
     }
 
 }
