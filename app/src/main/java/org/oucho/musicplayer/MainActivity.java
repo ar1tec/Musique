@@ -452,6 +452,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void refresh() {
+
         for (Fragment f : getSupportFragmentManager().getFragments()) {
             if (f != null) {
                 ((BaseFragment) f).load();
