@@ -4,6 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -26,6 +29,7 @@ import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
+import org.oucho.musicplayer.colorArt.ColorArt;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
@@ -35,6 +39,7 @@ import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
+
 
 import java.util.List;
 import java.util.Locale;
@@ -198,21 +203,39 @@ public class AlbumFragment extends BaseFragment {
         //noinspection ConstantConditions
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
+
+        ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
+
+        // recuperation du artwork pour analyser la couleur
+        ColorArt colorArt = new ColorArt(ArtworkCache.getInstance().getCachedBitmap(mAlbum.getId(), mArtworkWidth, mArtworkHeight));
+
+
+        View fond = (View) rootView.findViewById(R.id.fondAlbum);
+        fond.setBackgroundColor(colorArt.getBackgroundColor());
+
 
         TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
         titreAlbum.setText(Titre);
+        titreAlbum.setTextColor(colorArt.getPrimaryColor());
 
         TextView artiste = (TextView) rootView.findViewById(R.id.line2);
         artiste.setText(Artiste);
+        artiste.setTextColor(colorArt.getSecondaryColor());
+
 
         TextView an = (TextView) rootView.findViewById(R.id.line3);
         an.setText(Année);
+        an.setTextColor(colorArt.getDetailColor());
+
 
         TextView morceaux = (TextView) rootView.findViewById(R.id.line4);
         morceaux.setText(nb_Morceaux);
+        morceaux.setTextColor(colorArt.getSecondaryColor());
+
 
         durée = (TextView) rootView.findViewById(R.id.duration);
-
+        durée.setTextColor(colorArt.getSecondaryColor());
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
 
@@ -223,9 +246,8 @@ public class AlbumFragment extends BaseFragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-        ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
 
-        ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
+
 
         return rootView;
     }
