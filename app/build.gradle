@@ -7,6 +7,8 @@ android {
 
     defaultConfig {
         applicationId "org.oucho.musicplayer"
+        renderscriptTargetApi 25
+        renderscriptSupportModeEnabled true
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 25

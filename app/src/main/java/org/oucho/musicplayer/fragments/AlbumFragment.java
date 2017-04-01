@@ -1,12 +1,10 @@
 package org.oucho.musicplayer.fragments;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -16,11 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -199,9 +200,13 @@ public class AlbumFragment extends BaseFragment {
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
+        //activity.setSupportActionBar(toolbar);
         //noinspection ConstantConditions
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        activity.getSupportActionBar().hide();
+
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
 
@@ -211,8 +216,10 @@ public class AlbumFragment extends BaseFragment {
         ColorArt colorArt = new ColorArt(ArtworkCache.getInstance().getCachedBitmap(mAlbum.getId(), mArtworkWidth, mArtworkHeight));
 
 
-        View fond = (View) rootView.findViewById(R.id.fondAlbum);
+        View fond = rootView.findViewById(R.id.fondAlbum);
         fond.setBackgroundColor(colorArt.getBackgroundColor());
+
+        setStatusBarColor(colorArt.getBackgroundColor());
 
 
         TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
@@ -246,11 +253,34 @@ public class AlbumFragment extends BaseFragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-
-
-
         return rootView;
     }
+
+
+    // Changer la couleur de la statusbar
+    public void setStatusBarColor(int color){
+
+            Window window = getActivity().getWindow();
+
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+            window.setStatusBarColor(assombrir(color));
+    }
+
+    public int crimp(int c) {
+        return Math.min(Math.max(c, 0), 255);
+    }
+
+    public int assombrir(int color) {
+        double factor = 0.7;
+        return (color & 0xFF000000) |
+                (crimp((int) (((color >> 16) & 0xFF) * factor)) << 16) |
+                (crimp((int) (((color >> 8) & 0xFF) * factor)) << 8) |
+                (crimp((int) (((color) & 0xFF) * factor)));
+    }
+
+
 
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
         @Override

@@ -27,4 +27,7 @@
 
  <color name="arcColor">#cccccc</color>
 
+ <color name="colorOverlay">#c8ffffff</color>
+
+
 </resources>

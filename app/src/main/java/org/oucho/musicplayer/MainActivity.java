@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -36,11 +37,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.audiofx.AudioEffects;
+import org.oucho.musicplayer.blurview.BlurView;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.fragments.AlbumFragment;
 import org.oucho.musicplayer.fragments.ArtistFragment;
@@ -103,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
 
+    private BlurView bottomBlurView;
+
     private Intent mOnActivityResultIntent;
 
     private PlayerService mPlayerService;
@@ -150,6 +155,8 @@ public class MainActivity extends AppCompatActivity implements
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        bottomBlurView = (BlurView) findViewById(R.id.bottomBlurView);
+
         PrefUtils.init(this);
         ArtworkCache.init(this);
         ArtistImageCache.init(this);
@@ -159,10 +166,12 @@ public class MainActivity extends AppCompatActivity implements
             showLibrary();
         }
 
+        setupBlurView();
 //        refresh();
         CheckUpdate.onStart(this);
 
     }
+
 
 
     /* *********************************************************************************************
@@ -565,6 +574,20 @@ public class MainActivity extends AppCompatActivity implements
     /***********************************************************************************************
      * Barre de lecture
      **********************************************************************************************/
+
+    private void setupBlurView() {
+        final float radius = 5f;
+
+        //set background, if your root layout doesn't have one
+        final Drawable windowBackground = getWindow().getDecorView().getBackground();
+
+
+        /// mDrawerLayout pour indiquer la racine du layout
+        final BlurView.ControllerSettings bottomViewSettings = bottomBlurView.setupWith(mDrawerLayout)
+                .windowBackground(windowBackground)
+                .blurRadius(radius);
+
+    }
 
     private void setButtonDrawable() {
         if (mPlayerService != null) {
