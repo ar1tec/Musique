@@ -8,13 +8,16 @@
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false" />
+        android:paddingBottom="@dimen/barre_lecture"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay" />
 
     <org.oucho.musicplayer.widgets.FastScroller
         android:id="@+id/fastscroller"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingRight="10dp"
-        android:paddingTop="10dp" />
+        android:paddingTop="10dp"
+        android:layout_marginBottom="@dimen/barre_lecture" />
 
 </FrameLayout>

@@ -1,27 +1,24 @@
 package org.oucho.musicplayer.fragments;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +27,7 @@ import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
-import org.oucho.musicplayer.colorArt.ColorArt;
+import org.oucho.musicplayer.blurview.BlurView;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
@@ -40,6 +37,7 @@ import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
+import org.oucho.musicplayer.widgets.FastScroller;
 
 
 import java.util.List;
@@ -81,7 +79,12 @@ public class AlbumFragment extends BaseFragment {
 
     private List<Song> listeTitre;
 
+    private BlurView fondBlurView;
+    private FrameLayout mLayout;
+
+
     private Context context;
+
 
     public static AlbumFragment newInstance(Album album) {
         AlbumFragment fragment = new AlbumFragment();
@@ -198,51 +201,38 @@ public class AlbumFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_album, container, false);
 
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        //Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        //AppCompatActivity activity = (AppCompatActivity) getActivity();
         //activity.setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        activity.getSupportActionBar().hide();
+        //activity.getSupportActionBar().hide();
+
+        fondBlurView = (BlurView) rootView.findViewById(R.id.fondBlurView);
+
+        mLayout = (FrameLayout) rootView.findViewById(R.id.fragment_album_layout);
 
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
 
         ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
 
-        // recuperation du artwork pour analyser la couleur
-        ColorArt colorArt = new ColorArt(ArtworkCache.getInstance().getCachedBitmap(mAlbum.getId(), mArtworkWidth, mArtworkHeight));
-
-
-        View fond = rootView.findViewById(R.id.fondAlbum);
-        fond.setBackgroundColor(colorArt.getBackgroundColor());
-
-        setStatusBarColor(colorArt.getBackgroundColor());
-
 
         TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
         titreAlbum.setText(Titre);
-        titreAlbum.setTextColor(colorArt.getPrimaryColor());
 
         TextView artiste = (TextView) rootView.findViewById(R.id.line2);
         artiste.setText(Artiste);
-        artiste.setTextColor(colorArt.getSecondaryColor());
-
 
         TextView an = (TextView) rootView.findViewById(R.id.line3);
         an.setText(Année);
-        an.setTextColor(colorArt.getDetailColor());
-
 
         TextView morceaux = (TextView) rootView.findViewById(R.id.line4);
         morceaux.setText(nb_Morceaux);
-        morceaux.setTextColor(colorArt.getSecondaryColor());
-
 
         durée = (TextView) rootView.findViewById(R.id.duration);
-        durée.setTextColor(colorArt.getSecondaryColor());
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
 
@@ -253,33 +243,29 @@ public class AlbumFragment extends BaseFragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
+        FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
+        mFastScroller.setRecyclerView(mRecyclerView);
+
+        setupBlurView(rootView);
+
         return rootView;
     }
 
 
-    // Changer la couleur de la statusbar
-    public void setStatusBarColor(int color){
 
-            Window window = getActivity().getWindow();
+    private void setupBlurView(View rootview) {
+        final float radius = 3f;
 
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //set background, if your root layout doesn't have one
+        final Drawable windowBackground = rootview.getBackground();
 
-            window.setStatusBarColor(assombrir(color));
+
+        /// mDrawerLayout pour indiquer la racine du layout
+        final BlurView.ControllerSettings bottomViewSettings = fondBlurView.setupWith(mLayout)
+                .windowBackground(windowBackground)
+                .blurRadius(radius);
+
     }
-
-    public int crimp(int c) {
-        return Math.min(Math.max(c, 0), 255);
-    }
-
-    public int assombrir(int color) {
-        double factor = 0.7;
-        return (color & 0xFF000000) |
-                (crimp((int) (((color >> 16) & 0xFF) * factor)) << 16) |
-                (crimp((int) (((color >> 8) & 0xFF) * factor)) << 8) |
-                (crimp((int) (((color) & 0xFF) * factor)));
-    }
-
 
 
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {

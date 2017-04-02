@@ -28,7 +28,7 @@
     <dimen name="album_grid_item_width">200dp</dimen>
 
 
-    <dimen name="fragment_album_size">200dp</dimen>
+    <dimen name="fragment_album_size">150dp</dimen>
 
     <dimen name="artist_image_req_width">200dp</dimen>
     <dimen name="artist_image_req_height">200dp</dimen>

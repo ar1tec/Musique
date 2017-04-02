@@ -47,7 +47,7 @@
             android:paddingLeft="@dimen/content_padding"
             android:paddingRight="@dimen/content_padding"
             android:paddingTop="@dimen/small_content_padding"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/primary_text"
             android:textSize="14sp" />
 

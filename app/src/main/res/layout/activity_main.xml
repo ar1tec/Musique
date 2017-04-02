@@ -4,134 +4,46 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@color/blanc">
 
-    <RelativeLayout
+<!--    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context="org.oucho.musicplayer.MainActivity">
 
-        <org.oucho.musicplayer.blurview.BlurView
-            android:id="@+id/bottomBlurView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/barre_lecture"
-            android:elevation="8dp"
-            android:outlineProvider="bounds"
-            app:blurOverlayColor="@color/colorOverlay"
-            android:layout_alignParentBottom="true"
-            tools:targetApi="lollipop">
 
-            <RelativeLayout
-                android:id="@+id/track_info"
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/barre_lecture"
-                android:background="@android:color/transparent"
-                android:visibility="visible"
-                android:clipToPadding="false">
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay"
+                app:elevation="14dp" >
 
-
-
-                <org.oucho.musicplayer.widgets.ProgressBar
-                    android:id="@+id/progress_bar"
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_alignParentTop="true"
-                    android:padding="0dp"
-                    app:progressColor="@color/colorAccent" />
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:baselineAligned="false">
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:padding="@dimen/content_padding">
+            </android.support.design.widget.AppBarLayout>-->
 
 
-                        <TextView
-                            android:id="@+id/song_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerVertical="true"
-                            android:ellipsize="end"
-                            android:paddingLeft="4dp"
-                            android:singleLine="true"
-                            android:text="Titre"
-                            android:textColor="@android:color/black"
-                            android:textSize="17sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/song_artist"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/song_title"
-                            android:layout_centerVertical="true"
-                            android:layout_marginTop="2dp"
-                            android:ellipsize="end"
-                            android:paddingLeft="4dp"
-                            android:singleLine="true"
-                            android:text="Artiste"
-                            android:textColor="?attr/controlsTint"
-                            android:textSize="15sp" />
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:id="@+id/quick_prev"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/prev"
-                            android:scaleType="center"
-                            android:src="@drawable/musicplayer_previous"
-                            android:tint="@color/colorAccent" />
-
-                        <ImageButton
-                            android:id="@+id/quick_play_pause_toggle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="12dp"
-                            android:layout_marginStart="12dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/play"
-                            android:scaleType="center"
-                            android:src="@drawable/musicplayer_play"
-                            android:tint="@color/colorAccent" />
-
-                        <ImageButton
-                            android:id="@+id/quick_next"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/next"
-                            android:scaleType="center"
-                            android:src="@drawable/musicplayer_next"
-                            android:tint="@color/colorAccent" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </org.oucho.musicplayer.blurview.BlurView>
-
-
-        <FrameLayout
-            android:id="@+id/container"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
 
-    </RelativeLayout>
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
+            <include layout="@layout/content_main" />
 
+        </RelativeLayout>
+
+<!--    </android.support.design.widget.CoordinatorLayout>-->
 
 
     <android.support.design.widget.NavigationView
@@ -143,6 +55,5 @@
         app:headerLayout="@layout/navigation_header"
         app:menu="@menu/navigation"
         app:itemTextColor="@color/vert" />
-
 
 </android.support.v4.widget.DrawerLayout>

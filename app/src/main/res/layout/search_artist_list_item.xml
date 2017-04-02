@@ -42,7 +42,7 @@
             android:ellipsize="end"
             android:gravity="bottom"
             android:paddingLeft="@dimen/big_content_padding"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
@@ -53,7 +53,7 @@
             android:layout_weight="1"
             android:gravity="top"
             android:paddingLeft="@dimen/big_content_padding"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/secondary_text"
             android:textSize="14sp" />
 

@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -37,7 +38,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +68,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import static org.oucho.musicplayer.R.id.drawer_layout;
 
 public class MainActivity extends AppCompatActivity implements
         OnNavigationItemSelectedListener {
@@ -122,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private final Handler handler = new Handler();
 
-
     private static final String intent_state = "org.oucho.musicplayer.STATE";
 
     /* *********************************************************************************************
@@ -135,6 +136,14 @@ public class MainActivity extends AppCompatActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            // only for gingerbread and newer versions
+            getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
+
+            getWindow().setStatusBarColor(getResources().getColor(R.color.blanc));
+        }
 
         checkPermissions();
 
@@ -149,12 +158,13 @@ public class MainActivity extends AppCompatActivity implements
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(drawer_layout);
 
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        //upBlurView = (BlurView) findViewById(R.id.upBlurView);
         bottomBlurView = (BlurView) findViewById(R.id.bottomBlurView);
 
         PrefUtils.init(this);
@@ -173,6 +183,23 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
+    private void setupBlurView() {
+        final float radius = 5f;
+
+        //set background, if your root layout doesn't have one
+        final Drawable windowBackground = getWindow().getDecorView().getBackground();
+
+
+        /// mDrawerLayout pour indiquer la racine du layout
+        final BlurView.ControllerSettings bottomViewSettings = bottomBlurView.setupWith(mDrawerLayout)
+                .windowBackground(windowBackground)
+                .blurRadius(radius);
+
+/*        final BlurView.ControllerSettings upViewSettings = upBlurView.setupWith(mDrawerLayout)
+                .windowBackground(windowBackground)
+                .blurRadius(radius);*/
+
+    }
 
     /* *********************************************************************************************
      * Navigation Drawer
@@ -575,19 +602,7 @@ public class MainActivity extends AppCompatActivity implements
      * Barre de lecture
      **********************************************************************************************/
 
-    private void setupBlurView() {
-        final float radius = 5f;
 
-        //set background, if your root layout doesn't have one
-        final Drawable windowBackground = getWindow().getDecorView().getBackground();
-
-
-        /// mDrawerLayout pour indiquer la racine du layout
-        final BlurView.ControllerSettings bottomViewSettings = bottomBlurView.setupWith(mDrawerLayout)
-                .windowBackground(windowBackground)
-                .blurRadius(radius);
-
-    }
 
     private void setButtonDrawable() {
         if (mPlayerService != null) {
@@ -681,7 +696,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (artist != null) {
             //noinspection ConstantConditions
-            ((TextView) findViewById(R.id.song_artist)).setText(artist);
+            ((TextView) findViewById(R.id.song_artist)).setText(artist + ", "  + PlayerService.getAlbumName());
         }
 
         int duration = PlayerService.getTrackDuration();
@@ -1016,7 +1031,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(drawer_layout);
         assert drawer != null;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);

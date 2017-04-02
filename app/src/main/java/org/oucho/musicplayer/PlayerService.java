@@ -815,7 +815,7 @@ public class PlayerService extends Service implements OnPreparedListener,
         return null;
     }
 
-    private static String getAlbumName() {
+    public static String getAlbumName() {
         if (mCurrentSong != null) {
             return mCurrentSong.getAlbum();
         }

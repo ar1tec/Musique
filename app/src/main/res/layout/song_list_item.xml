@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:paddingLeft="@dimen/big_content_padding"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
             android:text="Titre"/>
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:paddingLeft="@dimen/big_content_padding"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/secondary_text"
             android:textSize="14sp"
             android:text="Artiste"/>
@@ -83,7 +83,7 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:paddingLeft="@dimen/big_content_padding"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/primary_text"
             android:textSize="12sp"
             android:text="(Durée)"/>
