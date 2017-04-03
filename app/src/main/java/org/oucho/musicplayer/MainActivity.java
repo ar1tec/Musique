@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -137,15 +136,11 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            // only for gingerbread and newer versions
-            getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
 
-            getWindow().setStatusBarColor(getResources().getColor(R.color.blanc));
+        if(android.os.Build.VERSION.SDK_INT >= 23) {
+            checkPermissions();
         }
 
-        checkPermissions();
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -235,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 break;
 
-            case R.id.nav_help:
+            case R.id.nav_about:
                 showAboutDialog();
                 break;
 
@@ -258,7 +253,6 @@ public class MainActivity extends AppCompatActivity implements
         AboutDialog dialog = new AboutDialog();
         dialog.show(getSupportFragmentManager(), "about");
     }
-
 
 
     /* *********************************************************************************************
@@ -1076,14 +1070,65 @@ public class MainActivity extends AppCompatActivity implements
         clearCache();
     }
 
+
     /* *********************************************************************************************
     * Gestion des permissions (Android >= 6.0)
     * *********************************************************************************************/
+
+    private void checkPermissions() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
+
+            } else {
+
+                DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE},
+                                        PERMISSIONS_REQUEST_READ_PHONE_STATE);
+                            }
+                        });
+            }
+        }
+
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
 
         switch (requestCode) {
+
+            case PERMISSIONS_REQUEST_READ_PHONE_STATE:
+
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean(PlayerService.PREF_AUTO_PAUSE, true);
+                    if (mPlayerService != null) {
+                        mPlayerService.setAutoPauseEnabled();
+                    }
+                    editor.apply();
+                }
+
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+
+                } else {
+
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+
+                }
+
+
+                break;
+
 
             case PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
 
@@ -1091,77 +1136,21 @@ public class MainActivity extends AppCompatActivity implements
 
                 break;
 
-            case PERMISSIONS_REQUEST_READ_PHONE_STATE:
-
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(PlayerService.PREF_AUTO_PAUSE, true);
-                if (mPlayerService != null) {
-                    mPlayerService.setAutoPauseEnabled();
-                }
-                editor.apply();
-
-                break;
-            default: //do nothing
+            default:
                 break;
         }
     }
 
 
-    private void checkPermissions() {
+    private static class DialogUtils {
 
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                DialogUtils.showPermissionDialog(this, getString(R.string.permission_write_external_storage),
-                        new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(MainActivity.this,
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-                    }
-                });
-
-            } else {
-
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-            }
-        }
-
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
-
-                DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
-                        new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE);
-                    }
-                });
-
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE);
-            }
-        }
-
-    }
-
-    public static class DialogUtils {
-
-        public static void showPermissionDialog(Context context, String message, DialogInterface.OnClickListener listener) {
+        private static void showPermissionDialog(Context context, String message, DialogInterface.OnClickListener listener) {
             new AlertDialog.Builder(context)
                     .setTitle(R.string.permission)
                     .setMessage(message)
                     .setPositiveButton(android.R.string.ok, listener)
                     .show();
         }
-
-
     }
+
 }

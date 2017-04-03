@@ -70,9 +70,9 @@
 
 
     <string name="permission">Permission</string>
-    <string name="permission_write_external_storage">L\'application doit pouvoir lire le stockage externe et sauvegarder les tags.</string>
-    <string name="permission_read_phone_state">Il est recommandé (mais pas nécessaire) de donner la permission "Effectuer et gérer des appels téléphoniques" à l\'application.
-        Le lecteur pourra ainsi se mettre en pause automatiquement lorsque vous recevrez un appel.</string>
+    <string name="permission_read_phone_state">Il est recommandé (mais pas nécessaire) de donner la permission
+        \"Effectuer et gérer des appels téléphoniques\" à l\'application,
+        cela permet au lecteur de se mettre en pause lorsque vous recevrez un appel.</string>
 
     <string name="sort_order_entry_az">Ordre alphabétique</string>
     <string name="sort_order_entry_year">Année</string>
@@ -85,7 +85,6 @@
     <string name="title_sort_year">année</string>
     <string name="title_sort_artist">artiste</string>
     <string name="title_sort_album">album</string>
-
 
     <string name="about">A propos</string>
 
