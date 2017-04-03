@@ -86,6 +86,28 @@
     <string name="title_sort_artist">artiste</string>
     <string name="title_sort_album">album</string>
 
+    <string name="help">Information</string>
+
+    <string name="help_message">
+        \n
+        Le but de ce logiciel et d\'avoir une application minimaliste et la plus simple possible, l\'inverse
+        d\'une \"usine à gaz\", sans pub ni autre parasitage lié.\n
+        \n
+        Toutes les fonctionnalitées sont dépendantes de votre système Android comme la reconnaissance
+        de format de fichier. Si votre système n\'est pas fait pour lire les fichiers de type lossless cette
+        application ne le permettra pas non plus.\n
+        \n
+        Cette application ne gère en rien les fichiers, elle dépend à 100% d\'Android, si des morceaux n\'apparaissent pas
+        c\'est que la base de données Android répertoriant les fichiers est corrompu. Il existe des outils disponible sur le
+        store qui permettent de réparer cette base.\n
+        \n
+        La modification des tags ne touche pas aux fichiers, elle apporte uniquement un ajout dans la base d\'Android.\n
+        Il en est de même pour la création des playlists, elles sont stockées dans la base de données d\'Android, si
+        vous desinstallez l\'application vos playlists seront toujours en place.\n
+        \n
+    </string>
+
+
     <string name="about">A propos</string>
 
     <string name="about_message">

@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +33,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +47,7 @@ import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.audiofx.AudioEffects;
 import org.oucho.musicplayer.blurview.BlurView;
 import org.oucho.musicplayer.dialog.AboutDialog;
+import org.oucho.musicplayer.dialog.HelpDialog;
 import org.oucho.musicplayer.fragments.AlbumFragment;
 import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.fragments.BaseFragment;
@@ -62,7 +66,9 @@ import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.widgets.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -136,8 +142,16 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+/*        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            // only for gingerbread and newer versions
+            getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
 
-        if(android.os.Build.VERSION.SDK_INT >= 23) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.blanc));
+        }*/
+
+        if(android.os.Build.VERSION.SDK_INT >= 23)
+        {
             checkPermissions();
         }
 
@@ -234,6 +248,10 @@ public class MainActivity extends AppCompatActivity implements
                 showAboutDialog();
                 break;
 
+            case R.id.nav_help:
+                showHelpDialog();
+                break;
+
             case R.id.nav_exit:
                 exit();
                 break;
@@ -252,6 +270,11 @@ public class MainActivity extends AppCompatActivity implements
     private void showAboutDialog(){
         AboutDialog dialog = new AboutDialog();
         dialog.show(getSupportFragmentManager(), "about");
+    }
+
+    private void showHelpDialog(){
+        HelpDialog dialog = new HelpDialog();
+        dialog.show(getSupportFragmentManager(), "help");
     }
 
 
@@ -1070,32 +1093,9 @@ public class MainActivity extends AppCompatActivity implements
         clearCache();
     }
 
-
     /* *********************************************************************************************
     * Gestion des permissions (Android >= 6.0)
     * *********************************************************************************************/
-
-    private void checkPermissions() {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
-
-            } else {
-
-                DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE},
-                                        PERMISSIONS_REQUEST_READ_PHONE_STATE);
-                            }
-                        });
-            }
-        }
-
-    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -1115,20 +1115,15 @@ public class MainActivity extends AppCompatActivity implements
                     editor.apply();
                 }
 
-
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
 
                 } else {
 
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+                   
                 }
 
-
                 break;
-
 
             case PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
 
@@ -1142,6 +1137,29 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
+    private void checkPermissions() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
+
+            } else {
+
+                DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE);
+                            }
+                        });
+
+            }
+        }
+
+    }
+
+
+
     private static class DialogUtils {
 
         private static void showPermissionDialog(Context context, String message, DialogInterface.OnClickListener listener) {
@@ -1151,6 +1169,7 @@ public class MainActivity extends AppCompatActivity implements
                     .setPositiveButton(android.R.string.ok, listener)
                     .show();
         }
-    }
 
+
+    }
 }
