@@ -20,4 +20,10 @@
         android:paddingTop="10dp"
         android:layout_marginBottom="@dimen/barre_lecture" />
 
+    <View
+        android:id="@+id/toolbar_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="2.5dp"
+        android:background="@drawable/toolbar_dropshadow"/>
+
 </FrameLayout>

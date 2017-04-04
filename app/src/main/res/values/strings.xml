@@ -78,7 +78,7 @@
     <string name="sort_order_entry_year">Année</string>
     <string name="sort_order_entry_artist">Artiste</string>
     <string name="sort_order_entry_album">Album</string>
-    <string name="sort_order_entry_number_of_songs">Nombre de chansons</string>
+    <string name="sort_order_entry_number_of_songs">Nombre de titres</string>
     <string name="sort_order_entry_number_of_albums">Nombre d\'albums</string>
 
 

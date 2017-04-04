@@ -50,7 +50,11 @@ public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewH
         //évite de charger des images dans les mauvaises vues si elles sont recyclées
         viewHolder.vArtistImage.setTag(position);
 
-        ArtistImageCache.getInstance().loadBitmap(artist.getName(), viewHolder.vArtistImage, mThumbWidth, mThumbHeight, ArtistImageHelper.getDefaultArtistThumb(mContext));
+        ArtistImageCache.getInstance().loadBitmap(artist.getName(),
+                viewHolder.vArtistImage,
+                mThumbWidth,
+                mThumbHeight,
+                ArtistImageHelper.getDefaultArtistThumb(mContext));
     }
 
     @Override

@@ -89,6 +89,8 @@ public class LibraryFragment extends BaseFragment {
             switch (position) {
                 case 0:
                     return AlbumListFragment.newInstance();
+                //case 1:
+                //    return ArtistListFragment.newInstance();
                 case 1:
                     return SongListFragment.newInstance();
                 case 2:

@@ -38,6 +38,7 @@ import org.oucho.musicplayer.model.Artist;
 import org.oucho.musicplayer.model.Playlist;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
+import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.List;
 import java.util.Locale;
@@ -301,14 +302,8 @@ public class ArtistFragment extends BaseFragment {
         mSongListAdapter = new SongListAdapter();
         mSongListView.setAdapter(mSongListAdapter);
 
-
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        getActivity().setTitle(mArtist.getName());
+        FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
+        mFastScroller.setRecyclerView(mSongListView);
 
         return rootView;
     }

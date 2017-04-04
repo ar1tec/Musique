@@ -1,7 +1,10 @@
 package org.oucho.musicplayer.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +16,12 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.images.ArtworkHelper;
 import org.oucho.musicplayer.model.Album;
+import org.oucho.musicplayer.utils.PrefUtils;
 
 import java.util.Collections;
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 
 public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHolder> {
@@ -26,6 +32,10 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
     private int mLayoutId = R.layout.album_grid_item;
     private List<Album> mAlbumList = Collections.emptyList();
 
+    private SharedPreferences préférences = null;
+
+
+    private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
 
     public AlbumListAdapter(Context context, int artworkWidth, int artworkHeight) {
         mArtworkWidth = artworkWidth;
@@ -54,6 +64,38 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
     @Override
     public void onBindViewHolder(AlbumViewHolder viewHolder, int position) {
         Album album = mAlbumList.get(position);
+
+
+        préférences = mContext.getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+
+
+        String getTri = préférences.getString("album_sort_order", "");
+
+        if (mLayoutId != R.layout.small_album_grid_item) {
+
+            if ("artist".equals(getTri)) {
+
+                viewHolder.vName.setTextColor(mContext.getResources().getColor(R.color.secondary_text));
+                viewHolder.vName.setTextSize(14);
+                viewHolder.vName.setTypeface(null, Typeface.NORMAL);
+
+                viewHolder.vArtist.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+                viewHolder.vArtist.setTextSize(15);
+                viewHolder.vArtist.setTypeface(null, Typeface.BOLD);
+
+            } else {
+
+                viewHolder.vName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+                viewHolder.vName.setTextSize(15);
+                viewHolder.vName.setTypeface(null, Typeface.BOLD);
+
+                viewHolder.vArtist.setTextColor(mContext.getResources().getColor(R.color.secondary_text));
+                viewHolder.vArtist.setTextSize(14);
+                viewHolder.vArtist.setTypeface(null, Typeface.NORMAL);
+            }
+
+        }
+
         viewHolder.vName.setText(album.getAlbumName());
         if (mLayoutId != R.layout.small_album_grid_item) {
             viewHolder.vArtist.setText(album.getArtistName());
@@ -62,7 +104,11 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         //évite de charger des images dans les mauvaises vues si elles sont recyclées
         viewHolder.vArtwork.setTag(position);
 
-        ArtworkCache.getInstance().loadBitmap(album.getId(), viewHolder.vArtwork, mArtworkWidth, mArtworkHeight, ArtworkHelper.getDefaultArtworkDrawable(mContext));
+        ArtworkCache.getInstance().loadBitmap(album.getId(),
+                viewHolder.vArtwork,
+                mArtworkWidth,
+                mArtworkHeight,
+                ArtworkHelper.getDefaultArtworkDrawable(mContext));
     }
 
     @Override
@@ -84,12 +130,16 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         public AlbumViewHolder(View itemView) {
             super(itemView);
+
             vArtwork = (ImageView) itemView.findViewById(R.id.album_artwork);
             vName = (TextView) itemView.findViewById(R.id.album_name);
+
+
             vArtwork.setOnClickListener(this);
             if (mLayoutId != R.layout.small_album_grid_item) {
 
                 vArtist = (TextView) itemView.findViewById(R.id.artist_name);
+
                 itemView.findViewById(R.id.album_info).setOnClickListener(this);
             } else {
                 vName.setOnClickListener(this);

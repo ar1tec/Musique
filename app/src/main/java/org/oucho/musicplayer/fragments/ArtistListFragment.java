@@ -74,6 +74,11 @@ public class ArtistListFragment extends BaseFragment {
         }
     };
 
+    public static ArtistListFragment newInstance() {
+
+        return new ArtistListFragment();
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

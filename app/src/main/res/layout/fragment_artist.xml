@@ -4,32 +4,23 @@
     android:layout_height="match_parent"
     android:tag="artist">
 
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="?attr/ToolBar"
-        app:elevation="0dp">
-
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-
-    </android.support.design.widget.AppBarLayout>
-
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/song_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/album_list"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingBottom="@dimen/barre_lecture"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"/>
+
+    <org.oucho.musicplayer.widgets.FastScroller
+        android:id="@+id/fastscroller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="@dimen/small_album_grid_item_height"
+        android:layout_marginBottom="@dimen/barre_lecture"/>
 
 </android.support.design.widget.CoordinatorLayout>
