@@ -24,7 +24,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -33,7 +32,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,9 +64,7 @@ import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.widgets.ProgressBar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -142,13 +138,13 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-/*        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            // only for gingerbread and newer versions
+
             getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
 
             getWindow().setStatusBarColor(getResources().getColor(R.color.blanc));
-        }*/
+        }
 
         if(android.os.Build.VERSION.SDK_INT >= 23)
         {
@@ -435,15 +431,27 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onPostResume() {
         super.onPostResume();
+
         if (mOnActivityResultIntent != null) {
             Bundle bundle = mOnActivityResultIntent.getExtras();
+
             if (mOnActivityResultIntent.getAction().equals(ACTION_REFRESH)) {
                 refresh();
+
             } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ALBUM)) {
+
+
+
                 Album album = getAlbumFromBundle(bundle);
                 AlbumFragment fragment = AlbumFragment.newInstance(album);
                 setFragment(fragment);
+
+
+
+
+
             } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ARTIST)) {
+
                 Artist artist = getArtistFromBundle(bundle);
                 ArtistFragment fragment = ArtistFragment.newInstance(artist);
                 setFragment(fragment);

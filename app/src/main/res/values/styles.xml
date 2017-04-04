@@ -13,6 +13,7 @@
         <item name="android:colorBackground">@color/blanc</item>
 
         <item name="ToolBar">@style/ToolBarTitleColor</item>
+
     </style>
 
 

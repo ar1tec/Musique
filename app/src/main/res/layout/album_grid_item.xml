@@ -29,10 +29,8 @@
             android:layout_below="@id/album_artwork"
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/context_menu_description"
-            android:paddingLeft="@dimen/content_padding"
-            android:paddingRight="@dimen/content_padding"
-            android:paddingTop="15sp"
-            android:src="@drawable/ic_spinner_black_small" />
+            android:paddingTop="11dp"
+            android:src="@drawable/ic_more_vert_grey_400_24dp" />
 
         <LinearLayout
             android:id="@+id/album_info"

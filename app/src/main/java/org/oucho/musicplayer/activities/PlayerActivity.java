@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -32,6 +34,7 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.blurview.BlurView;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.model.Song;
 import org.oucho.musicplayer.model.db.QueueDbHelper;
@@ -71,6 +74,10 @@ public class PlayerActivity extends AppCompatActivity
 
     private ActionBar actionBar;
 
+    private BlurView mBlurView;
+
+    private FrameLayout mLayout;
+
     private int couleurSousTitre;
 
 
@@ -82,6 +89,14 @@ public class PlayerActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+
+            getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
+
+            getWindow().setStatusBarColor(getResources().getColor(R.color.blanc));
+        }
 
         SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
         préférences.registerOnSharedPreferenceChangeListener(this);
@@ -110,6 +125,10 @@ public class PlayerActivity extends AppCompatActivity
         ImageView button_next = (ImageView) findViewById(R.id.next);
         ImageView button_prev = (ImageView) findViewById(R.id.prev);
 
+        mBlurView = (BlurView) findViewById(R.id.blurView);
+        mLayout = (FrameLayout) findViewById(R.id.root);
+
+        setupBlurView();
 
         assert button_next != null;
         button_next.setColorFilter(couleurTitre, PorterDuff.Mode.SRC_ATOP);
@@ -150,6 +169,21 @@ public class PlayerActivity extends AppCompatActivity
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
 
     }
+
+    private void setupBlurView() {
+        final float radius = 5f;
+
+        //set background, if your root layout doesn't have one
+        final Drawable windowBackground = getWindow().getDecorView().getBackground();
+
+
+        /// mDrawerLayout pour indiquer la racine du layout
+        final BlurView.ControllerSettings bottomViewSettings = mBlurView.setupWith(mLayout)
+                .windowBackground(windowBackground)
+                .blurRadius(radius);
+
+    }
+
 
     private int getSizeQueue() {
         QueueDbHelper dbHelper = new QueueDbHelper(this);
@@ -349,8 +383,10 @@ public class PlayerActivity extends AppCompatActivity
     private void toggleQueue() {
         if (mQueueLayout.getVisibility() != View.VISIBLE) {
             mQueueLayout.setVisibility(View.VISIBLE);
+            mBlurView.setVisibility(View.VISIBLE);
         } else {
             mQueueLayout.setVisibility(View.GONE);
+            mBlurView.setVisibility(View.GONE);
         }
     }
 
@@ -358,6 +394,7 @@ public class PlayerActivity extends AppCompatActivity
     public void onBackPressed() {
         if (mQueueLayout.getVisibility() == View.VISIBLE) {
             mQueueLayout.setVisibility(View.GONE);
+            mBlurView.setVisibility(View.GONE);
         } else {
             NavigationUtils.showMainActivity(this);
         }
@@ -430,7 +467,6 @@ public class PlayerActivity extends AppCompatActivity
 
             ImageView artworkView = (ImageView) findViewById(R.id.artwork);
             ArtworkCache.getInstance().loadBitmap(PlayerService.getAlbumId(), artworkView, mArtworkSize, mArtworkSize);
-
 
             int duration = PlayerService.getTrackDuration();
             if (duration != -1) {

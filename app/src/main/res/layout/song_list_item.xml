@@ -40,7 +40,7 @@
         android:contentDescription="@string/context_menu_description"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:src="@drawable/ic_spinner_grey" />
+        android:src="@drawable/ic_more_vert_grey_400_24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

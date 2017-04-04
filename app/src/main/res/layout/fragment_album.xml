@@ -16,13 +16,12 @@
             android:id="@+id/fondBlurView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="3dp"
+            android:elevation="2dp"
             android:outlineProvider="bounds"
             app:blurOverlayColor="@color/colorOverlay"
             tools:targetApi="lollipop">
 
             <LinearLayout
-                android:id="@+id/fondAlbum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent">
