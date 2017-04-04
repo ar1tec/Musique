@@ -20,12 +20,9 @@ android {
         release {
             // false nécéssaire pour renderscript sinon crash en mode release
             minifyEnabled false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
-            debuggable false
-            jniDebuggable false
-            renderscriptDebuggable false
         }
     }
 }
