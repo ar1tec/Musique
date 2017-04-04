@@ -19,7 +19,9 @@ public final class SortOrder {
     public interface AlbumSortOrder {
         String ALBUM_A_Z = MediaStore.Audio.Albums.DEFAULT_SORT_ORDER;
 
-        String ALBUM_ARTIST = MediaStore.Audio.Albums.ARTIST;
+        //String ALBUM_ARTIST = MediaStore.Audio.Albums.ARTIST;
+        //Ne pas prendre en compte "The" lors du tri des albums par artiste
+        String ALBUM_ARTIST = "REPLACE ('<BEGIN>' || " + MediaStore.Audio.Albums.ARTIST +", '<BEGIN>The ', '<BEGIN>')";
 
         String ALBUM_YEAR = MediaStore.Audio.Albums.FIRST_YEAR + " DESC";
 

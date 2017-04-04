@@ -73,7 +73,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         if (mLayoutId != R.layout.small_album_grid_item) {
 
-            if ("artist".equals(getTri)) {
+            if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
 
                 viewHolder.vName.setTextColor(mContext.getResources().getColor(R.color.secondary_text));
                 viewHolder.vName.setTextSize(14);

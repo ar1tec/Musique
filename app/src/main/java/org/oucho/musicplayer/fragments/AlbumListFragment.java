@@ -285,7 +285,7 @@ public class AlbumListFragment extends BaseFragment {
 
             tri = context.getString(R.string.title_sort_year);
 
-        } else if ("artist".equals(getTri)) {
+        } else if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
 
             tri = context.getString(R.string.title_sort_artist);
 
