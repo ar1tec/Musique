@@ -98,8 +98,7 @@
         application ne le permettra pas non plus.\n
         \n
         Cette application ne gère en rien les fichiers, elle dépend à 100% d\'Android, si des morceaux n\'apparaissent pas
-        c\'est que la base de données Android répertoriant les fichiers est corrompu. Il existe des outils disponible sur le
-        store qui permettent de réparer cette base.\n
+        c\'est que la base de données Android est corrompu. Il existe des outils qui permettent de réparer cette base.\n
         \n
         La modification des tags ne touche pas aux fichiers, elle apporte uniquement un ajout dans la base d\'Android.\n
         Il en est de même pour la création des playlists, elles sont stockées dans la base de données d\'Android, si
@@ -112,7 +111,7 @@
 
     <string name="about_message">
         \n
-        Musique 1.11\n
+        Musique 1.12\n
         \n
         Old Geek, 2017\n
         \n
