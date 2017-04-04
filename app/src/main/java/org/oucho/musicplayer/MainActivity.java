@@ -63,6 +63,7 @@ import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.widgets.ProgressBar;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -127,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String intent_state = "org.oucho.musicplayer.STATE";
 
+    Context mContext;
+
     /* *********************************************************************************************
      * Création de l'activité
      * ********************************************************************************************/
@@ -151,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements
             checkPermissions();
         }
 
+        mContext = getApplicationContext();
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -322,7 +326,15 @@ public class MainActivity extends AppCompatActivity implements
                     break;
 
                 case R.id.track_info:
-                    NavigationUtils.showPlaybackActivity(MainActivity.this);
+
+                    File file = new File(getApplicationInfo().dataDir, "/databases/Queue.db");
+
+                    if (file.exists()) {
+                        NavigationUtils.showPlaybackActivity(MainActivity.this);
+                    } else {
+                        Toast.makeText(mContext, "Vous devez d'abord sélectionner un titre", Toast.LENGTH_LONG).show();
+                    }
+
                     break;
 
                 default:
@@ -845,9 +857,7 @@ public class MainActivity extends AppCompatActivity implements
             public void onClick(DialogInterface dialog, int which) {
                 annulTimer();
 
-                Context context = getApplicationContext();
-
-                Toast.makeText(context, stopTimer, Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, stopTimer, Toast.LENGTH_LONG).show();
             }
         }).setView(view).create();
 
