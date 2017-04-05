@@ -15,7 +15,7 @@ import org.oucho.musicplayer.R;
 
 public class HelpDialog extends DialogFragment {
 
-    private final static ViewGroup nullParent = null;
+    private final ViewGroup nullParent = null;
 
     @NonNull
     @Override

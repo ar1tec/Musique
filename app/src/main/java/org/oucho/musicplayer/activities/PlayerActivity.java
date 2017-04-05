@@ -95,7 +95,9 @@ public class PlayerActivity extends AppCompatActivity
 
             getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
 
-            getWindow().setStatusBarColor(getResources().getColor(R.color.blanc));
+            Context context = getApplicationContext();
+
+            getWindow().setStatusBarColor(ContextCompat.getColor(context, R.color.blanc));
         }
 
         SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);

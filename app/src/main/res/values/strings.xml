@@ -14,6 +14,9 @@
 
     <string name="album_artwork">Couverture d\'album</string>
 
+    <string name="default_time">00:00</string>
+
+
     <plurals name="albums_count">
         <item quantity="one">%d album</item>
         <item quantity="other">%d albums</item>

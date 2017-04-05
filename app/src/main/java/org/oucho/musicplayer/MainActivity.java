@@ -141,20 +141,20 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mContext = getApplicationContext();
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 
             getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
 
-            getWindow().setStatusBarColor(getResources().getColor(R.color.blanc));
+            getWindow().setStatusBarColor(ContextCompat.getColor(mContext, R.color.blanc));
         }
 
         if(android.os.Build.VERSION.SDK_INT >= 23)
         {
             checkPermissions();
         }
-
-        mContext = getApplicationContext();
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 

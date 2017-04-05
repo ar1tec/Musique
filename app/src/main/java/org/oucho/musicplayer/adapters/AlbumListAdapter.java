@@ -3,8 +3,8 @@ package org.oucho.musicplayer.adapters;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +16,9 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.images.ArtworkHelper;
 import org.oucho.musicplayer.model.Album;
-import org.oucho.musicplayer.utils.PrefUtils;
 
 import java.util.Collections;
 import java.util.List;
-
-import static java.security.AccessController.getContext;
 
 
 public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHolder> {
@@ -31,8 +28,6 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
     private final Context mContext;
     private int mLayoutId = R.layout.album_grid_item;
     private List<Album> mAlbumList = Collections.emptyList();
-
-    private SharedPreferences préférences = null;
 
 
     private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
@@ -66,7 +61,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         Album album = mAlbumList.get(position);
 
 
-        préférences = mContext.getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        SharedPreferences préférences = mContext.getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
 
 
         String getTri = préférences.getString("album_sort_order", "");
@@ -75,21 +70,21 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
             if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
 
-                viewHolder.vName.setTextColor(mContext.getResources().getColor(R.color.secondary_text));
+                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.secondary_text));
                 viewHolder.vName.setTextSize(14);
                 viewHolder.vName.setTypeface(null, Typeface.NORMAL);
 
-                viewHolder.vArtist.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                 viewHolder.vArtist.setTextSize(15);
                 viewHolder.vArtist.setTypeface(null, Typeface.BOLD);
 
             } else {
 
-                viewHolder.vName.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                 viewHolder.vName.setTextSize(15);
                 viewHolder.vName.setTypeface(null, Typeface.BOLD);
 
-                viewHolder.vArtist.setTextColor(mContext.getResources().getColor(R.color.secondary_text));
+                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.secondary_text));
                 viewHolder.vArtist.setTextSize(14);
                 viewHolder.vArtist.setTypeface(null, Typeface.NORMAL);
             }
@@ -128,7 +123,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         TextView vArtist;
 
-        public AlbumViewHolder(View itemView) {
+        private AlbumViewHolder(View itemView) {
             super(itemView);
 
             vArtwork = (ImageView) itemView.findViewById(R.id.album_artwork);

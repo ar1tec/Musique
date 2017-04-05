@@ -168,7 +168,7 @@ public class BlurView extends FrameLayout {
     }
 
     public static class ControllerSettings {
-        BlurController blurController;
+        final BlurController blurController;
 
         ControllerSettings(BlurController blurController) {
             this.blurController = blurController;
