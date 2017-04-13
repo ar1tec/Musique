@@ -8,10 +8,17 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -145,6 +152,7 @@ public class AlbumFragment extends BaseFragment {
         return String.format(Locale.getDefault(), "%d", msec / 60000, (msec % 60000) / 1000);
     }
 
+
     /* *********************************************************************************************
      * Création du fragment
      * ********************************************************************************************/
@@ -154,6 +162,7 @@ public class AlbumFragment extends BaseFragment {
         Bundle args = getArguments();
 
         context = getContext();
+
 
         Etat_player_Receiver = new Etat_player();
         IntentFilter filter = new IntentFilter(STATE);
@@ -188,8 +197,10 @@ public class AlbumFragment extends BaseFragment {
         mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.artist_image_req_width);
         mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
 
-        getActivity().setTitle(R.string.album);
+        //getActivity().setTitle(R.string.album);
+
     }
+
 
 
     /* *********************************************************************************************
@@ -200,14 +211,11 @@ public class AlbumFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_album, container, false);
 
-        //Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        //AppCompatActivity activity = (AppCompatActivity) getActivity();
-        //activity.setSupportActionBar(toolbar);
+/*        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
         //noinspection ConstantConditions
-        //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        //activity.getSupportActionBar().hide();
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
         fondBlurView = (BlurView) rootView.findViewById(R.id.fondBlurView);
 
@@ -396,7 +404,52 @@ public class AlbumFragment extends BaseFragment {
             context.registerReceiver(Etat_player_Receiver, filter);
             isRegistered = true;
         }
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+
+                // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
+                Intent intent = new Intent();
+                intent.setAction("blurview");
+                context.sendBroadcast(intent);
+
+            }
+        }, 1000);
+
+
+        // Active la touche back
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                    ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
+                    ft.commit();
+
+                    Intent intent = new Intent();
+                    intent.setAction("reload");
+                    context.sendBroadcast(intent);
+
+/*                    LibraryFragment libraryFragment = new LibraryFragment();
+                    libraryFragment.setLock(false);*/
+
+                    return true;
+                }
+                return false;
+            }
+        });
     }
+
 
     private class Etat_player extends BroadcastReceiver {
 
@@ -410,8 +463,6 @@ public class AlbumFragment extends BaseFragment {
                     && intent.getStringExtra("state").equals("prev")
                     || intent.getStringExtra("state").equals("next")
                     || intent.getStringExtra("state").equals("play")) {
-
-
 
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

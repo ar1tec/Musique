@@ -13,7 +13,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,11 +31,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ import android.widget.Toast;
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.audiofx.AudioEffects;
 import org.oucho.musicplayer.blurview.BlurView;
+import org.oucho.musicplayer.blurview.RenderScriptBlur;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.dialog.HelpDialog;
 import org.oucho.musicplayer.fragments.AlbumFragment;
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
 
-    private BlurView bottomBlurView;
+    private BlurView blurView;
 
     private Intent mOnActivityResultIntent;
 
@@ -127,6 +129,11 @@ public class MainActivity extends AppCompatActivity implements
     private final Handler handler = new Handler();
 
     private static final String intent_state = "org.oucho.musicplayer.STATE";
+
+    private activationReceiver blurActivationReceiver;
+    private boolean isRegistered = false;
+
+    private static boolean blurActive = false;
 
     Context mContext;
 
@@ -173,8 +180,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        //upBlurView = (BlurView) findViewById(R.id.upBlurView);
-        bottomBlurView = (BlurView) findViewById(R.id.bottomBlurView);
+        blurView = (BlurView) findViewById(R.id.bottomBlurView);
 
         PrefUtils.init(this);
         ArtworkCache.init(this);
@@ -185,29 +191,29 @@ public class MainActivity extends AppCompatActivity implements
             showLibrary();
         }
 
-        setupBlurView();
-//        refresh();
+
+        blurActivationReceiver = new activationReceiver();
+        IntentFilter filter = new IntentFilter("blurview");
+
+        registerReceiver(blurActivationReceiver, filter);
+        isRegistered = true;
+
         CheckUpdate.onStart(this);
 
     }
 
 
     private void setupBlurView() {
+
         final float radius = 5f;
 
-        //set background, if your root layout doesn't have one
-        final Drawable windowBackground = getWindow().getDecorView().getBackground();
+        final View decorView = getWindow().getDecorView();
+        //Activity's root View. Can also be root View of your layout (preferably)
+        final ViewGroup rootView = (ViewGroup) decorView.findViewById(R.id.drawer_layout);
 
-
-        /// mDrawerLayout pour indiquer la racine du layout
-        final BlurView.ControllerSettings bottomViewSettings = bottomBlurView.setupWith(mDrawerLayout)
-                .windowBackground(windowBackground)
+        blurView.setupWith(rootView)
+                .blurAlgorithm(new RenderScriptBlur(mContext, true))
                 .blurRadius(radius);
-
-/*        final BlurView.ControllerSettings upViewSettings = upBlurView.setupWith(mDrawerLayout)
-                .windowBackground(windowBackground)
-                .blurRadius(radius);*/
-
     }
 
     /* *********************************************************************************************
@@ -408,6 +414,11 @@ public class MainActivity extends AppCompatActivity implements
         if (!PlayerService.isPlaying())
             killNotif();
 
+        if (isRegistered) {
+            unregisterReceiver(blurActivationReceiver);
+            isRegistered = false;
+        }
+
         if (mServiceBound) {
             mPlayerService = null;
 
@@ -423,6 +434,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (!isRegistered) {
+            IntentFilter filter = new IntentFilter("blurview");
+            registerReceiver(blurActivationReceiver, filter);
+            isRegistered = true;
+        }
+
         if (!mServiceBound) {
             Intent mServiceIntent = new Intent(this, PlayerService.class);
             bindService(mServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -440,6 +458,25 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+
+    private class activationReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String receiveIntent = intent.getAction();
+
+            if ("blurview".equals(receiveIntent)) {
+
+                Log.d("PWEEEEEEEEEEET", "setupBlurView();");
+
+                setupBlurView();
+                //blurActive = true;
+
+            }
+        }
+    }
+
     @Override
     protected void onPostResume() {
         super.onPostResume();
@@ -452,15 +489,9 @@ public class MainActivity extends AppCompatActivity implements
 
             } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ALBUM)) {
 
-
-
                 Album album = getAlbumFromBundle(bundle);
                 AlbumFragment fragment = AlbumFragment.newInstance(album);
                 setFragment(fragment);
-
-
-
-
 
             } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ARTIST)) {
 
@@ -523,6 +554,7 @@ public class MainActivity extends AppCompatActivity implements
 
         return new Song(id, title, artist, album, albumId, trackNumber, duration);
     }
+
 
     public void refresh() {
 
@@ -614,6 +646,8 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -621,7 +655,6 @@ public class MainActivity extends AppCompatActivity implements
             mOnActivityResultIntent = data;
         }
     }
-
 
     private void updateAll() {
         if (mPlayerService != null) {
@@ -638,8 +671,6 @@ public class MainActivity extends AppCompatActivity implements
     /***********************************************************************************************
      * Barre de lecture
      **********************************************************************************************/
-
-
 
     private void setButtonDrawable() {
         if (mPlayerService != null) {

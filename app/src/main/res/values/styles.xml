@@ -14,6 +14,9 @@
 
         <item name="ToolBar">@style/ToolBarTitleColor</item>
 
+        <item name="android:windowActionBarOverlay">true</item>
+
+
     </style>
 
 

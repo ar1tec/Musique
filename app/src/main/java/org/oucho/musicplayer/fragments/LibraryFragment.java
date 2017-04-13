@@ -24,7 +24,9 @@ import java.util.Map;
 public class LibraryFragment extends BaseFragment {
 
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private static SectionsPagerAdapter mSectionsPagerAdapter;
+
+    private static boolean lock;
 
     public static LibraryFragment newInstance() {
 
@@ -39,10 +41,8 @@ public class LibraryFragment extends BaseFragment {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getChildFragmentManager());
 
-
         ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
 
         MainActivity activity = (MainActivity) getActivity();
 
@@ -50,13 +50,26 @@ public class LibraryFragment extends BaseFragment {
 
         DrawerLayout drawerLayout = activity.getDrawerLayout();
 
-
         activity.setSupportActionBar(toolbar);
 
         ToolbarDrawerToggle drawerToggle = new ToolbarDrawerToggle(activity,drawerLayout,toolbar, new int[]{Gravity.START});
         drawerLayout.addDrawerListener(drawerToggle);
+
         return rootView;
+
     }
+
+
+    public boolean getLock() {
+        return lock;
+    }
+
+    public void setLock(boolean value) {
+        this.lock = value;
+        this.mSectionsPagerAdapter.notifyDataSetChanged();
+
+    }
+
 
     @Override
     public void load() {
@@ -74,11 +87,11 @@ public class LibraryFragment extends BaseFragment {
     }
 
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private final Map<Integer, String> mFragmentTags;
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             mFragmentTags = new HashMap<>();
 
@@ -114,7 +127,7 @@ public class LibraryFragment extends BaseFragment {
             return obj;
         }
 
-        public Fragment getFragment(int position) {
+        Fragment getFragment(int position) {
             String tag = mFragmentTags.get(position);
             if (tag == null)
                 return null;
@@ -123,7 +136,8 @@ public class LibraryFragment extends BaseFragment {
 
         @Override
         public int getCount() {
-            return 3;
+                return 3;
         }
+
     }
 }

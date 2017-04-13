@@ -6,21 +6,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-/**
- * Blur Controller that handles all blur logic for attached View.
- * It honors View size changes, View animation and Visibility changes.
- * <p>
- * The basic idea is to draw view hierarchy on internal bitmap, excluding the attached View.
- * After that, BlurController blurs this bitmap and draws it on system Canvas.
- * Default implementation uses {@link ViewTreeObserver.OnPreDrawListener} to detect when
- * blur should be redrawn.
- * <p>
- * Blur is done in the main thread.
- */
+
 class BlockingBlurController implements BlurController {
     private static final String TAG = BlockingBlurController.class.getSimpleName();
     //Bitmap size should be divisible by 16 to meet stride requirement
@@ -48,6 +39,7 @@ class BlockingBlurController implements BlurController {
     private final ViewTreeObserver.OnPreDrawListener drawListener = new ViewTreeObserver.OnPreDrawListener() {
         @Override
         public boolean onPreDraw() {
+
             if (!isMeDrawingNow) {
                 updateBlur();
             }
@@ -63,6 +55,7 @@ class BlockingBlurController implements BlurController {
     private final Runnable onDrawEndTask = new Runnable() {
         @Override
         public void run() {
+
             isMeDrawingNow = false;
         }
     };
@@ -71,13 +64,16 @@ class BlockingBlurController implements BlurController {
     @Nullable
     private Drawable windowBackground;
 
+    private boolean shouldTryToOffsetCoords = true;
+
     /**
      * @param blurView View which will draw it's blurred underlying content
      * @param rootView Root View where blurView's underlying content starts drawing.
      *                 Can be Activity's root content layout (android.R.id.content)
      *                 or some of your custom root layouts.
      */
-    BlockingBlurController(@NonNull View blurView, @NonNull ViewGroup rootView) {
+    public BlockingBlurController(@NonNull View blurView, @NonNull ViewGroup rootView) {
+
         this.rootView = rootView;
         this.blurView = blurView;
         this.blurAlgorithm = new RenderScriptBlur(blurView.getContext(), true);
@@ -94,6 +90,7 @@ class BlockingBlurController implements BlurController {
     }
 
     private int downScaleSize(float value) {
+
         return (int) Math.ceil(value / scaleFactor);
     }
 
@@ -101,6 +98,7 @@ class BlockingBlurController implements BlurController {
      * Rounds a value to the nearest divisible by {@link #ROUNDING_VALUE} to meet stride requirement
      */
     private int roundSize(int value) {
+
         if (value % ROUNDING_VALUE == 0) {
             return value;
         }
@@ -108,6 +106,7 @@ class BlockingBlurController implements BlurController {
     }
 
     void init(int measuredWidth, int measuredHeight) {
+
         if (isZeroSized(measuredWidth, measuredHeight)) {
             blurView.setWillNotDraw(true);
             setBlurAutoUpdate(false);
@@ -120,10 +119,12 @@ class BlockingBlurController implements BlurController {
     }
 
     private boolean isZeroSized(int measuredWidth, int measuredHeight) {
+
         return downScaleSize(measuredHeight) == 0 || downScaleSize(measuredWidth) == 0;
     }
 
     void updateBlur() {
+
         isMeDrawingNow = true;
         blurView.invalidate();
     }
@@ -132,6 +133,8 @@ class BlockingBlurController implements BlurController {
      * Deferring initialization until view is laid out
      */
     private void deferBitmapCreation() {
+        Log.d("BlockingLblurController", "deferBitmapCreation");
+
         blurView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -146,12 +149,14 @@ class BlockingBlurController implements BlurController {
 
             @SuppressWarnings("deprecation")
             private void legacyRemoveOnGlobalLayoutListener() {
+
                 blurView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
         });
     }
 
     private void allocateBitmap(int measuredWidth, int measuredHeight) {
+
         //downscale overlay (blurred) bitmap
         int nonRoundedScaledWidth = downScaleSize(measuredWidth);
         int nonRoundedScaledHeight = downScaleSize(measuredHeight);
@@ -167,8 +172,18 @@ class BlockingBlurController implements BlurController {
 
     //draw starting from blurView's position
     private void setupInternalCanvasMatrix() {
+
         blurView.getDrawingRect(relativeViewBounds);
-        rootView.offsetDescendantRectToMyCoords(blurView, relativeViewBounds);
+
+        if (shouldTryToOffsetCoords) {
+            try {
+                rootView.offsetDescendantRectToMyCoords(blurView, relativeViewBounds);
+            } catch (IllegalArgumentException e) {
+                // BlurView is not a child of the rootView (i.e. it's in Dialog)
+                        // Fallback to regular coordinates system
+                        shouldTryToOffsetCoords = false;
+            }
+        }
 
         float scaleFactorX = scaleFactor * roundingWidthScaleFactor;
         float scaleFactorY = scaleFactor * roundingHeightScaleFactor;
@@ -187,6 +202,7 @@ class BlockingBlurController implements BlurController {
      * Draws whole view hierarchy on internal canvas
      */
     private void drawUnderlyingViews() {
+
         //draw activity window background
         if (windowBackground != null) {
             windowBackground.draw(internalCanvas);
@@ -196,6 +212,7 @@ class BlockingBlurController implements BlurController {
 
     @Override
     public void drawBlurredContent(Canvas canvas) {
+
         isMeDrawingNow = true;
 
         if (isBlurEnabled) {
@@ -235,6 +252,7 @@ class BlockingBlurController implements BlurController {
 
     @Override
     public void destroy() {
+
         setBlurAutoUpdate(false);
         blurAlgorithm.destroy();
         if (internalBitmap != null) {

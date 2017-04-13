@@ -30,30 +30,34 @@ public class BlurView extends FrameLayout {
 
     public BlurView(Context context) {
         super(context);
+
         init(null, 0);
     }
 
     public BlurView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
         init(attrs, 0);
     }
 
     public BlurView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
         init(attrs, defStyleAttr);
     }
 
     private void init(AttributeSet attrs, int defStyleAttr) {
+
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.BlurView, defStyleAttr, 0);
         overlayColor = a.getColor(R.styleable.BlurView_blurOverlayColor, TRANSPARENT);
         a.recycle();
-
         //we need to draw even without background set
         setWillNotDraw(false);
     }
 
     @Override
     public void draw(Canvas canvas) {
+
         //draw only on system's hardware accelerated canvas
         if (canvas.isHardwareAccelerated()) {
             blurController.drawBlurredContent(canvas);
@@ -118,12 +122,15 @@ public class BlurView extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+
         blurController.setBlurAutoUpdate(false);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+
+
         if (!isHardwareAccelerated()) {
             Log.e(TAG, "BlurView can't be used in not hardware-accelerated window!");
         } else {
@@ -157,10 +164,12 @@ public class BlurView extends FrameLayout {
      * @return ControllerSettings to setup needed params.
      */
     public ControllerSettings setupWith(@NonNull ViewGroup rootView) {
+
         BlurController blurController = new BlockingBlurController(this, rootView);
         setBlurController(blurController);
 
         if (!isHardwareAccelerated()) {
+
             blurController.setBlurAutoUpdate(false);
         }
 
@@ -207,6 +216,7 @@ public class BlurView extends FrameLayout {
 
     //Used in edit mode and in case if no BlurController was set
     private BlurController createStubController() {
+
         return new BlurController() {
             @Override
             public void drawBlurredContent(Canvas canvas) {

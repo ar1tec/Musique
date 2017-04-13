@@ -1,12 +1,16 @@
 package org.oucho.musicplayer.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -14,6 +18,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,18 +46,20 @@ import java.util.List;
 
 public class AlbumListFragment extends BaseFragment {
 
-    private AlbumListAdapter mAdapter;
-
     private Context context;
+    private Menu menu;
 
-    private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
-
+    private AlbumListAdapter mAdapter;
+    private ReloadToolbar reloadToolbarReceiver;
     private SharedPreferences préférences = null;
+    private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
 
     private String titre;
     private String tri;
 
     private boolean run = false;
+    private boolean isRegistered = false;
+
 
     private final LoaderManager.LoaderCallbacks<List<Album>> mLoaderCallbacks = new LoaderCallbacks<List<Album>>() {
 
@@ -63,19 +70,16 @@ public class AlbumListFragment extends BaseFragment {
             loader.setSortOrder(PrefUtils.getInstance().getAlbumSortOrder());
 
             return loader;
-
         }
 
         @Override
         public void onLoadFinished(Loader<List<Album>> loader, List<Album> data) {
             mAdapter.setData(data);
-
         }
 
         @Override
         public void onLoaderReset(Loader<List<Album>> loader) {
             //  Auto-generated method stub
-
         }
     };
 
@@ -94,8 +98,20 @@ public class AlbumListFragment extends BaseFragment {
             switch (view.getId()) {
                 case R.id.album_artwork:
                 case R.id.album_info:
+
                     Fragment fragment = AlbumFragment.newInstance(album);
-                    ((MainActivity) getActivity()).setFragment(fragment);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
+                    ft.replace(R.id.fragment_album_list_layout, fragment);
+                    ft.commit();
+
+                    getActivity().setTitle(R.string.album);
+
+                    showOverflowMenu(false);
+
+                    /*LibraryFragment libraryFragment = new LibraryFragment();
+                    libraryFragment.setLock(true);*/
+
                     break;
                 case R.id.menu_button:
                     showMenu(position, view);
@@ -181,8 +197,27 @@ public class AlbumListFragment extends BaseFragment {
 
         setTri();
 
+        reloadToolbarReceiver = new ReloadToolbar();
+        IntentFilter filter2 = new IntentFilter("reload");
+        context.registerReceiver(reloadToolbarReceiver, filter2);
+        isRegistered = true;
     }
 
+    private class ReloadToolbar extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(final Context context, Intent intent) {
+
+            String receiveIntent = intent.getAction();
+
+            if ("reload".equals(receiveIntent)) {
+                setUserVisibleHint(true);
+                showOverflowMenu(true);
+                LibraryFragment libraryFragment = new LibraryFragment();
+                libraryFragment.setLock(false);
+            }
+        }
+    }
 
 
     /* *********************************************************************************************
@@ -216,7 +251,6 @@ public class AlbumListFragment extends BaseFragment {
         FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         mFastScroller.setRecyclerView(mRecyclerView);
 
-
         return rootView;
     }
 
@@ -240,6 +274,9 @@ public class AlbumListFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
+        this.menu = menu;
+
         inflater.inflate(R.menu.album_sort_by, menu);
     }
 
@@ -271,7 +308,39 @@ public class AlbumListFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public void showOverflowMenu(boolean showMenu){
+        if(menu == null)
+            return;
 
+        menu.setGroupVisible(R.id.main_menu_group, showMenu);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (isRegistered) {
+            context.unregisterReceiver(reloadToolbarReceiver);
+            isRegistered = false;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
+        Intent intent = new Intent();
+        intent.setAction("blurview");
+        context.sendBroadcast(intent);
+
+
+        if (!isRegistered) {
+            IntentFilter filter = new IntentFilter("reload");
+            context.registerReceiver(reloadToolbarReceiver, filter);
+            isRegistered = true;
+        }
+    }
 
     /* *********************************************************************************************
      * Titre
@@ -282,19 +351,13 @@ public class AlbumListFragment extends BaseFragment {
         String getTri = préférences.getString("album_sort_order", "");
 
         if ("minyear DESC".equals(getTri)) {
-
             tri = context.getString(R.string.title_sort_year);
-
         } else if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
-
             tri = context.getString(R.string.title_sort_artist);
-
         } else {
-
             tri = "a-z";
         }
     }
-
 
 
     @Override
@@ -306,6 +369,7 @@ public class AlbumListFragment extends BaseFragment {
             // délai affichage lors du premier chargement nom appli --> tri actuel
             if (run) {
                 getActivity().setTitle(Html.fromHtml("<font>" + titre + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
+
             } else {
 
                 Handler handler = new Handler();
@@ -318,8 +382,6 @@ public class AlbumListFragment extends BaseFragment {
 
                 run = true;
             }
-
         }
     }
-
 }
