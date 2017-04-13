@@ -90,6 +90,8 @@ public class AlbumListFragment extends BaseFragment {
             ((MainActivity) getActivity()).refresh();
         }
     };
+
+
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position, View view) {
@@ -108,9 +110,6 @@ public class AlbumListFragment extends BaseFragment {
                     getActivity().setTitle(R.string.album);
 
                     showOverflowMenu(false);
-
-                    /*LibraryFragment libraryFragment = new LibraryFragment();
-                    libraryFragment.setLock(true);*/
 
                     break;
                 case R.id.menu_button:

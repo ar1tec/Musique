@@ -91,6 +91,7 @@ public class AlbumFragment extends BaseFragment {
 
     private Context context;
 
+    LibraryFragment libraryFragment;
 
     public static AlbumFragment newInstance(Album album) {
         AlbumFragment fragment = new AlbumFragment();
@@ -166,9 +167,10 @@ public class AlbumFragment extends BaseFragment {
 
         Etat_player_Receiver = new Etat_player();
         IntentFilter filter = new IntentFilter(STATE);
-
         context.registerReceiver(Etat_player_Receiver, filter);
         isRegistered = true;
+
+        libraryFragment = new LibraryFragment();
 
         if (args != null) {
 
@@ -267,10 +269,18 @@ public class AlbumFragment extends BaseFragment {
         final Drawable windowBackground = rootview.getBackground();
 
 
-        /// mDrawerLayout pour indiquer la racine du layout
-        final BlurView.ControllerSettings bottomViewSettings = fondBlurView.setupWith(mLayout)
-                .windowBackground(windowBackground)
-                .blurRadius(radius);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+
+                // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
+                fondBlurView.setupWith(mLayout)
+                        .windowBackground(windowBackground)
+                        .blurRadius(radius);
+
+            }
+        }, 1000);
+
 
     }
 
@@ -405,18 +415,7 @@ public class AlbumFragment extends BaseFragment {
             isRegistered = true;
         }
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-
-                // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
-                Intent intent = new Intent();
-                intent.setAction("blurview");
-                context.sendBroadcast(intent);
-
-            }
-        }, 1000);
-
+        libraryFragment.setLock(true);
 
         // Active la touche back
         if(getView() == null){
@@ -440,8 +439,7 @@ public class AlbumFragment extends BaseFragment {
                     intent.setAction("reload");
                     context.sendBroadcast(intent);
 
-/*                    LibraryFragment libraryFragment = new LibraryFragment();
-                    libraryFragment.setLock(false);*/
+                    libraryFragment.setLock(false);
 
                     return true;
                 }

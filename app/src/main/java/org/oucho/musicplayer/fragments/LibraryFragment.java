@@ -26,7 +26,7 @@ public class LibraryFragment extends BaseFragment {
 
     private static SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private static boolean lock;
+    private static boolean lock = false;
 
     public static LibraryFragment newInstance() {
 
@@ -136,7 +136,13 @@ public class LibraryFragment extends BaseFragment {
 
         @Override
         public int getCount() {
+
+            if (!getLock()) {
                 return 3;
+        } else {
+                return 1;
+            }
+
         }
 
     }
