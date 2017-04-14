@@ -9,11 +9,6 @@
             android:icon="@drawable/ic_menu_equalizer"
             android:title="@string/action_equalizer" />
 
-        <item
-            android:id="@+id/action_sleep_timer"
-            android:icon="@drawable/ic_sleep_timer"
-            android:title="@string/action_sleep_timer" />
-
     </group>
 
     <group android:id="@+id/menu_bottom">
@@ -30,7 +25,7 @@
 
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/ic_help_outline"
+            android:icon="@drawable/ic_info_black_24dp"
             android:title="@string/about" />
 
         <item

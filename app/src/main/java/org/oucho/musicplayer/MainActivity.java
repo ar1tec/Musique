@@ -130,10 +130,11 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String intent_state = "org.oucho.musicplayer.STATE";
 
+    private static Menu menu;
+    private TextView timeAfficheur;
+
     private activationReceiver blurActivationReceiver;
     private boolean isRegistered = false;
-
-    private static boolean blurActive = false;
 
     Context mContext;
 
@@ -171,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.track_info).setOnClickListener(mOnClickListener);
         findViewById(R.id.quick_prev).setOnClickListener(mOnClickListener);
         findViewById(R.id.quick_next).setOnClickListener(mOnClickListener);
+
+        timeAfficheur = ((TextView) findViewById(R.id.zZz));
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
@@ -240,14 +243,6 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.nav_update:
                 CheckUpdate.withInfo(this);
-                break;
-
-            case R.id.action_sleep_timer:
-                if (! running) {
-                    showTimePicker();
-                } else {
-                    showTimerInfo();
-                }
                 break;
 
             case R.id.nav_about:
@@ -361,12 +356,16 @@ public class MainActivity extends AppCompatActivity implements
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
+        this.menu = menu;
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+
         switch (id) {
             case android.R.id.home:
                 FragmentManager fm = getSupportFragmentManager();
@@ -376,9 +375,15 @@ public class MainActivity extends AppCompatActivity implements
                     showLibrary();
                 }
                 return true;
-
             case R.id.action_search:
                 NavigationUtils.showSearchActivity(this);
+                return true;
+            case R.id.action_timer:
+                if (! running) {
+                    showTimePicker();
+                } else {
+                    showTimerInfo();
+                }
                 return true;
 
             default:
@@ -916,39 +921,79 @@ public class MainActivity extends AppCompatActivity implements
         Toast.makeText(this, arret + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
 
         running = true;
+        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_timer_indigo_400_24dp));
+        timeAfficheur.setVisibility(View.VISIBLE);
 
         Notification.setState(true);
         Notification.updateNotification(mPlayerService);
 
+        showTimeEcran();
         baisseVolume(delay);
     }
 
-    public static void stopTimer() {
-        if (running) mTask.cancel(true);
+
+    public static void stopTimer(Context context) {
+        if (running)
+            mTask.cancel(true);
 
         Notification.setState(false);
 
         running = false;
-
+        menu.getItem(0).setIcon(context.getResources().getDrawable(R.drawable.ic_timer_grey_600_24dp));
     }
 
     private  void annulTimer() {
-
-        if (running) mTask.cancel(true);
 
         if (running) {
 
             mTask.cancel(true);
 
             minuteurVolume.cancel();
+            minuteurVolume = null;
+
+
             PlayerService.setVolume(1.0f);
         }
 
         running = false;
+        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_timer_grey_600_24dp));
+        timeAfficheur.setVisibility(View.GONE);
 
         Notification.setState(false);
 
         Notification.updateNotification(mPlayerService);
+    }
+
+       /* ********************************
+    * Afficher temps restant à l'écran
+    * ********************************/
+
+    private void showTimeEcran() {
+
+
+
+        assert timeAfficheur != null;
+        timeAfficheur.setVisibility(View.VISIBLE);
+
+        minuteurVolume = new CountDownTimer(mTask.getDelay(TimeUnit.MILLISECONDS), 1000) {
+            @Override
+            public void onTick(long seconds) {
+
+                long secondes = seconds;
+
+                secondes = secondes / 1000;
+
+                String textTemps = "zZz " + String.format(getString(R.string.timer_info), ((secondes % 3600) / 60), ((secondes % 3600) % 60));
+
+                timeAfficheur.setText(textTemps);
+            }
+
+            @Override
+            public void onFinish() {
+                timeAfficheur.setVisibility(View.GONE);
+            }
+
+        }.start();
     }
 
 

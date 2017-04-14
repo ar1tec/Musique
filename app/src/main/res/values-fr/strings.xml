@@ -12,7 +12,7 @@
 
     <string name="unknown_album">Album inconnu</string>
 
-    <string name="album_artwork">Album cover</string>
+    <string name="album_artwork">Couverture d\'album</string>
 
     <string name="default_time">00:00</string>
 
@@ -110,7 +110,7 @@
     </string>
 
 
-    <string name="about">About</string>
+    <string name="about">A propos</string>
 
     <string name="about_message">
         \n
@@ -155,7 +155,7 @@
     <string name="appupdater_update_available_description_snackbar">Mise à jour %1$s disponible.</string>
     <string name="appupdater_update_not_available">Aucune mise à jour disponible</string>
     <string name="appupdater_update_not_available_description">Vous avez la dernière version disponible de %s.</string>
-    <string name="appupdater_btn_update">Download</string>
+    <string name="appupdater_btn_update">Télécharger</string>
     <string name="appupdater_btn_dismiss">Plus tard</string>
 
 </resources>

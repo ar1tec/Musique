@@ -26,7 +26,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
     private final int mArtworkWidth;
     private final int mArtworkHeight;
     private final Context mContext;
-    private int mLayoutId = R.layout.album_grid_item;
+    private int mLayoutId = R.layout.fragment_album_list_item;
     private List<Album> mAlbumList = Collections.emptyList();
 
 
@@ -78,8 +78,26 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
                 viewHolder.vArtist.setTextSize(15);
                 viewHolder.vArtist.setTypeface(null, Typeface.BOLD);
 
-            } else {
+                viewHolder.vYear.setVisibility(View.INVISIBLE);
+                viewHolder.vBackgroundYear.setVisibility(View.INVISIBLE);
 
+            } else if ("minyear DESC".equals(getTri)) {
+
+                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                viewHolder.vName.setTextSize(15);
+                viewHolder.vName.setTypeface(null, Typeface.NORMAL);
+
+                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.secondary_text));
+                viewHolder.vArtist.setTextSize(14);
+                viewHolder.vArtist.setTypeface(null, Typeface.NORMAL);
+
+                viewHolder.vYear.setText(String.valueOf(album.getYear()));
+                viewHolder.vYear.setVisibility(View.VISIBLE);
+
+                viewHolder.vBackgroundYear.setVisibility(View.VISIBLE);
+
+
+            } else {
                 viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                 viewHolder.vName.setTextSize(15);
                 viewHolder.vName.setTypeface(null, Typeface.BOLD);
@@ -87,6 +105,9 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
                 viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.secondary_text));
                 viewHolder.vArtist.setTextSize(14);
                 viewHolder.vArtist.setTypeface(null, Typeface.NORMAL);
+
+                viewHolder.vYear.setVisibility(View.INVISIBLE);
+                viewHolder.vBackgroundYear.setVisibility(View.INVISIBLE);
             }
 
         }
@@ -120,6 +141,8 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         final ImageView vArtwork;
         final TextView vName;
+        final TextView vYear;
+        final View vBackgroundYear;
 
         TextView vArtist;
 
@@ -128,6 +151,8 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
             vArtwork = (ImageView) itemView.findViewById(R.id.album_artwork);
             vName = (TextView) itemView.findViewById(R.id.album_name);
+            vYear = (TextView) itemView.findViewById(R.id.year);
+            vBackgroundYear = (View) itemView.findViewById(R.id.background_year);
 
 
             vArtwork.setOnClickListener(this);

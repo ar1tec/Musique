@@ -16,9 +16,38 @@
             android:id="@+id/album_artwork"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:background="@color/default_artwork_bg"
             android:contentDescription="@string/album_artwork"
             android:scaleType="fitCenter" />
+
+
+        <View
+            android:id="@+id/background_year"
+            android:layout_width="44dp"
+            android:layout_height="20dp"
+            android:layout_above="@+id/menu_button"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/album_year_background"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/menu_button"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="11dp"
+            android:layout_marginRight="17dp"
+            android:maxLines="1"
+            android:text="1970"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
 
         <ImageButton
@@ -58,13 +87,14 @@
 
             <TextView
                 android:id="@+id/artist_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="top"
                 android:maxLines="1"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
+
 
         </LinearLayout>
     </RelativeLayout>

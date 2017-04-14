@@ -191,7 +191,7 @@
             android:id="@+id/queue_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transparent"
+            android:background="@drawable/shadow_white"
             android:visibility="gone">
 
             <org.oucho.musicplayer.widgets.DragRecyclerView
