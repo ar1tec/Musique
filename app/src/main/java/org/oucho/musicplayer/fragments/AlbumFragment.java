@@ -8,16 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -45,7 +40,6 @@ import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 
-
 import java.util.List;
 import java.util.Locale;
 
@@ -59,18 +53,13 @@ public class AlbumFragment extends BaseFragment {
     private static final String ARG_TRACK_COUNT = "track_count";
 
     private Album mAlbum;
-
     private SongAlbumListAdapter mAdapter;
-
     private MainActivity mActivity;
-
     private RecyclerView mRecyclerView;
-
     private Etat_player Etat_player_Receiver;
     private boolean isRegistered = false;
 
     private static final String STATE = "org.oucho.musicplayer.STATE";
-
 
     private int mArtworkWidth;
     private int mArtworkHeight;
@@ -82,12 +71,9 @@ public class AlbumFragment extends BaseFragment {
 
 
     private TextView durée;
-
     private List<Song> listeTitre;
-
     private BlurView fondBlurView;
     private FrameLayout mLayout;
-
 
     private Context context;
 
@@ -123,7 +109,6 @@ public class AlbumFragment extends BaseFragment {
 
             listeTitre = songList;
 
-
             int duréeTotal = 0;
 
             for (int i = 0; i < listeTitre.size(); i++) {
@@ -140,7 +125,6 @@ public class AlbumFragment extends BaseFragment {
             } else {
                 durée.setText(msToText(duréeTotal) + " minutes");
             }
-
         }
 
         @Override
@@ -163,7 +147,6 @@ public class AlbumFragment extends BaseFragment {
         Bundle args = getArguments();
 
         context = getContext();
-
 
         Etat_player_Receiver = new Etat_player();
         IntentFilter filter = new IntentFilter(STATE);
@@ -199,8 +182,7 @@ public class AlbumFragment extends BaseFragment {
         mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.artist_image_req_width);
         mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
 
-        //getActivity().setTitle(R.string.album);
-
+        getActivity().setTitle(R.string.album);
     }
 
 
@@ -213,21 +195,12 @@ public class AlbumFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_album, container, false);
 
-/*        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
-
         fondBlurView = (BlurView) rootView.findViewById(R.id.fondBlurView);
-
         mLayout = (FrameLayout) rootView.findViewById(R.id.fragment_album_layout);
 
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
-
         ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
-
 
         TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
         titreAlbum.setText(Titre);
@@ -244,12 +217,9 @@ public class AlbumFragment extends BaseFragment {
         durée = (TextView) rootView.findViewById(R.id.duration);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
-
         mRecyclerView.setLayoutManager(new CustomLayoutManager(getActivity()));
-
         mAdapter = new SongAlbumListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
-
         mRecyclerView.setAdapter(mAdapter);
 
         FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
@@ -261,13 +231,11 @@ public class AlbumFragment extends BaseFragment {
     }
 
 
-
     private void setupBlurView(View rootview) {
         final float radius = 3f;
 
         //set background, if your root layout doesn't have one
         final Drawable windowBackground = rootview.getBackground();
-
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -280,7 +248,6 @@ public class AlbumFragment extends BaseFragment {
 
             }
         }, 1000);
-
 
     }
 
@@ -454,7 +421,6 @@ public class AlbumFragment extends BaseFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-
             String receiveIntent = intent.getAction();
 
             if (STATE.equals(receiveIntent)
@@ -481,7 +447,5 @@ public class AlbumFragment extends BaseFragment {
             }
         }
     }
-
-
 
 }

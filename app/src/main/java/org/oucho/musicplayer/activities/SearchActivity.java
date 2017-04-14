@@ -50,13 +50,14 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity {
 
     private static final String FILTER = "filter";
-
-
     private boolean mAlbumListLoaded = false;
     private boolean mArtistListLoaded = false;
     private boolean mSongListLoaded = false;
     private View mEmptyView;
     private SearchAdapter mAdapter;
+    private int mThumbSize;
+    private RecyclerView mRecyclerView;
+
 
     private final LoaderManager.LoaderCallbacks<List<Album>> mAlbumLoaderCallbacks
             = new LoaderManager.LoaderCallbacks<List<Album>>() {
@@ -65,7 +66,6 @@ public class SearchActivity extends AppCompatActivity {
         public Loader<List<Album>> onCreateLoader(int id, Bundle args) {
 
             AlbumLoader loader = new AlbumLoader(SearchActivity.this, null);
-
             setLoaderFilter(args, loader);
 
             return loader;
@@ -75,7 +75,6 @@ public class SearchActivity extends AppCompatActivity {
         public void onLoadFinished(Loader<List<Album>> loader, List<Album> data) {
             mAlbumListLoaded = true;
             mAdapter.setAlbumList(data);
-
         }
 
         @Override
@@ -93,7 +92,6 @@ public class SearchActivity extends AppCompatActivity {
         public void onLoadFinished(Loader<List<Artist>> loader, List<Artist> data) {
             mArtistListLoaded = true;
             mAdapter.setArtistList(data);
-
         }
 
         @Override
@@ -105,13 +103,11 @@ public class SearchActivity extends AppCompatActivity {
         public Loader<List<Artist>> onCreateLoader(int id, Bundle args) {
 
             ArtistLoader loader = new ArtistLoader(SearchActivity.this);
-
             setLoaderFilter(args, loader);
 
             return loader;
         }
     };
-
 
 
     private final LoaderManager.LoaderCallbacks<List<Song>> mSongLoaderCallbacks
@@ -127,21 +123,16 @@ public class SearchActivity extends AppCompatActivity {
 
             mSongListLoaded = true;
             mAdapter.setSongList(songList);
-
         }
 
         @Override
         public Loader<List<Song>> onCreateLoader(int id, Bundle args) {
             SongLoader loader = new SongLoader(SearchActivity.this);
-
             setLoaderFilter(args, loader);
 
             return loader;
         }
     };
-
-    private int mThumbSize;
-
 
 
     private final OnQueryTextListener searchQueryListener = new OnQueryTextListener() {
@@ -160,9 +151,6 @@ public class SearchActivity extends AppCompatActivity {
         }
 
     };
-
-    private RecyclerView mRecyclerView;
-
 
     private final RecyclerView.AdapterDataObserver mEmptyObserver = new RecyclerView.AdapterDataObserver() {
 
@@ -207,7 +195,8 @@ public class SearchActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
 
-        int couleur = ContextCompat.getColor(context, R.color.colorPrimary_0);
+        int couleur = ContextCompat.getColor(context, R.color.colorAccent);
+
 
         ColorDrawable colorDrawable = new ColorDrawable(couleur);
         assert actionBar != null;
@@ -217,7 +206,6 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setIconifiedByDefault(false);
         actionBar.setCustomView(searchView);
         actionBar.setDisplayShowCustomEnabled(true);
-        //actionBar.setElevation(0);
 
         searchView.setOnQueryTextListener(searchQueryListener);
 
@@ -243,8 +231,6 @@ public class SearchActivity extends AppCompatActivity {
         mFastScroller.setRecyclerView(mRecyclerView);
     }
 
-
-
     private void refresh(String newText) {
         Bundle args = null;
         if (newText != null) {
@@ -264,9 +250,10 @@ public class SearchActivity extends AppCompatActivity {
 
     private void returnToMain(String action, Bundle data) {
         Intent i = new Intent(action);
-        if (data != null) {
+
+        if (data != null)
             i.putExtras(data);
-        }
+
         setResult(RESULT_OK, i);
         finish();
     }
@@ -329,7 +316,7 @@ public class SearchActivity extends AppCompatActivity {
         final TextView vAlbumCount; // NOPMD
         final ImageView vArtistImage; // NOPMD
 
-        public ArtistViewHolder(View itemView) {
+        ArtistViewHolder(View itemView) {
             super(itemView);
             vName = (TextView) itemView.findViewById(R.id.artist_name);
             vAlbumCount = (TextView) itemView.findViewById(R.id.album_count);
@@ -365,7 +352,7 @@ public class SearchActivity extends AppCompatActivity {
         final TextView vArtist; // NOPMD
         final ImageView vArtwork; // NOPMD
 
-        public SongViewHolder(View itemView) {
+        SongViewHolder(View itemView) {
 
             super(itemView);
             vTitle = (TextView) itemView.findViewById(R.id.title);
@@ -460,13 +447,13 @@ public class SearchActivity extends AppCompatActivity {
 
         final TextView vSection; // NOPMD
 
-        public SectionViewHolder(View itemView) {
+        SectionViewHolder(View itemView) {
             super(itemView);
             vSection = (TextView) itemView;
         }
     }
 
-    class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private static final int ALBUM = 1;
         private static final int ARTIST = 2;
@@ -475,13 +462,11 @@ public class SearchActivity extends AppCompatActivity {
         private static final int SECTION_ARTISTS = 5;
         private static final int SECTION_SONGS = 6;
 
-
         private final List<Album> mAlbumList = Collections.synchronizedList(new ArrayList<Album>());
         private final List<Artist> mArtistList = Collections.synchronizedList(new ArrayList<Artist>());
         private final List<Song> mSongList = Collections.synchronizedList(new ArrayList<Song>());
 
-
-        public void setAlbumList(List<Album> albumList) {
+        void setAlbumList(List<Album> albumList) {
             mAlbumList.clear();
             mAlbumList.addAll(albumList);
             refreshIfNecessary();
@@ -493,13 +478,13 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
-        public void setArtistList(List<Artist> artistList) {
+        void setArtistList(List<Artist> artistList) {
             mArtistList.clear();
             mArtistList.addAll(artistList);
             refreshIfNecessary();
         }
 
-        public void setSongList(List<Song> songList) {
+        void setSongList(List<Song> songList) {
             mSongList.clear();
             mSongList.addAll(songList);
             refreshIfNecessary();
@@ -580,11 +565,8 @@ public class SearchActivity extends AppCompatActivity {
                     Album album = mAlbumList.get(position - 1);
                     ((AlbumViewHolder) viewHolder).vName.setText(album.getAlbumName());
                     ((AlbumViewHolder) viewHolder).vArtist.setText(album.getArtistName());
-
                     ((AlbumViewHolder) viewHolder).vArtwork.setTag(position);
-
                     ArtworkCache.getInstance().loadBitmap(album.getId(), ((AlbumViewHolder) viewHolder).vArtwork, mThumbSize, mThumbSize);
-
                     break;
 
                 case ARTIST:
@@ -593,21 +575,16 @@ public class SearchActivity extends AppCompatActivity {
                     ((ArtistViewHolder) viewHolder).vAlbumCount.setText(getResources()
                             .getQuantityString(R.plurals.albums_count,
                                     artist.getAlbumCount(), artist.getAlbumCount()));
-
                     ((ArtistViewHolder) viewHolder).vArtistImage.setTag(position);
-
                     ArtistImageCache.getInstance().loadBitmap(artist.getName(), ((ArtistViewHolder) viewHolder).vArtistImage, mThumbSize, mThumbSize);
                     break;
 
                 case SONG:
 
                     Song song = mSongList.get(position - albumRows - artistRows - 1);
-
                     ((SongViewHolder) viewHolder).vTitle.setText(song.getTitle());
                     ((SongViewHolder) viewHolder).vArtist.setText(song.getArtist());
-
                     ((SongViewHolder) viewHolder).vArtwork.setTag(position);
-
                     ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), ((SongViewHolder) viewHolder).vArtwork, mThumbSize, mThumbSize);
                     break;
 
@@ -638,14 +615,18 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 return ALBUM;
             }
+
             int artistRows = mArtistList.size() > 0 ? mArtistList.size() + 1 : 0;
+
             if (albumRows + artistRows > position) {
                 if (position - albumRows == 0) {
                     return SECTION_ARTISTS;
                 }
                 return ARTIST;
             }
+
             int songRows = mSongList.size() > 0 ? mSongList.size() + 1 : 0;
+
             if (albumRows + artistRows + songRows > position) {
                 if (position - albumRows - artistRows == 0) {
                     return SECTION_SONGS;
@@ -669,7 +650,6 @@ public class SearchActivity extends AppCompatActivity {
                 count += mSongList.size() + 1;
 
             return count;
-
         }
     }
 }

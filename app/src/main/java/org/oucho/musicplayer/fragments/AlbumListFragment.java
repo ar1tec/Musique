@@ -18,7 +18,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,6 +59,7 @@ public class AlbumListFragment extends BaseFragment {
     private boolean run = false;
     private boolean isRegistered = false;
 
+    View rootView;
 
     private final LoaderManager.LoaderCallbacks<List<Album>> mLoaderCallbacks = new LoaderCallbacks<List<Album>>() {
 
@@ -106,8 +106,6 @@ public class AlbumListFragment extends BaseFragment {
                     ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
                     ft.replace(R.id.fragment_album_list_layout, fragment);
                     ft.commit();
-
-                    getActivity().setTitle(R.string.album);
 
                     showOverflowMenu(false);
 

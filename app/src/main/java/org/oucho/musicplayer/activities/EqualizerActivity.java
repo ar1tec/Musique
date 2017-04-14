@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.audiofx.AudioEffects;
+import org.oucho.musicplayer.utils.NavigationUtils;
 
 public class EqualizerActivity extends AppCompatActivity {
 
@@ -42,8 +43,6 @@ public class EqualizerActivity extends AppCompatActivity {
 
         Context context = getApplicationContext();
 
-
-
         int couleurFond = ContextCompat.getColor(context, R.color.colorPrimary_0);
 
         int couleurTitre = ContextCompat.getColor(context, R.color.colorAccent);
@@ -58,11 +57,6 @@ public class EqualizerActivity extends AppCompatActivity {
         actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>" + titre + "</font>"));
         //actionBar.setElevation(0);
 
-/*        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_dropdown);
-        upArrow.setColorFilter(couleurTitre, PorterDuff.Mode.SRC_ATOP);
-        //noinspection ConstantConditions
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);*/
-
         mSwitchBound = false;
         init();
     }
@@ -71,6 +65,12 @@ public class EqualizerActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         AudioEffects.savePrefs(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+            NavigationUtils.showMainActivity(this);
     }
 
     private void bindSwitchToEqualizer() {

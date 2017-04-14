@@ -336,7 +336,9 @@ public class MainActivity extends AppCompatActivity implements
                     File file = new File(getApplicationInfo().dataDir, "/databases/Queue.db");
 
                     if (file.exists()) {
+
                         NavigationUtils.showPlaybackActivity(MainActivity.this);
+
                     } else {
                         Toast.makeText(mContext, "Vous devez d'abord sélectionner un titre", Toast.LENGTH_LONG).show();
                     }
@@ -350,7 +352,6 @@ public class MainActivity extends AppCompatActivity implements
     };
 
 
-
     /* *********************************************************************************************
      * Menu
      * ********************************************************************************************/
@@ -362,7 +363,6 @@ public class MainActivity extends AppCompatActivity implements
 
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -471,8 +471,6 @@ public class MainActivity extends AppCompatActivity implements
                 Log.d("PWEEEEEEEEEEET", "setupBlurView();");
 
                 setupBlurView();
-                //blurActive = true;
-
             }
         }
     }
@@ -533,7 +531,6 @@ public class MainActivity extends AppCompatActivity implements
         return new Album(id, title, artist, year, trackCount);
     }
 
-
     private Artist getArtistFromBundle(Bundle bundle) {
         long id = bundle.getLong(ARTIST_ARTIST_ID);
         String name = bundle.getString(ARTIST_ARTIST_NAME);
@@ -555,7 +552,6 @@ public class MainActivity extends AppCompatActivity implements
         return new Song(id, title, artist, album, albumId, trackNumber, duration);
     }
 
-
     public void refresh() {
 
         for (Fragment f : getSupportFragmentManager().getFragments()) {
@@ -575,11 +571,8 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         public void run() {
-
             updateProgressBar();
-
             mHandler.postDelayed(mUpdateProgressBar, 1000);
-
         }
     };
 
@@ -600,15 +593,11 @@ public class MainActivity extends AppCompatActivity implements
                     mHandler.removeCallbacks(mUpdateProgressBar);
                 }
 
-
             } else if (action.equals(PlayerService.META_CHANGED)) {
                 updateTrackInfo();
             }
         }
     };
-
-
-
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -618,17 +607,14 @@ public class MainActivity extends AppCompatActivity implements
             PlayerService.PlaybackBinder binder = (PlaybackBinder) service;
             mPlayerService = binder.getService();
             mServiceBound = true;
-
             mPlaybackRequests.sendRequests();
 
             updateAll();
-
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mServiceBound = false;
-
         }
     };
 
@@ -645,8 +631,6 @@ public class MainActivity extends AppCompatActivity implements
             mPlayerService.addToQueue(song);
         }
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -691,9 +675,7 @@ public class MainActivity extends AppCompatActivity implements
         private List<Song> mPlayList;
         private int mIndex;
         private boolean mAutoPlay;
-
         private Song mNextTrack;
-
         private Song mAddToQueue;
 
         private void requestPlayList(List<Song> playList) {
@@ -706,7 +688,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
-        public void requestAddToQueue(Song song) {
+        void requestAddToQueue(Song song) {
             if (mPlayerService != null) {
                 mPlayerService.addToQueue(song);
             } else {
@@ -714,7 +696,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
-        public void requestAsNextTrack(Song song) {
+        void requestAsNextTrack(Song song) {
             if (mPlayerService != null) {
                 mPlayerService.setAsNextTrack(song);
             } else {
@@ -722,7 +704,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
-        public void sendRequests() {
+        void sendRequests() {
             if (mPlayerService == null) {
                 return;
             }
@@ -774,7 +756,6 @@ public class MainActivity extends AppCompatActivity implements
 
             updateProgressBar();
         }
-
     }
 
 
@@ -808,8 +789,6 @@ public class MainActivity extends AppCompatActivity implements
 
         mSeekArc = (SeekArc) view.findViewById(R.id.seekArc);
         mSeekArcProgress = (TextView) view.findViewById(R.id.seekArcProgress);
-
-
         mSeekArc.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
 
             @Override
@@ -845,7 +824,6 @@ public class MainActivity extends AppCompatActivity implements
             public void onClick(DialogInterface dialog, int which) {
 
                 int mins = mSeekArc.getProgress();
-
                 startTimer(mins);
             }
         });
@@ -867,14 +845,13 @@ public class MainActivity extends AppCompatActivity implements
         final String continuer = getString(R.string.continuer);
         final String cancelTimer = getString(R.string.cancel_timer);
 
-
         if (mTask.getDelay(TimeUnit.MILLISECONDS) < 0) {
             annulTimer();
             return;
         }
+
         @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.timer_info_dialog, null);
         final TextView timeLeft = ((TextView) view.findViewById(R.id.time_left));
-
 
         final String stopTimer = getString(R.string.stop_timer);
 
@@ -915,13 +892,9 @@ public class MainActivity extends AppCompatActivity implements
     private void startTimer(final int minutes) {
 
         final String impossible = getString(R.string.impossible);
-
-
         final String minuteSingulier = getString(R.string.minute_singulier);
         final String minutePluriel = getString(R.string.minute_pluriel);
-
         final String arret = getString(R.string.arret);
-
         final String minuteTxt;
 
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -940,20 +913,14 @@ public class MainActivity extends AppCompatActivity implements
 
         mTask = scheduler.schedule(new GetAudioFocusTask(this), delay, TimeUnit.MILLISECONDS);
 
-
         Toast.makeText(this, arret + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
-
 
         running = true;
 
         Notification.setState(true);
-
         Notification.updateNotification(mPlayerService);
 
-
-
         baisseVolume(delay);
-
     }
 
     public static void stopTimer() {
@@ -982,8 +949,6 @@ public class MainActivity extends AppCompatActivity implements
         Notification.setState(false);
 
         Notification.updateNotification(mPlayerService);
-
-
     }
 
 
@@ -998,9 +963,7 @@ public class MainActivity extends AppCompatActivity implements
         // définir si le delay est supérieur ou inférieur à 10mn
 
         final short minutes = (short) ( ( (delay / 1000) % 3600) / 60);
-
         final boolean tempsMinuterie = minutes > 10;
-
         int cycle;
 
         if (tempsMinuterie) {
@@ -1164,20 +1127,14 @@ public class MainActivity extends AppCompatActivity implements
                     editor.apply();
                 }
 
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                } else {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-                   
                 }
-
                 break;
 
             case PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
-
                 refresh();
-
                 break;
 
             default:
@@ -1190,9 +1147,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
-
-            } else {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
 
                 DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
                         new DialogInterface.OnClickListener() {
@@ -1201,13 +1156,9 @@ public class MainActivity extends AppCompatActivity implements
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE);
                             }
                         });
-
             }
         }
-
     }
-
-
 
     private static class DialogUtils {
 
@@ -1218,7 +1169,5 @@ public class MainActivity extends AppCompatActivity implements
                     .setPositiveButton(android.R.string.ok, listener)
                     .show();
         }
-
-
     }
 }

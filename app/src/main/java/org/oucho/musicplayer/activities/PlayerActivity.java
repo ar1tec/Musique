@@ -48,37 +48,31 @@ import java.util.Locale;
 
 public class PlayerActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
-    
+
+
     private SeekBar mSeekBar;
-    private DragRecyclerView mQueueView;
     private View mQueueLayout;
+    private BlurView mBlurView;
+    private ActionBar actionBar;
+    private FrameLayout mLayout;
+    private DragRecyclerView mQueueView;
+    private PlayerService mPlayerService;
 
+    private final Handler mHandler = new Handler();
     private final PlaybackRequests mPlaybackRequests = new PlaybackRequests();
-
 
     private List<Song> mQueue;
     private QueueAdapter mQueueAdapter = new QueueAdapter();
 
     private boolean mServiceBound;
-    private PlayerService mPlayerService;
-
-    private final Handler mHandler = new Handler();
-
 
     private int total_track = -1;
     private int track = -1;
-
     private int mArtworkSize;
+    private int couleurSousTitre;
 
     private static final String fichier_préférence = "PlaybackState";
 
-    private ActionBar actionBar;
-
-    private BlurView mBlurView;
-
-    private FrameLayout mLayout;
-
-    private int couleurSousTitre;
 
 
     /* *********************************************************************************************
@@ -117,7 +111,6 @@ public class PlayerActivity extends AppCompatActivity
         actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>"));
         actionBar.setElevation(0);
 
-
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         setContentView(R.layout.activity_player);
@@ -128,6 +121,7 @@ public class PlayerActivity extends AppCompatActivity
         ImageView button_prev = (ImageView) findViewById(R.id.prev);
 
         mBlurView = (BlurView) findViewById(R.id.blurView);
+
         mLayout = (FrameLayout) findViewById(R.id.root);
 
         setupBlurView();
@@ -137,20 +131,15 @@ public class PlayerActivity extends AppCompatActivity
         assert button_prev != null;
         button_prev.setColorFilter(couleurTitre, PorterDuff.Mode.SRC_ATOP);
 
-
         int couleur_control = ContextCompat.getColor(context, R.color.controls_tint_light);
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_spinner_black);
         upArrow.setColorFilter(couleur_control, PorterDuff.Mode.SRC_ATOP);
         //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-
         mQueueLayout = findViewById(R.id.queue_layout);
-
         mQueueView = (DragRecyclerView) findViewById(R.id.queue_view);
-
         mQueueView.setLayoutManager(new CustomLayoutManager(this));
-
         mQueueAdapter = new QueueAdapter();
         mQueueView.setOnItemMovedListener(new DragRecyclerView.OnItemMovedListener() {
             @Override
@@ -158,7 +147,6 @@ public class PlayerActivity extends AppCompatActivity
                 mQueueAdapter.moveItem(oldPosition, newPosition);
             }
         });
-
         mQueueView.setAdapter(mQueueAdapter);
 
         findViewById(R.id.prev).setOnClickListener(mOnClickListener);
@@ -172,6 +160,8 @@ public class PlayerActivity extends AppCompatActivity
 
     }
 
+
+
     private void setupBlurView() {
         final float radius = 5f;
 
@@ -180,7 +170,7 @@ public class PlayerActivity extends AppCompatActivity
 
 
         /// mDrawerLayout pour indiquer la racine du layout
-        final BlurView.ControllerSettings bottomViewSettings = mBlurView.setupWith(mLayout)
+        mBlurView.setupWith(mLayout)
                 .windowBackground(windowBackground)
                 .blurRadius(radius);
 
@@ -256,21 +246,15 @@ public class PlayerActivity extends AppCompatActivity
             }
             switch (v.getId()) {
                 case R.id.play_pause_toggle:
-
                     mPlayerService.toggle();
-
                     break;
 
                 case R.id.prev:
-
                     mPlayerService.playPrev();
-
                     break;
 
                 case R.id.next:
-
                     mPlayerService.playNext(true);
-
                     break;
 
                 case R.id.shuffle:
@@ -466,7 +450,6 @@ public class PlayerActivity extends AppCompatActivity
                 ((TextView) findViewById(R.id.song_artist)).setText(artist);
             }
 
-
             ImageView artworkView = (ImageView) findViewById(R.id.artwork);
             ArtworkCache.getInstance().loadBitmap(PlayerService.getAlbumId(), artworkView, mArtworkSize, mArtworkSize);
 
@@ -479,7 +462,6 @@ public class PlayerActivity extends AppCompatActivity
             }
 
             setQueueSelection(PlayerService.getPositionWithinPlayList());
-
         }
     }
 
@@ -499,10 +481,8 @@ public class PlayerActivity extends AppCompatActivity
                 assert button != null;
                 button.setImageResource(R.drawable.musicplayer_play);
             }
-
             button.setColorFilter(couleur, PorterDuff.Mode.SRC_ATOP);
         }
-
     }
 
     private void updateShuffleButton() {
@@ -549,7 +529,6 @@ public class PlayerActivity extends AppCompatActivity
 
         mQueueAdapter.notifyDataSetChanged();
 
-
         setQueueSelection(PlayerService.getPositionWithinPlayList());
     }
 
@@ -592,7 +571,6 @@ public class PlayerActivity extends AppCompatActivity
             itemView.findViewById(R.id.song_info).setOnClickListener(this);
             itemView.findViewById(R.id.delete_button).setOnClickListener(this);
             this.itemView = itemView;
-
         }
 
         @Override
@@ -610,13 +588,11 @@ public class PlayerActivity extends AppCompatActivity
                 switch (v.getId()) {
                     case R.id.song_info:
                         mPlayerService.setPosition(position, true);
-
                         break;
 
                     case R.id.delete_button:
-                        if (mQueueAdapter.getItemCount() > 0) {
+                        if (mQueueAdapter.getItemCount() > 0)
                             mQueueAdapter.removeItem(position);
-                        }
                         break;
 
                     default:
@@ -627,10 +603,9 @@ public class PlayerActivity extends AppCompatActivity
         }
     }
 
-    class QueueAdapter extends RecyclerView.Adapter<QueueItemViewHolder> {
+    private class QueueAdapter extends RecyclerView.Adapter<QueueItemViewHolder> {
 
         private List<Song> mQueue;
-
         private int mSelectedItemPosition = -1;
 
         public void setQueue(List<Song> queue) {
@@ -642,7 +617,6 @@ public class PlayerActivity extends AppCompatActivity
         public QueueItemViewHolder onCreateViewHolder(ViewGroup parent, int type) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.queue_item, parent, false);
-
 
             return new QueueItemViewHolder(itemView);
         }
@@ -660,7 +634,6 @@ public class PlayerActivity extends AppCompatActivity
 
             viewHolder.vTitle.setText(song.getTitle());
             viewHolder.vArtist.setText(song.getArtist());
-
         }
 
         @Override
@@ -671,7 +644,7 @@ public class PlayerActivity extends AppCompatActivity
             return mQueue.size();
         }
 
-        public void moveItem(int oldPosition, int newPosition) {
+        void moveItem(int oldPosition, int newPosition) {
             if (oldPosition < 0 || oldPosition >= mQueue.size()
                     || newPosition < 0 || newPosition >= mQueue.size()) {
                 return;
@@ -688,12 +661,12 @@ public class PlayerActivity extends AppCompatActivity
 
         }
 
-        public void removeItem(int position) {
+        void removeItem(int position) {
             mQueue.remove(position);
             notifyItemRemoved(position);
         }
 
-        public void setSelection(int position) {
+        void setSelection(int position) {
             int oldSelection = mSelectedItemPosition;
             mSelectedItemPosition = position;
 
@@ -714,11 +687,9 @@ public class PlayerActivity extends AppCompatActivity
         private boolean mAutoPlay;
 
         private Song mNextTrack;
-
         private Song mAddToQueue;
 
-
-        public void sendRequests() {
+        void sendRequests() {
             if (mPlayerService == null) {
                 return;
             }
