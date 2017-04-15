@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements
 
         switch (menuItem.getItemId()) {
             case R.id.action_equalizer:
-                NavigationUtils.showEqualizer(MainActivity.this);
+                NavigationUtils.showEqualizer(this);
                 break;
 
             case R.id.nav_update:
@@ -666,10 +666,10 @@ public class MainActivity extends AppCompatActivity implements
             ImageButton quickButton = (ImageButton) findViewById(R.id.quick_play_pause_toggle);
             if (PlayerService.isPlaying()) {
                 assert quickButton != null;
-                quickButton.setImageResource(R.drawable.musicplayer_pause);
+                quickButton.setImageResource(R.drawable.ic_pause_circle_filled_grey_600_48dp);
             } else {
                 assert quickButton != null;
-                quickButton.setImageResource(R.drawable.musicplayer_play);
+                quickButton.setImageResource(R.drawable.ic_play_circle_filled_grey_600_48dp);
             }
         }
     }

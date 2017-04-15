@@ -56,7 +56,7 @@ public class SongAlbumListAdapter extends Adapter<SongAlbumListAdapter.SongViewH
                 holder.PlayView.setVisibility(View.VISIBLE);
             } else {
                 holder.vTrackNumber.setVisibility(View.INVISIBLE);
-                holder.PlayView.setImageResource(R.drawable.ic_pause_list_song_album);
+                holder.PlayView.setImageResource(R.drawable.ic_pause_jaune_24dp);
                 holder.PlayView.setVisibility(View.VISIBLE);
             }
 

@@ -3,14 +3,14 @@ package org.oucho.musicplayer.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -139,15 +139,39 @@ public class PlaylistFragment extends BaseFragment {
         FastScroller scroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         scroller.setRecyclerView(mRecyclerView);
 
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-
-        //noinspection ConstantConditions
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return rootView;
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Active la touche back
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                    ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
+                    ft.commit();
+
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

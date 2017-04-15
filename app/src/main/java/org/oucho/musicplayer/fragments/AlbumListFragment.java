@@ -210,8 +210,7 @@ public class AlbumListFragment extends BaseFragment {
             if ("reload".equals(receiveIntent)) {
                 setUserVisibleHint(true);
                 showOverflowMenu(true);
-                LibraryFragment libraryFragment = new LibraryFragment();
-                libraryFragment.setLock(false);
+                LibraryFragment.setLock(false);
             }
         }
     }

@@ -131,9 +131,7 @@ public class PlayerActivity extends AppCompatActivity
         assert button_prev != null;
         button_prev.setColorFilter(couleurTitre, PorterDuff.Mode.SRC_ATOP);
 
-        int couleur_control = ContextCompat.getColor(context, R.color.controls_tint_light);
-        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_spinner_black);
-        upArrow.setColorFilter(couleur_control, PorterDuff.Mode.SRC_ATOP);
+        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_arrow_downward_grey_600_24dp);
         //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
@@ -476,10 +474,10 @@ public class PlayerActivity extends AppCompatActivity
             ImageView button = (ImageView) findViewById(R.id.play_pause_toggle);
             if (PlayerService.isPlaying()) {
                 assert button != null;
-                button.setImageResource(R.drawable.musicplayer_pause);
+                button.setImageResource(R.drawable.ic_pause_circle_filled_grey_600_48dp);
             } else {
                 assert button != null;
-                button.setImageResource(R.drawable.musicplayer_play);
+                button.setImageResource(R.drawable.ic_play_circle_filled_grey_600_48dp);
             }
             button.setColorFilter(couleur, PorterDuff.Mode.SRC_ATOP);
         }
@@ -491,11 +489,11 @@ public class PlayerActivity extends AppCompatActivity
         ImageView shuffleButton = (ImageView) findViewById(R.id.shuffle);
         if (shuffle) {
             assert shuffleButton != null;
-            shuffleButton.setImageResource(R.drawable.musicplayer_shuffle_on);
+            shuffleButton.setImageResource(R.drawable.ic_shuffle_grey_600_24dp);
 
         } else {
             assert shuffleButton != null;
-            shuffleButton.setImageResource(R.drawable.musicplayer_shuffle);
+            shuffleButton.setImageResource(R.drawable.ic_shuffle_grey_400_24dp);
 
         }
     }
@@ -505,13 +503,13 @@ public class PlayerActivity extends AppCompatActivity
         int mode = PlayerService.getRepeatMode();
         if (mode == PlayerService.NO_REPEAT) {
             assert repeatButton != null;
-            repeatButton.setImageResource(R.drawable.musicplayer_repeat_no);
+            repeatButton.setImageResource(R.drawable.ic_repeat_grey_400_24dp);
         } else if (mode == PlayerService.REPEAT_ALL) {
             assert repeatButton != null;
-            repeatButton.setImageResource(R.drawable.musicplayer_repeat);
+            repeatButton.setImageResource(R.drawable.ic_repeat_grey_600_24dp);
         } else if (mode == PlayerService.REPEAT_CURRENT) {
             assert repeatButton != null;
-            repeatButton.setImageResource(R.drawable.musicplayer_repeat_once);
+            repeatButton.setImageResource(R.drawable.ic_repeat_one_grey_600_24dp);
 
         }
     }

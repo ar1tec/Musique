@@ -12,6 +12,7 @@ import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -244,6 +245,35 @@ public class SongListFragment extends BaseFragment {
         super.onDetach();
         mActivity = null;
     }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Active la touche back
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    LibraryFragment.backToPrevious();
+
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
 
 
 

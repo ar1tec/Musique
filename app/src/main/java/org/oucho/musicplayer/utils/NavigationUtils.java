@@ -15,14 +15,14 @@ public class NavigationUtils {
         Intent i = new Intent(activity, SearchActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivityForResult(i, MainActivity.SEARCH_ACTIVITY);
-        activity.overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
     }
 
     public static void showEqualizer(Activity activity) {
         Intent i = new Intent(activity, EqualizerActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(i);
-        activity.overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
     }
 
     public static void showMainActivity(Activity activity) {

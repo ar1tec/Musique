@@ -27,12 +27,17 @@ public class LibraryFragment extends BaseFragment {
     private static SectionsPagerAdapter mSectionsPagerAdapter;
 
     private static boolean lock = false;
+    private static int page;
+
+
 
     public static LibraryFragment newInstance() {
 
         return new LibraryFragment();
     }
 
+
+    static ViewPager mViewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +46,7 @@ public class LibraryFragment extends BaseFragment {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getChildFragmentManager());
 
-        ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
+        mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         MainActivity activity = (MainActivity) getActivity();
@@ -60,13 +65,18 @@ public class LibraryFragment extends BaseFragment {
     }
 
 
+    public static void backToPrevious() {
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+    }
+
+
     public boolean getLock() {
         return lock;
     }
 
-    public void setLock(boolean value) {
-        this.lock = value;
-        this.mSectionsPagerAdapter.notifyDataSetChanged();
+    public static void  setLock(boolean value) {
+        lock = value;
+        mSectionsPagerAdapter.notifyDataSetChanged();
 
     }
 

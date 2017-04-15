@@ -4,16 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:tag="playlist"
+    android:id="@+id/fragment_playlist"
+    android:background="@color/blanc"
     tools:context="org.oucho.musicplayer.fragments.PlaylistFragment">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="?attr/ToolBar"
-        android:visibility="gone"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <org.oucho.musicplayer.widgets.DragRecyclerView
         android:id="@+id/list_view"
@@ -33,5 +26,11 @@
         android:paddingTop="10dp"
         android:layout_marginBottom="@dimen/barre_lecture" />
 
+
+    <View
+        android:id="@+id/toolbar_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="2.5dp"
+        android:background="@drawable/shadow"/>
 
 </RelativeLayout>

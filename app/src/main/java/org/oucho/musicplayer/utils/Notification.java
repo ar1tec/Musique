@@ -56,11 +56,11 @@ public class Notification {
         builder.setContentTitle(PlayerService.getSongTitle())
                 .setContentText(PlayerService.getArtistName());
 
-        int toggleResId = PlayerService.isPlaying() ? R.drawable.notification_pause : R.drawable.notification_play;
+        int toggleResId = PlayerService.isPlaying() ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp;
 
-        builder.addAction(R.drawable.notification_previous, "", previousIntent)
+        builder.addAction(R.drawable.ic_fast_rewind_white_24dp, "", previousIntent)
                 .addAction(toggleResId, "", togglePlayIntent)
-                .addAction(R.drawable.notification_next, "", nextIntent)
+                .addAction(R.drawable.ic_fast_forward_white_24dp, "", nextIntent)
 
                 .setVisibility(android.app.Notification.VISIBILITY_PUBLIC);
 

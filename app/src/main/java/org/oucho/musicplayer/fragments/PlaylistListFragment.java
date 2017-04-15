@@ -6,12 +6,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.PlaylistListAdapter;
@@ -132,6 +133,32 @@ public class PlaylistListFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Active la touche back
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    LibraryFragment.backToPrevious();
+
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -180,7 +207,13 @@ public class PlaylistListFragment extends BaseFragment {
 
             PlaylistFragment fragment = PlaylistFragment.newInstance(playlist);
 
-            ((MainActivity) getActivity()).setFragment(fragment);
+            //((MainActivity) getActivity()).setFragment(fragment);
+
+            //Fragment fragment = AlbumFragment.newInstance(album);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
+            ft.replace(R.id.fragment_playlist_list, fragment);
+            ft.commit();
         }
     };
 

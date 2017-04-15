@@ -29,8 +29,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:scaleType="center"
-            android:background="@drawable/ic_playlist"
-            android:tint="@color/controls_tint_light" />
+            android:background="@drawable/ic_playlist_play_grey_600_24dp" />
 
         <ImageButton
             android:id="@+id/delete_playlist"

@@ -77,8 +77,6 @@ public class AlbumFragment extends BaseFragment {
 
     private Context context;
 
-    LibraryFragment libraryFragment;
-
     public static AlbumFragment newInstance(Album album) {
         AlbumFragment fragment = new AlbumFragment();
         Bundle args = new Bundle();
@@ -152,8 +150,6 @@ public class AlbumFragment extends BaseFragment {
         IntentFilter filter = new IntentFilter(STATE);
         context.registerReceiver(Etat_player_Receiver, filter);
         isRegistered = true;
-
-        libraryFragment = new LibraryFragment();
 
         if (args != null) {
 
@@ -382,7 +378,7 @@ public class AlbumFragment extends BaseFragment {
             isRegistered = true;
         }
 
-        libraryFragment.setLock(true);
+        LibraryFragment.setLock(true);
 
         // Active la touche back
         if(getView() == null){
@@ -406,7 +402,7 @@ public class AlbumFragment extends BaseFragment {
                     intent.setAction("reload");
                     context.sendBroadcast(intent);
 
-                    libraryFragment.setLock(false);
+                    LibraryFragment.setLock(false);
 
                     return true;
                 }
