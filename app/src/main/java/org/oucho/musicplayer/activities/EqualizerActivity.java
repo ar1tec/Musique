@@ -54,8 +54,13 @@ public class EqualizerActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setBackgroundDrawable(colorDrawable);
-        actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>" + titre + "</font>"));
-        //actionBar.setElevation(0);
+
+        if (android.os.Build.VERSION.SDK_INT >= 24) {
+            actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>" + titre + "</font>", Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            //noinspection deprecation
+            actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>" + titre + "</font>"));
+        }
 
         mSwitchBound = false;
         init();

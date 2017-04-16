@@ -9,7 +9,8 @@
     android:layout_height="match_parent"
     android:padding="0dp"
     android:animateLayoutChanges="true"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    card_view:ignore="Overdraw">
 
 
     <RelativeLayout
@@ -95,10 +96,11 @@
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp"
-            android:progressDrawable="@drawable/seekbar"
-            android:thumb="@drawable/scrubber_control"
-            android:background="@color/transparent"/>
+            android:layout_marginTop="9dp"
+            android:progressDrawable="@drawable/seekbar"/>
+<!--            android:progressDrawable="@drawable/seekbar"
+            //android:thumb="@drawable/scrubber_control"
+            android:background="@color/transparent"/>-->
 
 
         <TextView
@@ -175,7 +177,7 @@
 
     </RelativeLayout>
 
-    <org.oucho.musicplayer.blurview.BlurView
+    <org.oucho.musicplayer.images.blurview.BlurView
         android:id="@+id/blurView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -200,6 +202,6 @@
                 android:padding="8dp" />
         </FrameLayout>
 
-    </org.oucho.musicplayer.blurview.BlurView>
+    </org.oucho.musicplayer.images.blurview.BlurView>
 </FrameLayout>
 

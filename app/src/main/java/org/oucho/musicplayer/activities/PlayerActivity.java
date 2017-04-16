@@ -34,10 +34,10 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.blurview.BlurView;
+import org.oucho.musicplayer.images.blurview.BlurView;
 import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.model.Song;
-import org.oucho.musicplayer.model.db.QueueDbHelper;
+import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
@@ -107,8 +107,18 @@ public class PlayerActivity extends AppCompatActivity
 
         actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>En cours de lecture</font>"));
-        actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>"));
+
+        if (android.os.Build.VERSION.SDK_INT >= 24) {
+            actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>En cours de lecture</font>", Html.FROM_HTML_MODE_LEGACY));
+            actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>", Html.FROM_HTML_MODE_LEGACY));
+
+        } else {
+            //noinspection deprecation
+            actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>En cours de lecture</font>"));
+            //noinspection deprecation
+            actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>"));
+
+        }
         actionBar.setElevation(0);
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -155,6 +165,7 @@ public class PlayerActivity extends AppCompatActivity
 
         mSeekBar = (SeekBar) findViewById(R.id.seek_bar);
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mSeekBar.getThumb().mutate().setAlpha(0);
 
     }
 
@@ -230,7 +241,13 @@ public class PlayerActivity extends AppCompatActivity
             track = préférences.getInt("currentPosition", 0) + 1;
 
             assert actionBar != null;
-            actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>"));
+
+            if (android.os.Build.VERSION.SDK_INT >= 24) {
+                actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>", Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                //noinspection deprecation
+                actionBar.setSubtitle(Html.fromHtml("<small><font color='" + couleurSousTitre + "'>" + track + "/" + total_track + "</font><small>"));
+            }
         }
     }
 

@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanc">
+    android:background="@color/blanc"
+    card_view:ignore="Overdraw">
 
 
     <FrameLayout
@@ -13,7 +14,7 @@
         android:layout_height="match_parent"
         android:id="@+id/fragment_album_layout">
 
-        <org.oucho.musicplayer.blurview.BlurView
+        <org.oucho.musicplayer.images.blurview.BlurView
             android:id="@+id/fondBlurView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,7 +118,7 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </org.oucho.musicplayer.blurview.BlurView>
+        </org.oucho.musicplayer.images.blurview.BlurView>
 
 
         <RelativeLayout

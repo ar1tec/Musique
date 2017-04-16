@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.oucho.musicplayer.blurview.BlurView
+    <org.oucho.musicplayer.images.blurview.BlurView
         android:id="@+id/bottomBlurView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/barre_lecture"
@@ -33,7 +33,7 @@
                 android:layout_marginTop="2dp"
                 android:gravity="right"
                 android:text="zZz"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:textColor="@color/zzz"
                 android:layout_marginRight="5dp"
                 android:visibility="gone"/>
@@ -132,6 +132,6 @@
 
         </RelativeLayout>
 
-    </org.oucho.musicplayer.blurview.BlurView>
+    </org.oucho.musicplayer.images.blurview.BlurView>
 
 </RelativeLayout>

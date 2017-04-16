@@ -17,6 +17,7 @@ public class ArtistImageHelper {
             sDefaultArtistImage = ContextCompat.getDrawable(c, R.drawable.default_artist_image);
 
         }
+        //noinspection ConstantConditions
         return sDefaultArtistImage.getConstantState().newDrawable(c.getResources()).mutate();
     }
 
@@ -25,6 +26,7 @@ public class ArtistImageHelper {
             sDefaultArtistThumb = ContextCompat.getDrawable(c, R.drawable.default_artist_thumb);
 
         }
+        //noinspection ConstantConditions
         return sDefaultArtistThumb.getConstantState().newDrawable(c.getResources()).mutate();
     }
 }

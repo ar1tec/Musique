@@ -32,7 +32,8 @@ import android.util.Log;
 
 import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
 import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.Notification;
 
 import java.io.IOException;
@@ -41,10 +42,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.oucho.musicplayer.utils.Permissions;
-import org.oucho.musicplayer.model.db.QueueDbHelper;
+import org.oucho.musicplayer.db.QueueDbHelper;
 
 
-public class PlayerService extends Service implements OnPreparedListener,
+public class PlayerService extends Service implements
+        MusiqueKeys,
+        OnPreparedListener,
         OnErrorListener,
         OnCompletionListener {
 
@@ -65,9 +68,9 @@ public class PlayerService extends Service implements OnPreparedListener,
     private static final String REPEAT_MODE_CHANGED = "org.oucho.musicplayer.REPEAT_MODE_CHANGED";
     private static final String EXTRA_POSITION = "org.oucho.musicplayer.POSITION";
 
-    private static final String TAG = "PlaybackService";
+    private static final String TAG = "PlayerService";
 
-    private static final String STATE_PREFS_NAME = "PlaybackState";
+    private static final String STATE_PREFS_NAME = "PlayerState";
 
     public static final int NO_REPEAT = 20;
     public static final int REPEAT_ALL = 21;
@@ -678,7 +681,7 @@ public class PlayerService extends Service implements OnPreparedListener,
             mCurrentSong = mPlayList.get(position);
             openAndPlay();
 
-            Intent intentN = new Intent("org.oucho.musicplayer.STATE");
+            Intent intentN = new Intent(INTENT_STATE);
             intentN.putExtra("state", "next");
             sendBroadcast(intentN);
 

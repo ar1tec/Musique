@@ -14,9 +14,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.oucho.musicplayer.audiotag.TagEdit;
+import org.oucho.musicplayer.utils.TagEdit;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.db.model.Song;
 
 import java.util.HashMap;
 

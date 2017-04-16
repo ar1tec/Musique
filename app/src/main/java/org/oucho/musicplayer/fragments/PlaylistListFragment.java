@@ -22,10 +22,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.adapters.PlaylistListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.adapters.PlaylistListAdapter;
 import org.oucho.musicplayer.dialog.CreatePlaylistDialog;
-import org.oucho.musicplayer.model.Playlist;
+import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.text.Collator;

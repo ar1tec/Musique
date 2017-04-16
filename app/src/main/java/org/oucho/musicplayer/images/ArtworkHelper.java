@@ -14,7 +14,7 @@ public class ArtworkHelper {
     private static Drawable sDefaultArtworkDrawable;
     private static Drawable sDefaultThumbDrawable;
 
-    public static Uri getArtworkUri() {
+    static Uri getArtworkUri() {
         return ARTWORK_URI;
     }
 
@@ -22,6 +22,7 @@ public class ArtworkHelper {
         if (sDefaultArtworkDrawable == null) {
             sDefaultArtworkDrawable = ContextCompat.getDrawable(c, R.drawable.default_artwork);
         }
+        //noinspection ConstantConditions
         return sDefaultArtworkDrawable.getConstantState().newDrawable(c.getResources()).mutate();
     }
 
@@ -29,6 +30,7 @@ public class ArtworkHelper {
         if (sDefaultThumbDrawable == null) {
             sDefaultThumbDrawable = ContextCompat.getDrawable(c, R.drawable.default_artwork);
         }
+        //noinspection ConstantConditions
         return sDefaultThumbDrawable.getConstantState().newDrawable(c.getResources()).mutate();
     }
 

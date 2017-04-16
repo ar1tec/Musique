@@ -26,19 +26,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.loaders.AlbumLoader;
-import org.oucho.musicplayer.loaders.ArtistLoader;
-import org.oucho.musicplayer.loaders.BaseLoader;
-import org.oucho.musicplayer.loaders.SongLoader;
-import org.oucho.musicplayer.model.Album;
-import org.oucho.musicplayer.model.Artist;
-import org.oucho.musicplayer.model.Playlist;
-import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.db.loaders.AlbumLoader;
+import org.oucho.musicplayer.db.loaders.ArtistLoader;
+import org.oucho.musicplayer.db.loaders.BaseLoader;
+import org.oucho.musicplayer.db.loaders.SongLoader;
+import org.oucho.musicplayer.db.model.Album;
+import org.oucho.musicplayer.db.model.Artist;
+import org.oucho.musicplayer.db.model.Playlist;
+import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 
@@ -47,7 +47,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
 
     private static final String FILTER = "filter";
     private boolean mAlbumListLoaded = false;
@@ -246,8 +246,6 @@ public class SearchActivity extends AppCompatActivity {
         getSupportLoaderManager().restartLoader(2, args, mSongLoaderCallbacks);
     }
 
-
-
     private void returnToMain(String action, Bundle data) {
         Intent i = new Intent(action);
 
@@ -259,6 +257,14 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        // your code.
+        //getSupportLoaderManager().destroyLoader(0);
+        finish();
+        //startActivity(getIntent());
+
+    }
 
     /* *********************************************************************************************
      * Vue liste album
@@ -266,12 +272,12 @@ public class SearchActivity extends AppCompatActivity {
 
     private class AlbumViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
-        final ImageView vArtwork; // NOPMD
-        final TextView vName; // NOPMD
-        final TextView vArtist; // NOPMD
+        final ImageView vArtwork;
+        final TextView vName;
+        final TextView vArtist;
 
 
-        public AlbumViewHolder(View itemView) {
+        private AlbumViewHolder(View itemView) {
             super(itemView);
             vArtwork = (ImageView) itemView.findViewById(R.id.album_artwork);
             vName = (TextView) itemView.findViewById(R.id.album_name);
@@ -290,17 +296,25 @@ public class SearchActivity extends AppCompatActivity {
                 case R.id.album_info:
                     Log.d("album", "album id " + album.getId() + " " + album.getAlbumName());
                     Bundle data = new Bundle();
-                    data.putLong(MainActivity.ALBUM_ID, album.getId());
-                    data.putString(MainActivity.ALBUM_NAME, album.getAlbumName());
-                    data.putString(MainActivity.ALBUM_ARTIST, album.getArtistName());
-                    data.putInt(MainActivity.ALBUM_YEAR, album.getYear());
-                    data.putInt(MainActivity.ALBUM_TRACK_COUNT, album.getTrackCount());
-                    returnToMain(MainActivity.ACTION_SHOW_ALBUM, data);
+                    data.putLong(ALBUM_ID, album.getId());
+                    data.putString(ALBUM_NAME, album.getAlbumName());
+                    data.putString(ALBUM_ARTIST, album.getArtistName());
+                    data.putInt(ALBUM_YEAR, album.getYear());
+                    data.putInt(ALBUM_TRACK_COUNT, album.getTrackCount());
+                    returnToMain(ACTION_SHOW_ALBUM, data);
                     break;
 
                 default:
                     break;
             }
+        }
+
+        public void onBackPressed() {
+            // your code.
+            //getSupportLoaderManager().destroyLoader(0);
+            finish();
+            //startActivity(getIntent());
+
         }
     }
 
@@ -312,9 +326,9 @@ public class SearchActivity extends AppCompatActivity {
 
     private class ArtistViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
-        final TextView vName; // NOPMD
-        final TextView vAlbumCount; // NOPMD
-        final ImageView vArtistImage; // NOPMD
+        final TextView vName;
+        final TextView vAlbumCount;
+        final ImageView vArtistImage;
 
         ArtistViewHolder(View itemView) {
             super(itemView);
@@ -332,11 +346,11 @@ public class SearchActivity extends AppCompatActivity {
             Artist artist = (Artist) mAdapter.getItem(position);
 
             Bundle data = new Bundle();
-            data.putLong(MainActivity.ARTIST_ARTIST_ID, artist.getId());
-            data.putString(MainActivity.ARTIST_ARTIST_NAME, artist.getName());
-            data.putInt(MainActivity.ARTIST_ALBUM_COUNT, artist.getAlbumCount());
-            data.putInt(MainActivity.ARTIST_TRACK_COUNT, artist.getTrackCount());
-            returnToMain(MainActivity.ACTION_SHOW_ARTIST, data);
+            data.putLong(ARTIST_ARTIST_ID, artist.getId());
+            data.putString(ARTIST_ARTIST_NAME, artist.getName());
+            data.putInt(ARTIST_ALBUM_COUNT, artist.getAlbumCount());
+            data.putInt(ARTIST_TRACK_COUNT, artist.getTrackCount());
+            returnToMain(ACTION_SHOW_ARTIST, data);
         }
     }
 
@@ -348,9 +362,9 @@ public class SearchActivity extends AppCompatActivity {
 
     private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
-        final TextView vTitle; // NOPMD
-        final TextView vArtist; // NOPMD
-        final ImageView vArtwork; // NOPMD
+        final TextView vTitle;
+        final TextView vArtist;
+        final ImageView vArtwork;
 
         SongViewHolder(View itemView) {
 
@@ -396,7 +410,7 @@ public class SearchActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.action_add_to_queue:
                             data = songToBundle(song);
-                            returnToMain(MainActivity.ACTION_ADD_TO_QUEUE, data);
+                            returnToMain(ACTION_ADD_TO_QUEUE, data);
                             return true;
 
                         case R.id.action_add_to_playlist:
@@ -427,17 +441,17 @@ public class SearchActivity extends AppCompatActivity {
         private void selectSong(Song song) {
             Bundle data = songToBundle(song);
 
-            returnToMain(MainActivity.ACTION_PLAY_SONG, data);
+            returnToMain(ACTION_PLAY_SONG, data);
         }
 
         private Bundle songToBundle(Song song) {
             Bundle data = new Bundle();
-            data.putLong(MainActivity.SONG_ID, song.getId());
-            data.putString(MainActivity.SONG_TITLE, song.getTitle());
-            data.putString(MainActivity.SONG_ARTIST, song.getArtist());
-            data.putString(MainActivity.SONG_ALBUM, song.getAlbum());
-            data.putLong(MainActivity.SONG_ALBUM_ID, song.getAlbumId());
-            data.putInt(MainActivity.SONG_TRACK_NUMBER, song.getTrackNumber());
+            data.putLong(SONG_ID, song.getId());
+            data.putString(SONG_TITLE, song.getTitle());
+            data.putString(SONG_ARTIST, song.getArtist());
+            data.putString(SONG_ALBUM, song.getAlbum());
+            data.putLong(SONG_ALBUM_ID, song.getAlbumId());
+            data.putInt(SONG_TRACK_NUMBER, song.getTrackNumber());
             return data;
         }
     }
@@ -445,7 +459,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private class SectionViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView vSection; // NOPMD
+        final TextView vSection;
 
         SectionViewHolder(View itemView) {
             super(itemView);
@@ -640,6 +654,7 @@ public class SearchActivity extends AppCompatActivity {
         public int getItemCount() {
 
             int count = 0;
+            
             if (mAlbumList.size() > 0)
                 count += mAlbumList.size() + 1;
 

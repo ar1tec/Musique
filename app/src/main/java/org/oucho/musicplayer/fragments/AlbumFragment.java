@@ -26,17 +26,18 @@ import android.widget.TextView;
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.adapters.SongAlbumListAdapter;
-import org.oucho.musicplayer.blurview.BlurView;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
+import org.oucho.musicplayer.images.blurview.BlurView;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.loaders.SongLoader;
-import org.oucho.musicplayer.model.Album;
-import org.oucho.musicplayer.model.Playlist;
-import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.db.loaders.SongLoader;
+import org.oucho.musicplayer.db.model.Album;
+import org.oucho.musicplayer.db.model.Playlist;
+import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
+import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 
@@ -44,7 +45,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class AlbumFragment extends BaseFragment {
+public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     private static final String ARG_ID = "id";
     private static final String ARG_NAME = "name";
@@ -53,13 +54,11 @@ public class AlbumFragment extends BaseFragment {
     private static final String ARG_TRACK_COUNT = "track_count";
 
     private Album mAlbum;
-    private SongAlbumListAdapter mAdapter;
+    private AlbumSongListAdapter mAdapter;
     private MainActivity mActivity;
     private RecyclerView mRecyclerView;
     private Etat_player Etat_player_Receiver;
     private boolean isRegistered = false;
-
-    private static final String STATE = "org.oucho.musicplayer.STATE";
 
     private int mArtworkWidth;
     private int mArtworkHeight;
@@ -132,6 +131,7 @@ public class AlbumFragment extends BaseFragment {
     };
 
     private String msToText(int msec) {
+        //noinspection MalformedFormatString
         return String.format(Locale.getDefault(), "%d", msec / 60000, (msec % 60000) / 1000);
     }
 
@@ -147,7 +147,7 @@ public class AlbumFragment extends BaseFragment {
         context = getContext();
 
         Etat_player_Receiver = new Etat_player();
-        IntentFilter filter = new IntentFilter(STATE);
+        IntentFilter filter = new IntentFilter(INTENT_STATE);
         context.registerReceiver(Etat_player_Receiver, filter);
         isRegistered = true;
 
@@ -214,7 +214,7 @@ public class AlbumFragment extends BaseFragment {
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
         mRecyclerView.setLayoutManager(new CustomLayoutManager(getActivity()));
-        mAdapter = new SongAlbumListAdapter();
+        mAdapter = new AlbumSongListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -251,6 +251,9 @@ public class AlbumFragment extends BaseFragment {
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position, View view) {
+
+            mAdapter.notifyDataSetChanged();
+
             switch (view.getId()) {
 
                 case R.id.item_view:
@@ -373,7 +376,7 @@ public class AlbumFragment extends BaseFragment {
         super.onResume();
 
         if (!isRegistered) {
-            IntentFilter filter = new IntentFilter(STATE);
+            IntentFilter filter = new IntentFilter(INTENT_STATE);
             context.registerReceiver(Etat_player_Receiver, filter);
             isRegistered = true;
         }
@@ -388,21 +391,23 @@ public class AlbumFragment extends BaseFragment {
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
+
+
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
 
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                    ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
-                    ft.commit();
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                        ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
+                        ft.commit();
 
-                    Intent intent = new Intent();
-                    intent.setAction("reload");
-                    context.sendBroadcast(intent);
+                        Intent intent = new Intent();
+                        intent.setAction("reload");
+                        context.sendBroadcast(intent);
 
-                    LibraryFragment.setLock(false);
+                        LibraryFragment.setLock(false);
 
                     return true;
                 }
@@ -419,26 +424,17 @@ public class AlbumFragment extends BaseFragment {
 
             String receiveIntent = intent.getAction();
 
-            if (STATE.equals(receiveIntent)
+            if (INTENT_STATE.equals(receiveIntent)
                     && intent.getStringExtra("state").equals("prev")
                     || intent.getStringExtra("state").equals("next")
                     || intent.getStringExtra("state").equals("play")) {
 
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
+                for (int i = 0; i < listeTitre.size(); i++) {
+                    if (listeTitre.get(i).getId() == PlayerService.getSongID())
+                        mRecyclerView.smoothScrollToPosition( i );
+                }
 
-                        for (int i = 0; i < listeTitre.size(); i++) {
-
-                            if (listeTitre.get(i).getId() == PlayerService.getSongID())
-                                mRecyclerView.smoothScrollToPosition( i );
-
-                        }
-
-                        mAdapter.notifyItemRangeChanged(0, listeTitre.size(), null);
-
-                    }
-                }, 100);
+                mAdapter.notifyDataSetChanged();
 
             }
         }

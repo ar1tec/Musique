@@ -22,14 +22,15 @@ import android.view.ViewGroup;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.adapters.SongListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.adapters.SongListAdapter;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
-import org.oucho.musicplayer.loaders.SongLoader;
-import org.oucho.musicplayer.loaders.SortOrder;
-import org.oucho.musicplayer.model.Playlist;
-import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.db.loaders.SongLoader;
+import org.oucho.musicplayer.db.loaders.SortOrder;
+import org.oucho.musicplayer.db.model.Playlist;
+import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
@@ -37,17 +38,12 @@ import org.oucho.musicplayer.widgets.FastScroller;
 import java.util.List;
 
 
-public class SongListFragment extends BaseFragment {
+public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
-
-    private MainActivity mActivity;
-
-    private SongListAdapter mAdapter;
 
     private Context context;
-
-    private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
-
+    private MainActivity mActivity;
+    private SongListAdapter mAdapter;
     private SharedPreferences préférences = null;
 
     private String titre;
@@ -363,8 +359,12 @@ public class SongListFragment extends BaseFragment {
         super.setUserVisibleHint(visible);
 
         if (visible || isResumed())
-            getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
-
+            if (android.os.Build.VERSION.SDK_INT >= 24) {
+                getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                //noinspection deprecation
+                getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
+            }
     }
 
 }

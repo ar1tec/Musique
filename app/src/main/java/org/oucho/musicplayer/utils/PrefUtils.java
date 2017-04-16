@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import org.oucho.musicplayer.loaders.SortOrder;
+import org.oucho.musicplayer.db.loaders.SortOrder;
 
 
 public class PrefUtils {

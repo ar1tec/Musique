@@ -22,19 +22,19 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.AlbumListAdapter;
-import org.oucho.musicplayer.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.adapters.AlbumListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.loaders.AlbumLoader;
-import org.oucho.musicplayer.loaders.SongLoader;
-import org.oucho.musicplayer.loaders.SortOrder;
-import org.oucho.musicplayer.model.Album;
-import org.oucho.musicplayer.model.Artist;
-import org.oucho.musicplayer.model.Playlist;
-import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.db.loaders.AlbumLoader;
+import org.oucho.musicplayer.db.loaders.SongLoader;
+import org.oucho.musicplayer.db.loaders.SortOrder;
+import org.oucho.musicplayer.db.model.Album;
+import org.oucho.musicplayer.db.model.Artist;
+import org.oucho.musicplayer.db.model.Playlist;
+import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 

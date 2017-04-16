@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 
 
 class TransitionDrawable extends Drawable {
@@ -43,11 +44,12 @@ class TransitionDrawable extends Drawable {
     }
 
     private Drawable copyDrawable(Drawable d) {
+        //noinspection ConstantConditions
         return d != null ? d.getConstantState().newDrawable().mutate() : null;
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
 
         if (mAnimating) {
 
@@ -90,6 +92,7 @@ class TransitionDrawable extends Drawable {
         }
     }
 
+    @SuppressWarnings("WrongConstant")
     @Override
     public int getOpacity() {
         return resolveOpacity(mFirstDrawable != null ? mFirstDrawable.getOpacity() : 0, mSecondDrawable != null ? mSecondDrawable.getOpacity() : 0);

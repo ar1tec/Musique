@@ -11,8 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 class BitmapHelper {
-    public static Drawable createBitmapDrawable(Context context, Bitmap bitmap) {
+    static Drawable createBitmapDrawable(Context context, Bitmap bitmap) {
         BitmapDrawable d = new BitmapDrawable(context.getResources(), bitmap);
+        //noinspection ConstantConditions
         return d.getConstantState().newDrawable(context.getResources()).mutate();
     }
 
@@ -39,7 +40,7 @@ class BitmapHelper {
         return inSampleSize;
     }
 
-    public static Bitmap decode(InputStream in, int reqWidth, int reqHeight) throws IOException {
+    static Bitmap decode(InputStream in, int reqWidth, int reqHeight) throws IOException {
         BufferedInputStream inputStream = new BufferedInputStream(in);
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.images;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -18,6 +19,7 @@ public class ArtworkCache extends BitmapCache<Long> {
 
 
     private static final LruCache<Long, Bitmap> sThumbCache;
+    @SuppressLint("StaticFieldLeak")
     private static ArtworkCache sInstance;
 
     static {

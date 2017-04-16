@@ -17,11 +17,11 @@ import android.view.ViewGroup;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.ArtistListAdapter;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.loaders.ArtistLoader;
-import org.oucho.musicplayer.loaders.SortOrder;
-import org.oucho.musicplayer.model.Artist;
+import org.oucho.musicplayer.fragments.adapters.ArtistListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.db.loaders.ArtistLoader;
+import org.oucho.musicplayer.db.loaders.SortOrder;
+import org.oucho.musicplayer.db.model.Artist;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 

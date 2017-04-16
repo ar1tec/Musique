@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,7 +38,8 @@ public class LibraryFragment extends BaseFragment {
     }
 
 
-    static ViewPager mViewPager;
+    @SuppressLint("StaticFieldLeak")
+    private static ViewPager mViewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +72,7 @@ public class LibraryFragment extends BaseFragment {
     }
 
 
-    public boolean getLock() {
+    private boolean getLock() {
         return lock;
     }
 
@@ -101,6 +103,7 @@ public class LibraryFragment extends BaseFragment {
 
         private final Map<Integer, String> mFragmentTags;
 
+        @SuppressLint("UseSparseArrays")
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             mFragmentTags = new HashMap<>();

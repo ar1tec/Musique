@@ -44,8 +44,8 @@ import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.audiofx.AudioEffects;
-import org.oucho.musicplayer.blurview.BlurView;
-import org.oucho.musicplayer.blurview.RenderScriptBlur;
+import org.oucho.musicplayer.images.blurview.BlurView;
+import org.oucho.musicplayer.images.blurview.RenderScriptBlur;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.dialog.HelpDialog;
 import org.oucho.musicplayer.fragments.AlbumFragment;
@@ -54,11 +54,12 @@ import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.model.Album;
-import org.oucho.musicplayer.model.Artist;
-import org.oucho.musicplayer.model.Song;
+import org.oucho.musicplayer.db.model.Album;
+import org.oucho.musicplayer.db.model.Artist;
+import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
+import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
@@ -76,35 +77,11 @@ import java.util.concurrent.TimeUnit;
 import static org.oucho.musicplayer.R.id.drawer_layout;
 
 public class MainActivity extends AppCompatActivity implements
+        MusiqueKeys,
         OnNavigationItemSelectedListener {
-
-    public static final String ALBUM_ID = "id";
-    public static final String ALBUM_NAME = "name";
-    public static final String ALBUM_ARTIST = "artist";
-    public static final String ALBUM_YEAR = "year";
-    public static final String ALBUM_TRACK_COUNT = "track_count";
-    public static final String ARTIST_ARTIST_ID = "artist_id";
-    public static final String ARTIST_ARTIST_NAME = "artist_name";
-    public static final String ARTIST_ALBUM_COUNT = "album_count";
-    public static final String ARTIST_TRACK_COUNT = "track_count";
-    public static final String SONG_ID = "song_id";
-    public static final String SONG_TITLE = "song_title";
-    public static final String SONG_ALBUM = "song_album";
-    public static final String SONG_ARTIST = "song_artist";
-    public static final String SONG_ALBUM_ID = "song_album_id";
-    public static final String SONG_DURATION = "song_duration";
-    public static final String SONG_TRACK_NUMBER = "song_track_number";
-
-    public static final String ACTION_REFRESH = "resfresh";
-    public static final String ACTION_PLAY_SONG = "play_song";
-    public static final String ACTION_SHOW_ALBUM = "show_album";
-    public static final String ACTION_SHOW_ARTIST = "show_artist";
-    public static final String ACTION_ADD_TO_QUEUE = "add_to_queue";
-    public static final String ACTION_SET_AS_NEXT_TRACK = "set_as_next_track";
 
     public static final int SEARCH_ACTIVITY = 234;
 
-    private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
 
@@ -128,15 +105,13 @@ public class MainActivity extends AppCompatActivity implements
 
     private final Handler handler = new Handler();
 
-    private static final String intent_state = "org.oucho.musicplayer.STATE";
-
     private static Menu menu;
     private TextView timeAfficheur;
 
     private activationReceiver blurActivationReceiver;
     private boolean isRegistered = false;
 
-    Context mContext;
+    private Context mContext;
 
     /* *********************************************************************************************
      * Création de l'activité
@@ -196,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
         blurActivationReceiver = new activationReceiver();
-        IntentFilter filter = new IntentFilter("blurview");
+        IntentFilter filter = new IntentFilter(INTENT_BLURVIEW);
 
         registerReceiver(blurActivationReceiver, filter);
         isRegistered = true;
@@ -228,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         handler.postDelayed(new Runnable() {
             public void run() {
@@ -296,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.quick_play_pause_toggle:
                     mPlayerService.toggle();
 
-                    Intent intentPl = new Intent(intent_state);
+                    Intent intentPl = new Intent(INTENT_STATE);
                     intentPl.putExtra("state", "play");
                     sendBroadcast(intentPl);
 
@@ -306,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.prev:
                     mPlayerService.playPrev();
 
-                    Intent intentP = new Intent(intent_state);
+                    Intent intentP = new Intent(INTENT_STATE);
                     intentP.putExtra("state", "prev");
                     sendBroadcast(intentP);
 
@@ -316,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.next:
                     mPlayerService.playNext(true);
 
-                    Intent intentN = new Intent(intent_state);
+                    Intent intentN = new Intent(INTENT_STATE);
                     intentN.putExtra("state", "next");
                     sendBroadcast(intentN);
 
@@ -356,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        this.menu = menu;
+        MainActivity.menu = menu;
 
         return true;
     }
@@ -364,7 +339,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
 
         switch (id) {
             case android.R.id.home:
@@ -441,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onResume();
 
         if (!isRegistered) {
-            IntentFilter filter = new IntentFilter("blurview");
+            IntentFilter filter = new IntentFilter(INTENT_BLURVIEW);
             registerReceiver(blurActivationReceiver, filter);
             isRegistered = true;
         }
@@ -471,9 +445,9 @@ public class MainActivity extends AppCompatActivity implements
 
             String receiveIntent = intent.getAction();
 
-            if ("blurview".equals(receiveIntent)) {
+            if (INTENT_BLURVIEW.equals(receiveIntent)) {
 
-                Log.d("PWEEEEEEEEEEET", "setupBlurView();");
+                Log.d("MainActivity", "setupBlurView();");
 
                 setupBlurView();
             }
@@ -557,6 +531,7 @@ public class MainActivity extends AppCompatActivity implements
         return new Song(id, title, artist, album, albumId, trackNumber, duration);
     }
 
+    @SuppressWarnings("RestrictedApi")
     public void refresh() {
 
         for (Fragment f : getSupportFragmentManager().getFragments()) {
@@ -921,7 +896,7 @@ public class MainActivity extends AppCompatActivity implements
         Toast.makeText(this, arret + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
 
         running = true;
-        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_timer_indigo_400_24dp));
+        menu.getItem(0).setIcon(ContextCompat.getDrawable(mContext, R.drawable.ic_timer_indigo_400_24dp));
         timeAfficheur.setVisibility(View.VISIBLE);
 
         Notification.setState(true);
@@ -939,7 +914,7 @@ public class MainActivity extends AppCompatActivity implements
         Notification.setState(false);
 
         running = false;
-        menu.getItem(0).setIcon(context.getResources().getDrawable(R.drawable.ic_timer_grey_600_24dp));
+        menu.getItem(0).setIcon(ContextCompat.getDrawable(context, R.drawable.ic_timer_grey_600_24dp));
     }
 
     private  void annulTimer() {
@@ -956,7 +931,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         running = false;
-        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_timer_grey_600_24dp));
+        menu.getItem(0).setIcon(ContextCompat.getDrawable(mContext, R.drawable.ic_timer_grey_600_24dp));
         timeAfficheur.setVisibility(View.GONE);
 
         Notification.setState(false);

@@ -28,30 +28,31 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import org.oucho.musicplayer.MainActivity;
+import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.AlbumListAdapter;
-import org.oucho.musicplayer.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.adapters.AlbumListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
-import org.oucho.musicplayer.loaders.AlbumLoader;
-import org.oucho.musicplayer.loaders.SortOrder;
-import org.oucho.musicplayer.model.Album;
-import org.oucho.musicplayer.model.Playlist;
+import org.oucho.musicplayer.db.loaders.AlbumLoader;
+import org.oucho.musicplayer.db.loaders.SortOrder;
+import org.oucho.musicplayer.db.model.Album;
+import org.oucho.musicplayer.db.model.Playlist;
+import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.List;
 
-public class AlbumListFragment extends BaseFragment {
+public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
     private Context context;
     private Menu menu;
 
     private AlbumListAdapter mAdapter;
-    private ReloadToolbar reloadToolbarReceiver;
+    private ReloadView reloadReceiver;
     private SharedPreferences préférences = null;
-    private static final String fichier_préférence = "org.oucho.musicplayer_preferences";
 
     private String titre;
     private String tri;
@@ -59,7 +60,10 @@ public class AlbumListFragment extends BaseFragment {
     private boolean run = false;
     private boolean isRegistered = false;
 
-    View rootView;
+    private RecyclerView mRecyclerView;
+
+
+    private List<Album> listeTitre;
 
     private final LoaderManager.LoaderCallbacks<List<Album>> mLoaderCallbacks = new LoaderCallbacks<List<Album>>() {
 
@@ -73,8 +77,10 @@ public class AlbumListFragment extends BaseFragment {
         }
 
         @Override
-        public void onLoadFinished(Loader<List<Album>> loader, List<Album> data) {
-            mAdapter.setData(data);
+        public void onLoadFinished(Loader<List<Album>> loader, List<Album> albumList) {
+            mAdapter.setData(albumList);
+
+            listeTitre = albumList;
         }
 
         @Override
@@ -118,6 +124,19 @@ public class AlbumListFragment extends BaseFragment {
             }
         }
     };
+
+
+    private final BaseAdapter.OnItemLongClickListener mOnItemLongClickListener = new BaseAdapter.OnItemLongClickListener() {
+        @Override
+        public void onItemLongClick(int position, View view) {
+
+            for (int i = 0; i < listeTitre.size(); i++) {
+                if (listeTitre.get(i).getId() == PlayerService.getAlbumId())
+                    mRecyclerView.smoothScrollToPosition( i );
+            }
+        }
+    };
+
 
 
     public static AlbumListFragment newInstance() {
@@ -176,7 +195,6 @@ public class AlbumListFragment extends BaseFragment {
     }
 
 
-
     /* *********************************************************************************************
      * Création de l'activité
      * ********************************************************************************************/
@@ -194,13 +212,13 @@ public class AlbumListFragment extends BaseFragment {
 
         setTri();
 
-        reloadToolbarReceiver = new ReloadToolbar();
-        IntentFilter filter2 = new IntentFilter("reload");
-        context.registerReceiver(reloadToolbarReceiver, filter2);
+        reloadReceiver = new ReloadView();
+        IntentFilter filter = new IntentFilter("reload");
+        context.registerReceiver(reloadReceiver, filter);
         isRegistered = true;
     }
 
-    private class ReloadToolbar extends BroadcastReceiver {
+    private class ReloadView extends BroadcastReceiver {
 
         @Override
         public void onReceive(final Context context, Intent intent) {
@@ -212,6 +230,10 @@ public class AlbumListFragment extends BaseFragment {
                 showOverflowMenu(true);
                 LibraryFragment.setLock(false);
             }
+
+            // recharge la vue via Adapter
+            mAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -221,11 +243,10 @@ public class AlbumListFragment extends BaseFragment {
      * ********************************************************************************************/
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_album_list, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_view);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_view);
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
 
         Resources res = getActivity().getResources();
@@ -233,22 +254,24 @@ public class AlbumListFragment extends BaseFragment {
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-
         float screenWidth = size.x;
-
         float itemWidth = res.getDimension(R.dimen.album_grid_item_width);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), Math.round(screenWidth / itemWidth)));
 
         int artworkSize = res.getDimensionPixelSize(R.dimen.art_size);
         mAdapter = new AlbumListAdapter(getActivity(), artworkSize, artworkSize);
         mAdapter.setOnItemClickListener(mOnItemClickListener);
+        mAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
+
         mRecyclerView.setAdapter(mAdapter);
 
         FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         mFastScroller.setRecyclerView(mRecyclerView);
 
+
         return rootView;
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -304,7 +327,7 @@ public class AlbumListFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showOverflowMenu(boolean showMenu){
+    private void showOverflowMenu(boolean showMenu){
         if(menu == null)
             return;
 
@@ -316,7 +339,7 @@ public class AlbumListFragment extends BaseFragment {
         super.onPause();
 
         if (isRegistered) {
-            context.unregisterReceiver(reloadToolbarReceiver);
+            context.unregisterReceiver(reloadReceiver);
             isRegistered = false;
         }
     }
@@ -327,13 +350,13 @@ public class AlbumListFragment extends BaseFragment {
 
         // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
         Intent intent = new Intent();
-        intent.setAction("blurview");
+        intent.setAction(INTENT_BLURVIEW);
         context.sendBroadcast(intent);
 
 
         if (!isRegistered) {
             IntentFilter filter = new IntentFilter("reload");
-            context.registerReceiver(reloadToolbarReceiver, filter);
+            context.registerReceiver(reloadReceiver, filter);
             isRegistered = true;
         }
     }
@@ -364,15 +387,46 @@ public class AlbumListFragment extends BaseFragment {
 
             // délai affichage lors du premier chargement nom appli --> tri actuel
             if (run) {
-                getActivity().setTitle(Html.fromHtml("<font>" + titre + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
+
+                if (android.os.Build.VERSION.SDK_INT >= 24) {
+                    getActivity().setTitle(Html.fromHtml("<font>"
+                            + titre
+                            + " </font> <small> <font color=\"#CCCCCC\">"
+                            + tri
+                            + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+                } else {
+                    //noinspection deprecation
+                    getActivity().setTitle(Html.fromHtml("<font>"
+                            + titre
+                            + " </font> <small> <font color=\"#CCCCCC\">"
+                            + tri
+                            + "</small></font>"));
+                }
+
+
 
             } else {
 
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
+
                     public void run() {
+
                         // Actions to do after xx seconds
-                        getActivity().setTitle(Html.fromHtml("<font>" + titre + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
+                        if (android.os.Build.VERSION.SDK_INT >= 24) {
+                            getActivity().setTitle(Html.fromHtml("<font>"
+                                    + titre
+                                    + " </font> <small> <font color=\"#CCCCCC\">"
+                                    + tri
+                                    + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+                        } else {
+                            //noinspection deprecation
+                            getActivity().setTitle(Html.fromHtml("<font>"
+                                    + titre
+                                    + " </font> <small> <font color=\"#CCCCCC\">"
+                                    + tri
+                                    + "</small></font>"));
+                        }
                     }
                 }, 1000);
 
