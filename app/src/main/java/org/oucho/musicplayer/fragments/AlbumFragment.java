@@ -354,6 +354,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         try {
             mActivity = (MainActivity) context;
         } catch (ClassCastException e) {
@@ -367,9 +368,12 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         if (isRegistered) {
             context.unregisterReceiver(Etat_player_Receiver);
+
             isRegistered = false;
+
         }
     }
+
 
     @Override
     public void onResume() {
@@ -381,10 +385,11 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             isRegistered = true;
         }
 
+
         LibraryFragment.setLock(true);
 
         // Active la touche back
-        if(getView() == null){
+        if (getView() == null) {
             return;
         }
 
@@ -392,28 +397,30 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
 
-
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
+                    LibraryFragment.setLock(false);
+
+                    if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
                         ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
                         ft.commit();
-
                         Intent intent = new Intent();
                         intent.setAction("reload");
                         context.sendBroadcast(intent);
 
-                        LibraryFragment.setLock(false);
+                        return true;
+                    }
 
-                    return true;
                 }
                 return false;
             }
         });
+
     }
 
 
@@ -435,7 +442,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                 }
 
                 mAdapter.notifyDataSetChanged();
-
             }
         }
     }

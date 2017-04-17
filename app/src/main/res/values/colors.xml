@@ -10,6 +10,7 @@
 
  <color name="controls_tint_light">#606060</color>
  <color name="blanc">#ffffff</color>
+ <color name="blancTransparent">#64ffffff</color>
 
  <color name="primary_text">#212121</color>
  <color name="secondary_text">#727272</color>

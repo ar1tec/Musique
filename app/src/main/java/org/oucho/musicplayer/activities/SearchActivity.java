@@ -58,7 +58,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
     private int mThumbSize;
     private RecyclerView mRecyclerView;
 
-
     private final LoaderManager.LoaderCallbacks<List<Album>> mAlbumLoaderCallbacks
             = new LoaderManager.LoaderCallbacks<List<Album>>() {
 
@@ -197,7 +196,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
 
         int couleur = ContextCompat.getColor(context, R.color.colorAccent);
 
-
         ColorDrawable colorDrawable = new ColorDrawable(couleur);
         assert actionBar != null;
         actionBar.setBackgroundDrawable(colorDrawable);
@@ -229,7 +227,9 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         FastScroller mFastScroller = (FastScroller) findViewById(R.id.fastscroller);
         assert mFastScroller != null;
         mFastScroller.setRecyclerView(mRecyclerView);
+
     }
+
 
     private void refresh(String newText) {
         Bundle args = null;
@@ -259,10 +259,8 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
 
     @Override
     public void onBackPressed() {
-        // your code.
-        //getSupportLoaderManager().destroyLoader(0);
+
         finish();
-        //startActivity(getIntent());
 
     }
 
@@ -292,6 +290,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
 
             Album album = (Album) mAdapter.getItem(position);
 
+
             switch (v.getId()) {
                 case R.id.album_info:
                     Log.d("album", "album id " + album.getId() + " " + album.getAlbumName());
@@ -307,14 +306,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
                 default:
                     break;
             }
-        }
-
-        public void onBackPressed() {
-            // your code.
-            //getSupportLoaderManager().destroyLoader(0);
-            finish();
-            //startActivity(getIntent());
-
         }
     }
 

@@ -20,7 +20,7 @@
             android:id="@+id/track_info"
             android:layout_width="match_parent"
             android:layout_height="@dimen/barre_lecture"
-            android:background="@android:color/transparent"
+            android:background="@color/blancTransparent"
             android:visibility="visible"
             android:clipToPadding="false">
 
