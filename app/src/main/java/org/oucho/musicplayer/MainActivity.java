@@ -108,9 +108,6 @@ public class MainActivity extends AppCompatActivity implements
     private static Menu menu;
     private TextView timeAfficheur;
 
-    private activationReceiver blurActivationReceiver;
-    private boolean isRegistered = false;
-
     private Context mContext;
 
 
@@ -171,15 +168,7 @@ public class MainActivity extends AppCompatActivity implements
             showLibrary();
         }
 
-
-        blurActivationReceiver = new activationReceiver();
-        IntentFilter filter = new IntentFilter(INTENT_BLURVIEW);
-
-        registerReceiver(blurActivationReceiver, filter);
-        isRegistered = true;
-
         CheckUpdate.onStart(this);
-
     }
 
 
@@ -396,10 +385,6 @@ public class MainActivity extends AppCompatActivity implements
         if (!PlayerService.isPlaying())
             killNotif();
 
-        if (isRegistered) {
-            unregisterReceiver(blurActivationReceiver);
-            isRegistered = false;
-        }
 
         if (mServiceBound) {
             mPlayerService = null;
@@ -418,11 +403,6 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
-        if (!isRegistered) {
-            IntentFilter filter = new IntentFilter(INTENT_BLURVIEW);
-            registerReceiver(blurActivationReceiver, filter);
-            isRegistered = true;
-        }
 
         if (!mServiceBound) {
             Intent mServiceIntent = new Intent(this, PlayerService.class);
@@ -434,6 +414,7 @@ public class MainActivity extends AppCompatActivity implements
             filter.addAction(PlayerService.POSITION_CHANGED);
             filter.addAction(PlayerService.ITEM_ADDED);
             filter.addAction(PlayerService.ORDER_CHANGED);
+            filter.addAction(INTENT_BLURVIEW);
             registerReceiver(mServiceListener, filter);
         } else {
             updateAll();
@@ -441,22 +422,6 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-
-    private class activationReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            String receiveIntent = intent.getAction();
-
-            if (INTENT_BLURVIEW.equals(receiveIntent)) {
-
-                Log.d("MainActivity", "setupBlurView();");
-
-                setupBlurView();
-            }
-        }
-    }
 
     @Override
     protected void onPostResume() {
@@ -564,22 +529,28 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
             if (mPlayerService == null) {
                 return;
             }
-            String action = intent.getAction();
 
-            if (action.equals(PlayerService.PLAYSTATE_CHANGED)) {
+            String receiveIntent = intent.getAction();
+
+            if (receiveIntent.equals(PlayerService.PLAYSTATE_CHANGED)) {
                 setButtonDrawable();
                 if (PlayerService.isPlaying()) {
                     mHandler.post(mUpdateProgressBar);
                 } else {
                     mHandler.removeCallbacks(mUpdateProgressBar);
                 }
-
-            } else if (action.equals(PlayerService.META_CHANGED)) {
-                updateTrackInfo();
             }
+
+            if (receiveIntent.equals(PlayerService.META_CHANGED))
+                updateTrackInfo();
+
+            if (receiveIntent.equals(INTENT_BLURVIEW))
+                setupBlurView();
+
         }
     };
 
