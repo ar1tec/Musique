@@ -128,8 +128,6 @@ public class MainActivity extends AppCompatActivity implements
 
         mContext = getApplicationContext();
 
-        SharedPreferences préférences = getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
-
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 

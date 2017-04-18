@@ -70,7 +70,6 @@ public class PlayerService extends Service implements
 
     private static final String TAG = "PlayerService";
 
-    private static final String STATE_PREFS_NAME = "PlayerState";
 
     public static final int NO_REPEAT = 20;
     public static final int REPEAT_ALL = 21;

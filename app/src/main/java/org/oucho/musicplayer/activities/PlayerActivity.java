@@ -39,6 +39,7 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
+import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 
@@ -47,7 +48,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class PlayerActivity extends AppCompatActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+        implements MusiqueKeys,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     private SeekBar mSeekBar;
@@ -71,9 +73,6 @@ public class PlayerActivity extends AppCompatActivity
     private int mArtworkSize;
     private int couleurSousTitre;
 
-    private static final String fichier_préférence = "PlaybackState";
-
-
 
     /* *********************************************************************************************
      * Création de l'activité
@@ -94,7 +93,7 @@ public class PlayerActivity extends AppCompatActivity
             getWindow().setStatusBarColor(ContextCompat.getColor(context, R.color.blanc));
         }
 
-        SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
+        SharedPreferences préférences = getSharedPreferences(STATE_PREFS_NAME, MODE_PRIVATE);
         préférences.registerOnSharedPreferenceChangeListener(this);
 
         total_track = getSizeQueue();
@@ -177,12 +176,10 @@ public class PlayerActivity extends AppCompatActivity
         //set background, if your root layout doesn't have one
         final Drawable windowBackground = getWindow().getDecorView().getBackground();
 
-
         /// mDrawerLayout pour indiquer la racine du layout
         mBlurView.setupWith(mLayout)
                 .windowBackground(windowBackground)
                 .blurRadius(radius);
-
     }
 
 
@@ -191,6 +188,7 @@ public class PlayerActivity extends AppCompatActivity
         List<Song> playList = dbHelper.readAll();
         dbHelper.close();
 
+        Log.d("Player", String.valueOf(playList.size()));
         return playList.size();
     }
 
@@ -234,10 +232,11 @@ public class PlayerActivity extends AppCompatActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-        if ("currentPosition".equals(key)) {
+        Log.d("Player", "pref changed");
+       if ("currentPosition".equals(key)) {
             total_track = getSizeQueue();
 
-            SharedPreferences préférences = getSharedPreferences(fichier_préférence, MODE_PRIVATE);
+            SharedPreferences préférences = getSharedPreferences(STATE_PREFS_NAME, MODE_PRIVATE);
             track = préférences.getInt("currentPosition", 0) + 1;
 
             assert actionBar != null;

@@ -71,8 +71,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     private TextView durée;
     private List<Song> listeTitre;
-    private BlurView fondBlurView;
-    private FrameLayout mLayout;
 
     private Context context;
 
@@ -114,7 +112,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                     mRecyclerView.smoothScrollToPosition( i );
 
                 duréeTotal =  duréeTotal + listeTitre.get(i).getDuration();
-
             }
 
             if (msToText(duréeTotal).equals("0") || msToText(duréeTotal).equals("1")) {
@@ -191,10 +188,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_album, container, false);
 
-        fondBlurView = (BlurView) rootView.findViewById(R.id.fondBlurView);
-        mLayout = (FrameLayout) rootView.findViewById(R.id.fragment_album_layout);
-
-
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
         ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
 
@@ -221,30 +214,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
         mFastScroller.setRecyclerView(mRecyclerView);
 
-        setupBlurView(rootView);
 
         return rootView;
-    }
-
-
-    private void setupBlurView(View rootview) {
-        final float radius = 3f;
-
-        //set background, if your root layout doesn't have one
-        final Drawable windowBackground = rootview.getBackground();
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-
-                // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
-                fondBlurView.setupWith(mLayout)
-                        .windowBackground(windowBackground)
-                        .blurRadius(radius);
-
-            }
-        }, 1000);
-
     }
 
 
@@ -370,7 +341,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             context.unregisterReceiver(Etat_player_Receiver);
 
             isRegistered = false;
-
         }
     }
 
@@ -405,6 +375,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                     LibraryFragment.setLock(false);
 
                     if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
+
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
                         ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
@@ -415,7 +386,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                         return true;
                     }
-
                 }
                 return false;
             }
@@ -436,12 +406,15 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                     || intent.getStringExtra("state").equals("next")
                     || intent.getStringExtra("state").equals("play")) {
 
+
+                // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
                 for (int i = 0; i < listeTitre.size(); i++) {
                     if (listeTitre.get(i).getId() == PlayerService.getSongID())
                         mRecyclerView.smoothScrollToPosition( i );
                 }
 
                 mAdapter.notifyDataSetChanged();
+
             }
         }
     }

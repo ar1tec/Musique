@@ -7,6 +7,9 @@ public interface MusiqueKeys {
     String INTENT_BLURVIEW = "org.oucho.musicplayer.BLURVIEW";
     String fichier_préférence = "org.oucho.musicplayer_preferences";
 
+    String STATE_PREFS_NAME = "PlayerState";
+
+
     String ARTIST_ARTIST_ID = "artist_id";
     String ARTIST_ARTIST_NAME = "artist_name";
     String ARTIST_ALBUM_COUNT = "album_count";
