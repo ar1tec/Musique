@@ -19,7 +19,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -188,7 +187,6 @@ public class PlayerActivity extends AppCompatActivity
         List<Song> playList = dbHelper.readAll();
         dbHelper.close();
 
-        Log.d("Player", String.valueOf(playList.size()));
         return playList.size();
     }
 
@@ -232,7 +230,6 @@ public class PlayerActivity extends AppCompatActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-        Log.d("Player", "pref changed");
        if ("currentPosition".equals(key)) {
             total_track = getSizeQueue();
 
@@ -322,7 +319,7 @@ public class PlayerActivity extends AppCompatActivity
                 return;
             }
             String action = intent.getAction();
-            Log.d("action", action);
+
             switch (action) {
                 case PlayerService.PLAYSTATE_CHANGED:
                     setButtonDrawable();
@@ -341,7 +338,6 @@ public class PlayerActivity extends AppCompatActivity
                 case PlayerService.POSITION_CHANGED:
                 case PlayerService.ITEM_ADDED:
                 case PlayerService.ORDER_CHANGED:
-                    Log.d("eee", "position_changed");
                     updateQueue();
                     break;
                 default:
@@ -435,7 +431,6 @@ public class PlayerActivity extends AppCompatActivity
 
     private void updateAll() {
         if (mPlayerService != null) {
-            Log.d("playlist", "hasplaylist " + PlayerService.hasPlaylist());
             updateQueue();
             updateTrackInfo();
             setButtonDrawable();
@@ -501,7 +496,6 @@ public class PlayerActivity extends AppCompatActivity
 
     private void updateShuffleButton() {
         boolean shuffle = PlayerService.isShuffleEnabled();
-        Log.d("shuffle", "shuffle " + String.valueOf(shuffle));
         ImageView shuffleButton = (ImageView) findViewById(R.id.shuffle);
         if (shuffle) {
             assert shuffleButton != null;
