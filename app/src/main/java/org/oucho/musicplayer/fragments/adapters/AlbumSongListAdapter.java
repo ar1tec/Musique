@@ -1,5 +1,7 @@
 package org.oucho.musicplayer.fragments.adapters;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +23,11 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
     private List<Song> mSongList = Collections.emptyList();
 
-    public void setData(List<Song> data) {
+    private Context mContext;
+
+    public void setData(Context context, List<Song> data) {
         mSongList = data;
+        mContext = context;
         notifyDataSetChanged();
     }
 
@@ -43,6 +48,11 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
     public void onBindViewHolderImpl(SongViewHolder holder, int position) {
         Song song = getItem(position);
 
+        long secondes = song.getDuration() / 1000;
+
+        String duration = "(" + String.valueOf( (secondes % 3600) / 60 ) + ":" + String.format("%02d", (secondes % 3600) % 60 ) + ")";
+
+        holder.vTime.setText(duration);
         holder.vTitle.setText(song.getTitle());
 
         holder.vTrackNumber.setText(String.valueOf(position + 1));
@@ -82,8 +92,9 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
     }
 
 
-    public class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private final TextView vTime;
         private final TextView vTitle;
         private final TextView vTrackNumber;
 
@@ -92,7 +103,11 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
         public SongViewHolder(View itemView) {
             super(itemView);
+
+            vTime = (TextView) itemView.findViewById(R.id.time);
+
             vTitle = (TextView) itemView.findViewById(R.id.title);
+
             vTrackNumber = (TextView) itemView.findViewById(R.id.track_number);
 
             PlayView = (ImageView) itemView.findViewById(R.id.play);

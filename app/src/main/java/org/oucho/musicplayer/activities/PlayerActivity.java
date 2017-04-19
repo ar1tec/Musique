@@ -38,7 +38,7 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
-import org.oucho.musicplayer.utils.MusiqueKeys;
+import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 

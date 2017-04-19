@@ -31,7 +31,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +43,7 @@ import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.audiofx.AudioEffects;
+import org.oucho.musicplayer.utils.VolumeTimer;
 import org.oucho.musicplayer.images.blurview.BlurView;
 import org.oucho.musicplayer.images.blurview.RenderScriptBlur;
 import org.oucho.musicplayer.dialog.AboutDialog;
@@ -59,7 +59,6 @@ import org.oucho.musicplayer.db.model.Artist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
-import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
@@ -104,11 +103,14 @@ public class MainActivity extends AppCompatActivity implements
     private static boolean running;
 
     private final Handler handler = new Handler();
+    private VolumeTimer volume = new VolumeTimer();
+
 
     private static Menu menu;
     private TextView timeAfficheur;
 
     private Context mContext;
+    private CountDownTimer minuteurVolume;
 
 
 
@@ -408,6 +410,7 @@ public class MainActivity extends AppCompatActivity implements
             Intent mServiceIntent = new Intent(this, PlayerService.class);
             bindService(mServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
             startService(mServiceIntent);
+
             IntentFilter filter = new IntentFilter();
             filter.addAction(PlayerService.META_CHANGED);
             filter.addAction(PlayerService.PLAYSTATE_CHANGED);
@@ -415,6 +418,8 @@ public class MainActivity extends AppCompatActivity implements
             filter.addAction(PlayerService.ITEM_ADDED);
             filter.addAction(PlayerService.ORDER_CHANGED);
             filter.addAction(INTENT_BLURVIEW);
+            filter.addAction(INTENT_QUIT);
+
             registerReceiver(mServiceListener, filter);
         } else {
             updateAll();
@@ -530,11 +535,12 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            String receiveIntent = intent.getAction();
+
             if (mPlayerService == null) {
                 return;
             }
 
-            String receiveIntent = intent.getAction();
 
             if (receiveIntent.equals(PlayerService.PLAYSTATE_CHANGED)) {
                 setButtonDrawable();
@@ -550,6 +556,9 @@ public class MainActivity extends AppCompatActivity implements
 
             if (receiveIntent.equals(INTENT_BLURVIEW))
                 setupBlurView();
+
+            if (receiveIntent.equals(INTENT_QUIT) && "exit".equals(intent.getStringExtra("halt")))
+                exit();
 
         }
     };
@@ -878,7 +887,9 @@ public class MainActivity extends AppCompatActivity implements
         Notification.updateNotification(mPlayerService);
 
         showTimeEcran();
-        baisseVolume(delay);
+
+        volume.baisser(mContext, mTask, delay);
+        //baisseVolume(delay);
     }
 
 
@@ -902,7 +913,9 @@ public class MainActivity extends AppCompatActivity implements
             minuteurVolume = null;
 
 
-            PlayerService.setVolume(1.0f);
+            volume.getMinuteur().cancel();
+            volume.setVolume(1.0f);
+
         }
 
         running = false;
@@ -951,87 +964,6 @@ public class MainActivity extends AppCompatActivity implements
     * Réduction progressive du volume
     * ********************************/
 
-    private CountDownTimer minuteurVolume;
-
-    private void baisseVolume(final int delay) {
-
-        // définir si le delay est supérieur ou inférieur à 10mn
-
-        final short minutes = (short) ( ( (delay / 1000) % 3600) / 60);
-        final boolean tempsMinuterie = minutes > 10;
-        int cycle;
-
-        if (tempsMinuterie) {
-            cycle = 60000;
-        } else {
-            cycle = 1000;
-        }
-
-        minuteurVolume = new CountDownTimer(delay, cycle) {
-            @Override
-            public void onTick(long mseconds) {
-
-                long temps1 = ((mTask.getDelay(TimeUnit.MILLISECONDS) / 1000) % 3600) / 60 ;
-
-                long temps2 = mTask.getDelay(TimeUnit.MILLISECONDS) / 1000;
-
-                if (tempsMinuterie) {
-
-                    if (temps1 < 1) {
-                        PlayerService.setVolume(0.1f);
-                    } else if (temps1 < 2) {
-                        PlayerService.setVolume(0.2f);
-                    } else if (temps1 < 3) {
-                        PlayerService.setVolume(0.3f);
-                    } else if (temps1 < 4) {
-                        PlayerService.setVolume(0.4f);
-                    } else if (temps1 < 5) {
-                        PlayerService.setVolume(0.5f);
-                    } else if (temps1 < 6) {
-                        PlayerService.setVolume(0.6f);
-                    } else if (temps1 < 7) {
-                        PlayerService.setVolume(0.7f);
-                    } else if (temps1 < 8) {
-                        PlayerService.setVolume(0.8f);
-                    } else if (temps1 < 9) {
-                        PlayerService.setVolume(0.9f);
-                    } else if (temps1 < 10) {
-                        PlayerService.setVolume(1.0f);
-                    }
-
-                } else {
-
-                    if (temps2 < 6) {
-                        PlayerService.setVolume(0.1f);
-                    } else if (temps2 < 12) {
-                        PlayerService.setVolume(0.2f);
-                    } else if (temps2 < 18) {
-                        PlayerService.setVolume(0.3f);
-                    } else if (temps2 < 24) {
-                        PlayerService.setVolume(0.4f);
-                    } else if (temps2 < 30) {
-                        PlayerService.setVolume(0.5f);
-                    } else if (temps2 < 36) {
-                        PlayerService.setVolume(0.6f);
-                    } else if (temps2 < 42) {
-                        PlayerService.setVolume(0.7f);
-                    } else if (temps2 < 48) {
-                        PlayerService.setVolume(0.8f);
-                    } else if (temps2 < 54) {
-                        PlayerService.setVolume(0.9f);
-                    } else if (temps2 < 60) {
-                        PlayerService.setVolume(1.0f);
-                    }
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                exit();
-            }
-
-        }.start();
-    }
 
     private void exit() {
 

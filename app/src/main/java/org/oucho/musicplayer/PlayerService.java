@@ -33,7 +33,6 @@ import android.util.Log;
 import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.Notification;
 
 import java.io.IOException;
@@ -51,22 +50,24 @@ public class PlayerService extends Service implements
         OnErrorListener,
         OnCompletionListener {
 
-    public static final String PREF_AUTO_PAUSE = "org.oucho.musicplayer.AUTO_PAUSE";//pause automatique quand on détecte un appel entrant
 
-    private static final String ACTION_PAUSE = "org.oucho.musicplayer.ACTION_PAUSE";
-    public static final String ACTION_TOGGLE = "org.oucho.musicplayer.ACTION_TOGGLE";
-    public static final String ACTION_NEXT = "org.oucho.musicplayer.ACTION_NEXT";
-    public static final String ACTION_PREVIOUS = "org.oucho.musicplayer.ACTION_PREVIOUS";
+    public  static final String ACTION_NEXT = "org.oucho.musicplayer.ACTION_NEXT";
     private static final String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
+    private static final String ACTION_PAUSE = "org.oucho.musicplayer.ACTION_PAUSE";
+    public  static final String ACTION_TOGGLE = "org.oucho.musicplayer.ACTION_TOGGLE";
+    public  static final String ACTION_PREVIOUS = "org.oucho.musicplayer.ACTION_PREVIOUS";
     private static final String ACTION_CHOOSE_SONG = "org.oucho.musicplayer.ACTION_CHOOSE_SONG";
-    public static final String META_CHANGED = "org.oucho.musicplayer.META_CHANGED";
-    public static final String PLAYSTATE_CHANGED = "org.oucho.musicplayer.PLAYSTATE_CHANGED";
-    public static final String QUEUE_CHANGED = "org.oucho.musicplayer.QUEUE_CHANGED";
-    public static final String POSITION_CHANGED = "org.oucho.musicplayer.POSITION_CHANGED";
-    public static final String ITEM_ADDED = "org.oucho.musicplayer.ITEM_ADDED";
-    public static final String ORDER_CHANGED = "org.oucho.musicplayer.ORDER_CHANGED";
-    private static final String REPEAT_MODE_CHANGED = "org.oucho.musicplayer.REPEAT_MODE_CHANGED";
+
+    public  static final String ITEM_ADDED = "org.oucho.musicplayer.ITEM_ADDED";
     private static final String EXTRA_POSITION = "org.oucho.musicplayer.POSITION";
+    public  static final String PREF_AUTO_PAUSE = "org.oucho.musicplayer.AUTO_PAUSE";
+
+    public  static final String META_CHANGED = "org.oucho.musicplayer.META_CHANGED";
+    public  static final String QUEUE_CHANGED = "org.oucho.musicplayer.QUEUE_CHANGED";
+    public  static final String ORDER_CHANGED = "org.oucho.musicplayer.ORDER_CHANGED";
+    public  static final String POSITION_CHANGED = "org.oucho.musicplayer.POSITION_CHANGED";
+    public  static final String PLAYSTATE_CHANGED = "org.oucho.musicplayer.PLAYSTATE_CHANGED";
+    private static final String REPEAT_MODE_CHANGED = "org.oucho.musicplayer.REPEAT_MODE_CHANGED";
 
     private static final String TAG = "PlayerService";
 
@@ -78,117 +79,33 @@ public class PlayerService extends Service implements
     private static final int IDLE_DELAY = 60000;
 
     private final PlaybackBinder mBinder = new PlaybackBinder();
+
     private static MediaPlayer mMediaPlayer;
-
     private static MediaSessionCompat mMediaSession;
-
 
     private List<Song> mOriginalSongList = new ArrayList<>();
     private static final List<Song> mPlayList = new ArrayList<>();
 
-    private static Song mCurrentSong;
-
-
-    private static boolean mIsPlaying = false;
-    private static boolean mIsPaused = false;
-    private static boolean mHasPlaylist = false;
     private static boolean mShuffle = false;
-
-    private int mStartId;
-
-    private static int mRepeatMode = NO_REPEAT;
-
-    private int mCurrentPosition;
+    private static boolean mIsPaused = false;
+    private static boolean mIsPlaying = false;
+    private static boolean mHasPlaylist = false;
 
     private boolean mBound = false;
-
+    private boolean mPausedByFocusLoss;
     private boolean mAutoPause = false;
-
-
     private boolean mPlayImmediately = false;
 
+
+    private int mStartId;
+    private int mCurrentPosition;
+    private static int mRepeatMode = NO_REPEAT;
+
     private Boolean start = false;
-
-    @SuppressLint("HandlerLeak")
-    private final Handler mDelayedStopHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (isPlaying() || mBound) {
-                return;
-            }
-
-            stopSelf(mStartId);
-        }
-    };
-
-    private final BroadcastReceiver mHeadsetStateReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG) && isPlaying()) {
-                boolean plugged = intent.getIntExtra("state", 0) == 1;
-                if (!plugged) {
-                    pause();
-                }
-            }
-        }
-    };
-
-    private SharedPreferences mStatePrefs;
-
-    private TelephonyManager mTelephonyManager;
-
-    private final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
-        @Override
-        public void onCallStateChanged(int state, String incomingNumber) {
-            super.onCallStateChanged(state, incomingNumber);
-            switch (state) {
-                case TelephonyManager.CALL_STATE_OFFHOOK:
-                case TelephonyManager.CALL_STATE_RINGING:
-                    pause();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
-
+    private static Song mCurrentSong;
     private AudioManager mAudioManager;
-    private boolean mPausedByFocusLoss;
-
-    private final OnAudioFocusChangeListener mAudioFocusChangeListener = new OnAudioFocusChangeListener() {
-        public void onAudioFocusChange(int focusChange) {
-            switch (focusChange) {
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                    if (isPlaying()) {
-                        pause();
-                        mPausedByFocusLoss = true;
-                    }
-                    break;
-                case AudioManager.AUDIOFOCUS_GAIN:
-                    if (!isPlaying() && mPausedByFocusLoss) {
-                        resume();
-                        mPausedByFocusLoss = false;
-                    }
-                    mMediaPlayer.setVolume(1.0f, 1.0f);
-                    break;
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                    if (isPlaying()) {
-                        mMediaPlayer.setVolume(0.1f, 0.1f);
-                    }
-                    break;
-                case AudioManager.AUDIOFOCUS_LOSS:
-                    mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);
-                    pause();
-                    mPausedByFocusLoss = false;
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
+    private SharedPreferences mStatePrefs;
+    private TelephonyManager mTelephonyManager;
 
 
 
@@ -200,12 +117,11 @@ public class PlayerService extends Service implements
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setOnCompletionListener(this);
         mMediaPlayer.setOnErrorListener(this);
         mMediaPlayer.setOnPreparedListener(this);
-        mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+        mMediaPlayer.setOnCompletionListener(this);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
+        mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
 
         Intent i = new Intent(this, AudioEffectsReceiver.class);
         i.setAction(AudioEffectsReceiver.ACTION_OPEN_AUDIO_EFFECT_SESSION);
@@ -218,101 +134,9 @@ public class PlayerService extends Service implements
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         mAutoPause = prefs.getBoolean(PREF_AUTO_PAUSE, false);
 
-        initTelephony();
-
         restoreState();
-
+        initTelephony();
         setupMediaSession();
-    }
-
-    private void saveState(boolean saveQueue) {
-        if (mPlayList.size() > 0) {
-            SharedPreferences.Editor editor = mStatePrefs.edit();
-            editor.putBoolean("stateSaved", true);
-
-            if (saveQueue) {
-                QueueDbHelper dbHelper = new QueueDbHelper(this);
-                dbHelper.removeAll();
-                dbHelper.add(mPlayList);
-                dbHelper.close();
-            }
-
-            editor.putInt("currentPosition", mCurrentPosition);
-            editor.putInt("repeatMode", mRepeatMode);
-            editor.putBoolean("shuffle", mShuffle);
-            editor.apply();
-        }
-    }
-
-    private void restoreState() {
-
-        if (Permissions.checkPermission(this) && mStatePrefs.getBoolean("stateSaved", false)) {
-
-            QueueDbHelper dbHelper = new QueueDbHelper(this);
-            List<Song> playList = dbHelper.readAll();
-            dbHelper.close();
-
-            mRepeatMode = mStatePrefs.getInt("repeatMode", mRepeatMode);
-
-            int position = mStatePrefs.getInt("currentPosition", 0);
-
-            mShuffle = mStatePrefs.getBoolean("shuffle", mShuffle);
-
-
-            setPlayListInternal(playList);
-
-            setPosition(position, false);
-
-            open();
-
-
-        }
-    }
-
-
-    private void setupMediaSession() {
-        mMediaSession = new MediaSessionCompat(this, TAG);
-        mMediaSession.setCallback(new MediaSessionCompat.Callback() {
-            @Override
-            public void onPlay() {
-                play();
-            }
-
-            @Override
-            public void onPause() {
-                pause();
-            }
-
-            @Override
-            public void onSkipToNext() {
-
-                playNext(true);
-            }
-
-            @Override
-            public void onSkipToPrevious() {
-                playPrev();
-            }
-
-            @Override
-            public void onStop() {
-                pause();
-            }
-
-            @Override
-            public void onSeekTo(long pos) {
-                seekTo((int) pos);
-            }
-        });
-    }
-
-    private void initTelephony() {
-        if (mAutoPause) {
-            mTelephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-            if (mTelephonyManager != null) {
-                mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
-            }
-        }
     }
 
     @Override
@@ -322,15 +146,20 @@ public class PlayerService extends Service implements
             String action = intent.getAction();
             if (action != null) {
                 if (mPlayList.size() == 0 || action.equals(ACTION_CHOOSE_SONG)) {
-                    startMainActivity();
+
+                    Intent dialogIntent = new Intent(this, MainActivity.class);
+                    dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(dialogIntent);
+
                 } else if (action.equals(ACTION_TOGGLE)) {
                     toggle();
                 } else if (action.equals(ACTION_PAUSE)) {
                     pause();
                 } else if (action.equals(ACTION_STOP)) {
-                    if (!mBound) {
+
+                    if (!mBound)
                         stopSelf(mStartId);
-                    }
+
                 } else if (action.equals(ACTION_NEXT)) {
                     playNext(true);
                 } else if (action.equals(ACTION_PREVIOUS)) {
@@ -341,6 +170,7 @@ public class PlayerService extends Service implements
         //return START_STICKY;
         return START_NOT_STICKY;
     }
+
 
     @Override
     public void onDestroy() {
@@ -362,39 +192,82 @@ public class PlayerService extends Service implements
         sendBroadcast(i);
         mMediaPlayer.release();
 
-
         super.onDestroy();
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        mBound = true;
-        return mBinder;
+    private void restoreState() {
+
+        if (Permissions.checkPermission(this) && mStatePrefs.getBoolean("stateSaved", false)) {
+
+            int position = mStatePrefs.getInt("currentPosition", 0);
+
+            QueueDbHelper dbHelper = new QueueDbHelper(this);
+            List<Song> playList = dbHelper.readAll();
+            dbHelper.close();
+
+            mRepeatMode = mStatePrefs.getInt("repeatMode", mRepeatMode);
+            mShuffle = mStatePrefs.getBoolean("shuffle", mShuffle);
+
+            setPlayListInternal(playList);
+            setPosition(position, false);
+
+            open();
+        }
     }
 
-    @Override
-    public boolean onUnbind(Intent intent) {
-        mBound = false;
-        if (isPlaying()) {
-            return true;
+    private void initTelephony() {
+        if (mAutoPause) {
+            mTelephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            if (mTelephonyManager != null) {
+                mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+            }
         }
-
-        if (mPlayList.size() > 0) {
-            Message msg = mDelayedStopHandler.obtainMessage();
-            mDelayedStopHandler.sendMessageDelayed(msg, IDLE_DELAY);
-            return true;
-        }
-
-        stopSelf(mStartId);
-        return true;
     }
+
+    private void setupMediaSession() {
+        mMediaSession = new MediaSessionCompat(this, TAG);
+        mMediaSession.setCallback(new MediaSessionCompat.Callback() {
+            @Override
+            public void onPlay() {
+                play();
+            }
+
+            @Override
+            public void onPause() {
+                pause();
+            }
+
+            @Override
+            public void onSkipToNext() {
+                playNext(true);
+            }
+
+            @Override
+            public void onSkipToPrevious() {
+                playPrev();
+            }
+
+            @Override
+            public void onStop() {
+                pause();
+            }
+
+            @Override
+            public void onSeekTo(long pos) {
+                seekTo((int) pos);
+            }
+        });
+    }
+
+
+
+
 
     public void setAutoPauseEnabled() {
         if (!mAutoPause) {
             mAutoPause = true;
 
             initTelephony();
-            //si !enable on a rien à faire à priori
         }
     }
 
@@ -434,7 +307,24 @@ public class PlayerService extends Service implements
     private void notifyChange(String what) {
             updateMediaSession(what);
 
-        saveState(QUEUE_CHANGED.equals(what) || ITEM_ADDED.equals(what) || ORDER_CHANGED.equals(what));
+        boolean saveQueue = (QUEUE_CHANGED.equals(what) || ITEM_ADDED.equals(what) || ORDER_CHANGED.equals(what));
+
+        if (mPlayList.size() > 0) {
+            SharedPreferences.Editor editor = mStatePrefs.edit();
+            editor.putBoolean("stateSaved", true);
+
+            if (saveQueue) {
+                QueueDbHelper dbHelper = new QueueDbHelper(this);
+                dbHelper.removeAll();
+                dbHelper.add(mPlayList);
+                dbHelper.close();
+            }
+
+            editor.putInt("currentPosition", mCurrentPosition);
+            editor.putInt("repeatMode", mRepeatMode);
+            editor.putBoolean("shuffle", mShuffle);
+            editor.apply();
+        }
 
         if (PLAYSTATE_CHANGED.equals(what) || META_CHANGED.equals(what)) {
                 Notification.updateNotification(this);
@@ -445,10 +335,13 @@ public class PlayerService extends Service implements
 		        intent.putExtra("halt", "stop");
                 sendBroadcast(intent);
             }
+
         }
 
         sendBroadcast(what, null);
     }
+
+
 
     private void updateMediaSession(String what) {
 
@@ -480,7 +373,6 @@ public class PlayerService extends Service implements
                     .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, getTrackDuration())
                     .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, artwork);
             mMediaSession.setMetadata(builder.build());
-
         }
     }
 
@@ -494,70 +386,6 @@ public class PlayerService extends Service implements
     }
 
 
-    public void setAsNextTrack(Song song) {
-        mOriginalSongList.add(song);
-        int currentPos = mCurrentPosition;
-        mPlayList.add(currentPos + 1, song);
-        notifyChange(ITEM_ADDED);
-    }
-
-    public void setPosition(int position, boolean play) {
-        if (position >= mPlayList.size()) {
-            return;
-        }
-        mCurrentPosition = position;
-        Song song = mPlayList.get(position);
-        if (!song.equals(mCurrentSong)) {
-            mCurrentSong = song;
-            if (play) {
-                openAndPlay();
-            } else {
-                open();
-            }
-        } else if (play) {
-            play();
-        }
-    }
-
-
-    private int getPreviousPosition(boolean force) {
-
-        updateCurrentPosition();
-        int position = mCurrentPosition;
-
-
-        if ((mRepeatMode == REPEAT_CURRENT && !force) || (isPlaying() && getPlayerPosition() >= 1500)) {
-            return position;
-        }
-
-
-        if (position - 1 < 0) {
-            if (mRepeatMode == REPEAT_ALL) {
-                return mPlayList.size() - 1;
-            }
-            return -1;// NO_REPEAT;
-        }
-        return position - 1;
-    }
-
-
-    public int getNextRepeatMode() {
-        switch (mRepeatMode) {
-
-            case NO_REPEAT:
-                return REPEAT_ALL;
-
-            case REPEAT_ALL:
-                return REPEAT_CURRENT;
-
-            case REPEAT_CURRENT:
-                return NO_REPEAT;
-
-            default:
-                break;
-        }
-        return NO_REPEAT;
-    }
 
     private void play() {
 
@@ -572,11 +400,14 @@ public class PlayerService extends Service implements
                 mMediaPlayer.start();
                 mIsPlaying = true;
                 mIsPaused = false;
+
                 notifyChange(PLAYSTATE_CHANGED);
 
             }
 
         } catch (NullPointerException ignored) {}
+
+
 
     }
 
@@ -608,6 +439,7 @@ public class PlayerService extends Service implements
         notifyChange(PLAYSTATE_CHANGED);
     }
 
+
     public void playPrev() {
         int position = getPreviousPosition(true);
 
@@ -618,59 +450,27 @@ public class PlayerService extends Service implements
         }
     }
 
+    private int getPreviousPosition(boolean force) {
+
+        updateCurrentPosition();
+        int position = mCurrentPosition;
 
 
+        if ((mRepeatMode == REPEAT_CURRENT && !force) || (isPlaying() && getPlayerPosition() >= 1500)) {
+            return position;
+        }
 
-    public void setShuffleEnabled(boolean enable) {
 
-        if (mShuffle != enable) {
-
-            mShuffle = enable;
-            if (enable) {
-                shuffle();
-            } else {
-                mPlayList.clear();
-                mPlayList.addAll(mOriginalSongList);
+        if (position - 1 < 0) {
+            if (mRepeatMode == REPEAT_ALL) {
+                return mPlayList.size() - 1;
             }
-
-            //on met à jour la position
-            updateCurrentPosition();
-            notifyChange(ORDER_CHANGED);
+            return -1;// NO_REPEAT;
         }
+
+        return position - 1;
     }
 
-    private void shuffle() {
-        boolean b = mPlayList.remove(mCurrentSong);
-        Collections.shuffle(mPlayList);
-        if (b) {
-            mPlayList.add(0, mCurrentSong);
-        }
-        setPosition(0, false);
-    }
-
-    private void updateCurrentPosition() {
-        int pos = mPlayList.indexOf(mCurrentSong);
-        if (pos != -1) {
-            mCurrentPosition = pos;
-        }
-    }
-
-
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-
-        playNext(false);
-
-        if (mCurrentPosition+1 == mPlayList.size()) {
-            fin();
-        }
-    }
-
-    private void fin() {
-        mIsPlaying = false;
-        mIsPaused = true;
-        notifyChange(PLAYSTATE_CHANGED);
-    }
 
     public void playNext(boolean force) {
         int position = getNextPosition(force);
@@ -705,6 +505,86 @@ public class PlayerService extends Service implements
         return position + 1;
     }
 
+
+
+    public void setAsNextTrack(Song song) {
+        mOriginalSongList.add(song);
+        int currentPos = mCurrentPosition;
+        mPlayList.add(currentPos + 1, song);
+        notifyChange(ITEM_ADDED);
+    }
+
+    public int getNextRepeatMode() {
+        switch (mRepeatMode) {
+
+            case NO_REPEAT:
+                return REPEAT_ALL;
+
+            case REPEAT_ALL:
+                return REPEAT_CURRENT;
+
+            case REPEAT_CURRENT:
+                return NO_REPEAT;
+
+            default:
+                break;
+        }
+        return NO_REPEAT;
+    }
+
+    public void setShuffleEnabled(boolean enable) {
+
+        if (mShuffle != enable) {
+
+            mShuffle = enable;
+            if (enable) {
+                shuffle();
+            } else {
+                mPlayList.clear();
+                mPlayList.addAll(mOriginalSongList);
+            }
+
+            //on met à jour la position
+            updateCurrentPosition();
+            notifyChange(ORDER_CHANGED);
+        }
+    }
+
+    private void shuffle() {
+        boolean b = mPlayList.remove(mCurrentSong);
+        Collections.shuffle(mPlayList);
+        if (b) {
+            mPlayList.add(0, mCurrentSong);
+        }
+        setPosition(0, false);
+    }
+
+    public void setPosition(int position, boolean play) {
+        if (position >= mPlayList.size()) {
+            return;
+        }
+        mCurrentPosition = position;
+        Song song = mPlayList.get(position);
+        if (!song.equals(mCurrentSong)) {
+            mCurrentSong = song;
+            if (play) {
+                openAndPlay();
+            } else {
+                open();
+            }
+        } else if (play) {
+            play();
+        }
+    }
+
+
+    private void updateCurrentPosition() {
+        int pos = mPlayList.indexOf(mCurrentSong);
+        if (pos != -1) {
+            mCurrentPosition = pos;
+        }
+    }
+
     private void openAndPlay() {
 
         mPlayImmediately = true;
@@ -734,8 +614,96 @@ public class PlayerService extends Service implements
                 | IOException e) {
             Log.e("open() ee", "ee", e);
         }
+
     }
 
+
+    private final BroadcastReceiver mHeadsetStateReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG) && isPlaying()) {
+                boolean plugged = intent.getIntExtra("state", 0) == 1;
+                if (!plugged) {
+                    pause();
+                }
+            }
+        }
+    };
+
+    private final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+            super.onCallStateChanged(state, incomingNumber);
+            switch (state) {
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                case TelephonyManager.CALL_STATE_RINGING:
+                    pause();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
+    @SuppressLint("HandlerLeak")
+    private final Handler mDelayedStopHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (isPlaying() || mBound) {
+                return;
+            }
+
+            stopSelf(mStartId);
+        }
+    };
+
+
+    private final OnAudioFocusChangeListener mAudioFocusChangeListener = new OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                    if (isPlaying()) {
+                        pause();
+                        mPausedByFocusLoss = true;
+                    }
+                    break;
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    if (!isPlaying() && mPausedByFocusLoss) {
+                        resume();
+                        mPausedByFocusLoss = false;
+                    }
+                    mMediaPlayer.setVolume(1.0f, 1.0f);
+                    break;
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    if (isPlaying()) {
+                        mMediaPlayer.setVolume(0.1f, 0.1f);
+                    }
+                    break;
+                case AudioManager.AUDIOFOCUS_LOSS:
+                    mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);
+                    pause();
+                    mPausedByFocusLoss = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+
+        playNext(false);
+
+        if (mCurrentPosition+1 == mPlayList.size()) {
+            mIsPlaying = false;
+            mIsPaused = true;
+            notifyChange(PLAYSTATE_CHANGED);
+        }
+    }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -743,7 +711,6 @@ public class PlayerService extends Service implements
 
         return true;
     }
-
 
     @Override
     public void onPrepared(MediaPlayer mp) {
@@ -761,11 +728,30 @@ public class PlayerService extends Service implements
         }
     }
 
-    private void startMainActivity() {
-        Intent dialogIntent = new Intent(this, MainActivity.class);
-        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(dialogIntent);
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        mBound = true;
+        return mBinder;
     }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        mBound = false;
+        if (isPlaying()) {
+            return true;
+        }
+
+        if (mPlayList.size() > 0) {
+            Message msg = mDelayedStopHandler.obtainMessage();
+            mDelayedStopHandler.sendMessageDelayed(msg, IDLE_DELAY);
+            return true;
+        }
+
+        stopSelf(mStartId);
+        return true;
+    }
+
 
 
     public static void seekTo(int msec) {

@@ -1,14 +1,14 @@
-package org.oucho.musicplayer.utils;
+package org.oucho.musicplayer;
 
 
 public interface MusiqueKeys {
 
+    String INTENT_QUIT = "org.oucho.musicplayer.QUIT";
     String INTENT_STATE = "org.oucho.musicplayer.STATE";
     String INTENT_BLURVIEW = "org.oucho.musicplayer.BLURVIEW";
     String fichier_préférence = "org.oucho.musicplayer_preferences";
 
     String STATE_PREFS_NAME = "PlayerState";
-
 
     String ARTIST_ARTIST_ID = "artist_id";
     String ARTIST_ARTIST_NAME = "artist_name";
@@ -35,6 +35,4 @@ public interface MusiqueKeys {
     String ACTION_SHOW_ARTIST = "show_artist";
     String ACTION_ADD_TO_QUEUE = "add_to_queue";
     String ACTION_SET_AS_NEXT_TRACK = "set_as_next_track";
-
-
 }

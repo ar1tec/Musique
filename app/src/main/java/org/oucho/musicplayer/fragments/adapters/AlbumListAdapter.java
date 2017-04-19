@@ -18,7 +18,7 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.images.ArtworkHelper;
 import org.oucho.musicplayer.db.model.Album;
-import org.oucho.musicplayer.utils.MusiqueKeys;
+import org.oucho.musicplayer.MusiqueKeys;
 
 import java.util.Collections;
 import java.util.List;

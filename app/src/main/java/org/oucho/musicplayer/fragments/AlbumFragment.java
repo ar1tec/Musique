@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -19,25 +18,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
+import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
-import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
-import org.oucho.musicplayer.images.blurview.BlurView;
-import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
-import org.oucho.musicplayer.dialog.SongEditorDialog;
-import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.db.loaders.SongLoader;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
+import org.oucho.musicplayer.dialog.SongEditorDialog;
+import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
-import org.oucho.musicplayer.utils.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 
@@ -100,7 +97,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         @Override
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
-            mAdapter.setData(songList);
+            mAdapter.setData(context, songList);
 
             listeTitre = songList;
 
@@ -223,7 +220,17 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         @Override
         public void onItemClick(int position, View view) {
 
-            mAdapter.notifyDataSetChanged();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                public void run() {
+
+                    mAdapter.notifyDataSetChanged();
+
+                }
+            }, 100);
+
 
             switch (view.getId()) {
 
@@ -413,8 +420,20 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         mRecyclerView.smoothScrollToPosition( i );
                 }
 
-                mAdapter.notifyDataSetChanged();
+                //   rustine lag next.prev    //
+                if (PlayerService.isPlaying()) {
+                    mAdapter.notifyDataSetChanged();
 
+                } else {
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }, 100);
+
+                }
             }
         }
     }

@@ -38,7 +38,7 @@ import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Artist;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.utils.MusiqueKeys;
+import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 

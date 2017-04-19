@@ -30,15 +30,14 @@ public class AudioEffects {
         initEqualizerValues(prefs);
     }
 
-
-    public static void openAudioEffectSession(Context context, int audioSessionId) {
+    static void openAudioEffectSession(Context context, int audioSessionId) {
         SharedPreferences prefs = context.getSharedPreferences(AUDIO_EFFECTS_PREFS, Context.MODE_PRIVATE);
 
         initBassBoost(audioSessionId);
         initEqualizer(prefs, audioSessionId);
     }
 
-    public static void closeAudioEffectSession() {
+    static void closeAudioEffectSession() {
         if (sBassBoost != null) {
             sBassBoost.release();
             sBassBoost = null;
@@ -256,16 +255,16 @@ public class AudioEffects {
     }
 
     private static class BassBoostValues {
-        public boolean enabled;
-        public short strength;
+        boolean enabled;
+        short strength;
     }
 
     private static class EqualizerValues {
-        public boolean enabled;
-        public short preset;
-        public short numberOfBands;
-        public short[] bandLevels;
+        boolean enabled;
+        short preset;
+        short numberOfBands;
+        short[] bandLevels;
 
-        public boolean levelsSet = false;
+        boolean levelsSet = false;
     }
 }
