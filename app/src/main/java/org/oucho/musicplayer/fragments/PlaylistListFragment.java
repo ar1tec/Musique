@@ -163,7 +163,7 @@ public class PlaylistListFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.playlist_list, menu);
+        inflater.inflate(R.menu.playlist, menu);
 
 
 

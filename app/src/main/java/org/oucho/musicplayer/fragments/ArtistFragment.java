@@ -169,7 +169,7 @@ public class ArtistFragment extends BaseFragment {
         PopupMenu popup = new PopupMenu(getActivity(), v);
         MenuInflater inflater = popup.getMenuInflater();
         final Song song = mSongListAdapter.getItem(position);
-        inflater.inflate(R.menu.song_list_item, popup.getMenu());
+        inflater.inflate(R.menu.album_song_item, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
             @Override
@@ -215,7 +215,7 @@ public class ArtistFragment extends BaseFragment {
 
         PopupMenu popup = new PopupMenu(getActivity(), v);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.album_list_item, popup.getMenu());
+        inflater.inflate(R.menu.album_item, popup.getMenu());
         final Album album = mAlbumListAdapter.getItem(position);
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -403,10 +403,10 @@ public class ArtistFragment extends BaseFragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == FIRST) {
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_recycler_view, parent, false);
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_artist_horizontal_recycler_view, parent, false);
                 return new RecyclerViewHolder(itemView);
             }
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_list_item, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_song_item, parent, false);
 
             return new SongViewHolder(itemView);
         }

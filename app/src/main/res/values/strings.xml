@@ -3,7 +3,7 @@
 
     <string name="app_name">Musique</string>
 
-    <!-- nav header activity main -->
+    <!-- nav header activity main_activity -->
     <string name="by">Old Geek, avril 2017</string>
 
     <string name="album">Album</string>

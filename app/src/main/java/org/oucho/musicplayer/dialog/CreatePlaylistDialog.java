@@ -31,7 +31,7 @@ public class CreatePlaylistDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
 
-        final View layout = LayoutInflater.from(getActivity()).inflate(R.layout.playlist_dialog,
+        final View layout = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_playlist,
                 new LinearLayout(getActivity()), false);
 
 

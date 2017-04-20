@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_switch"
         android:title=""
-        app:actionLayout="@layout/equalizer_switch"
+        app:actionLayout="@layout/activity_equalizer_switch"
         app:showAsAction="always" />
 
 </menu>

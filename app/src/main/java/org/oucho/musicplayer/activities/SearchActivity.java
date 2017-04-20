@@ -526,19 +526,19 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
 
             switch (type) {
                 case ALBUM:
-                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_album_list_item, parent, false);
+                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_album_list_item, parent, false);
 
                     viewHolder = new AlbumViewHolder(itemView);
                     return viewHolder;
 
                 case ARTIST:
-                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_artist_list_item, parent, false);
+                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_artist_list_item, parent, false);
 
                     viewHolder = new ArtistViewHolder(itemView);
                     return viewHolder;
 
                 case SONG:
-                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_song_list_item, parent, false);
+                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_song_list_item, parent, false);
 
                     viewHolder = new SongViewHolder(itemView);
                     return viewHolder;
@@ -546,7 +546,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
                 case SECTION_ALBUMS:
                 case SECTION_ARTISTS:
                 case SECTION_SONGS:
-                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_section, parent, false);
+                    itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_section, parent, false);
                     viewHolder = new SectionViewHolder(itemView);
                     return viewHolder;
 

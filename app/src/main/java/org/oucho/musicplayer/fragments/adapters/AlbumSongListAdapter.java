@@ -1,7 +1,6 @@
 package org.oucho.musicplayer.fragments.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +37,7 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
     @Override
     public SongViewHolder onCreateViewHolderImpl(ViewGroup parent) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.song_album_list_item, parent, false);
+                R.layout.fragment_album_song_list_item, parent, false);
 
         return new SongViewHolder(itemView);
     }

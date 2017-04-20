@@ -350,7 +350,7 @@ public class PlayerActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_playback, menu);
+        getMenuInflater().inflate(R.menu.player_activity, menu);
         return true;
     }
 
@@ -624,7 +624,7 @@ public class PlayerActivity extends AppCompatActivity
         @Override
         public QueueItemViewHolder onCreateViewHolder(ViewGroup parent, int type) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.queue_item, parent, false);
+                    R.layout.activity_player_queue_item, parent, false);
 
             return new QueueItemViewHolder(itemView);
         }

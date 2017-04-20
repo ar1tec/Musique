@@ -285,7 +285,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         final Song song = mAdapter.getItem(position);
 
-        inflater.inflate(R.menu.song_list_item, popup.getMenu());
+        inflater.inflate(R.menu.album_song_item, popup.getMenu());
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 

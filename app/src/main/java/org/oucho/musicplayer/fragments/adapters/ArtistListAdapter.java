@@ -34,7 +34,7 @@ public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewH
     @Override
     public ArtistViewHolder onCreateViewHolder(ViewGroup parent, int type) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.search_artist_list_item, parent, false);
+                R.layout.activity_search_artist_list_item, parent, false);
         return new ArtistViewHolder(itemView);
     }
 

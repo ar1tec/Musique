@@ -153,7 +153,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
         PopupMenu popup = new PopupMenu(getActivity(), v);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.album_list_item, popup.getMenu());
+        inflater.inflate(R.menu.album_item, popup.getMenu());
         final Album album = mAdapter.getItem(position);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
@@ -244,7 +244,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_album_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_liste_album, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_view);
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
@@ -296,7 +296,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
         this.menu = menu;
 
-        inflater.inflate(R.menu.album_sort_by, menu);
+        inflater.inflate(R.menu.albumlist_sort_by, menu);
     }
 
     @Override

@@ -45,7 +45,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
     @Override
     public SongViewHolder onCreateViewHolderImpl(ViewGroup parent) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.song_list_item, parent, false);
+                R.layout.fragment_song_item, parent, false);
 
         return new SongViewHolder(itemView);
     }

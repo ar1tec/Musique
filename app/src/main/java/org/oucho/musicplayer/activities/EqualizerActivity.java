@@ -181,7 +181,7 @@ public class EqualizerActivity extends AppCompatActivity {
 
             for (short band = 0; band < bands; band++) {
 
-                View v = getLayoutInflater().inflate(R.layout.equalizer_slider, layout, false);
+                View v = getLayoutInflater().inflate(R.layout.activity_equalizer_slider, layout, false);
 
 
                 SeekBar seekBar = (SeekBar) v.findViewById(R.id.seek_bar);

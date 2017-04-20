@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_activity, menu);
 
         MainActivity.menu = menu;
 
@@ -746,7 +746,7 @@ public class MainActivity extends AppCompatActivity implements
         final String start = getString(R.string.start);
         final String cancel = getString(R.string.cancel);
 
-        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.date_picker_dialog, null);
+        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.dialog_date_picker, null);
 
         final SeekArc mSeekArc;
         final TextView mSeekArcProgress;
@@ -814,7 +814,7 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
-        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.timer_info_dialog, null);
+        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.dialog_timer_info, null);
         final TextView timeLeft = ((TextView) view.findViewById(R.id.time_left));
 
         final String stopTimer = getString(R.string.stop_timer);

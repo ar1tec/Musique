@@ -29,7 +29,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
     private final int mArtworkWidth;
     private final int mArtworkHeight;
     private final Context mContext;
-    private int mLayoutId = R.layout.fragment_album_list_item;
+    private int mLayoutId = R.layout.fragment_liste_album_item;
     private List<Album> mAlbumList = Collections.emptyList();
 
 
@@ -45,7 +45,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
     }
 
     public void setLayoutId() {
-        mLayoutId = R.layout.small_album_grid_item;
+        mLayoutId = R.layout.fragment_artist_small_album_grid_item;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         String getTri = préférences.getString("album_sort_order", "");
 
-        if (mLayoutId != R.layout.small_album_grid_item) {
+        if (mLayoutId != R.layout.fragment_artist_small_album_grid_item) {
 
             if (album.getId() == PlayerService.getAlbumId()) {
 
@@ -123,7 +123,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         }
 
         viewHolder.vName.setText(album.getAlbumName());
-        if (mLayoutId != R.layout.small_album_grid_item) {
+        if (mLayoutId != R.layout.fragment_artist_small_album_grid_item) {
             viewHolder.vArtist.setText(album.getArtistName());
         }
 
@@ -176,7 +176,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
             vArtwork.setOnClickListener(this);
 
 
-            if (mLayoutId != R.layout.small_album_grid_item) {
+            if (mLayoutId != R.layout.fragment_artist_small_album_grid_item) {
                 vArtist = (TextView) itemView.findViewById(R.id.artist_name);
                 itemView.findViewById(R.id.album_info).setOnClickListener(this);
 

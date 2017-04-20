@@ -263,7 +263,7 @@ public class PlaylistFragment extends BaseFragment {
 
         @Override
         public SongViewHolder onCreateViewHolder(ViewGroup parent, int type) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_item, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_playlist_list_item, parent, false);
 
 
             return new SongViewHolder(itemView);
