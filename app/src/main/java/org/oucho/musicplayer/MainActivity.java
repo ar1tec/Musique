@@ -209,6 +209,10 @@ public class MainActivity extends AppCompatActivity implements
                 NavigationUtils.showEqualizer(this);
                 break;
 
+            case R.id.action_search:
+                NavigationUtils.showSearchActivity(this);
+                break;
+
             case R.id.nav_update:
                 CheckUpdate.withInfo(this);
                 break;
@@ -343,9 +347,7 @@ public class MainActivity extends AppCompatActivity implements
                     showLibrary();
                 }
                 return true;
-            case R.id.action_search:
-                NavigationUtils.showSearchActivity(this);
-                return true;
+
             case R.id.action_timer:
                 if (! running) {
                     showTimePicker();

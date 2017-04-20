@@ -303,6 +303,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     public boolean onOptionsItemSelected(MenuItem item) {
         PrefUtils prefUtils = PrefUtils.getInstance();
         switch (item.getItemId()) {
+
             case R.id.menu_sort_by_az:
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_A_Z);
                 load();

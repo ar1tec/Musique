@@ -172,7 +172,17 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.artist_image_req_width);
         mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
 
-        getActivity().setTitle(R.string.album);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            public void run() {
+
+                getActivity().setTitle(Titre);
+
+            }
+        }, 300);
+
     }
 
 
@@ -188,8 +198,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
         ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
 
-        TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
-        titreAlbum.setText(Titre);
+/*        TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
+        titreAlbum.setText(Titre);*/
 
         TextView artiste = (TextView) rootView.findViewById(R.id.line2);
         artiste.setText(Artiste);
