@@ -26,11 +26,7 @@ public class LibraryFragment extends BaseFragment {
 
 
     private static SectionsPagerAdapter mSectionsPagerAdapter;
-
     private static boolean lock = false;
-    private static int page;
-
-
 
     public static LibraryFragment newInstance() {
 

@@ -53,7 +53,6 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 mLayoutId, parent, false);
 
-
         return new AlbumViewHolder(itemView);
     }
 

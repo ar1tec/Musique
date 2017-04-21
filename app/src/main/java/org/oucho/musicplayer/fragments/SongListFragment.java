@@ -1,6 +1,7 @@
 package org.oucho.musicplayer.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -261,7 +262,16 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
 
-                    LibraryFragment.backToPrevious();
+                    if (MainActivity.getQueueLayout()) {
+
+                        Intent intent = new Intent();
+                        intent.setAction(INTENT_QUEUEVIEW);
+                        context.sendBroadcast(intent);
+
+                    } else {
+
+                        LibraryFragment.backToPrevious();
+                    }
 
                     return true;
                 }

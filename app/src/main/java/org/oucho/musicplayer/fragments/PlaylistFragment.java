@@ -2,6 +2,7 @@ package org.oucho.musicplayer.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -34,6 +35,8 @@ import org.oucho.musicplayer.widgets.FastScroller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.oucho.musicplayer.MusiqueKeys.INTENT_QUEUEVIEW;
 
 
 public class PlaylistFragment extends BaseFragment {
@@ -160,10 +163,19 @@ public class PlaylistFragment extends BaseFragment {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
 
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                    ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
-                    ft.commit();
+                    if (MainActivity.getQueueLayout()) {
+
+                        Intent intent = new Intent();
+                        intent.setAction(INTENT_QUEUEVIEW);
+                        getContext().sendBroadcast(intent);
+
+                    } else {
+
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                        ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
+                        ft.commit();
+                    }
 
                     return true;
                 }

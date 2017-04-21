@@ -41,6 +41,8 @@ import org.oucho.musicplayer.widgets.FastScroller;
 import java.util.List;
 import java.util.Locale;
 
+import static org.oucho.musicplayer.PlayerService.PLAYSTATE_CHANGED;
+
 
 public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
@@ -56,6 +58,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     private RecyclerView mRecyclerView;
     private Etat_player Etat_player_Receiver;
     private boolean isRegistered = false;
+
+    private final Handler mHandler = new Handler();
 
     private int mArtworkWidth;
     private int mArtworkHeight;
@@ -141,7 +145,9 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         context = getContext();
 
         Etat_player_Receiver = new Etat_player();
-        IntentFilter filter = new IntentFilter(INTENT_STATE);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(INTENT_STATE);
+        filter.addAction(PLAYSTATE_CHANGED);
         context.registerReceiver(Etat_player_Receiver, filter);
         isRegistered = true;
 
@@ -216,6 +222,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         mRecyclerView.setLayoutManager(new CustomLayoutManager(getActivity()));
         mAdapter = new AlbumSongListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
+        mAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
+
         mRecyclerView.setAdapter(mAdapter);
 
         FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
@@ -251,6 +259,35 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                 case R.id.menu_button:
                     showMenu(position, view);
                     break;
+
+                default:
+                    break;
+            }
+        }
+    };
+
+    private final BaseAdapter.OnItemLongClickListener mOnItemLongClickListener = new BaseAdapter.OnItemLongClickListener() {
+        @Override
+        public void onItemLongClick(int position, View view) {
+
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                public void run() {
+
+                    mAdapter.notifyDataSetChanged();
+
+                }
+            }, 100);
+
+
+            switch (view.getId()) {
+
+                case R.id.item_view:
+                    showMenu(position, view);
+                    break;
+
 
                 default:
                     break;
@@ -391,7 +428,21 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                     LibraryFragment.setLock(false);
 
-                    if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
+                    if (MainActivity.getQueueLayout()) {
+
+                        Intent intent = new Intent();
+                        intent.setAction(INTENT_QUEUEVIEW);
+                        context.sendBroadcast(intent);
+
+                        return true;
+
+
+                    } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
+
+                        Intent intent0 = new Intent();
+                        intent0.setAction(INTENT_LAYOUTVIEW);
+                        intent0.putExtra("vue", "layoutA");
+                        context.sendBroadcast(intent0);
 
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
@@ -403,6 +454,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                         return true;
                     }
+                    return false;
                 }
                 return false;
             }
@@ -417,6 +469,15 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         public void onReceive(Context context, Intent intent) {
 
             String receiveIntent = intent.getAction();
+
+
+            if (PLAYSTATE_CHANGED.equals(receiveIntent)) {
+
+                return;
+            }
+
+
+
 
             if (INTENT_STATE.equals(receiveIntent)
                     && intent.getStringExtra("state").equals("prev")

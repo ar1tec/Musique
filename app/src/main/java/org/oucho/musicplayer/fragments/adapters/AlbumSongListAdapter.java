@@ -91,7 +91,7 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
     }
 
 
-    class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private final TextView vTime;
         private final TextView vTitle;
@@ -100,7 +100,7 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
         final ImageView PlayView;
 
-        public SongViewHolder(View itemView) {
+        SongViewHolder(View itemView) {
             super(itemView);
 
             vTime = (TextView) itemView.findViewById(R.id.time);
@@ -113,8 +113,11 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
             itemView.setOnClickListener(this);
 
-            ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
-            menuButton.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+
+
+/*            ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
+            menuButton.setOnClickListener(this);*/
 
         }
 
@@ -125,6 +128,15 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
             triggerOnItemClickListener(position, v);
 
         }
+
+        @Override
+        public boolean  onLongClick(View v) {
+            final int position = getAdapterPosition();
+            triggerOnItemLongClickListener(position, v);
+
+            return true;
+        }
     }
+
 
 }

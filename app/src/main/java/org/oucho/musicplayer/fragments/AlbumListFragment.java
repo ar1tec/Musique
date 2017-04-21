@@ -19,6 +19,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlayerService;
@@ -61,6 +63,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     private boolean isRegistered = false;
 
     private RecyclerView mRecyclerView;
+
 
 
     private List<Album> listeTitre;
@@ -106,6 +109,21 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             switch (view.getId()) {
                 case R.id.album_artwork:
                 case R.id.album_info:
+
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+
+                        public void run() {
+
+                            Intent intent = new Intent();
+                            intent.setAction(INTENT_LAYOUTVIEW);
+                            intent.putExtra("vue", "layoutB");
+                            context.sendBroadcast(intent);
+
+                        }
+                    }, 300);
+
 
                     Fragment fragment = AlbumFragment.newInstance(album);
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -229,6 +247,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                 setUserVisibleHint(true);
                 showOverflowMenu(true);
                 LibraryFragment.setLock(false);
+
             }
 
             // recharge la vue via Adapter
@@ -360,6 +379,40 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             context.registerReceiver(reloadReceiver, filter);
             isRegistered = true;
         }
+
+
+        // Active la touche back
+        if (getView() == null) {
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    LibraryFragment.setLock(false);
+
+                    if (MainActivity.getQueueLayout()) {
+
+                        Intent intent = new Intent();
+                        intent.setAction(INTENT_QUEUEVIEW);
+                        context.sendBroadcast(intent);
+
+                        return true;
+
+                    }
+
+                    return false;
+
+                }
+                return false;
+            }
+        });
     }
 
     /* *********************************************************************************************

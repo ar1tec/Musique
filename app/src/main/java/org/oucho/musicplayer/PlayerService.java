@@ -304,7 +304,7 @@ public class PlayerService extends Service implements
         notifyChange(ITEM_ADDED);
     }
 
-    private void notifyChange(String what) {
+    public void notifyChange(String what) {
             updateMediaSession(what);
 
         boolean saveQueue = (QUEUE_CHANGED.equals(what) || ITEM_ADDED.equals(what) || ORDER_CHANGED.equals(what));

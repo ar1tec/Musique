@@ -163,7 +163,7 @@ public class PlayerActivity extends AppCompatActivity
 
         mSeekBar = (SeekBar) findViewById(R.id.seek_bar);
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
-        mSeekBar.getThumb().mutate().setAlpha(0);
+        //mSeekBar.getThumb().mutate().setAlpha(0);
 
     }
 

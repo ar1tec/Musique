@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/track_info"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/barre_lecture"
+    android:background="@color/blancTransparent"
+    android:clipToPadding="false"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/zZz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="2dp"
+        android:gravity="right"
+        android:text="zZz"
+        android:textSize="12sp"
+        android:textColor="@color/zzz"
+        android:layout_marginRight="5dp"
+        android:visibility="gone"/>
+
+
+    <org.oucho.musicplayer.widgets.ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentTop="true"
+        android:padding="0dp"
+        app:progressColor="@color/colorAccent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/content_padding">
+
+
+            <TextView
+                android:id="@+id/song_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:ellipsize="end"
+                android:paddingLeft="4dp"
+                android:maxLines="1"
+                android:text="Titre"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/song_artist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/song_title"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:paddingLeft="4dp"
+                android:maxLines="1"
+                android:text="Artiste"
+                android:textColor="?attr/controlsTint"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/quick_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/prev"
+                android:scaleType="center"
+                android:src="@drawable/ic_fast_rewind_grey_600_36dp"
+                android:tint="@color/colorAccent" />
+
+            <ImageButton
+                android:id="@+id/quick_play_pause_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/play"
+                android:scaleType="center"
+                android:src="@drawable/ic_play_circle_filled_grey_600_48dp"
+                android:tint="@color/colorAccent" />
+
+            <ImageButton
+                android:id="@+id/quick_next"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/next"
+                android:scaleType="center"
+                android:src="@drawable/ic_fast_forward_grey_600_36dp"
+                android:tint="@color/colorAccent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

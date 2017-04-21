@@ -2,6 +2,7 @@ package org.oucho.musicplayer.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.adapters.PlaylistListAdapter;
@@ -34,6 +36,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+
+import static org.oucho.musicplayer.MusiqueKeys.INTENT_QUEUEVIEW;
 
 public class PlaylistListFragment extends BaseFragment {
 
@@ -150,7 +154,16 @@ public class PlaylistListFragment extends BaseFragment {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
 
-                    LibraryFragment.backToPrevious();
+                    if (MainActivity.getQueueLayout()) {
+
+                        Intent intent = new Intent();
+                        intent.setAction(INTENT_QUEUEVIEW);
+                        context.sendBroadcast(intent);
+
+                    } else {
+
+                        LibraryFragment.backToPrevious();
+                    }
 
                     return true;
                 }

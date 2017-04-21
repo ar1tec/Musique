@@ -6,6 +6,10 @@ public interface MusiqueKeys {
     String INTENT_QUIT = "org.oucho.musicplayer.QUIT";
     String INTENT_STATE = "org.oucho.musicplayer.STATE";
     String INTENT_BLURVIEW = "org.oucho.musicplayer.BLURVIEW";
+    String INTENT_QUEUEVIEW = "org.oucho.musicplayer.QUEUEVIEW";
+    String INTENT_LAYOUTVIEW = "org.oucho.musicplayer.LAYOUTVIEW";
+
+
     String fichier_préférence = "org.oucho.musicplayer_preferences";
 
     String STATE_PREFS_NAME = "PlayerState";
