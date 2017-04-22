@@ -30,16 +30,6 @@
         </activity>
 
         <activity
-            android:name=".activities.PlayerActivity"
-            android:label="@string/now_playing"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.oucho.musicplayer.MainActivity"/>
-        </activity>
-
-        <activity
             android:name=".activities.SearchActivity"
             android:label="@string/search"
             android:parentActivityName=".MainActivity"

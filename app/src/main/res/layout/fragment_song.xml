@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_song_layout"
     tools:context="org.oucho.musicplayer.fragments.SongListFragment">
 
     <android.support.v7.widget.RecyclerView
@@ -23,7 +24,6 @@
         android:layout_marginBottom="@dimen/barre_lecture" />
 
     <View
-        android:id="@+id/toolbar_shadow"
         android:layout_width="match_parent"
         android:layout_height="2.5dp"
         android:background="@drawable/shadow"/>

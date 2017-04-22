@@ -13,7 +13,7 @@ import android.view.ViewTreeObserver;
 
 
 class BlockingBlurController implements BlurController {
-    private static final String TAG = BlockingBlurController.class.getSimpleName();
+
     //Bitmap size should be divisible by 16 to meet stride requirement
     private static final int ROUNDING_VALUE = 16;
 

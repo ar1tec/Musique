@@ -31,8 +31,8 @@ import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
-import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.adapters.AlbumSongListAdapter;
+import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
@@ -40,8 +40,6 @@ import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.List;
 import java.util.Locale;
-
-import static org.oucho.musicplayer.PlayerService.PLAYSTATE_CHANGED;
 
 
 public class AlbumFragment extends BaseFragment implements MusiqueKeys {
@@ -101,7 +99,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         @Override
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
-            mAdapter.setData(context, songList);
+            mAdapter.setData(songList);
 
             listeTitre = songList;
 
@@ -120,6 +118,18 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             } else {
                 durée.setText(msToText(duréeTotal) + " minutes");
             }
+
+
+
+            mHandler.postDelayed(new Runnable() {
+
+                public void run() {
+
+                    Intent intent0 = new Intent();
+                    intent0.setAction(INTENT_BLURVIEW);
+                    context.sendBroadcast(intent0);
+                }
+            }, 1000);
         }
 
         @Override
@@ -179,8 +189,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
 
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
 
             public void run() {
 
@@ -188,6 +197,11 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
             }
         }, 300);
+
+        Intent intent0 = new Intent();
+        intent0.setAction(INTENT_LAYOUTVIEW);
+        intent0.putExtra("vue", "layout0");
+        context.sendBroadcast(intent0);
 
     }
 
@@ -238,28 +252,21 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         @Override
         public void onItemClick(int position, View view) {
 
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
+            mHandler.postDelayed(new Runnable() {
 
                 public void run() {
-
                     mAdapter.notifyDataSetChanged();
-
                 }
             }, 100);
 
 
             switch (view.getId()) {
-
                 case R.id.item_view:
                     selectSong(position);
                     break;
-
                 case R.id.menu_button:
                     showMenu(position, view);
                     break;
-
                 default:
                     break;
             }
@@ -271,8 +278,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         public void onItemLongClick(int position, View view) {
 
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
+            mHandler.postDelayed(new Runnable() {
 
                 public void run() {
 
@@ -283,12 +289,9 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
 
             switch (view.getId()) {
-
                 case R.id.item_view:
                     showMenu(position, view);
                     break;
-
-
                 default:
                     break;
             }
@@ -441,8 +444,10 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                         Intent intent0 = new Intent();
                         intent0.setAction(INTENT_LAYOUTVIEW);
-                        intent0.putExtra("vue", "layoutA");
+                        intent0.putExtra("vue", "layoutx");
                         context.sendBroadcast(intent0);
+
+
 
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
@@ -451,6 +456,18 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         Intent intent = new Intent();
                         intent.setAction("reload");
                         context.sendBroadcast(intent);
+
+
+                        // rustine blurview
+                        mHandler.postDelayed(new Runnable() {
+
+                            public void run() {
+
+                                Intent intent0 = new Intent();
+                                intent0.setAction(INTENT_BLURVIEW);
+                                context.sendBroadcast(intent0);
+                            }
+                        }, 1000);
 
                         return true;
                     }
@@ -477,15 +494,11 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             }
 
 
-
-
             if (INTENT_STATE.equals(receiveIntent)
                     && intent.getStringExtra("state").equals("prev")
                     || intent.getStringExtra("state").equals("next")
                     || intent.getStringExtra("state").equals("play")) {
 
-
-                // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
                 for (int i = 0; i < listeTitre.size(); i++) {
                     if (listeTitre.get(i).getId() == PlayerService.getSongID())
                         mRecyclerView.smoothScrollToPosition( i );
@@ -497,8 +510,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                 } else {
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
+                    mHandler.postDelayed(new Runnable() {
                         public void run() {
                             mAdapter.notifyDataSetChanged();
                         }

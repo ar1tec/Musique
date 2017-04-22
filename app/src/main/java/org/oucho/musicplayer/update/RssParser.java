@@ -23,7 +23,7 @@ class RssParser {
         }
     }
 
-    public Update parse() {
+    Update parse() {
         SAXParserFactory factory = SAXParserFactory.newInstance();
 
         try {

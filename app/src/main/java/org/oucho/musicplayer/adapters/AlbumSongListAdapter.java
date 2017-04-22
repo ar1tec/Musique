@@ -1,11 +1,10 @@
-package org.oucho.musicplayer.fragments.adapters;
+package org.oucho.musicplayer.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,11 +21,8 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
     private List<Song> mSongList = Collections.emptyList();
 
-    private Context mContext;
-
-    public void setData(Context context, List<Song> data) {
+    public void setData(List<Song> data) {
         mSongList = data;
-        mContext = context;
         notifyDataSetChanged();
     }
 

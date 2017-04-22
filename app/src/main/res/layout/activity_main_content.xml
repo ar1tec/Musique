@@ -17,11 +17,20 @@
         android:layout_alignParentBottom="true"
         tools:targetApi="lollipop">
 
+        <org.oucho.musicplayer.widgets.ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentTop="true"
+            android:padding="0dp"
+            app:progressColor="@color/colorAccent" />
+
         <include layout="@layout/activity_main_content_a"
             android:visibility="visible"/>
 
         <include layout="@layout/activity_main_content_b"
             android:visibility="gone"/>
+
 
     </org.oucho.musicplayer.images.blurview.BlurView>
 

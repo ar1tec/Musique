@@ -150,6 +150,9 @@ public class PlaylistFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        //MainActivity.setViewID(R.id.fragment_playlist);
+
+        //final int viewID = MainActivity.getViewID();
         // Active la touche back
         if(getView() == null){
             return;
@@ -175,9 +178,10 @@ public class PlaylistFragment extends BaseFragment {
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
                         ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
                         ft.commit();
+                        return true;
                     }
 
-                    return true;
+                    return false;
                 }
                 return false;
             }
@@ -205,14 +209,14 @@ public class PlaylistFragment extends BaseFragment {
 
     private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener, OnTouchListener {
 
-        private final Context context = getContext(); // NOPMD
+        private final Context context = getContext();
 
-        final View itemView; // NOPMD
-        final TextView vTitle; // NOPMD
-        final TextView vArtist; // NOPMD
-        final ImageButton vReorderButton; // NOPMD
+        final View itemView;
+        final TextView vTitle;
+        final TextView vArtist;
+        final ImageButton vReorderButton;
 
-        public SongViewHolder(View itemView) {
+        SongViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             vTitle = (TextView) itemView.findViewById(R.id.title);
@@ -300,7 +304,7 @@ public class PlaylistFragment extends BaseFragment {
             return mSongList.size();
         }
 
-        public void moveItem(int oldPosition, int newPosition) {
+        void moveItem(int oldPosition, int newPosition) {
             if (oldPosition < 0 || oldPosition >= mSongList.size()
                     || newPosition < 0 || newPosition >= mSongList.size()) {
                 return;
@@ -314,11 +318,13 @@ public class PlaylistFragment extends BaseFragment {
 
         }
 
-        public void removeItem(int position) {
+        void removeItem(int position) {
             Song s = mSongList.remove(position);
 
             PlaylistsUtils.removeFromPlaylist(getActivity().getContentResolver(), mPlaylist.getId(), s.getId());
             notifyItemRemoved(position);
         }
     }
+
+
 }

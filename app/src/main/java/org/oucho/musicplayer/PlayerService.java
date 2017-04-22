@@ -51,24 +51,6 @@ public class PlayerService extends Service implements
         OnCompletionListener {
 
 
-    public  static final String ACTION_NEXT = "org.oucho.musicplayer.ACTION_NEXT";
-    private static final String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
-    private static final String ACTION_PAUSE = "org.oucho.musicplayer.ACTION_PAUSE";
-    public  static final String ACTION_TOGGLE = "org.oucho.musicplayer.ACTION_TOGGLE";
-    public  static final String ACTION_PREVIOUS = "org.oucho.musicplayer.ACTION_PREVIOUS";
-    private static final String ACTION_CHOOSE_SONG = "org.oucho.musicplayer.ACTION_CHOOSE_SONG";
-
-    public  static final String ITEM_ADDED = "org.oucho.musicplayer.ITEM_ADDED";
-    private static final String EXTRA_POSITION = "org.oucho.musicplayer.POSITION";
-    public  static final String PREF_AUTO_PAUSE = "org.oucho.musicplayer.AUTO_PAUSE";
-
-    public  static final String META_CHANGED = "org.oucho.musicplayer.META_CHANGED";
-    public  static final String QUEUE_CHANGED = "org.oucho.musicplayer.QUEUE_CHANGED";
-    public  static final String ORDER_CHANGED = "org.oucho.musicplayer.ORDER_CHANGED";
-    public  static final String POSITION_CHANGED = "org.oucho.musicplayer.POSITION_CHANGED";
-    public  static final String PLAYSTATE_CHANGED = "org.oucho.musicplayer.PLAYSTATE_CHANGED";
-    private static final String REPEAT_MODE_CHANGED = "org.oucho.musicplayer.REPEAT_MODE_CHANGED";
-
     private static final String TAG = "PlayerService";
 
 
@@ -431,13 +413,13 @@ public class PlayerService extends Service implements
     }
 
 
-    public void stop() {
+/*    public void stop() {
         mMediaPlayer.stop();
 
         mIsPlaying = false;
 
         notifyChange(PLAYSTATE_CHANGED);
-    }
+    }*/
 
 
     public void playPrev() {

@@ -27,13 +27,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.fragments.adapters.AlbumListAdapter;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.adapters.AlbumListAdapter;
+import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.db.loaders.AlbumLoader;
@@ -109,21 +108,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             switch (view.getId()) {
                 case R.id.album_artwork:
                 case R.id.album_info:
-
-
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-
-                        public void run() {
-
-                            Intent intent = new Intent();
-                            intent.setAction(INTENT_LAYOUTVIEW);
-                            intent.putExtra("vue", "layoutB");
-                            context.sendBroadcast(intent);
-
-                        }
-                    }, 300);
-
 
                     Fragment fragment = AlbumFragment.newInstance(album);
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -457,6 +441,8 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                             + "</small></font>"));
                 }
 
+                MainActivity.setViewID(R.id.fragment_album_list_layout);
+
 
 
             } else {
@@ -485,6 +471,8 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                 }, 1000);
 
                 run = true;
+
+                MainActivity.setViewID(R.id.fragment_album_list_layout);
             }
         }
     }

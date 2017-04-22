@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.fragments.adapters.AlbumListAdapter;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.adapters.AlbumListAdapter;
+import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;

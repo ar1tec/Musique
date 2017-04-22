@@ -2,7 +2,6 @@ package org.oucho.musicplayer;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -39,6 +38,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -56,8 +59,9 @@ import org.oucho.musicplayer.fragments.AlbumFragment;
 import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
-import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
+import org.oucho.musicplayer.adapters.BaseAdapter;
+import org.oucho.musicplayer.adapters.QueueAdapter;
+import org.oucho.musicplayer.fragments.PlayerFragment;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.images.blurview.BlurView;
@@ -81,64 +85,48 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import static org.oucho.musicplayer.PlayerService.QUEUE_CHANGED;
 import static org.oucho.musicplayer.R.id.drawer_layout;
-import static org.oucho.musicplayer.R.id.quick_prev;
 
 public class MainActivity extends AppCompatActivity implements
         MusiqueKeys,
         OnNavigationItemSelectedListener {
 
-    public static final int SEARCH_ACTIVITY = 234;
+    private Context mContext;
 
-    private static final int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
-    private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
-
-    private final Handler mHandler = new Handler();
-    private NavigationView mNavigationView;
-    private DrawerLayout mDrawerLayout;
-
+    private View mQueueLayout;
+    private List<Song> mQueue;
     private BlurView topBlurView;
+    private TextView timeAfficheur;
+    private RelativeLayout layoutA;
+    private RelativeLayout layoutB;
     private BlurView bottomBlurView;
-
-    private Intent mOnActivityResultIntent;
-
-    private static PlayerService mPlayerService;
-
-    private boolean mServiceBound = false;
     private ProgressBar mProgressBar;
-
+    private DrawerLayout mDrawerLayout;
+    private ImageButton forwardButton;
+    private ImageButton previousButton;
+    private ImageButton forwardButton0;
+    private ImageButton previousButton0;
+    private DragRecyclerView mQueueView;
+    private CountDownTimer minuteurVolume;
+    private Intent mOnActivityResultIntent;
+    private NavigationView mNavigationView;
     private PlaybackRequests mPlaybackRequests;
-
-    private static ScheduledFuture mTask;
-    private static boolean running;
-
-    private final Handler handler = new Handler();
     private VolumeTimer volume = new VolumeTimer();
 
     private static Menu menu;
-    private TextView timeAfficheur;
-
-    private Context mContext;
-    private CountDownTimer minuteurVolume;
-
-    private View mQueueLayout;
-    private DragRecyclerView mQueueView;
-
-    private List<Song> mQueue;
+    private static ScheduledFuture mTask;
     private static QueueAdapter mQueueAdapter;
+    private static PlayerService mPlayerService;
 
+    private final Handler mHandler = new Handler();
+
+    private boolean layout1 = false;
+    private boolean mServiceBound = false;
+    private boolean autoScrollQueue = false;
+
+    private static boolean running;
     private static boolean queueLayout = false;
 
-
-    private RelativeLayout layoutA;
-    private RelativeLayout layoutB;
-
-
-    ImageButton previousButton;
-    ImageButton forwardButton;
-    ImageButton previousButton0;
-    ImageButton forwardButton0;
 
 
     /* *********************************************************************************************
@@ -194,48 +182,47 @@ public class MainActivity extends AppCompatActivity implements
 
         mQueueView.setAdapter(mQueueAdapter);
 
-        findViewById(R.id.quick_play_pause_toggle).setOnClickListener(mOnClickListener);
-        findViewById(R.id.quick_play_pause_toggle0).setOnClickListener(mOnClickListener);
+
+
+        findViewById(R.id.repeat0).setOnClickListener(mOnClickListener);
+        findViewById(R.id.shuffle0).setOnClickListener(mOnClickListener);
 
         findViewById(R.id.track_info).setOnClickListener(mOnClickListener);
         findViewById(R.id.track_info0).setOnClickListener(mOnClickListener);
 
-
-
         findViewById(R.id.quick_prev).setOnClickListener(mOnClickListener);
         findViewById(R.id.quick_next).setOnClickListener(mOnClickListener);
-
-        findViewById(R.id.quick_prev).setOnLongClickListener(mOnLongClickListener);
-        findViewById(R.id.quick_next).setOnLongClickListener(mOnLongClickListener);
-
         findViewById(R.id.quick_prev0).setOnClickListener(mOnClickListener);
         findViewById(R.id.quick_next0).setOnClickListener(mOnClickListener);
 
+        findViewById(R.id.quick_prev).setOnLongClickListener(mOnLongClickListener);
+        findViewById(R.id.quick_next).setOnLongClickListener(mOnLongClickListener);
         findViewById(R.id.quick_prev0).setOnLongClickListener(mOnLongClickListener);
         findViewById(R.id.quick_next0).setOnLongClickListener(mOnLongClickListener);
+
+        findViewById(R.id.play_pause_toggle).setOnClickListener(mOnClickListener);
+        findViewById(R.id.play_pause_toggle0).setOnClickListener(mOnClickListener);
+
+
+        layoutA = (RelativeLayout) findViewById(R.id.track_info);
+        layoutB = (RelativeLayout) findViewById(R.id.track_info0);
 
         previousButton = (ImageButton) findViewById(R.id.quick_prev);
         forwardButton = (ImageButton) findViewById(R.id.quick_next);
         previousButton0 = (ImageButton) findViewById(R.id.quick_prev0);
         forwardButton0 = (ImageButton) findViewById(R.id.quick_next0);
 
-
-        layoutA = (RelativeLayout) findViewById(R.id.track_info);
-        layoutB = (RelativeLayout) findViewById(R.id.track_info0);
-
-
-        findViewById(R.id.shuffle0).setOnClickListener(mOnClickListener);
-        findViewById(R.id.repeat0).setOnClickListener(mOnClickListener);
-
         timeAfficheur = ((TextView) findViewById(R.id.zZz));
-        mDrawerLayout = (DrawerLayout) findViewById(drawer_layout);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-
-        mNavigationView.setNavigationItemSelectedListener(this);
 
         topBlurView = (BlurView) findViewById(R.id.topBlurView);
         bottomBlurView = (BlurView) findViewById(R.id.bottomBlurView);
+
+        mDrawerLayout = (DrawerLayout) findViewById(drawer_layout);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
 
         PrefUtils.init(this);
@@ -279,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        handler.postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             public void run() {
                 mDrawerLayout.closeDrawers();
             }
@@ -331,6 +318,19 @@ public class MainActivity extends AppCompatActivity implements
         dialog.show(getSupportFragmentManager(), "help");
     }
 
+    static int viewID;
+
+    public static void setViewID(int id) {
+
+        viewID = id;
+    }
+
+    public static int getViewID() {
+        return viewID;
+    }
+
+
+
 
     /* *********************************************************************************************
      * Click listener activity_main layout
@@ -345,8 +345,8 @@ public class MainActivity extends AppCompatActivity implements
                 return;
             }
             switch (v.getId()) {
-                case R.id.quick_play_pause_toggle0:
-                case R.id.quick_play_pause_toggle:
+                case R.id.play_pause_toggle0:
+                case R.id.play_pause_toggle:
                     mPlayerService.toggle();
 
                     Intent intentPl = new Intent(INTENT_STATE);
@@ -357,6 +357,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 case R.id.quick_prev:
                 case R.id.quick_prev0:
+                    autoScrollQueue = true;
                     mPlayerService.playPrev();
                     Intent intentP = new Intent(INTENT_STATE);
                     intentP.putExtra("state", "prev");
@@ -369,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 case R.id.quick_next:
                 case R.id.quick_next0:
-
+                    autoScrollQueue = true;
 
                     mPlayerService.playNext(true);
 
@@ -407,13 +408,36 @@ public class MainActivity extends AppCompatActivity implements
                     File file = new File(getApplicationInfo().dataDir, "/databases/Queue.db");
 
                     if (file.exists()) {
-                        NavigationUtils.showPlaybackActivity(MainActivity.this);
+                        //NavigationUtils.showPlaybackActivity(MainActivity.this);
 
-/*                        Fragment fragment = AlbumFragment.newInstance(album);
+                        Fragment fragment = PlayerFragment.newInstance();
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
-                        ft.replace(R.id.fragment_album_list_layout, fragment);
-                        ft.commit();*/
+
+
+                        if ( viewID == R.id.fragment_album_list_layout ){
+                            ft.replace(viewID, fragment);
+
+                            Log.d("Main Activity", "R.id.fragment_album_list_layout");
+
+                        } else if ( viewID == R.id.fragment_song_layout ){
+                            ft.replace(viewID, fragment);
+
+                            Log.d("Main Activity", "R.id.fragment_song_layout");
+
+                        } else if ( viewID == R.id.fragment_playlist_list ) {
+                            ft.replace(viewID, fragment);
+
+                            Log.d("Main Activity", "R.id.fragment_playlist_list");
+                        }else if ( viewID == R.id.fragment_playlist ) {
+                            ft.replace(viewID, fragment);
+                            Log.d("Main Activity", "R.id.fragment_playlist");
+                        }
+
+
+
+                        ft.commit();
+
 
                     } else {
                         Toast.makeText(mContext, "Vous devez d'abord sélectionner un titre", Toast.LENGTH_LONG).show();
@@ -442,14 +466,14 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.quick_prev:
                 case R.id.quick_prev0:
 
-                    mHandler.postDelayed(mRunnable2, 300);
+                    mHandler.postDelayed(fRewind, 300);
 
                     break;
 
                 case R.id.quick_next:
                 case R.id.quick_next0:
 
-                    mHandler.postDelayed(mRunnable, 300);
+                    mHandler.postDelayed(fForward, 300);
 
                     break;
 
@@ -462,39 +486,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     };
 
-    Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (forwardButton.isPressed() || forwardButton0.isPressed()) {
-                int position = PlayerService.getPlayerPosition();
 
-                position += 8000; // milliseconds
-
-                PlayerService.seekTo(position);
-
-                // If press state is pressed, move your item and recall the runnable in 100 milliseconds.
-                //mover.updateCoordinates(1,  0);
-                handler.postDelayed(mRunnable, 200);
-            }
-        }
-    };
-
-    Runnable mRunnable2 = new Runnable() {
-        @Override
-        public void run() {
-            if (previousButton.isPressed() || previousButton0.isPressed()) {
-                int position = PlayerService.getPlayerPosition();
-
-                position -= 8000; // milliseconds
-
-                PlayerService.seekTo(position);
-
-                // If press state is pressed, move your item and recall the runnable in 100 milliseconds.
-                //mover.updateCoordinates(1,  0);
-                handler.postDelayed(mRunnable2, 200);
-            }
-        }
-    };
 
 
 
@@ -557,8 +549,9 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.action_view_queue:
-                updateQueue();
+                autoScrollQueue = true;
 
+                updateQueue();
                 toggleQueue();
 
                 queueLayout = true;
@@ -760,10 +753,37 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         public void run() {
-            updateProgressBar();
+
+            mProgressBar.setProgress(PlayerService.getPlayerPosition());
+
             mHandler.postDelayed(mUpdateProgressBar, 1000);
         }
     };
+
+    private final Runnable fForward = new Runnable() {
+        @Override
+        public void run() {
+            if (forwardButton.isPressed() || forwardButton0.isPressed()) {
+                int position = PlayerService.getPlayerPosition();
+                position += 8000;
+                PlayerService.seekTo(position);
+                mHandler.postDelayed(fForward, 200);
+            }
+        }
+    };
+
+    private final Runnable fRewind = new Runnable() {
+        @Override
+        public void run() {
+            if (previousButton.isPressed() || previousButton0.isPressed()) {
+                int position = PlayerService.getPlayerPosition();
+                position -= 8000;
+                PlayerService.seekTo(position);
+                mHandler.postDelayed(fRewind, 200);
+            }
+        }
+    };
+
 
     private final BroadcastReceiver mServiceListener = new BroadcastReceiver() {
 
@@ -785,19 +805,104 @@ public class MainActivity extends AppCompatActivity implements
                 topBlurView.setVisibility(View.GONE);
 
                 queueLayout = false;
-
             }
 
             if (receiveIntent.equals(INTENT_LAYOUTVIEW)) {
 
 
-                if ("layoutA".equals(intent.getStringExtra("vue"))) {
-                    layoutA.setVisibility(View.VISIBLE);
-                    layoutB.setVisibility(View.GONE);
-                } else {
-                    layoutA.setVisibility(View.GONE);
+                final float tailleBarre = getResources().getDimension(R.dimen.barre_lecture);
+
+
+                if ("layout0".equals(intent.getStringExtra("vue"))) {
+
+                    Log.d("INTENT_LAYOUTVIEW", "layout0");
+
+
+                    TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
+                    animate.setDuration(400);
+                    animate.setFillAfter(true);
+                    layoutB.startAnimation(animate);
                     layoutB.setVisibility(View.VISIBLE);
+
+                    TranslateAnimation animate2 = new TranslateAnimation(0, 0, 0, -tailleBarre);
+                    animate2.setDuration(400);
+                    animate2.setFillAfter(true);
+                    layoutA.startAnimation(animate2);
+                    layoutA.setVisibility(View.GONE);
+
+
+                } else if ("layout1".equals(intent.getStringExtra("vue"))) {
+
+                    Log.d("INTENT_LAYOUTVIEW", "layout1");
+
+                    TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
+                    animate.setDuration(400);
+                    animate.setFillAfter(true);
+                    layoutB.startAnimation(animate);
+                    layoutB.setVisibility(View.VISIBLE);
+
+                    TranslateAnimation animate2 = new TranslateAnimation(0, 0, 0, -tailleBarre);
+                    animate2.setDuration(400);
+                    animate2.setFillAfter(true);
+                    layoutA.startAnimation(animate2);
+                    layoutA.setVisibility(View.GONE);
+
+
+                    Animation fadeOut = new AlphaAnimation(1, 0);
+                    fadeOut.setInterpolator(new AccelerateInterpolator());
+                    fadeOut.setDuration(400);
+                    mProgressBar.setAnimation(fadeOut);
+                    mProgressBar.setVisibility(View.GONE);
+
+                    layout1 = true;
+
+                } else {
+
+                    Log.d("INTENT_LAYOUTVIEW", "else");
+
+                    // TranslateAnimation(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta)
+
+                    TranslateAnimation animate2 = new TranslateAnimation(0, 0, -tailleBarre, 0);
+                    animate2.setDuration(400);
+                    animate2.setFillAfter(true);
+                    layoutA.startAnimation(animate2);
+                    layoutA.setVisibility(View.VISIBLE);
+
+
+                    TranslateAnimation animate = new TranslateAnimation(0, 0, 0, tailleBarre);
+                    animate.setDuration(400);
+                    animate.setFillAfter(true);
+                    layoutB.startAnimation(animate);
+
+                    // bug GONE, reste actif si pas de clearAnimation
+
+                    mHandler.postDelayed(new Runnable() {
+
+                        public void run() {
+                            layoutB.clearAnimation();
+                            layoutB.setVisibility(View.GONE);
+                        }
+                    }, 400);
+
+
+                    if (layout1) {
+                        Animation fadeIn = new AlphaAnimation(0, 1);
+                        fadeIn.setInterpolator(new AccelerateInterpolator());
+                        fadeIn.setDuration(400);
+                        mProgressBar.setAnimation(fadeIn);
+                        mProgressBar.setVisibility(View.VISIBLE);
+
+                        layout1 = false;
+                    } else {
+                        mProgressBar.setVisibility(View.VISIBLE);
+
+                    }
                 }
+
+                //layoutB.setVisibility(View.GONE);
+
+
+                refresh();
 
                 updateRepeatButton();
                 updateShuffleButton();
@@ -821,8 +926,14 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
 
-            if (receiveIntent.equals(PlayerService.META_CHANGED))
+            if (receiveIntent.equals(PlayerService.POSITION_CHANGED)) {
+                autoScrollQueue = true;
+                updateQueue();
+            }
+
+            if (receiveIntent.equals(PlayerService.META_CHANGED)) {
                 updateTrackInfo();
+            }
 
             if (receiveIntent.equals(INTENT_BLURVIEW))
                 setupBlurView();
@@ -917,11 +1028,23 @@ public class MainActivity extends AppCompatActivity implements
         setQueueSelection(PlayerService.getPositionWithinPlayList());
     }
 
+    private void setQueueSelection(final int position) {
 
-    private void setQueueSelection(int position) {
         mQueueAdapter.setSelection(position);
 
-        mQueueView.smoothScrollToPosition(position);
+        if (autoScrollQueue) {
+
+            mHandler.postDelayed(new Runnable() {
+
+                public void run() {
+
+                    mQueueView.smoothScrollToPosition(position);
+                    autoScrollQueue = false;
+                }
+            }, 100);
+
+        }
+
     }
 
     /***********************************************************************************************
@@ -930,8 +1053,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setButtonDrawable() {
         if (mPlayerService != null) {
-            ImageButton quickButton = (ImageButton) findViewById(R.id.quick_play_pause_toggle);
-            ImageButton quickButton0 = (ImageButton) findViewById(R.id.quick_play_pause_toggle0);
+            ImageButton quickButton = (ImageButton) findViewById(R.id.play_pause_toggle);
+            ImageButton quickButton0 = (ImageButton) findViewById(R.id.play_pause_toggle0);
 
             if (PlayerService.isPlaying()) {
                 assert quickButton != null;
@@ -1009,7 +1132,6 @@ public class MainActivity extends AppCompatActivity implements
      * Mise à jour des informations de la barre de lecture
      ******************************************************/
 
-    @SuppressLint("PrivateResource")
     private void updateTrackInfo() {
 
         String title = PlayerService.getSongTitle();
@@ -1030,21 +1152,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (duration != -1) {
             mProgressBar.setMax(duration);
-
-            updateProgressBar();
-        }
-    }
-
-
-
-    /***********************
-     * Barre de progression
-     ***********************/
-
-    private void updateProgressBar() {
-        if (mPlayerService != null) {
-            int position = PlayerService.getPlayerPosition();
-            mProgressBar.setProgress(position);
+            mProgressBar.setProgress(PlayerService.getPlayerPosition());
         }
     }
 
@@ -1059,7 +1167,7 @@ public class MainActivity extends AppCompatActivity implements
         final String start = getString(R.string.start);
         final String cancel = getString(R.string.cancel);
 
-        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.dialog_date_picker, null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_date_picker, null);
 
         final SeekArc mSeekArc;
         final TextView mSeekArcProgress;
@@ -1127,7 +1235,7 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
-        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.dialog_timer_info, null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_timer_info, null);
         final TextView timeLeft = ((TextView) view.findViewById(R.id.time_left));
 
         final String stopTimer = getString(R.string.stop_timer);
@@ -1147,7 +1255,7 @@ public class MainActivity extends AppCompatActivity implements
         }).setView(view).create();
 
         new CountDownTimer(mTask.getDelay(TimeUnit.MILLISECONDS), 1000) {
-            @SuppressLint("StringFormatInvalid")
+
             @Override
             public void onTick(long seconds) {
 
@@ -1213,7 +1321,7 @@ public class MainActivity extends AppCompatActivity implements
         Notification.setState(false);
 
         running = false;
-        menu.getItem(0).setIcon(ContextCompat.getDrawable(context, R.drawable.ic_timer_grey_600_24dp));
+        menu.getItem(1).setIcon(ContextCompat.getDrawable(context, R.drawable.ic_timer_grey_600_24dp));
     }
 
     private  void annulTimer() {
@@ -1232,7 +1340,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         running = false;
-        menu.getItem(0).setIcon(ContextCompat.getDrawable(mContext, R.drawable.ic_timer_grey_600_24dp));
+        menu.getItem(1).setIcon(ContextCompat.getDrawable(mContext, R.drawable.ic_timer_grey_600_24dp));
         timeAfficheur.setVisibility(View.GONE);
 
         Notification.setState(false);
@@ -1317,10 +1425,8 @@ public class MainActivity extends AppCompatActivity implements
      **********************************************************************************************/
 
     private void killNotif() {
-        handler.postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
 
-
-            @SuppressLint("SetTextI18n")
             public void run() {
                 NotificationManager notificationManager;
                 notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

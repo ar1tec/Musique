@@ -24,8 +24,8 @@ import android.view.ViewGroup;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
-import org.oucho.musicplayer.fragments.adapters.PlaylistListAdapter;
+import org.oucho.musicplayer.adapters.BaseAdapter;
+import org.oucho.musicplayer.adapters.PlaylistListAdapter;
 import org.oucho.musicplayer.dialog.CreatePlaylistDialog;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.widgets.FastScroller;
@@ -160,7 +160,12 @@ public class PlaylistListFragment extends BaseFragment {
                         intent.setAction(INTENT_QUEUEVIEW);
                         context.sendBroadcast(intent);
 
-                    } else {
+                    } /*if (MainActivity.getViewID() == R.id.fragment_playlist) {
+
+
+                        return true;
+                    }*/
+                    else {
 
                         LibraryFragment.backToPrevious();
                     }
@@ -217,12 +222,8 @@ public class PlaylistListFragment extends BaseFragment {
         public void onItemClick(int position, View view) {
             Playlist playlist = mAdapter.getItem(position);
 
-
             PlaylistFragment fragment = PlaylistFragment.newInstance(playlist);
 
-            //((MainActivity) getActivity()).setFragment(fragment);
-
-            //Fragment fragment = AlbumFragment.newInstance(album);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
             ft.replace(R.id.fragment_playlist_list, fragment);
@@ -236,6 +237,9 @@ public class PlaylistListFragment extends BaseFragment {
 
         if (visible || isResumed()){
             getActivity().setTitle(context.getString(R.string.playlists));
+
+            MainActivity.setViewID(R.id.fragment_playlist_list);
+
         }
     }
 

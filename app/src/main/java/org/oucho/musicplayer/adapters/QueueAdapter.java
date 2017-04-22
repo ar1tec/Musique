@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.fragments.adapters;
+package org.oucho.musicplayer.adapters;
 
 
 import android.content.Context;
@@ -47,7 +47,7 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
     @Override
     public QueueItemViewHolder onCreateViewHolder(ViewGroup parent, int type) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.activity_player_queue_item, parent, false);
+                R.layout.fragment_player_queue_item, parent, false);
 
         return new QueueItemViewHolder(itemView);
     }

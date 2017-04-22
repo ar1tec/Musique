@@ -23,8 +23,8 @@ import android.view.ViewGroup;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
-import org.oucho.musicplayer.fragments.adapters.SongListAdapter;
+import org.oucho.musicplayer.adapters.BaseAdapter;
+import org.oucho.musicplayer.adapters.SongListAdapter;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.db.loaders.SongLoader;
@@ -371,9 +371,13 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
         if (visible || isResumed())
             if (android.os.Build.VERSION.SDK_INT >= 24) {
                 getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+                MainActivity.setViewID(R.id.fragment_song_layout);
+
             } else {
                 //noinspection deprecation
                 getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
+                MainActivity.setViewID(R.id.fragment_song_layout);
+
             }
     }
 

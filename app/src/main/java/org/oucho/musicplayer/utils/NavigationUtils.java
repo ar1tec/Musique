@@ -6,7 +6,6 @@ import android.content.Intent;
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.activities.EqualizerActivity;
-import org.oucho.musicplayer.activities.PlayerActivity;
 import org.oucho.musicplayer.activities.SearchActivity;
 
 public class NavigationUtils {
@@ -29,12 +28,5 @@ public class NavigationUtils {
         i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(i);
         activity.overridePendingTransition(R.anim.fade_in, R.anim.slide_out_bottom);
-    }
-
-    public static void showPlaybackActivity(Activity activity) {
-        Intent i = new Intent(activity, PlayerActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        activity.startActivity(i);
-        activity.overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
     }
 }

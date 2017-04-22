@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.fragments.adapters;
+package org.oucho.musicplayer.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
