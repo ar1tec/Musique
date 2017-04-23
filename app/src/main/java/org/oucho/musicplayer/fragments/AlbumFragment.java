@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -67,6 +68,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     private String Année = "";
     private String nb_Morceaux = "";
 
+    private String tri = "a-z";
 
     private TextView durée;
     private List<Song> listeTitre;
@@ -189,11 +191,20 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
 
 
+        setTri();
+
         mHandler.postDelayed(new Runnable() {
 
             public void run() {
 
-                getActivity().setTitle(Titre);
+                if (tri.equals("a-z"))
+                    getActivity().setTitle(Titre);
+
+                if (tri.equals(getString(R.string.title_sort_artist)))
+                    getActivity().setTitle(Artiste);
+
+                if (tri.equals(getString(R.string.title_sort_year)))
+                    getActivity().setTitle(Année);
 
             }
         }, 300);
@@ -203,10 +214,24 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         intent0.putExtra("vue", "layout0");
         context.sendBroadcast(intent0);
 
+
     }
 
 
+    private void setTri() {
 
+        SharedPreferences préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+
+        String getTri = préférences.getString("album_sort_order", "");
+
+        if ("minyear DESC".equals(getTri)) {
+            tri = context.getString(R.string.title_sort_year);
+        } else if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
+            tri = context.getString(R.string.title_sort_artist);
+        } else {
+            tri = "a-z";
+        }
+    }
     /* *********************************************************************************************
      * Création du visuel
      * ********************************************************************************************/
@@ -218,8 +243,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
         ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
 
-/*        TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
-        titreAlbum.setText(Titre);*/
+        TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
 
         TextView artiste = (TextView) rootView.findViewById(R.id.line2);
         artiste.setText(Artiste);
@@ -229,6 +253,30 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         TextView morceaux = (TextView) rootView.findViewById(R.id.line4);
         morceaux.setText(nb_Morceaux);
+
+
+        if (tri.equals("a-z")) {
+            titreAlbum.setText(Artiste);
+            titreAlbum.setVisibility(View.VISIBLE);
+            artiste.setVisibility(View.GONE);
+            an.setVisibility(View.VISIBLE);
+        }
+
+        if (tri.equals(context.getString(R.string.title_sort_artist))) {
+            titreAlbum.setText(Titre);
+            titreAlbum.setVisibility(View.VISIBLE);
+            artiste.setVisibility(View.GONE);
+            an.setVisibility(View.VISIBLE);
+        }
+
+        if (tri.equals(context.getString(R.string.title_sort_year))) {
+            titreAlbum.setText(Titre);
+            titreAlbum.setVisibility(View.VISIBLE);
+            artiste.setVisibility(View.VISIBLE);
+            an.setVisibility(View.GONE);
+        }
+
+
 
         durée = (TextView) rootView.findViewById(R.id.duration);
 

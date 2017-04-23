@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.oucho.musicplayer.MainActivity.getQueueAdapter;
 
+
 public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> {
 
     private DragRecyclerView mQueueView;

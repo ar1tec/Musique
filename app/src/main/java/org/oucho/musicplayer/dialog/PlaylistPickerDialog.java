@@ -11,8 +11,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -139,14 +141,19 @@ public class PlaylistPickerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity(), getTheme());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         mAdapter = new PlaylistListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
 
-        builder.setTitle(R.string.choose_playlist);
+        //builder.setTitle(R.string.choose_playlist);
 
         @SuppressLint("InflateParams")
-        View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_playlist_picker, null);
+        View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_playlist_picker, null);
+
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.dialog_playlist_picker_toolbar);
+        toolbar.setTitle(R.string.choose_playlist);
+        toolbar.setTitleTextColor(0xffffffff);
+
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

@@ -408,12 +408,10 @@ public class MainActivity extends AppCompatActivity implements
                     File file = new File(getApplicationInfo().dataDir, "/databases/Queue.db");
 
                     if (file.exists()) {
-                        //NavigationUtils.showPlaybackActivity(MainActivity.this);
 
                         Fragment fragment = PlayerFragment.newInstance();
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
-
 
                         if ( viewID == R.id.fragment_album_list_layout ){
                             ft.replace(viewID, fragment);
@@ -429,14 +427,17 @@ public class MainActivity extends AppCompatActivity implements
                             ft.replace(viewID, fragment);
 
                             Log.d("Main Activity", "R.id.fragment_playlist_list");
-                        }else if ( viewID == R.id.fragment_playlist ) {
+                        } else if ( viewID == R.id.fragment_playlist ) {
                             ft.replace(viewID, fragment);
                             Log.d("Main Activity", "R.id.fragment_playlist");
                         }
 
-
-
                         ft.commit();
+
+                        if (menu == null)
+                            return;
+
+                        menu.setGroupVisible(R.id.main_menu_group, false);
 
 
                     } else {
@@ -462,7 +463,6 @@ public class MainActivity extends AppCompatActivity implements
             }
             switch (v.getId()) {
 
-
                 case R.id.quick_prev:
                 case R.id.quick_prev0:
 
@@ -476,7 +476,6 @@ public class MainActivity extends AppCompatActivity implements
                     mHandler.postDelayed(fForward, 300);
 
                     break;
-
 
                 default:
                     break;

@@ -12,10 +12,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -38,20 +39,20 @@ public class PlayerFragment extends BaseFragment
 
     private Context mContext;
 
-
     private SeekBar mSeekBar;
-
+    private TextView nbTrack;
+    private SharedPreferences préférences;
     private PlayerService mPlayerService = MainActivity.getPlayerService();
 
     private final Handler mHandler = new Handler();
 
+    private int track = -1;
+    private int mArtworkSize;
+    private int total_track = -1;
+
     private boolean mServiceBound;
 
 
-    private int total_track = -1;
-    private int track = -1;
-
-    private int mArtworkSize;
     public static PlayerFragment newInstance() {
         PlayerFragment fragment = new PlayerFragment();
         Bundle args = new Bundle();
@@ -65,9 +66,6 @@ public class PlayerFragment extends BaseFragment
 
     }
 
-    FrameLayout frameLayout;
-
-
     /* *********************************************************************************************
  * Création du fragment
  * ********************************************************************************************/
@@ -77,7 +75,7 @@ public class PlayerFragment extends BaseFragment
 
         mContext = getContext();
 
-        SharedPreferences préférences = mContext.getSharedPreferences(STATE_PREFS_NAME, MODE_PRIVATE);
+        préférences = mContext.getSharedPreferences(STATE_PREFS_NAME, MODE_PRIVATE);
         préférences.registerOnSharedPreferenceChangeListener(this);
 
         total_track = getSizeQueue();
@@ -113,14 +111,19 @@ public class PlayerFragment extends BaseFragment
 
         mArtworkSize = getResources().getDimensionPixelSize(R.dimen.playback_activity_art_size);
 
+        SharedPreferences préférences = mContext.getSharedPreferences(STATE_PREFS_NAME, MODE_PRIVATE);
+        track = préférences.getInt("currentPosition", 0) + 1;
+
+        nbTrack = (TextView) rootView.findViewById(R.id.nombre_titre);
+        nbTrack.setText(track + "/" + total_track);
+
         mSeekBar = (SeekBar) rootView.findViewById(R.id.seek_bar);
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
         //mSeekBar.getThumb().mutate().setAlpha(0);
 
-        frameLayout = (FrameLayout) rootView.findViewById(R.id.root);
-        frameLayout.setOnClickListener(mOnClickListener);
+        LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.root);
+        linearLayout.setOnClickListener(mOnClickListener);
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
-
 
         updateAll();
 
@@ -128,7 +131,7 @@ public class PlayerFragment extends BaseFragment
     }
 
 
-    // empêche les clicks vers le layout du dessous
+        // empêche les clicks vers le layout du dessous
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
         @Override
@@ -199,10 +202,13 @@ public class PlayerFragment extends BaseFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
         if ("currentPosition".equals(key)) {
-            total_track = getSizeQueue();
 
-            SharedPreferences préférences = mContext.getSharedPreferences(STATE_PREFS_NAME, MODE_PRIVATE);
+
+
             track = préférences.getInt("currentPosition", 0) + 1;
+
+            nbTrack.setText(track + "/" + total_track);
+
 
         }
     }
