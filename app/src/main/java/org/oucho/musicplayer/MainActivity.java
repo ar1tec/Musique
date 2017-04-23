@@ -2,6 +2,7 @@ package org.oucho.musicplayer;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -967,7 +968,6 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
         mPlayerService.setPlayList(songList, position, true);
-        // mPlayerService.play();
     }
 
     public void addToQueue(Song song) {
@@ -987,6 +987,10 @@ public class MainActivity extends AppCompatActivity implements
 
     public static boolean getQueueLayout() {
         return queueLayout;
+    }
+
+    public static void setMenu(Boolean value) {
+        menu.setGroupVisible(R.id.main_menu_group, value);
     }
 
     public static boolean getPlaylistFragmentState() {
@@ -1173,6 +1177,7 @@ public class MainActivity extends AppCompatActivity implements
         final String start = getString(R.string.start);
         final String cancel = getString(R.string.cancel);
 
+        @SuppressLint("InflateParams")
         View view = getLayoutInflater().inflate(R.layout.dialog_date_picker, null);
 
         final SeekArc mSeekArc;
@@ -1241,6 +1246,7 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
+        @SuppressLint("InflateParams")
         View view = getLayoutInflater().inflate(R.layout.dialog_timer_info, null);
         final TextView timeLeft = ((TextView) view.findViewById(R.id.time_left));
 

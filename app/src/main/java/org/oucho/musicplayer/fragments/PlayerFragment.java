@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -93,7 +92,7 @@ public class PlayerFragment extends BaseFragment
 
         Intent intent = new Intent();
         intent.setAction(INTENT_LAYOUTVIEW);
-        intent.putExtra("vue", "layout1");
+        intent.putExtra("vue", "playBarLayout");
         mContext.sendBroadcast(intent);
     }
 
@@ -328,8 +327,6 @@ public class PlayerFragment extends BaseFragment
                         intent0.putExtra("vue", "layoutx");
                         mContext.sendBroadcast(intent0);
 
-
-
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
                         ft.remove(getFragmentManager().findFragmentById(viewID));
@@ -338,6 +335,8 @@ public class PlayerFragment extends BaseFragment
                         intent.setAction("reload");
                         mContext.sendBroadcast(intent);
 
+                        if (!MainActivity.getPlaylistFragmentState())
+                            MainActivity.setMenu(true);
 
                         // rustine blurview
                         mHandler.postDelayed(new Runnable() {

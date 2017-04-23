@@ -187,8 +187,6 @@ public class PlaylistListFragment extends BaseFragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.playlist, menu);
 
-
-
     }
 
     @Override
@@ -232,6 +230,7 @@ public class PlaylistListFragment extends BaseFragment {
             ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
             ft.replace(R.id.fragment_playlist_list, fragment);
             ft.commit();
+
         }
     };
 

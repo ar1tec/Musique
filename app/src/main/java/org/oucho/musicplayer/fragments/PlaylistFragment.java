@@ -67,6 +67,9 @@ public class PlaylistFragment extends BaseFragment {
             mSongList = new ArrayList<>(data);
             mAdapter.notifyDataSetChanged();
 
+            MainActivity.setMenu(false);
+
+
         }
 
         @Override

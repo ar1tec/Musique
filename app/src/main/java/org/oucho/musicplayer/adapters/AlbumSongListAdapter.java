@@ -1,6 +1,6 @@
 package org.oucho.musicplayer.adapters;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +45,7 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
         long secondes = song.getDuration() / 1000;
 
+        @SuppressLint("DefaultLocale")
         String duration = "(" + String.valueOf( (secondes % 3600) / 60 ) + ":" + String.format("%02d", (secondes % 3600) % 60 ) + ")";
 
         holder.vTime.setText(duration);
