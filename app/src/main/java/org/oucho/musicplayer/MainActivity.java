@@ -124,12 +124,11 @@ public class MainActivity extends AppCompatActivity implements
     private boolean mServiceBound = false;
     private boolean autoScrollQueue = false;
 
+    static int viewID;
+
     private static boolean running;
-
     private static boolean playBarLayout = false;
-
     private static boolean queueLayout = false;
-
     private static boolean playlistFragmentState = false;
 
 
@@ -322,18 +321,6 @@ public class MainActivity extends AppCompatActivity implements
         HelpDialog dialog = new HelpDialog();
         dialog.show(getSupportFragmentManager(), "help");
     }
-
-    static int viewID;
-
-    public static void setViewID(int id) {
-
-        viewID = id;
-    }
-
-    public static int getViewID() {
-        return viewID;
-    }
-
 
 
 
@@ -977,30 +964,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    public static PlayerService getPlayerService() {
-        return mPlayerService;
-    }
-
-    public static QueueAdapter getQueueAdapter() {
-        return mQueueAdapter;
-    }
-
-    public static boolean getQueueLayout() {
-        return queueLayout;
-    }
-
-    public static void setMenu(Boolean value) {
-        menu.setGroupVisible(R.id.main_menu_group, value);
-    }
-
-    public static boolean getPlaylistFragmentState() {
-        return playlistFragmentState;
-    }
-
-    public static void setPlaylistFragmentState(Boolean value) {
-        playlistFragmentState = value;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1527,6 +1490,46 @@ public class MainActivity extends AppCompatActivity implements
                     .setPositiveButton(android.R.string.ok, listener)
                     .show();
         }
+    }
+
+    public static PlayerService getPlayerService() {
+        return mPlayerService;
+    }
+
+    public static QueueAdapter getQueueAdapter() {
+        return mQueueAdapter;
+    }
+
+// instance variables here
+
+    public QueueAdapter run() throws Exception
+    {
+        // put your code here
+        return mQueueAdapter;
+    }
+
+    public static boolean getQueueLayout() {
+        return queueLayout;
+    }
+
+    public static void setMenu(Boolean value) {
+        menu.setGroupVisible(R.id.main_menu_group, value);
+    }
+
+    public static boolean getPlaylistFragmentState() {
+        return playlistFragmentState;
+    }
+
+    public static void setPlaylistFragmentState(Boolean value) {
+        playlistFragmentState = value;
+    }
+
+    public static void setViewID(int id) {
+        viewID = id;
+    }
+
+    public static int getViewID() {
+        return viewID;
     }
 
 }

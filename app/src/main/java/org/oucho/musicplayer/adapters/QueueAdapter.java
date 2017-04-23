@@ -168,6 +168,7 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
 
                     case R.id.delete_button:
 
+
                         if (getQueueAdapter().getItemCount() > 0 && position != currentSong)
                             getQueueAdapter().removeItem(position);
 
