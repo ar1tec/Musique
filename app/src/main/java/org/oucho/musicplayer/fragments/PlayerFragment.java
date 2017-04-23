@@ -38,6 +38,7 @@ public class PlayerFragment extends BaseFragment
 
     private Context mContext;
 
+    private View rootView;
     private SeekBar mSeekBar;
     private TextView nbTrack;
     private SharedPreferences préférences;
@@ -50,6 +51,7 @@ public class PlayerFragment extends BaseFragment
     private int total_track = -1;
 
     private boolean mServiceBound;
+    private boolean first_run = true;
 
 
     public static PlayerFragment newInstance() {
@@ -101,8 +103,6 @@ public class PlayerFragment extends BaseFragment
     /* *********************************************************************************************
      * Création du visuel
      * ********************************************************************************************/
-
-    View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -167,7 +167,7 @@ public class PlayerFragment extends BaseFragment
 
             updateSeekBar();
 
-            mHandler.postDelayed(mUpdateSeekBarRunnable, 500);
+            mHandler.postDelayed(mUpdateSeekBarRunnable, 250);
         }
     };
 
@@ -213,26 +213,30 @@ public class PlayerFragment extends BaseFragment
     }
 
 
-    final BroadcastReceiver mServiceListener = new BroadcastReceiver() {
+    private final BroadcastReceiver mServiceListener = new BroadcastReceiver() {
 
 
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Log.d("pwet", "pwet");
-            updateTrackInfo();
+            Log.d("Player Fragment", "onReceive");
+            //updateTrackInfo();
 
             if (mPlayerService == null) {
-                Log.d("pwet", "if (mPlayerService == null)");
+                Log.d("Player Fragment", "if (mPlayerService == null)");
 
                 return;
             }
+
+            Log.d("Player Fragment", "suite...");
+
             String action = intent.getAction();
 
-            Log.d("pwet", action);
+            Log.d("Player Fragment", action);
 
 
             switch (action) {
+
                 case PlayerService.PLAYSTATE_CHANGED:
 
                     if (PlayerService.isPlaying()) {
@@ -243,6 +247,8 @@ public class PlayerFragment extends BaseFragment
                     break;
 
                 case PlayerService.META_CHANGED:
+                    Log.d("Player Fragment", "mServiceListener, case PlayerService.META_CHANGED:");
+
                     updateTrackInfo();
                     break;
 
@@ -264,11 +270,10 @@ public class PlayerFragment extends BaseFragment
     @Override
     public void onPause() {
         super.onPause();
+
         mContext.unregisterReceiver(mServiceListener);
-        mPlayerService = null;
 
         if (mServiceBound) {
-            ///unbindService(mServiceConnection);
             mServiceBound = false;
         }
         mHandler.removeCallbacks(mUpdateSeekBarRunnable);
@@ -278,9 +283,6 @@ public class PlayerFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         if (!mServiceBound) {
-            //Intent mServiceIntent = new Intent(mContext, PlayerFragment.class);
-            //bindService(mServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-            //startService(mServiceIntent);
             IntentFilter filter = new IntentFilter();
             filter.addAction(PlayerService.META_CHANGED);
             filter.addAction(PlayerService.PLAYSTATE_CHANGED);
@@ -363,6 +365,8 @@ public class PlayerFragment extends BaseFragment
     private void updateAll() {
         if (mPlayerService != null) {
 
+            Log.d("Player Fragment", "updateAll(), if (mPlayerService != null)");
+
             updateTrackInfo();
 
             if (PlayerService.isPlaying()) {
@@ -373,15 +377,34 @@ public class PlayerFragment extends BaseFragment
 
 
     private void updateTrackInfo() {
+
+        Log.d("Player Fragment", "updateTrackInfo");
+
+
         if (mPlayerService != null) {
+
+            Log.d("Player Fragment", "updateTrackInfo, if (mPlayerService != null)");
+
 
             String title = PlayerService.getSongTitle();
             String artist = PlayerService.getArtistName();
 
-            String album = PlayerService.getAlbumName();
+            final String album = PlayerService.getAlbumName();
 
             if (album != null) {
-                getActivity().setTitle(album);
+
+                if (first_run) {
+
+                    mHandler.postDelayed(new Runnable() {
+                        public void run() {
+                            getActivity().setTitle(album);
+                            first_run = false;
+                        }
+                    }, 300);
+
+                }  else {
+                    getActivity().setTitle(album);
+                }
             }
 
 
@@ -399,14 +422,19 @@ public class PlayerFragment extends BaseFragment
             ImageView artworkView = (ImageView) rootView.findViewById(R.id.artwork);
             ArtworkCache.getInstance().loadBitmap(PlayerService.getAlbumId(), artworkView, mArtworkSize, mArtworkSize);
 
-            int duration = PlayerService.getTrackDuration();
+
+            final int duration = PlayerService.getTrackDuration();
+
             if (duration != -1) {
-                mSeekBar.setMax(duration);
-                //noinspection ConstantConditions
+
+                Log.d("Player Fragment", "updateTrackInfo, mHandler.postDelayed(new Runnable()");
+
                 ((TextView) rootView.findViewById(R.id.track_duration)).setText(msToText(duration));
+
+                mSeekBar.setMax(duration);
+
                 updateSeekBar();
             }
-
         }
     }
 

@@ -62,6 +62,8 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     private boolean isRegistered = false;
 
     private RecyclerView mRecyclerView;
+    private Handler mHandler = new Handler();
+
 
 
 
@@ -115,7 +117,13 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                     ft.replace(R.id.fragment_album_list_layout, fragment);
                     ft.commit();
 
-                    showOverflowMenu(false);
+                    mHandler.postDelayed(new Runnable() {
+
+                        public void run() {
+                            showOverflowMenu(false);
+                        }
+                    }, 300);
+
 
                     break;
                 case R.id.menu_button:
@@ -447,8 +455,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
             } else {
 
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+                mHandler.postDelayed(new Runnable() {
 
                     public void run() {
 

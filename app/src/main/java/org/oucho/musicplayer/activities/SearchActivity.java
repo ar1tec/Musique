@@ -257,13 +257,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
     }
 
 
-    @Override
-    public void onBackPressed() {
-
-        finish();
-
-    }
-
     /* *********************************************************************************************
      * Vue liste album
      * ********************************************************************************************/

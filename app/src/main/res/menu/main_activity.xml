@@ -10,17 +10,10 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_timer"
-        android:icon="@drawable/ic_timer_grey_600_24dp"
-        android:title="@string/action_sleep_timer"
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_grey_600_24dp"
+        android:title="@string/search"
         app:showAsAction="ifRoom"
         tools:ignore="PrivateResource" />
-
-<!--    <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_grey_600_36dp"
-        android:title="@string/action_search"
-        app:showAsAction="ifRoom"
-        tools:ignore="PrivateResource" />-->
 
 </menu>

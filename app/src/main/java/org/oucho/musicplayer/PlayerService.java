@@ -302,6 +302,7 @@ public class PlayerService extends Service implements
                 dbHelper.close();
             }
 
+
             editor.putInt("currentPosition", mCurrentPosition);
             editor.putInt("repeatMode", mRepeatMode);
             editor.putBoolean("shuffle", mShuffle);
@@ -317,8 +318,9 @@ public class PlayerService extends Service implements
 		        intent.putExtra("halt", "stop");
                 sendBroadcast(intent);
             }
-
         }
+
+        Log.d("Player Service", "notifyChange, sendBroadcast(what, null) = " + what);
 
         sendBroadcast(what, null);
     }
@@ -383,6 +385,7 @@ public class PlayerService extends Service implements
                 mIsPlaying = true;
                 mIsPaused = false;
 
+                Log.d("Player Service", "play");
                 notifyChange(PLAYSTATE_CHANGED);
 
             }
@@ -397,6 +400,8 @@ public class PlayerService extends Service implements
         mMediaPlayer.pause();
         mIsPlaying = false;
         mIsPaused = true;
+        Log.d("Player Service", "pause");
+
         notifyChange(PLAYSTATE_CHANGED);
     }
 
@@ -493,6 +498,9 @@ public class PlayerService extends Service implements
         mOriginalSongList.add(song);
         int currentPos = mCurrentPosition;
         mPlayList.add(currentPos + 1, song);
+
+        Log.d("Player Service", "setAsNextTrack");
+
         notifyChange(ITEM_ADDED);
     }
 
@@ -529,6 +537,8 @@ public class PlayerService extends Service implements
             //on met à jour la position
             updateCurrentPosition();
             notifyChange(ORDER_CHANGED);
+            Log.d("Player Service", "setShuffleEnabled");
+
         }
     }
 
@@ -575,6 +585,8 @@ public class PlayerService extends Service implements
     }
 
     private void open() {
+
+        Log.d("Player Service", "open()");
 
         Bundle extras = new Bundle();
         extras.putInt(EXTRA_POSITION, getPositionWithinPlayList());
@@ -684,6 +696,8 @@ public class PlayerService extends Service implements
             mIsPlaying = false;
             mIsPaused = true;
             notifyChange(PLAYSTATE_CHANGED);
+            Log.d("Player Service", "onCompletion");
+
         }
     }
 
@@ -700,6 +714,8 @@ public class PlayerService extends Service implements
         if (!start) {
             start = true;
         } else {
+            Log.d("Player Service", "onPrepared");
+
             notifyChange(META_CHANGED);
 
         }
@@ -763,6 +779,8 @@ public class PlayerService extends Service implements
 
     public void setRepeatMode(int mode) {
         mRepeatMode = mode;
+        Log.d("Player Service", "setRepeatMode");
+
         notifyChange(REPEAT_MODE_CHANGED);
     }
 

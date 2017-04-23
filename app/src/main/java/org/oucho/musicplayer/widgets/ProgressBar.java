@@ -55,7 +55,7 @@ public class ProgressBar extends View {
         mMax = max;
     }
 
-    public int getProgress() {
+    private int getProgress() {
         return mProgress;
     }
 

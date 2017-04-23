@@ -25,8 +25,8 @@ import static org.oucho.musicplayer.MainActivity.getQueueAdapter;
 
 public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> {
 
-    private DragRecyclerView mQueueView;
-    private Context mContext;
+    private final DragRecyclerView mQueueView;
+    private final Context mContext;
 
     private List<Song> mQueue;
     private int mSelectedItemPosition = -1;

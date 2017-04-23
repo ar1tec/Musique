@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
     private Intent mOnActivityResultIntent;
     private NavigationView mNavigationView;
     private PlaybackRequests mPlaybackRequests;
-    private VolumeTimer volume = new VolumeTimer();
+    private final VolumeTimer volume = new VolumeTimer();
 
     private static Menu menu;
     private static ScheduledFuture mTask;
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements
     private boolean mServiceBound = false;
     private boolean autoScrollQueue = false;
 
-    static int viewID;
+    private static int viewID;
 
     private static boolean running;
     private static boolean playBarLayout = false;
@@ -281,8 +281,14 @@ public class MainActivity extends AppCompatActivity implements
                 NavigationUtils.showEqualizer(this);
                 break;
 
-            case R.id.action_search:
-                NavigationUtils.showSearchActivity(this);
+            case R.id.action_timer:
+
+                if (! running) {
+                    showTimePicker();
+                } else {
+                    showTimerInfo();
+                }
+
                 break;
 
             case R.id.nav_update:
@@ -429,7 +435,15 @@ public class MainActivity extends AppCompatActivity implements
                         if (menu == null)
                             return;
 
-                        menu.setGroupVisible(R.id.main_menu_group, false);
+                        mHandler.postDelayed(new Runnable() {
+
+                            public void run() {
+
+                                menu.setGroupVisible(R.id.main_menu_group, false);
+
+                            }
+                        }, 300);
+
 
 
                     } else {
@@ -548,12 +562,8 @@ public class MainActivity extends AppCompatActivity implements
                 queueLayout = true;
                 return true;
 
-            case R.id.action_timer:
-                if (! running) {
-                    showTimePicker();
-                } else {
-                    showTimerInfo();
-                }
+            case R.id.action_search:
+                NavigationUtils.showSearchActivity(this);
                 return true;
 
             default:
@@ -747,7 +757,7 @@ public class MainActivity extends AppCompatActivity implements
 
             mProgressBar.setProgress(PlayerService.getPlayerPosition());
 
-            mHandler.postDelayed(mUpdateProgressBar, 1000);
+            mHandler.postDelayed(mUpdateProgressBar, 250);
         }
     };
 
@@ -756,9 +766,9 @@ public class MainActivity extends AppCompatActivity implements
         public void run() {
             if (forwardButton.isPressed() || forwardButton0.isPressed()) {
                 int position = PlayerService.getPlayerPosition();
-                position += 8000;
+                position += 7000;
                 PlayerService.seekTo(position);
-                mHandler.postDelayed(fForward, 200);
+                mHandler.postDelayed(fForward, 250);
             }
         }
     };
@@ -768,9 +778,9 @@ public class MainActivity extends AppCompatActivity implements
         public void run() {
             if (previousButton.isPressed() || previousButton0.isPressed()) {
                 int position = PlayerService.getPlayerPosition();
-                position -= 8000;
+                position -= 7000;
                 PlayerService.seekTo(position);
-                mHandler.postDelayed(fRewind, 200);
+                mHandler.postDelayed(fRewind, 250);
             }
         }
     };
@@ -783,7 +793,7 @@ public class MainActivity extends AppCompatActivity implements
 
             String receiveIntent = intent.getAction();
 
-            Log.d("INTENT_LAYOUTVIEW", receiveIntent);
+            Log.d("Main Activity", "private final BroadcastReceiver mServiceListener = " + receiveIntent);
 
 
             if (mPlayerService == null) {
@@ -806,7 +816,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 if ("layout0".equals(intent.getStringExtra("vue"))) {
 
-                    Log.d("INTENT_LAYOUTVIEW", "layout0");
+                    Log.d("Main Activity", "layout0");
 
 
                     TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
@@ -824,7 +834,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 } else if ("playBarLayout".equals(intent.getStringExtra("vue"))) {
 
-                    Log.d("INTENT_LAYOUTVIEW", "playBarLayout");
+                    Log.d("Main Activity", "playBarLayout");
 
                     TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
                     animate.setDuration(400);
@@ -849,7 +859,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 } else {
 
-                    Log.d("INTENT_LAYOUTVIEW", "else");
+                    Log.d("Main Activity", "else");
 
                     // TranslateAnimation(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta)
 
@@ -936,6 +946,8 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
 
+            Log.d("Main Activity", "ServiceConnection, onServiceConnected");
+
             PlayerService.PlaybackBinder binder = (PlaybackBinder) service;
             mPlayerService = binder.getService();
             mServiceBound = true;
@@ -969,6 +981,9 @@ public class MainActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SEARCH_ACTIVITY && resultCode == RESULT_OK) {
             mOnActivityResultIntent = data;
+
+            //overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+
         }
     }
 
@@ -1497,14 +1512,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public static QueueAdapter getQueueAdapter() {
-        return mQueueAdapter;
-    }
-
-// instance variables here
-
-    public QueueAdapter run() throws Exception
-    {
-        // put your code here
         return mQueueAdapter;
     }
 
