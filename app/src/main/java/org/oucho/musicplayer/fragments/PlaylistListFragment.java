@@ -160,12 +160,16 @@ public class PlaylistListFragment extends BaseFragment {
                         intent.setAction(INTENT_QUEUEVIEW);
                         context.sendBroadcast(intent);
 
-                    } /*if (MainActivity.getViewID() == R.id.fragment_playlist) {
+                    } else if (MainActivity.getPlaylistFragmentState()) {
 
+                        MainActivity.setPlaylistFragmentState(false);
 
-                        return true;
-                    }*/
-                    else {
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                        ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
+                        ft.commit();
+
+                    } else {
 
                         LibraryFragment.backToPrevious();
                     }

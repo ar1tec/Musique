@@ -120,12 +120,16 @@ public class MainActivity extends AppCompatActivity implements
 
     private final Handler mHandler = new Handler();
 
-    private boolean layout1 = false;
     private boolean mServiceBound = false;
     private boolean autoScrollQueue = false;
 
     private static boolean running;
+
+    private static boolean playBarLayout = false;
+
     private static boolean queueLayout = false;
+
+    private static boolean playlistFragmentState = false;
 
 
 
@@ -830,9 +834,9 @@ public class MainActivity extends AppCompatActivity implements
                     layoutA.setVisibility(View.GONE);
 
 
-                } else if ("layout1".equals(intent.getStringExtra("vue"))) {
+                } else if ("playBarLayout".equals(intent.getStringExtra("vue"))) {
 
-                    Log.d("INTENT_LAYOUTVIEW", "layout1");
+                    Log.d("INTENT_LAYOUTVIEW", "playBarLayout");
 
                     TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
                     animate.setDuration(400);
@@ -853,7 +857,7 @@ public class MainActivity extends AppCompatActivity implements
                     mProgressBar.setAnimation(fadeOut);
                     mProgressBar.setVisibility(View.GONE);
 
-                    layout1 = true;
+                    playBarLayout = true;
 
                 } else {
 
@@ -874,7 +878,6 @@ public class MainActivity extends AppCompatActivity implements
                     layoutB.startAnimation(animate);
 
                     // bug GONE, reste actif si pas de clearAnimation
-
                     mHandler.postDelayed(new Runnable() {
 
                         public void run() {
@@ -884,22 +887,19 @@ public class MainActivity extends AppCompatActivity implements
                     }, 400);
 
 
-                    if (layout1) {
+                    if (playBarLayout) {
                         Animation fadeIn = new AlphaAnimation(0, 1);
                         fadeIn.setInterpolator(new AccelerateInterpolator());
                         fadeIn.setDuration(400);
                         mProgressBar.setAnimation(fadeIn);
                         mProgressBar.setVisibility(View.VISIBLE);
 
-                        layout1 = false;
+                        playBarLayout = false;
                     } else {
                         mProgressBar.setVisibility(View.VISIBLE);
 
                     }
                 }
-
-                //layoutB.setVisibility(View.GONE);
-
 
                 refresh();
 
@@ -989,6 +989,13 @@ public class MainActivity extends AppCompatActivity implements
         return queueLayout;
     }
 
+    public static boolean getPlaylistFragmentState() {
+        return playlistFragmentState;
+    }
+
+    public static void setPlaylistFragmentState(Boolean value) {
+        playlistFragmentState = value;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

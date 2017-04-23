@@ -25,7 +25,7 @@ public class AboutDialog extends DialogFragment {
 
         AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
 
-        View rootView = getActivity().getLayoutInflater().inflate(R.layout.alertdialog_main_noshadow, nullParent);
+        View rootView = getActivity().getLayoutInflater().inflate(R.layout.dialog_main_noshadow, nullParent);
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.dialog_toolbar_noshadow);
         toolbar.setTitle(title);
         toolbar.setTitleTextColor(0xffffffff);

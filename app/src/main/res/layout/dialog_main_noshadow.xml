@@ -18,7 +18,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/alertdialog_content" />
+    <include layout="@layout/dialog_content" />
 
 
 </android.support.design.widget.CoordinatorLayout>

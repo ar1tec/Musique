@@ -150,7 +150,7 @@ public class PlaylistFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        //MainActivity.setViewID(R.id.fragment_playlist);
+        MainActivity.setPlaylistFragmentState(true);
 
         //final int viewID = MainActivity.getViewID();
         // Active la touche back
@@ -174,14 +174,16 @@ public class PlaylistFragment extends BaseFragment {
 
                     } else {
 
+                        MainActivity.setPlaylistFragmentState(false);
+
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
                         ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
                         ft.commit();
-                        return true;
+
                     }
 
-                    return false;
+                    return true;
                 }
                 return false;
             }

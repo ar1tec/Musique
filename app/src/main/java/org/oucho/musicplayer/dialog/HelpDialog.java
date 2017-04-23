@@ -25,7 +25,7 @@ public class HelpDialog extends DialogFragment {
 
         AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
 
-        View dialoglayout = getActivity().getLayoutInflater().inflate(R.layout.alertdialog_main_noshadow, nullParent);
+        View dialoglayout = getActivity().getLayoutInflater().inflate(R.layout.dialog_main_noshadow, nullParent);
         Toolbar toolbar = (Toolbar) dialoglayout.findViewById(R.id.dialog_toolbar_noshadow);
         toolbar.setTitle(title);
         toolbar.setTitleTextColor(0xffffffff);
