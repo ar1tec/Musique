@@ -1269,8 +1269,7 @@ public class MainActivity extends AppCompatActivity implements
     private void startTimer(final int minutes) {
 
         final String impossible = getString(R.string.impossible);
-        final String minuteSingulier = getString(R.string.minute_singulier);
-        final String minutePluriel = getString(R.string.minute_pluriel);
+
         final String arret = getString(R.string.arret);
         final String minuteTxt;
 
@@ -1283,9 +1282,9 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         if (minutes == 1) {
-            minuteTxt = minuteSingulier;
+            minuteTxt = getString(R.string.minute_singulier);
         } else {
-            minuteTxt = minutePluriel;
+            minuteTxt = getString(R.string.minute_pluriel);
         }
 
         mTask = scheduler.schedule(new GetAudioFocusTask(this), delay, TimeUnit.MILLISECONDS);

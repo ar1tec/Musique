@@ -117,12 +117,12 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
             if (msToText(duréeTotal).equals("0") || msToText(duréeTotal).equals("1")) {
 
-                String temps = msToText(duréeTotal) + " " + getResources().getString(R.string.minute_singulier);
+                String temps = msToText(duréeTotal) + " " + getString(R.string.minute_singulier);
                 durée.setText(temps);
 
             } else {
 
-                String temps = msToText(duréeTotal) + " " + getResources().getString(R.string.minute_pluriel);
+                String temps = msToText(duréeTotal) + " " + getString(R.string.minute_pluriel);
                 durée.setText(temps);
             }
 
