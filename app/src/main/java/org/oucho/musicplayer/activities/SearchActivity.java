@@ -58,6 +58,8 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
     private int mThumbSize;
     private RecyclerView mRecyclerView;
 
+    private static final String TAG_LOG = "Search Activity";
+
     private final LoaderManager.LoaderCallbacks<List<Album>> mAlbumLoaderCallbacks
             = new LoaderManager.LoaderCallbacks<List<Album>>() {
 
@@ -286,7 +288,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
 
             switch (v.getId()) {
                 case R.id.album_info:
-                    Log.d("album", "album id " + album.getId() + " " + album.getAlbumName());
+                    Log.i(TAG_LOG, "album id " + album.getId() + " " + album.getAlbumName());
                     Bundle data = new Bundle();
                     data.putLong(ALBUM_ID, album.getId());
                     data.putString(ALBUM_NAME, album.getAlbumName());

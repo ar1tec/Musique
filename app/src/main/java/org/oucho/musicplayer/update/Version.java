@@ -4,18 +4,20 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 class Version implements Comparable<Version> {
+
+    final String TAG_LOG = "Version";
+
     private final String version;
 
     private String get() {
         return this.version;
     }
 
-    public Version(String version) {
-        final String TAG = "AppUpdate";
+    Version(String version) {
         if (version == null)
-            Log.e(TAG, "Version can not be null");
+            Log.e(TAG_LOG, "Version can not be null");
         else if (!version.matches("[0-9]+(\\.[0-9]+)*"))
-            Log.e(TAG, "Invalid version format");
+            Log.e(TAG_LOG, "Invalid version format");
         this.version = version;
     }
 

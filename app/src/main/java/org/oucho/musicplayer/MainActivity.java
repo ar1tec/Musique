@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements
         MusiqueKeys,
         OnNavigationItemSelectedListener {
 
+    private static final String TAG_LOG = "Main Activity";
+
     private Context mContext;
 
     private View mQueueLayout;
@@ -414,20 +416,20 @@ public class MainActivity extends AppCompatActivity implements
                         if ( viewID == R.id.fragment_album_list_layout ){
                             ft.replace(viewID, fragment);
 
-                            Log.d("Main Activity", "R.id.fragment_album_list_layout");
+                            Log.i(TAG_LOG, "R.id.fragment_album_list_layout");
 
                         } else if ( viewID == R.id.fragment_song_layout ){
                             ft.replace(viewID, fragment);
 
-                            Log.d("Main Activity", "R.id.fragment_song_layout");
+                            Log.i(TAG_LOG, "R.id.fragment_song_layout");
 
                         } else if ( viewID == R.id.fragment_playlist_list ) {
                             ft.replace(viewID, fragment);
 
-                            Log.d("Main Activity", "R.id.fragment_playlist_list");
+                            Log.i(TAG_LOG, "R.id.fragment_playlist_list");
                         } else if ( viewID == R.id.fragment_playlist ) {
                             ft.replace(viewID, fragment);
-                            Log.d("Main Activity", "R.id.fragment_playlist");
+                            Log.i(TAG_LOG, "R.id.fragment_playlist");
                         }
 
                         ft.commit();
@@ -793,7 +795,7 @@ public class MainActivity extends AppCompatActivity implements
 
             String receiveIntent = intent.getAction();
 
-            Log.d("Main Activity", "private final BroadcastReceiver mServiceListener = " + receiveIntent);
+            Log.i(TAG_LOG, "private final BroadcastReceiver mServiceListener = " + receiveIntent);
 
 
             if (mPlayerService == null) {
@@ -816,7 +818,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 if ("layout0".equals(intent.getStringExtra("vue"))) {
 
-                    Log.d("Main Activity", "layout0");
+                    Log.i(TAG_LOG, "layout0");
 
 
                     TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
@@ -834,7 +836,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 } else if ("playBarLayout".equals(intent.getStringExtra("vue"))) {
 
-                    Log.d("Main Activity", "playBarLayout");
+                    Log.i(TAG_LOG, "playBarLayout");
 
                     TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
                     animate.setDuration(400);
@@ -859,7 +861,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 } else {
 
-                    Log.d("Main Activity", "else");
+                    Log.i(TAG_LOG, "else");
 
                     // TranslateAnimation(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta)
 
@@ -946,7 +948,7 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
 
-            Log.d("Main Activity", "ServiceConnection, onServiceConnected");
+            Log.i(TAG_LOG, "ServiceConnection, onServiceConnected");
 
             PlayerService.PlaybackBinder binder = (PlaybackBinder) service;
             mPlayerService = binder.getService();

@@ -18,6 +18,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -47,6 +48,8 @@ import org.oucho.musicplayer.widgets.FastScroller;
 import java.util.List;
 
 public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
+
+    private static final String TAG_LOG = "Album List Fragment";
 
     private Context context;
     private Menu menu;
@@ -467,12 +470,19 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                                     + tri
                                     + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
                         } else {
-                            //noinspection deprecation
-                            getActivity().setTitle(Html.fromHtml("<font>"
-                                    + titre
-                                    + " </font> <small> <font color=\"#CCCCCC\">"
-                                    + tri
-                                    + "</small></font>"));
+
+                            try {
+                                getActivity().setTitle(Html.fromHtml("<font>"
+                                        + titre
+                                        + " </font> <small> <font color=\"#CCCCCC\">"
+                                        + tri
+                                        + "</small></font>"));
+                            } catch (NullPointerException ignore) {
+                                // Plantage si sorti de l'application moins
+                                // d'une seconde après son ouverture
+                                Log.w(TAG_LOG, "Sortie trop rapide après le lancmenet de l'application");
+                            }
+
                         }
                     }
                 }, 1000);

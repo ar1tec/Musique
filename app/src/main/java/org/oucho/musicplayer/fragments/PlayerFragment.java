@@ -36,6 +36,8 @@ public class PlayerFragment extends BaseFragment
         implements MusiqueKeys,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final String TAG_LOG = "Player Fragment";
+
     private Context mContext;
 
     private View rootView;
@@ -219,20 +221,19 @@ public class PlayerFragment extends BaseFragment
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Log.d("Player Fragment", "onReceive");
+            Log.i(TAG_LOG, "onReceive");
             //updateTrackInfo();
 
             if (mPlayerService == null) {
-                Log.d("Player Fragment", "if (mPlayerService == null)");
+                Log.i(TAG_LOG, "if (mPlayerService == null)");
 
                 return;
             }
 
-            Log.d("Player Fragment", "suite...");
 
             String action = intent.getAction();
 
-            Log.d("Player Fragment", action);
+            Log.i(TAG_LOG, action);
 
 
             switch (action) {
@@ -247,7 +248,7 @@ public class PlayerFragment extends BaseFragment
                     break;
 
                 case PlayerService.META_CHANGED:
-                    Log.d("Player Fragment", "mServiceListener, case PlayerService.META_CHANGED:");
+                    Log.i(TAG_LOG, "mServiceListener, case PlayerService.META_CHANGED:");
 
                     updateTrackInfo();
                     break;
@@ -365,7 +366,7 @@ public class PlayerFragment extends BaseFragment
     private void updateAll() {
         if (mPlayerService != null) {
 
-            Log.d("Player Fragment", "updateAll(), if (mPlayerService != null)");
+            Log.i(TAG_LOG, "updateAll(), if (mPlayerService != null)");
 
             updateTrackInfo();
 
@@ -378,12 +379,12 @@ public class PlayerFragment extends BaseFragment
 
     private void updateTrackInfo() {
 
-        Log.d("Player Fragment", "updateTrackInfo");
+        Log.i(TAG_LOG, "updateTrackInfo");
 
 
         if (mPlayerService != null) {
 
-            Log.d("Player Fragment", "updateTrackInfo, if (mPlayerService != null)");
+            Log.i(TAG_LOG, "updateTrackInfo, if (mPlayerService != null)");
 
 
             String title = PlayerService.getSongTitle();
@@ -427,7 +428,7 @@ public class PlayerFragment extends BaseFragment
 
             if (duration != -1) {
 
-                Log.d("Player Fragment", "updateTrackInfo, mHandler.postDelayed(new Runnable()");
+                Log.i(TAG_LOG, "updateTrackInfo, mHandler.postDelayed(new Runnable()");
 
                 ((TextView) rootView.findViewById(R.id.track_duration)).setText(msToText(duration));
 

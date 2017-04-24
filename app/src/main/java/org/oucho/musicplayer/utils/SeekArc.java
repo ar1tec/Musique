@@ -17,7 +17,7 @@ import org.oucho.musicplayer.R;
 
 public class SeekArc extends View {
 
-	private static final String TAG = SeekArc.class.getSimpleName();
+	private static final String TAG_LOG = "SeeakArc";
 	private static final int INVALID_PROGRESS_VALUE = -1;
 
     private Drawable mThumb;
@@ -75,7 +75,7 @@ public class SeekArc extends View {
 
 	private void init(Context context, AttributeSet attrs, int defStyle) {
 
-		Log.d(TAG, "Initialising SeekArc");
+		Log.i(TAG_LOG, "Initialising SeekArc");
 		float density = context.getResources().getDisplayMetrics().density;
 
 		int arcColor = ContextCompat.getColor(context, R.color.arcColor);

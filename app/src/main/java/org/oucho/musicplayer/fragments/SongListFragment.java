@@ -41,6 +41,7 @@ import java.util.List;
 
 public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
+    private static final String TAG_LOG = "Song List Fragment";
 
     private Context context;
     private MainActivity mActivity;
@@ -168,7 +169,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
     @Override
     public void load() {
-        Log.d("frag", "ertr");
+        Log.d(TAG_LOG, "load()");
 
         getLoaderManager().restartLoader(0, null, getLoaderCallbacks());
     }

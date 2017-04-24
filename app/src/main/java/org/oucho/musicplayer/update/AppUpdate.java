@@ -7,8 +7,12 @@ import android.util.Log;
 
 import org.oucho.musicplayer.R;
 
-public class AppUpdate {
+class AppUpdate {
+
+    private static final String TAG_LOG = "AppUpdate";
+
     private final Context context;
+
     private Display display;
     private String xmlUrl;
     private Boolean showAppUpdated;
@@ -17,7 +21,7 @@ public class AppUpdate {
     private final String btnUpdate;
     private final String titleNoUpdate;
 
-    public AppUpdate(Context context) {
+    AppUpdate(Context context) {
         this.context = context;
         this.display = Display.DIALOG;
         this.showAppUpdated = false;
@@ -29,18 +33,18 @@ public class AppUpdate {
         this.btnDismiss = context.getResources().getString(R.string.appupdater_btn_dismiss);
     }
 
-    public AppUpdate setDisplay(Display display) {
+    AppUpdate setDisplay(Display display) {
         this.display = display;
         return this;
     }
 
     @SuppressWarnings("SameParameterValue")
-    public AppUpdate setUpdateXML(@NonNull String xmlUrl) {
+    AppUpdate setUpdateXML(@NonNull String xmlUrl) {
         this.xmlUrl = xmlUrl;
         return this;
     }
 
-    public AppUpdate showAppUpdated() {
+    AppUpdate showAppUpdated() {
         this.showAppUpdated = true;
         return this;
     }
@@ -87,7 +91,7 @@ public class AppUpdate {
                 try {
                     throw new IllegalArgumentException("XML file is not valid!");
                 } catch (IllegalArgumentException e) {
-                    Log.d("AppUpdate", String.valueOf(e));
+                    Log.e(TAG_LOG, String.valueOf(e));
                 }
             }
         });

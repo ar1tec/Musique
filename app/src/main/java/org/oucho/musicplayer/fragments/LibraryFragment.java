@@ -25,6 +25,8 @@ import java.util.Map;
 public class LibraryFragment extends BaseFragment {
 
 
+    private static final String TAG_LOG = "Search Activity";
+
     private static SectionsPagerAdapter mSectionsPagerAdapter;
     private static boolean lock = false;
 
@@ -87,7 +89,7 @@ public class LibraryFragment extends BaseFragment {
             BaseFragment fragment = (BaseFragment) mSectionsPagerAdapter.getFragment(pos);
             if(fragment != null)
             {
-                Log.d("frag1", fragment.getClass().getCanonicalName());
+                Log.i(TAG_LOG, "frag1 " + fragment.getClass().getCanonicalName());
 
                 fragment.load();
             }
@@ -130,7 +132,7 @@ public class LibraryFragment extends BaseFragment {
                 Fragment f = (Fragment) obj;
                 String tag = f.getTag();
                 mFragmentTags.put(position, tag);
-                Log.d("fragtag", tag);
+                Log.i(TAG_LOG, "fragtag" + tag);
 
             }
             return obj;

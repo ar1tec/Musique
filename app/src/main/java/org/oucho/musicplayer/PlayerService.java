@@ -51,7 +51,7 @@ public class PlayerService extends Service implements
         OnCompletionListener {
 
 
-    private static final String TAG = "PlayerService";
+    private static final String TAG_LOG = "Player Service";
 
 
     public static final int NO_REPEAT = 20;
@@ -207,7 +207,7 @@ public class PlayerService extends Service implements
     }
 
     private void setupMediaSession() {
-        mMediaSession = new MediaSessionCompat(this, TAG);
+        mMediaSession = new MediaSessionCompat(this, TAG_LOG);
         mMediaSession.setCallback(new MediaSessionCompat.Callback() {
             @Override
             public void onPlay() {
@@ -320,7 +320,7 @@ public class PlayerService extends Service implements
             }
         }
 
-        Log.d("Player Service", "notifyChange, sendBroadcast(what, null) = " + what);
+        Log.i(TAG_LOG, "notifyChange, sendBroadcast(what, null) = " + what);
 
         sendBroadcast(what, null);
     }
@@ -385,12 +385,13 @@ public class PlayerService extends Service implements
                 mIsPlaying = true;
                 mIsPaused = false;
 
-                Log.d("Player Service", "play");
+                Log.i(TAG_LOG, "play");
                 notifyChange(PLAYSTATE_CHANGED);
 
             }
-
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException ignore) {
+            Log.e(TAG_LOG, "Erreur de lecture, fichier invalide ou inexistant");
+        }
 
 
 
@@ -400,7 +401,7 @@ public class PlayerService extends Service implements
         mMediaPlayer.pause();
         mIsPlaying = false;
         mIsPaused = true;
-        Log.d("Player Service", "pause");
+        Log.i(TAG_LOG, "pause");
 
         notifyChange(PLAYSTATE_CHANGED);
     }
@@ -499,7 +500,7 @@ public class PlayerService extends Service implements
         int currentPos = mCurrentPosition;
         mPlayList.add(currentPos + 1, song);
 
-        Log.d("Player Service", "setAsNextTrack");
+        Log.i(TAG_LOG, "setAsNextTrack");
 
         notifyChange(ITEM_ADDED);
     }
@@ -537,7 +538,7 @@ public class PlayerService extends Service implements
             //on met à jour la position
             updateCurrentPosition();
             notifyChange(ORDER_CHANGED);
-            Log.d("Player Service", "setShuffleEnabled");
+            Log.i(TAG_LOG, "setShuffleEnabled");
 
         }
     }
@@ -586,7 +587,7 @@ public class PlayerService extends Service implements
 
     private void open() {
 
-        Log.d("Player Service", "open()");
+        Log.i(TAG_LOG, "open()");
 
         Bundle extras = new Bundle();
         extras.putInt(EXTRA_POSITION, getPositionWithinPlayList());
@@ -696,14 +697,14 @@ public class PlayerService extends Service implements
             mIsPlaying = false;
             mIsPaused = true;
             notifyChange(PLAYSTATE_CHANGED);
-            Log.d("Player Service", "onCompletion");
+            Log.i(TAG_LOG, "onCompletion");
 
         }
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        Log.d(TAG, "onError " + String.valueOf(what) + " " + String.valueOf(extra));
+        Log.e(TAG_LOG, "onError " + String.valueOf(what) + " " + String.valueOf(extra));
 
         return true;
     }
@@ -714,7 +715,7 @@ public class PlayerService extends Service implements
         if (!start) {
             start = true;
         } else {
-            Log.d("Player Service", "onPrepared");
+            Log.i(TAG_LOG, "onPrepared");
 
             notifyChange(META_CHANGED);
 
@@ -779,7 +780,7 @@ public class PlayerService extends Service implements
 
     public void setRepeatMode(int mode) {
         mRepeatMode = mode;
-        Log.d("Player Service", "setRepeatMode");
+        Log.i(TAG_LOG, "setRepeatMode");
 
         notifyChange(REPEAT_MODE_CHANGED);
     }
