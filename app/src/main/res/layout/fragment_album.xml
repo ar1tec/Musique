@@ -52,7 +52,8 @@
                         android:text="Album"
                         android:textColor="@color/grey_600"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        card_view:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/line2"
@@ -64,7 +65,8 @@
                         android:maxLines="1"
                         android:text="Artiste"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        card_view:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/line3"
@@ -76,7 +78,8 @@
                         android:maxLines="1"
                         android:text="Année"
                         android:textSize="16sp"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        card_view:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/line4"
@@ -88,7 +91,8 @@
                         android:text="Nombre morceaux"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        card_view:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/duration"
@@ -99,7 +103,8 @@
                         android:maxLines="1"
                         android:text="Durée"
                         android:textSize="14sp"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        card_view:ignore="HardcodedText" />
 
                 </LinearLayout>
 

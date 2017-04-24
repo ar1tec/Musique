@@ -53,7 +53,8 @@
             android:text="Title"
             android:textAlignment="center"
             android:textColor="@color/primary_text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            card_view:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/song_artist"
@@ -66,7 +67,8 @@
             android:maxLines="1"
             android:text="artiste"
             android:textAlignment="center"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            card_view:ignore="HardcodedText" />
 
     </RelativeLayout>
 
@@ -87,7 +89,8 @@
             android:text="@string/default_time"
             android:textAlignment="center"
             android:textColor="@color/primary_text"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            card_view:ignore="RelativeOverlap" />
 
         <SeekBar
             android:id="@+id/seek_bar"
@@ -119,7 +122,8 @@
         android:layout_marginTop="10dp"
         android:text="1/4"
         android:textColor="@color/grey_600"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        card_view:ignore="HardcodedText" />
 
 </LinearLayout>
 

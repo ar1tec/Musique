@@ -65,7 +65,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     private boolean isRegistered = false;
 
     private RecyclerView mRecyclerView;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
 
 
@@ -472,6 +472,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         } else {
 
                             try {
+                                //noinspection deprecation
                                 getActivity().setTitle(Html.fromHtml("<font>"
                                         + titre
                                         + " </font> <small> <font color=\"#CCCCCC\">"

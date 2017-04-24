@@ -14,6 +14,9 @@ import android.view.ViewTreeObserver;
 
 class BlockingBlurController implements BlurController {
 
+    private static final String TAG_LOG = "BlockingBlurController";
+
+
     //Bitmap size should be divisible by 16 to meet stride requirement
     private static final int ROUNDING_VALUE = 16;
 
@@ -72,7 +75,7 @@ class BlockingBlurController implements BlurController {
      *                 Can be Activity's root content layout (android.R.id.content)
      *                 or some of your custom root layouts.
      */
-    public BlockingBlurController(@NonNull View blurView, @NonNull ViewGroup rootView) {
+    BlockingBlurController(@NonNull View blurView, @NonNull ViewGroup rootView) {
 
         this.rootView = rootView;
         this.blurView = blurView;
@@ -133,7 +136,7 @@ class BlockingBlurController implements BlurController {
      * Deferring initialization until view is laid out
      */
     private void deferBitmapCreation() {
-        Log.d("BlockingLblurController", "deferBitmapCreation");
+        Log.d(TAG_LOG, "deferBitmapCreation");
 
         blurView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

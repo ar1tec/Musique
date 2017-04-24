@@ -44,7 +44,7 @@ public class PlayerFragment extends BaseFragment
     private SeekBar mSeekBar;
     private TextView nbTrack;
     private SharedPreferences préférences;
-    private PlayerService mPlayerService = MainActivity.getPlayerService();
+    private final PlayerService mPlayerService = MainActivity.getPlayerService();
 
     private final Handler mHandler = new Handler();
 

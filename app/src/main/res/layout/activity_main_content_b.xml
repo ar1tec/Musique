@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/track_info0"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/track_info0"
     android:layout_width="match_parent"
     android:layout_height="@dimen/barre_lecture"
     android:background="@color/blancTransparent"
@@ -18,7 +19,8 @@
         android:textSize="12sp"
         android:textColor="@color/zzz"
         android:layout_marginRight="5dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,7 +36,8 @@
                 android:contentDescription="image_description"
                 android:padding="10dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_repeat_grey_400_24dp" />
+                android:src="@drawable/ic_repeat_grey_400_24dp"
+                tools:ignore="HardcodedText" />
 
             <ImageButton
                 android:id="@+id/quick_prev0"
@@ -82,7 +85,8 @@
                 android:contentDescription="image description"
                 android:padding="10dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_shuffle_grey_400_24dp" />
+                android:src="@drawable/ic_shuffle_grey_400_24dp"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
 

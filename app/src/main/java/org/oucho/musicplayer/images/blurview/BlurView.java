@@ -14,12 +14,12 @@ import android.widget.FrameLayout;
 
 import org.oucho.musicplayer.R;
 
-/**
- * FrameLayout that blurs its underlying content.
- * Can have children and draw them over blurred background.
- */
+
+
 public class BlurView extends FrameLayout {
-    private static final String TAG = BlurView.class.getSimpleName();
+
+    private static final String TAG_LOG = "BlurView";
+
     @ColorInt
     private static final int TRANSPARENT = 0x00000000;
 
@@ -82,18 +82,10 @@ public class BlurView extends FrameLayout {
         });
     }
 
-    /**
-     * Can be called to redraw blurred content manually
-     */
     public void updateBlur() {
         invalidate();
     }
 
-    /**
-     * Enables/disables the blur. Enabled by default
-     *
-     * @param enabled true to enable, false otherwise
-     */
     public void setBlurEnabled(final boolean enabled) {
         post(new Runnable() {
             @Override
@@ -132,7 +124,7 @@ public class BlurView extends FrameLayout {
 
 
         if (!isHardwareAccelerated()) {
-            Log.e(TAG, "BlurView can't be used in not hardware-accelerated window!");
+            Log.w(TAG_LOG, "BlurView can't be used in not hardware-accelerated window!");
         } else {
             blurController.setBlurAutoUpdate(true);
         }
@@ -143,11 +135,7 @@ public class BlurView extends FrameLayout {
         this.blurController = blurController;
     }
 
-    /**
-     * Sets the color overlay to be drawn on top of blurred content
-     *
-     * @param overlayColor int color
-     */
+
     public void setOverlayColor(@ColorInt int overlayColor) {
         if (overlayColor != this.overlayColor) {
             this.overlayColor = overlayColor;
@@ -155,14 +143,7 @@ public class BlurView extends FrameLayout {
         }
     }
 
-    /**
-     * @param rootView Root View where BlurView's underlying content starts drawing.
-     *                 Can be Activity's root content layout (android.R.id.content)
-     *                 or (preferably) some of your root layouts.
-     *                 BlurView's position will be calculated as a relative position to the rootView (not to the direct parent)
-     *                 This means that BlurView will choose a content to blur based on this relative position.
-     * @return ControllerSettings to setup needed params.
-     */
+
     public ControllerSettings setupWith(@NonNull ViewGroup rootView) {
 
         BlurController blurController = new BlockingBlurController(this, rootView);
@@ -188,21 +169,11 @@ public class BlurView extends FrameLayout {
             return this;
         }
 
-        /**
-         * @param algorithm sets the blur algorithm
-         *                  Default implementation uses {@link RenderScriptBlur}
-         * @return ControllerSettings
-         */
         public ControllerSettings blurAlgorithm(BlurAlgorithm algorithm) {
             blurController.setBlurAlgorithm(algorithm);
             return this;
         }
 
-        /**
-         * @param windowBackground sets the background to draw before view hierarchy.
-         *                         Can be used to draw Activity's window background if your root layout doesn't provide any background
-         * @return ControllerSettings
-         */
         public ControllerSettings windowBackground(@Nullable Drawable windowBackground) {
             blurController.setWindowBackground(windowBackground);
             return this;
