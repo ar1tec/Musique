@@ -666,7 +666,7 @@ public class MainActivity extends AppCompatActivity implements
                 Album album = getAlbumFromBundle(bundle);
                 AlbumFragment fragment = AlbumFragment.newInstance(album);
                 setFragment(fragment);
-
+                
             } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ARTIST)) {
 
                 Artist artist = getArtistFromBundle(bundle);
@@ -691,6 +691,7 @@ public class MainActivity extends AppCompatActivity implements
             mOnActivityResultIntent = null;
         }
     }
+
 
     public void setFragment(Fragment f) {
         getSupportFragmentManager().beginTransaction()
@@ -1486,7 +1487,6 @@ public class MainActivity extends AppCompatActivity implements
     public static PlayerService getPlayerService() {
         return mPlayerService;
     }
-
 
     public static boolean getQueueLayout() {
         return queueLayout;

@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -485,6 +486,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
+                    Log.i(TAG_LOG, "onResume()n, KeyEvent");
+
                     LibraryFragment.setLock(false);
 
                     if (MainActivity.getQueueLayout()) {
@@ -498,7 +501,10 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                     } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
 
-                        MainActivity.setAlbumFragmentState(false);
+
+                        Log.i(TAG_LOG, "onResume()n, KeyEvent, else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null)");
+
+                        //MainActivity.setAlbumFragmentState(false);
 
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
@@ -522,6 +528,9 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                         return true;
                     }
+
+                    MainActivity.setAlbumFragmentState(false);
+
                     return false;
                 }
                 return false;

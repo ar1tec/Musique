@@ -20,8 +20,8 @@
 
     <dimen name="horizontal_recycler_view_height">200dp</dimen>
 
-    <dimen name="small_album_grid_item_height">192dp</dimen>
-    <dimen name="small_album_grid_item_width">160dp</dimen>
+    <dimen name="small_album_grid_item_height">182dp</dimen>
+    <dimen name="small_album_grid_item_width">150dp</dimen>
 
 
     

@@ -363,6 +363,8 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     public void onResume() {
         super.onResume();
 
+        Log.i(TAG_LOG, "onResume()");
+
         // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
         Intent intent = new Intent();
         intent.setAction(INTENT_BLURVIEW);
@@ -390,9 +392,14 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
+                    Log.i(TAG_LOG, "onResume()n, KeyEvent.KEYCODE_BACK ");
+
                     LibraryFragment.setLock(false);
 
                     if (MainActivity.getQueueLayout()) {
+
+                        Log.i(TAG_LOG, "onResume()n, KeyEventb, if (MainActivity.getQueueLayout()) ");
+
 
                         Intent intent = new Intent();
                         intent.setAction(INTENT_QUEUEVIEW);
@@ -401,6 +408,9 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         return true;
 
                     } else if (MainActivity.getAlbumFragmentState()) {
+
+
+                        Log.i(TAG_LOG, "onResume()n, KeyEvent, else if (MainActivity.getAlbumFragmentState()) ");
 
                         MainActivity.setAlbumFragmentState(false);
 

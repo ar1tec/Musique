@@ -30,6 +30,7 @@ import java.util.List;
 
 public class ArtistListFragment extends BaseFragment {
 
+    String TAG_LOG = "Artiste List Fragment";
 
     private static final String STATE_SHOW_FASTSCROLLER = "fastscroller";
 
