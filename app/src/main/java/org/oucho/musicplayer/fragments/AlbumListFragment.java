@@ -408,9 +408,11 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
                         ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
                         ft.commit();
+
+                        return true;
                     }
 
-                    return true;
+                    return false;
 
                 }
                 return false;

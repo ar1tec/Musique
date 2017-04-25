@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -16,6 +17,7 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.widgets.blurview.BlockingBlurController;
 import org.oucho.musicplayer.widgets.blurview.BlurAlgorithm;
 import org.oucho.musicplayer.widgets.blurview.BlurController;
+import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
 
 
 public class BlurView extends FrameLayout {
@@ -226,5 +228,27 @@ public class BlurView extends FrameLayout {
             @Override
             public void setBlurAutoUpdate(boolean enabled) {}
         };
+    }
+
+
+
+    public static void setupBlurView(Context context, View decorView, Boolean queueLayout, BlurView queueBlurView, BlurView bottomBlurView) {
+
+        final float radius = 5f;
+
+        //Activity's root View. Can also be root View of your layout (preferably)
+        final ViewGroup rootView = (ViewGroup) decorView.findViewById(R.id.drawer_layout);
+
+        if (queueLayout) {
+            queueBlurView.setupWith(rootView)
+                    .blurAlgorithm(new RenderScriptBlur(context, true))
+                    .blurRadius(radius);
+        }
+
+
+        bottomBlurView.setupWith(rootView)
+                .blurAlgorithm(new RenderScriptBlur(context, true))
+                .blurRadius(radius);
+
     }
 }

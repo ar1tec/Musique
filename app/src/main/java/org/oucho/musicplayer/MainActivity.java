@@ -38,7 +38,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -76,7 +75,6 @@ import org.oucho.musicplayer.utils.VolumeTimer;
 import org.oucho.musicplayer.widgets.BlurView;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.ProgressBar;
-import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,6 +85,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static org.oucho.musicplayer.R.id.drawer_layout;
+import static org.oucho.musicplayer.widgets.BlurView.setupBlurView;
 
 public class MainActivity extends AppCompatActivity implements
         MusiqueKeys,
@@ -250,25 +249,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    private void setupBlurView() {
 
-        final float radius = 5f;
-
-        final View decorView = getWindow().getDecorView();
-        //Activity's root View. Can also be root View of your layout (preferably)
-        final ViewGroup rootView = (ViewGroup) decorView.findViewById(R.id.drawer_layout);
-
-        if (queueLayout) {
-            queueBlurView.setupWith(rootView)
-                    .blurAlgorithm(new RenderScriptBlur(mContext, true))
-                    .blurRadius(radius);
-        }
-
-
-        bottomBlurView.setupWith(rootView)
-                .blurAlgorithm(new RenderScriptBlur(mContext, true))
-                .blurRadius(radius);
-
+    private void setBlurView() {
+        View decorView = getWindow().getDecorView();
+        setupBlurView(mContext, decorView, queueLayout, queueBlurView, bottomBlurView);
     }
 
     /* *********************************************************************************************
@@ -588,7 +572,7 @@ public class MainActivity extends AppCompatActivity implements
             mQueueLayout.setVisibility(View.VISIBLE);
             queueBlurView.setVisibility(View.VISIBLE);
             queueLayout = true;
-            setupBlurView();
+            setBlurView();
         } else {
             mQueueLayout.setVisibility(View.GONE);
             queueBlurView.setVisibility(View.GONE);
@@ -923,7 +907,7 @@ public class MainActivity extends AppCompatActivity implements
             }
 
             if (receiveIntent.equals(INTENT_BLURVIEW))
-                setupBlurView();
+                setBlurView();
 
             if (receiveIntent.equals(INTENT_QUIT) && "exit".equals(intent.getStringExtra("halt")))
                 exit();

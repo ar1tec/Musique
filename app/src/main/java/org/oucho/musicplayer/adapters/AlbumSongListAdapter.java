@@ -63,13 +63,11 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
         holder.vTrackNumber.setText(String.valueOf(position + 1));
 
         if (song.getId() == PlayerService.getSongID()) {
-            Log.i(TAG_LOG, "if (song.getId() == PlayerService.getSongID())");
 
+            holder.vTime.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+            holder.vTime.setTextSize(15);
 
             if (PlayerService.isPlaying()) {
-
-                holder.vTime.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
-                holder.vTime.setTextSize(mContext.getResources().getDimensionPixelSize(R.dimen.txt_temps_restant));
 
                 holder.vTrackNumber.setVisibility(View.INVISIBLE);
                 holder.PlayView.setVisibility(View.VISIBLE);
@@ -82,6 +80,9 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
             }
 
         } else {
+
+            holder.vTime.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
+
             holder.PlayView.setVisibility(View.INVISIBLE);
             holder.vTrackNumber.setVisibility(View.VISIBLE);
         }
