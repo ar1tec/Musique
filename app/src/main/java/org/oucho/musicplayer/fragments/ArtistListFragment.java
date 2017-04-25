@@ -37,7 +37,7 @@ public class ArtistListFragment extends BaseFragment {
 
     private boolean mShowFastScroller = true;
 
-    private Context context;
+    private Context mContext;
 
     private final LoaderManager.LoaderCallbacks<List<Artist>> mLoaderCallbacks = new LoaderCallbacks<List<Artist>>() {
 
@@ -79,7 +79,7 @@ public class ArtistListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        context = getContext();
+        mContext = getContext();
     }
 
     @Override
@@ -161,9 +161,9 @@ public class ArtistListFragment extends BaseFragment {
         super.setUserVisibleHint(visible);
 
         if (visible && isResumed()){
-            getActivity().setTitle(context.getString(R.string.artists));
+            getActivity().setTitle(mContext.getString(R.string.artists));
         }else  if (visible){
-            getActivity().setTitle(context.getString(R.string.artists));
+            getActivity().setTitle(mContext.getString(R.string.artists));
         }
     }
 

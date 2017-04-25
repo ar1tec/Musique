@@ -26,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.images.ArtistImageCache;
@@ -230,6 +231,8 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         assert mFastScroller != null;
         mFastScroller.setRecyclerView(mRecyclerView);
 
+        MainActivity.setSearch(true);
+
     }
 
 
@@ -258,6 +261,29 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         finish();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.i(TAG_LOG, "onPause()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        MainActivity.setSearch(true);
+
+        Log.i(TAG_LOG, "onResume()");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG_LOG, "onDestroy()");
+
+    }
 
     /* *********************************************************************************************
      * Vue liste album

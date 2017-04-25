@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.images.blurview;
+package org.oucho.musicplayer.widgets.blurview;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 
-class BlockingBlurController implements BlurController {
+public class BlockingBlurController implements BlurController {
 
     private static final String TAG_LOG = "BlockingBlurController";
 
@@ -75,7 +75,7 @@ class BlockingBlurController implements BlurController {
      *                 Can be Activity's root content layout (android.R.id.content)
      *                 or some of your custom root layouts.
      */
-    BlockingBlurController(@NonNull View blurView, @NonNull ViewGroup rootView) {
+    public BlockingBlurController(@NonNull View blurView, @NonNull ViewGroup rootView) {
 
         this.rootView = rootView;
         this.blurView = blurView;

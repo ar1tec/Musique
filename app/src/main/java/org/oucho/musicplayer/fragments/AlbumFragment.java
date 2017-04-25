@@ -73,7 +73,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     private TextView durée;
     private List<Song> listeTitre;
 
-    private Context context;
+    private Context mContext;
 
     public static AlbumFragment newInstance(Album album) {
         AlbumFragment fragment = new AlbumFragment();
@@ -134,7 +134,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                     Intent intent0 = new Intent();
                     intent0.setAction(INTENT_BLURVIEW);
-                    context.sendBroadcast(intent0);
+                    mContext.sendBroadcast(intent0);
                 }
             }, 1000);
         }
@@ -159,13 +159,13 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
 
-        context = getContext();
+        mContext = getContext();
 
         Etat_player_Receiver = new Etat_player();
         IntentFilter filter = new IntentFilter();
         filter.addAction(INTENT_STATE);
         filter.addAction(PLAYSTATE_CHANGED);
-        context.registerReceiver(Etat_player_Receiver, filter);
+        mContext.registerReceiver(Etat_player_Receiver, filter);
         isRegistered = true;
 
         if (args != null) {
@@ -214,11 +214,14 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             }
         }, 300);
 
-        Intent intent0 = new Intent();
-        intent0.setAction(INTENT_LAYOUTVIEW);
-        intent0.putExtra("vue", "layout0");
-        context.sendBroadcast(intent0);
+        if ( ! MainActivity.getSearch() ) {
 
+            Intent intent0 = new Intent();
+            intent0.setAction(INTENT_LAYOUTVIEW);
+            intent0.putExtra("vue", "layout0");
+            mContext.sendBroadcast(intent0);
+
+        }
 
     }
 
@@ -230,9 +233,9 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         String getTri = préférences.getString("album_sort_order", "");
 
         if ("minyear DESC".equals(getTri)) {
-            tri = context.getString(R.string.title_sort_year);
+            tri = mContext.getString(R.string.title_sort_year);
         } else if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
-            tri = context.getString(R.string.title_sort_artist);
+            tri = mContext.getString(R.string.title_sort_artist);
         } else {
             tri = "a-z";
         }
@@ -267,14 +270,14 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             an.setVisibility(View.VISIBLE);
         }
 
-        if (tri.equals(context.getString(R.string.title_sort_artist))) {
+        if (tri.equals(mContext.getString(R.string.title_sort_artist))) {
             titreAlbum.setText(Titre);
             titreAlbum.setVisibility(View.VISIBLE);
             artiste.setVisibility(View.GONE);
             an.setVisibility(View.VISIBLE);
         }
 
-        if (tri.equals(context.getString(R.string.title_sort_year))) {
+        if (tri.equals(mContext.getString(R.string.title_sort_year))) {
             titreAlbum.setText(Titre);
             titreAlbum.setVisibility(View.VISIBLE);
             artiste.setVisibility(View.VISIBLE);
@@ -448,7 +451,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         super.onPause();
 
         if (isRegistered) {
-            context.unregisterReceiver(Etat_player_Receiver);
+            mContext.unregisterReceiver(Etat_player_Receiver);
 
             isRegistered = false;
         }
@@ -461,7 +464,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         if (!isRegistered) {
             IntentFilter filter = new IntentFilter(INTENT_STATE);
-            context.registerReceiver(Etat_player_Receiver, filter);
+            mContext.registerReceiver(Etat_player_Receiver, filter);
             isRegistered = true;
         }
 
@@ -488,7 +491,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                         Intent intent = new Intent();
                         intent.setAction(INTENT_QUEUEVIEW);
-                        context.sendBroadcast(intent);
+                        mContext.sendBroadcast(intent);
 
                         return true;
 
@@ -498,7 +501,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         Intent intent0 = new Intent();
                         intent0.setAction(INTENT_LAYOUTVIEW);
                         intent0.putExtra("vue", "layoutx");
-                        context.sendBroadcast(intent0);
+                        mContext.sendBroadcast(intent0);
 
 
 
@@ -508,7 +511,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         ft.commit();
                         Intent intent = new Intent();
                         intent.setAction("reload");
-                        context.sendBroadcast(intent);
+                        mContext.sendBroadcast(intent);
 
 
                         // rustine blurview
@@ -518,7 +521,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                                 Intent intent0 = new Intent();
                                 intent0.setAction(INTENT_BLURVIEW);
-                                context.sendBroadcast(intent0);
+                                mContext.sendBroadcast(intent0);
                             }
                         }, 1000);
 

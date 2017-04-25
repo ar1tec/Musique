@@ -5,7 +5,7 @@
     android:tag="playlist"
     android:id="@+id/fragment_playlist"
     android:background="@color/blanc"
-    tools:context="org.oucho.musicplayer.fragments.PlaylistFragment"
+    tools:mContext="org.oucho.musicplayer.fragments.PlaylistFragment"
     tools:ignore="Overdraw">
 
     <org.oucho.musicplayer.widgets.DragRecyclerView

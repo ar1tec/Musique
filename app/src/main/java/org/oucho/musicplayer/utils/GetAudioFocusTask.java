@@ -7,14 +7,14 @@ import org.oucho.musicplayer.MainActivity;
 
 
 public class GetAudioFocusTask implements Runnable {
-	private final MainActivity context;
+	private final MainActivity mContext;
 
-	public GetAudioFocusTask(MainActivity context) {
-		this.context = context;
+	public GetAudioFocusTask(MainActivity mContext) {
+		this.mContext = mContext;
 	}
 
 	public void run() {
-		((AudioManager) context.getSystemService(Context.AUDIO_SERVICE)).requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-		MainActivity.stopTimer(context);
+		((AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE)).requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+		MainActivity.stopTimer(mContext);
 	}
 }

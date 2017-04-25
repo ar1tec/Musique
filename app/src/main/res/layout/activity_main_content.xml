@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.oucho.musicplayer.images.blurview.BlurView
+    <org.oucho.musicplayer.widgets.BlurView
         android:id="@+id/bottomBlurView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/barre_lecture"
@@ -32,10 +32,10 @@
             android:visibility="gone"/>
 
 
-    </org.oucho.musicplayer.images.blurview.BlurView>
+    </org.oucho.musicplayer.widgets.BlurView>
 
-    <org.oucho.musicplayer.images.blurview.BlurView
-        android:id="@+id/topBlurView"
+    <org.oucho.musicplayer.widgets.BlurView
+        android:id="@+id/queueBlurView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="4dp"
@@ -61,6 +61,6 @@
                 android:padding="8dp" />
         </FrameLayout>
 
-    </org.oucho.musicplayer.images.blurview.BlurView>
+    </org.oucho.musicplayer.widgets.BlurView>
 
 </RelativeLayout>

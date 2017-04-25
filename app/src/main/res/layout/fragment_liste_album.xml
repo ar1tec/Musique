@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_album_list_layout"
-    tools:context="org.oucho.musicplayer.fragments.AlbumListFragment">
+    tools:mContext="org.oucho.musicplayer.fragments.AlbumListFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_view"

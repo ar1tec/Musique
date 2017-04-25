@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.images.blurview;
+package org.oucho.musicplayer.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import org.oucho.musicplayer.R;
-
+import org.oucho.musicplayer.widgets.blurview.BlockingBlurController;
+import org.oucho.musicplayer.widgets.blurview.BlurAlgorithm;
+import org.oucho.musicplayer.widgets.blurview.BlurController;
 
 
 public class BlurView extends FrameLayout {
@@ -48,6 +50,8 @@ public class BlurView extends FrameLayout {
 
     private void init(AttributeSet attrs, int defStyleAttr) {
 
+        Log.w(TAG_LOG, "init()");
+
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.BlurView, defStyleAttr, 0);
         overlayColor = a.getColor(R.styleable.BlurView_blurOverlayColor, TRANSPARENT);
         a.recycle();
@@ -57,6 +61,7 @@ public class BlurView extends FrameLayout {
 
     @Override
     public void draw(Canvas canvas) {
+        Log.w(TAG_LOG, "draw()");
 
         //draw only on system's hardware accelerated canvas
         if (canvas.isHardwareAccelerated()) {
@@ -74,6 +79,10 @@ public class BlurView extends FrameLayout {
      * Enabled by default.
      */
     public void setBlurAutoUpdate(final boolean enabled) {
+
+        Log.w(TAG_LOG, "setBlurAutoUpdate()");
+
+
         post(new Runnable() {
             @Override
             public void run() {
@@ -83,10 +92,14 @@ public class BlurView extends FrameLayout {
     }
 
     public void updateBlur() {
+        Log.w(TAG_LOG, "updateBlur()");
+
         invalidate();
     }
 
     public void setBlurEnabled(final boolean enabled) {
+        Log.w(TAG_LOG, "setBlurEnabled()");
+
         post(new Runnable() {
             @Override
             public void run() {
@@ -114,6 +127,8 @@ public class BlurView extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        Log.w(TAG_LOG, "onDetachedFromWindow()");
+
 
         blurController.setBlurAutoUpdate(false);
     }
@@ -121,7 +136,7 @@ public class BlurView extends FrameLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-
+        Log.w(TAG_LOG, "onAttachedToWindow()");
 
         if (!isHardwareAccelerated()) {
             Log.w(TAG_LOG, "BlurView can't be used in not hardware-accelerated window!");
@@ -185,40 +200,31 @@ public class BlurView extends FrameLayout {
 
         return new BlurController() {
             @Override
-            public void drawBlurredContent(Canvas canvas) {
-            }
+            public void drawBlurredContent(Canvas canvas) {}
 
             @Override
-            public void updateBlurViewSize() {
-            }
+            public void updateBlurViewSize() {}
 
             @Override
-            public void onDrawEnd(Canvas canvas) {
-            }
+            public void onDrawEnd(Canvas canvas) {}
 
             @Override
-            public void setBlurRadius(float radius) {
-            }
+            public void setBlurRadius(float radius) {}
 
             @Override
-            public void setBlurAlgorithm(BlurAlgorithm algorithm) {
-            }
+            public void setBlurAlgorithm(BlurAlgorithm algorithm) {}
 
             @Override
-            public void setWindowBackground(@Nullable Drawable windowBackground) {
-            }
+            public void setWindowBackground(@Nullable Drawable windowBackground) {}
 
             @Override
-            public void destroy() {
-            }
+            public void destroy() {}
 
             @Override
-            public void setBlurEnabled(boolean enabled) {
-            }
+            public void setBlurEnabled(boolean enabled) {}
 
             @Override
-            public void setBlurAutoUpdate(boolean enabled) {
-            }
+            public void setBlurAutoUpdate(boolean enabled) {}
         };
     }
 }

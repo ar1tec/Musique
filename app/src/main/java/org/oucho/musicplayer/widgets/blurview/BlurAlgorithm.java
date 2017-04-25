@@ -1,9 +1,9 @@
-package org.oucho.musicplayer.images.blurview;
+package org.oucho.musicplayer.widgets.blurview;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-interface BlurAlgorithm {
+public interface BlurAlgorithm {
 
     Bitmap blur(Bitmap bitmap, float blurRadius);
 

@@ -12,7 +12,7 @@ public class ArtistImageHelper {
     private static Drawable sDefaultArtistImage;
     private static Drawable sDefaultArtistThumb;
 
-    public static Drawable getDefaultArtistImage(Context c) {
+    static Drawable getDefaultArtistImage(Context c) {
         if (sDefaultArtistImage == null) {
             sDefaultArtistImage = ContextCompat.getDrawable(c, R.drawable.default_artist_image);
 

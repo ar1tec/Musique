@@ -51,7 +51,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
     private static final String TAG_LOG = "Album List Fragment";
 
-    private Context context;
+    private Context mContext;
     private Menu menu;
 
     private AlbumListAdapter mAdapter;
@@ -217,17 +217,17 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        context = getContext();
+        mContext = getContext();
 
         préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
 
-        titre = context.getString(R.string.albums);
+        titre = mContext.getString(R.string.albums);
 
         setTri();
 
         reloadReceiver = new ReloadView();
         IntentFilter filter = new IntentFilter("reload");
-        context.registerReceiver(reloadReceiver, filter);
+        mContext.registerReceiver(reloadReceiver, filter);
         isRegistered = true;
     }
 
@@ -327,13 +327,13 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             case R.id.menu_sort_by_artist:
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_ARTIST);
                 load();
-                tri = context.getString(R.string.title_sort_artist);
+                tri = mContext.getString(R.string.title_sort_artist);
                 setUserVisibleHint(true);
                 break;
             case R.id.menu_sort_by_year:
                 prefUtils.setAlbumSortOrder(SortOrder.AlbumSortOrder.ALBUM_YEAR);
                 load();
-                tri = context.getString(R.string.title_sort_year);
+                tri = mContext.getString(R.string.title_sort_year);
                 setUserVisibleHint(true);
                 break;
             default: //do nothing
@@ -354,7 +354,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         super.onPause();
 
         if (isRegistered) {
-            context.unregisterReceiver(reloadReceiver);
+            mContext.unregisterReceiver(reloadReceiver);
             isRegistered = false;
         }
     }
@@ -366,12 +366,12 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
         Intent intent = new Intent();
         intent.setAction(INTENT_BLURVIEW);
-        context.sendBroadcast(intent);
+        mContext.sendBroadcast(intent);
 
 
         if (!isRegistered) {
             IntentFilter filter = new IntentFilter("reload");
-            context.registerReceiver(reloadReceiver, filter);
+            mContext.registerReceiver(reloadReceiver, filter);
             isRegistered = true;
         }
 
@@ -396,7 +396,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                         Intent intent = new Intent();
                         intent.setAction(INTENT_QUEUEVIEW);
-                        context.sendBroadcast(intent);
+                        mContext.sendBroadcast(intent);
 
                         return true;
 
@@ -419,9 +419,9 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         String getTri = préférences.getString("album_sort_order", "");
 
         if ("minyear DESC".equals(getTri)) {
-            tri = context.getString(R.string.title_sort_year);
+            tri = mContext.getString(R.string.title_sort_year);
         } else if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
-            tri = context.getString(R.string.title_sort_artist);
+            tri = mContext.getString(R.string.title_sort_artist);
         } else {
             tri = "a-z";
         }

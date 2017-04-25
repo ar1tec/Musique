@@ -20,9 +20,6 @@ import org.oucho.musicplayer.widgets.DragRecyclerView;
 import java.util.Collections;
 import java.util.List;
 
-import static org.oucho.musicplayer.MainActivity.getQueueAdapter;
-
-
 public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> {
 
     private final DragRecyclerView mQueueView;
@@ -32,6 +29,7 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
     private int mSelectedItemPosition = -1;
 
     private int currentSong;
+
 
     public QueueAdapter(Context context, DragRecyclerView drag) {
         mContext = context;
@@ -169,8 +167,8 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
                     case R.id.delete_button:
 
 
-                        if (getQueueAdapter().getItemCount() > 0 && position != currentSong)
-                            getQueueAdapter().removeItem(position);
+                        if (getItemCount() > 0 && position != currentSong)
+                            removeItem(position);
 
                         break;
 

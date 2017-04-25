@@ -19,7 +19,7 @@ import java.util.List;
 
 public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistViewHolder> {
 
-    private Context context;
+    private Context mContext;
 
     private List<Playlist> mPlaylistList = Collections.emptyList();
 
@@ -69,7 +69,7 @@ public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistVie
             itemView.findViewById(R.id.delete_playlist).setOnClickListener(this);
 
             itemView.setOnClickListener(this);
-            context = itemView.getContext();
+            mContext = itemView.getContext();
         }
 
         @Override
@@ -92,11 +92,11 @@ public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistVie
 
         final long playlist = mPlaylistList.get(position).getId();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(context.getString(R.string.deletePlaylistConfirm));
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(mContext.getString(R.string.deletePlaylistConfirm));
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                PlaylistsUtils.deletePlaylist(context.getContentResolver(), playlist);
+                PlaylistsUtils.deletePlaylist(mContext.getContentResolver(), playlist);
             }
         });
         builder.setNegativeButton(R.string.cancel, null);

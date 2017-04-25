@@ -65,8 +65,8 @@ import org.oucho.musicplayer.adapters.QueueAdapter;
 import org.oucho.musicplayer.fragments.PlayerFragment;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.images.blurview.BlurView;
-import org.oucho.musicplayer.images.blurview.RenderScriptBlur;
+import org.oucho.musicplayer.widgets.BlurView;
+import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
 import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private View mQueueLayout;
     private List<Song> mQueue;
-    private BlurView topBlurView;
+    private BlurView queueBlurView;
     private TextView timeAfficheur;
     private RelativeLayout layoutA;
     private RelativeLayout layoutB;
@@ -118,8 +118,11 @@ public class MainActivity extends AppCompatActivity implements
 
     private static Menu menu;
     private static ScheduledFuture mTask;
-    private static QueueAdapter mQueueAdapter;
+    private QueueAdapter mQueueAdapter;
+
     private static PlayerService mPlayerService;
+
+
 
     private final Handler mHandler = new Handler();
 
@@ -132,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements
     private static boolean playBarLayout = false;
     private static boolean queueLayout = false;
     private static boolean playlistFragmentState = false;
+    private static boolean searchActivity = false;
+
 
 
 
@@ -167,7 +172,10 @@ public class MainActivity extends AppCompatActivity implements
         mQueueLayout = findViewById(R.id.queue_layout);
         mQueueView = (DragRecyclerView) findViewById(R.id.queue_view);
         mQueueView.setLayoutManager(new CustomLayoutManager(this));
+
+
         mQueueAdapter = new QueueAdapter(mContext, mQueueView);
+
         mQueueView.setOnItemMovedListener(new DragRecyclerView.OnItemMovedListener() {
             @Override
             public void onItemMoved(int oldPosition, int newPosition) {
@@ -220,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements
 
         timeAfficheur = ((TextView) findViewById(R.id.zZz));
 
-        topBlurView = (BlurView) findViewById(R.id.topBlurView);
+        queueBlurView = (BlurView) findViewById(R.id.queueBlurView);
         bottomBlurView = (BlurView) findViewById(R.id.bottomBlurView);
 
         mDrawerLayout = (DrawerLayout) findViewById(drawer_layout);
@@ -252,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements
         //Activity's root View. Can also be root View of your layout (preferably)
         final ViewGroup rootView = (ViewGroup) decorView.findViewById(R.id.drawer_layout);
 
-        topBlurView.setupWith(rootView)
+        queueBlurView.setupWith(rootView)
                 .blurAlgorithm(new RenderScriptBlur(mContext, true))
                 .blurRadius(radius);
 
@@ -579,11 +587,11 @@ public class MainActivity extends AppCompatActivity implements
     private void toggleQueue() {
         if (mQueueLayout.getVisibility() != View.VISIBLE) {
             mQueueLayout.setVisibility(View.VISIBLE);
-            topBlurView.setVisibility(View.VISIBLE);
+            queueBlurView.setVisibility(View.VISIBLE);
             queueLayout = true;
         } else {
             mQueueLayout.setVisibility(View.GONE);
-            topBlurView.setVisibility(View.GONE);
+            queueBlurView.setVisibility(View.GONE);
             queueLayout = false;
         }
     }
@@ -805,7 +813,7 @@ public class MainActivity extends AppCompatActivity implements
             if (receiveIntent.equals(INTENT_QUEUEVIEW)) {
 
                 mQueueLayout.setVisibility(View.GONE);
-                topBlurView.setVisibility(View.GONE);
+                queueBlurView.setVisibility(View.GONE);
 
                 queueLayout = false;
             }
@@ -864,13 +872,11 @@ public class MainActivity extends AppCompatActivity implements
                     Log.i(TAG_LOG, "else");
 
                     // TranslateAnimation(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta)
-
                     TranslateAnimation animate2 = new TranslateAnimation(0, 0, -tailleBarre, 0);
                     animate2.setDuration(400);
                     animate2.setFillAfter(true);
                     layoutA.startAnimation(animate2);
                     layoutA.setVisibility(View.VISIBLE);
-
 
                     TranslateAnimation animate = new TranslateAnimation(0, 0, 0, tailleBarre);
                     animate.setDuration(400);
@@ -983,6 +989,9 @@ public class MainActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SEARCH_ACTIVITY && resultCode == RESULT_OK) {
             mOnActivityResultIntent = data;
+
+            Log.i(TAG_LOG, "onActivityResult, SEARCH_ACTIVITY");
+            //searchActivity = false;
 
             //overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
 
@@ -1512,9 +1521,11 @@ public class MainActivity extends AppCompatActivity implements
         return mPlayerService;
     }
 
-    public static QueueAdapter getQueueAdapter() {
-        return mQueueAdapter;
-    }
+//    public static QueueAdapter getQueueAdapter() {
+//        return mQueueAdapter;
+//    }
+//
+
 
     public static boolean getQueueLayout() {
         return queueLayout;
@@ -1538,6 +1549,15 @@ public class MainActivity extends AppCompatActivity implements
 
     public static int getViewID() {
         return viewID;
+    }
+
+
+    public static void setSearch(boolean value) {
+        searchActivity = value;
+    }
+
+    public static boolean getSearch() {
+        return searchActivity;
     }
 
 }

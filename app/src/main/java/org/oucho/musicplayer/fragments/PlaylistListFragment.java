@@ -41,7 +41,7 @@ import static org.oucho.musicplayer.MusiqueKeys.INTENT_QUEUEVIEW;
 
 public class PlaylistListFragment extends BaseFragment {
 
-    private Context context;
+    private Context mCntext;
 
     private static final String[] sProjection = {
             MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME};
@@ -106,7 +106,7 @@ public class PlaylistListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        context = getContext();
+        mCntext = getContext();
     }
 
     @Override
@@ -158,7 +158,7 @@ public class PlaylistListFragment extends BaseFragment {
 
                         Intent intent = new Intent();
                         intent.setAction(INTENT_QUEUEVIEW);
-                        context.sendBroadcast(intent);
+                        mCntext.sendBroadcast(intent);
 
                     } else if (MainActivity.getPlaylistFragmentState()) {
 
@@ -239,7 +239,7 @@ public class PlaylistListFragment extends BaseFragment {
         super.setUserVisibleHint(visible);
 
         if (visible || isResumed()){
-            getActivity().setTitle(context.getString(R.string.playlists));
+            getActivity().setTitle(mCntext.getString(R.string.playlists));
 
             MainActivity.setViewID(R.id.fragment_playlist_list);
 

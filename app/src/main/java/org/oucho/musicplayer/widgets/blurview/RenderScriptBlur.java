@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.images.blurview;
+package org.oucho.musicplayer.widgets.blurview;
 
 import android.content.Context;
 import android.graphics.Bitmap;

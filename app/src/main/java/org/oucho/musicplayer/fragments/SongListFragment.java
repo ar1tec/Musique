@@ -43,7 +43,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
     private static final String TAG_LOG = "Song List Fragment";
 
-    private Context context;
+    private Context mContext;
     private MainActivity mActivity;
     private SongListAdapter mAdapter;
     private SharedPreferences préférences = null;
@@ -196,11 +196,11 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        context = getContext();
+        mContext = getContext();
 
         préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
 
-        titre = context.getString(R.string.titles);
+        titre = mContext.getString(R.string.titles);
 
         setTri();
 
@@ -267,7 +267,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
                         Intent intent = new Intent();
                         intent.setAction(INTENT_QUEUEVIEW);
-                        context.sendBroadcast(intent);
+                        mContext.sendBroadcast(intent);
 
                     } else {
 
@@ -308,21 +308,21 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
             case R.id.menu_sort_by_album:
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_ALBUM);
                 load();
-                tri = context.getString(R.string.title_sort_album);
+                tri = mContext.getString(R.string.title_sort_album);
                 setUserVisibleHint(true);
                 break;
 
             case R.id.menu_sort_by_artist:
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_ARTIST);
                 load();
-                tri = context.getString(R.string.title_sort_artist);
+                tri = mContext.getString(R.string.title_sort_artist);
                 setUserVisibleHint(true);
                 break;
 
             case R.id.menu_sort_by_year:
                 prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_YEAR);
                 load();
-                tri = context.getString(R.string.title_sort_year);
+                tri = mContext.getString(R.string.title_sort_year);
                 setUserVisibleHint(true);
                 break;
 
@@ -349,15 +349,15 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
         if ("year DESC".equals(getTri)) {
 
-            tri = context.getString(R.string.title_sort_year);
+            tri = mContext.getString(R.string.title_sort_year);
 
         } else if ("artist".equals(getTri)) {
 
-            tri = context.getString(R.string.title_sort_artist);
+            tri = mContext.getString(R.string.title_sort_artist);
 
         } else if ("album".equals(getTri)) {
 
-            tri = context.getString(R.string.title_sort_album);
+            tri = mContext.getString(R.string.title_sort_album);
 
         } else {
 

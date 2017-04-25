@@ -7,7 +7,7 @@
     android:paddingBottom="@dimen/dialogPadding"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    tools:context=".dialog.AlbumEditorDialog">
+    tools:mContext=".dialog.AlbumEditorDialog">
 
     <LinearLayout
         android:layout_width="wrap_content"
