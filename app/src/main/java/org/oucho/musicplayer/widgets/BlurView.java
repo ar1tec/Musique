@@ -61,7 +61,7 @@ public class BlurView extends FrameLayout {
 
     @Override
     public void draw(Canvas canvas) {
-        Log.w(TAG_LOG, "draw()");
+        //Log.w(TAG_LOG, "draw()");
 
         //draw only on system's hardware accelerated canvas
         if (canvas.isHardwareAccelerated()) {

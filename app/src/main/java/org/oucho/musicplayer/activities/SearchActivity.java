@@ -26,11 +26,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.oucho.musicplayer.MainActivity;
+import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
-import org.oucho.musicplayer.images.ArtistImageCache;
-import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.db.loaders.AlbumLoader;
 import org.oucho.musicplayer.db.loaders.ArtistLoader;
 import org.oucho.musicplayer.db.loaders.BaseLoader;
@@ -39,7 +36,9 @@ import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Artist;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.MusiqueKeys;
+import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
+import org.oucho.musicplayer.images.ArtistImageCache;
+import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 
@@ -231,8 +230,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         assert mFastScroller != null;
         mFastScroller.setRecyclerView(mRecyclerView);
 
-        MainActivity.setSearch(true);
-
     }
 
 
@@ -268,15 +265,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         Log.i(TAG_LOG, "onPause()");
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        MainActivity.setSearch(true);
-
-        Log.i(TAG_LOG, "onResume()");
-
-    }
 
     @Override
     protected void onDestroy() {

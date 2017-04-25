@@ -50,6 +50,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
+import org.oucho.musicplayer.adapters.BaseAdapter;
+import org.oucho.musicplayer.adapters.QueueAdapter;
 import org.oucho.musicplayer.audiofx.AudioEffects;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Artist;
@@ -60,13 +62,9 @@ import org.oucho.musicplayer.fragments.AlbumFragment;
 import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.adapters.QueueAdapter;
 import org.oucho.musicplayer.fragments.PlayerFragment;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.widgets.BlurView;
-import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
 import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
@@ -75,8 +73,10 @@ import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.utils.VolumeTimer;
+import org.oucho.musicplayer.widgets.BlurView;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.ProgressBar;
+import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements
     private ProgressBar mProgressBar;
     private DrawerLayout mDrawerLayout;
     private ImageButton forwardButton;
+    private QueueAdapter mQueueAdapter;
     private ImageButton previousButton;
     private ImageButton forwardButton0;
     private ImageButton previousButton0;
@@ -118,11 +119,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private static Menu menu;
     private static ScheduledFuture mTask;
-    private QueueAdapter mQueueAdapter;
-
     private static PlayerService mPlayerService;
-
-
 
     private final Handler mHandler = new Handler();
 
@@ -134,9 +131,10 @@ public class MainActivity extends AppCompatActivity implements
     private static boolean running;
     private static boolean playBarLayout = false;
     private static boolean queueLayout = false;
-    private static boolean playlistFragmentState = false;
-    private static boolean searchActivity = false;
 
+    private static boolean albumFragmentState = false;
+
+    private static boolean playlistFragmentState = false;
 
 
 
@@ -260,13 +258,17 @@ public class MainActivity extends AppCompatActivity implements
         //Activity's root View. Can also be root View of your layout (preferably)
         final ViewGroup rootView = (ViewGroup) decorView.findViewById(R.id.drawer_layout);
 
-        queueBlurView.setupWith(rootView)
-                .blurAlgorithm(new RenderScriptBlur(mContext, true))
-                .blurRadius(radius);
+        if (queueLayout) {
+            queueBlurView.setupWith(rootView)
+                    .blurAlgorithm(new RenderScriptBlur(mContext, true))
+                    .blurRadius(radius);
+        }
+
 
         bottomBlurView.setupWith(rootView)
                 .blurAlgorithm(new RenderScriptBlur(mContext, true))
                 .blurRadius(radius);
+
     }
 
     /* *********************************************************************************************
@@ -503,8 +505,6 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
-
-
     private void updateShuffleButton() {
         boolean shuffle = PlayerService.isShuffleEnabled();
         ImageView shuffleButton = (ImageView) findViewById(R.id.shuffle0);
@@ -569,7 +569,6 @@ public class MainActivity extends AppCompatActivity implements
                 updateQueue();
                 toggleQueue();
 
-                queueLayout = true;
                 return true;
 
             case R.id.action_search:
@@ -589,6 +588,7 @@ public class MainActivity extends AppCompatActivity implements
             mQueueLayout.setVisibility(View.VISIBLE);
             queueBlurView.setVisibility(View.VISIBLE);
             queueLayout = true;
+            setupBlurView();
         } else {
             mQueueLayout.setVisibility(View.GONE);
             queueBlurView.setVisibility(View.GONE);
@@ -824,25 +824,7 @@ public class MainActivity extends AppCompatActivity implements
                 final float tailleBarre = getResources().getDimension(R.dimen.barre_lecture);
 
 
-                if ("layout0".equals(intent.getStringExtra("vue"))) {
-
-                    Log.i(TAG_LOG, "layout0");
-
-
-                    TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
-                    animate.setDuration(400);
-                    animate.setFillAfter(true);
-                    layoutB.startAnimation(animate);
-                    layoutB.setVisibility(View.VISIBLE);
-
-                    TranslateAnimation animate2 = new TranslateAnimation(0, 0, 0, -tailleBarre);
-                    animate2.setDuration(400);
-                    animate2.setFillAfter(true);
-                    layoutA.startAnimation(animate2);
-                    layoutA.setVisibility(View.GONE);
-
-
-                } else if ("playBarLayout".equals(intent.getStringExtra("vue"))) {
+                if ("playBarLayout".equals(intent.getStringExtra("vue"))) {
 
                     Log.i(TAG_LOG, "playBarLayout");
 
@@ -857,7 +839,6 @@ public class MainActivity extends AppCompatActivity implements
                     animate2.setFillAfter(true);
                     layoutA.startAnimation(animate2);
                     layoutA.setVisibility(View.GONE);
-
 
                     Animation fadeOut = new AlphaAnimation(1, 0);
                     fadeOut.setInterpolator(new AccelerateInterpolator());
@@ -905,6 +886,7 @@ public class MainActivity extends AppCompatActivity implements
                         mProgressBar.setVisibility(View.VISIBLE);
 
                     }
+
                 }
 
                 refresh();
@@ -991,7 +973,6 @@ public class MainActivity extends AppCompatActivity implements
             mOnActivityResultIntent = data;
 
             Log.i(TAG_LOG, "onActivityResult, SEARCH_ACTIVITY");
-            //searchActivity = false;
 
             //overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
 
@@ -1153,6 +1134,7 @@ public class MainActivity extends AppCompatActivity implements
             mProgressBar.setMax(duration);
             mProgressBar.setProgress(PlayerService.getPlayerPosition());
         }
+
     }
 
 
@@ -1521,11 +1503,6 @@ public class MainActivity extends AppCompatActivity implements
         return mPlayerService;
     }
 
-//    public static QueueAdapter getQueueAdapter() {
-//        return mQueueAdapter;
-//    }
-//
-
 
     public static boolean getQueueLayout() {
         return queueLayout;
@@ -1538,26 +1515,24 @@ public class MainActivity extends AppCompatActivity implements
     public static boolean getPlaylistFragmentState() {
         return playlistFragmentState;
     }
-
     public static void setPlaylistFragmentState(Boolean value) {
         playlistFragmentState = value;
     }
 
-    public static void setViewID(int id) {
-        viewID = id;
+    public static boolean getAlbumFragmentState() {
+        return albumFragmentState;
+    }
+    public static void setAlbumFragmentState(Boolean value) {
+        albumFragmentState = value;
     }
 
     public static int getViewID() {
         return viewID;
     }
-
-
-    public static void setSearch(boolean value) {
-        searchActivity = value;
+    public static void setViewID(int id) {
+        viewID = id;
     }
 
-    public static boolean getSearch() {
-        return searchActivity;
-    }
 
 }
+

@@ -15,7 +15,9 @@ public interface BlurController {
     void setBlurRadius(float radius);
     void setBlurEnabled(boolean enabled);
     void drawBlurredContent(Canvas canvas);
+
     void setBlurAutoUpdate(boolean enabled);
+
     void setBlurAlgorithm(BlurAlgorithm algorithm);
     void setWindowBackground(@Nullable Drawable windowBackground);
 }

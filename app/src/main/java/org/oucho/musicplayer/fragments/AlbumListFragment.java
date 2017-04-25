@@ -30,17 +30,17 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import org.oucho.musicplayer.MainActivity;
+import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.adapters.AlbumListAdapter;
 import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.dialog.AlbumEditorDialog;
-import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.db.loaders.AlbumLoader;
 import org.oucho.musicplayer.db.loaders.SortOrder;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Playlist;
-import org.oucho.musicplayer.MusiqueKeys;
+import org.oucho.musicplayer.dialog.AlbumEditorDialog;
+import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
@@ -400,9 +400,17 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                         return true;
 
+                    } else if (MainActivity.getAlbumFragmentState()) {
+
+                        MainActivity.setAlbumFragmentState(false);
+
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                        ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
+                        ft.commit();
                     }
 
-                    return false;
+                    return true;
 
                 }
                 return false;

@@ -26,14 +26,14 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.adapters.AlbumSongListAdapter;
+import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.db.loaders.SongLoader;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
-import org.oucho.musicplayer.adapters.AlbumSongListAdapter;
-import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
@@ -45,6 +45,7 @@ import java.util.Locale;
 
 public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
+    private final String TAG_LOG = "Album Fragment";
     private static final String ARG_ID = "id";
     private static final String ARG_NAME = "name";
     private static final String ARG_ARTIST = "artist";
@@ -115,14 +116,14 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                 duréeTotal =  duréeTotal + listeTitre.get(i).getDuration();
             }
 
-            if (msToText(duréeTotal).equals("0") || msToText(duréeTotal).equals("1")) {
+            if (msToTextMinut(duréeTotal).equals("0") || msToTextMinut(duréeTotal).equals("1")) {
 
-                String temps = msToText(duréeTotal) + " " + getString(R.string.minute_singulier);
+                String temps = msToTextMinut(duréeTotal) + " " + getString(R.string.minute_singulier);
                 durée.setText(temps);
 
             } else {
 
-                String temps = msToText(duréeTotal) + " " + getString(R.string.minute_pluriel);
+                String temps = msToTextMinut(duréeTotal) + " " + getString(R.string.minute_pluriel);
                 durée.setText(temps);
             }
 
@@ -145,7 +146,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         }
     };
 
-    private String msToText(int msec) {
+    private String msToTextMinut(int msec) {
         //noinspection MalformedFormatString
         return String.format(Locale.getDefault(), "%d", msec / 60000, (msec % 60000) / 1000);
     }
@@ -164,7 +165,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         Etat_player_Receiver = new Etat_player();
         IntentFilter filter = new IntentFilter();
         filter.addAction(INTENT_STATE);
-        filter.addAction(PLAYSTATE_CHANGED);
         mContext.registerReceiver(Etat_player_Receiver, filter);
         isRegistered = true;
 
@@ -214,15 +214,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             }
         }, 300);
 
-        if ( ! MainActivity.getSearch() ) {
-
-            Intent intent0 = new Intent();
-            intent0.setAction(INTENT_LAYOUTVIEW);
-            intent0.putExtra("vue", "layout0");
-            mContext.sendBroadcast(intent0);
-
-        }
-
     }
 
 
@@ -240,16 +231,23 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             tri = "a-z";
         }
     }
+
+
+
     /* *********************************************************************************************
      * Création du visuel
      * ********************************************************************************************/
 
+
+    TextView time;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_album, container, false);
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
         ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
+
+        time = (TextView)  rootView.findViewById(R.id.time);
 
         TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
 
@@ -462,6 +460,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     public void onResume() {
         super.onResume();
 
+        MainActivity.setAlbumFragmentState(true);
+
         if (!isRegistered) {
             IntentFilter filter = new IntentFilter(INTENT_STATE);
             mContext.registerReceiver(Etat_player_Receiver, filter);
@@ -498,12 +498,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                     } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
 
-                        Intent intent0 = new Intent();
-                        intent0.setAction(INTENT_LAYOUTVIEW);
-                        intent0.putExtra("vue", "layoutx");
-                        mContext.sendBroadcast(intent0);
-
-
+                        MainActivity.setAlbumFragmentState(false);
 
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
@@ -536,19 +531,23 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     }
 
 
+
+    String tempsRestant() {
+
+        int a = PlayerService.getTrackDuration();
+        int b = PlayerService.getPlayerPosition();
+        int msec = a - b;
+
+        return String.format(Locale.getDefault(), "%d:%02d", msec / 60000, (msec % 60000) / 1000);
+
+    }
+
     private class Etat_player extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
 
             String receiveIntent = intent.getAction();
-
-
-            if (PLAYSTATE_CHANGED.equals(receiveIntent)) {
-
-                return;
-            }
-
 
             if (INTENT_STATE.equals(receiveIntent)
                     && intent.getStringExtra("state").equals("prev")
@@ -576,5 +575,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             }
         }
     }
+
 
 }

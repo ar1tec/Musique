@@ -283,6 +283,7 @@ public class PlayerFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
+
         if (!mServiceBound) {
             IntentFilter filter = new IntentFilter();
             filter.addAction(PlayerService.META_CHANGED);
@@ -309,8 +310,6 @@ public class PlayerFragment extends BaseFragment
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-
-                    LibraryFragment.setLock(false);
 
                     int viewID = MainActivity.getViewID();
 

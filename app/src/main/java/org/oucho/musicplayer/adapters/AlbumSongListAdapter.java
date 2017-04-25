@@ -1,7 +1,11 @@
 package org.oucho.musicplayer.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,11 @@ import java.util.List;
 
 public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewHolder> {
 
+
+    private Context mContext;
+    private static final String TAG_LOG = "AlbumSongListAdapter";
+
+    private Handler mHandler = new Handler();
 
     private List<Song> mSongList = Collections.emptyList();
 
@@ -46,7 +55,7 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
         long secondes = song.getDuration() / 1000;
 
         @SuppressLint("DefaultLocale")
-        String duration = "(" + String.valueOf( (secondes % 3600) / 60 ) + ":" + String.format("%02d", (secondes % 3600) % 60 ) + ")";
+        String duration = String.valueOf( (secondes % 3600) / 60 ) + ":" + String.format("%02d", (secondes % 3600) % 60 );
 
         holder.vTime.setText(duration);
         holder.vTitle.setText(song.getTitle());
@@ -54,12 +63,19 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
         holder.vTrackNumber.setText(String.valueOf(position + 1));
 
         if (song.getId() == PlayerService.getSongID()) {
+            Log.i(TAG_LOG, "if (song.getId() == PlayerService.getSongID())");
+
 
             if (PlayerService.isPlaying()) {
 
+                holder.vTime.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                holder.vTime.setTextSize(mContext.getResources().getDimensionPixelSize(R.dimen.txt_temps_restant));
+
                 holder.vTrackNumber.setVisibility(View.INVISIBLE);
                 holder.PlayView.setVisibility(View.VISIBLE);
+
             } else {
+
                 holder.vTrackNumber.setVisibility(View.INVISIBLE);
                 holder.PlayView.setImageResource(R.drawable.ic_pause_jaune_24dp);
                 holder.PlayView.setVisibility(View.VISIBLE);
@@ -94,11 +110,12 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
         private final TextView vTitle;
         private final TextView vTrackNumber;
 
-
         final ImageView PlayView;
 
         SongViewHolder(View itemView) {
             super(itemView);
+
+            mContext = itemView.getContext();
 
             vTime = (TextView) itemView.findViewById(R.id.time);
 
@@ -111,10 +128,6 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
             itemView.setOnClickListener(this);
 
             itemView.setOnLongClickListener(this);
-
-
-/*            ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
-            menuButton.setOnClickListener(this);*/
 
         }
 
@@ -134,6 +147,5 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
             return true;
         }
     }
-
 
 }
