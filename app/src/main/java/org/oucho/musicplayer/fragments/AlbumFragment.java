@@ -239,16 +239,12 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
      * Création du visuel
      * ********************************************************************************************/
 
-
-    TextView time;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_album, container, false);
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
         ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
-
-        time = (TextView)  rootView.findViewById(R.id.time);
 
         TextView titreAlbum = (TextView) rootView.findViewById(R.id.line1);
 
@@ -539,17 +535,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     }
 
-
-
-    String tempsRestant() {
-
-        int a = PlayerService.getTrackDuration();
-        int b = PlayerService.getPlayerPosition();
-        int msec = a - b;
-
-        return String.format(Locale.getDefault(), "%d:%02d", msec / 60000, (msec % 60000) / 1000);
-
-    }
 
     private class Etat_player extends BroadcastReceiver {
 

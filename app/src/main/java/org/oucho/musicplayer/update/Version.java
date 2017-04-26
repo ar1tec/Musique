@@ -5,7 +5,7 @@ import android.util.Log;
 
 class Version implements Comparable<Version> {
 
-    final String TAG_LOG = "Version";
+    private final String TAG_LOG = "Version";
 
     private final String version;
 

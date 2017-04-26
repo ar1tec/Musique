@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -135,7 +136,9 @@ public class MainActivity extends AppCompatActivity implements
 
     private static boolean playlistFragmentState = false;
 
-
+    private ImageView shuffleBar;
+    private ImageView repeatBar;
+    private ImageView repeatBar1;
 
     /* *********************************************************************************************
      * Création de l'activité
@@ -144,8 +147,8 @@ public class MainActivity extends AppCompatActivity implements
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         mContext = getApplicationContext();
@@ -231,6 +234,10 @@ public class MainActivity extends AppCompatActivity implements
         mDrawerLayout = (DrawerLayout) findViewById(drawer_layout);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
+        shuffleBar = (ImageView) findViewById(R.id.bar0_shuffle);
+        repeatBar = (ImageView) findViewById(R.id.bar0_repeat);
+        repeatBar1 = (ImageView) findViewById(R.id.bar0_repeat1);
+
 
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -251,7 +258,8 @@ public class MainActivity extends AppCompatActivity implements
 
 
     private void setBlurView() {
-        View decorView = getWindow().getDecorView();
+        final View decorView = getWindow().getDecorView();
+
         setupBlurView(mContext, decorView, queueLayout, queueBlurView, bottomBlurView);
     }
 
@@ -338,6 +346,9 @@ public class MainActivity extends AppCompatActivity implements
             if (mPlayerService == null) {
                 return;
             }
+
+            Vibrator vibes = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
             switch (v.getId()) {
                 case R.id.play_pause_toggle0:
                 case R.id.play_pause_toggle:
@@ -346,6 +357,7 @@ public class MainActivity extends AppCompatActivity implements
                     Intent intentPl = new Intent(INTENT_STATE);
                     intentPl.putExtra("state", "play");
                     sendBroadcast(intentPl);
+                    setBlurView();
 
                     break;
 
@@ -378,6 +390,8 @@ public class MainActivity extends AppCompatActivity implements
                     break;
 
                 case R.id.shuffle0:
+                    vibes.vibrate(20);
+
                     boolean shuffle = PlayerService.isShuffleEnabled();
                     mPlayerService.setShuffleEnabled(!shuffle);
                     updateShuffleButton();
@@ -387,64 +401,19 @@ public class MainActivity extends AppCompatActivity implements
                     break;
 
                 case R.id.repeat0:
+                    vibes.vibrate(20);
+
                     int mode = mPlayerService.getNextRepeatMode();
                     mPlayerService.setRepeatMode(mode);
                     updateRepeatButton();
 
                     updateQueue();
                     mPlayerService.notifyChange(QUEUE_CHANGED);
-
-
                     break;
 
                 case R.id.track_info:
 
-                    File file = new File(getApplicationInfo().dataDir, "/databases/Queue.db");
-
-                    if (file.exists()) {
-
-                        Fragment fragment = PlayerFragment.newInstance();
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
-
-                        if ( viewID == R.id.fragment_album_list_layout ){
-                            ft.replace(viewID, fragment);
-
-                            Log.i(TAG_LOG, "R.id.fragment_album_list_layout");
-
-                        } else if ( viewID == R.id.fragment_song_layout ){
-                            ft.replace(viewID, fragment);
-
-                            Log.i(TAG_LOG, "R.id.fragment_song_layout");
-
-                        } else if ( viewID == R.id.fragment_playlist_list ) {
-                            ft.replace(viewID, fragment);
-
-                            Log.i(TAG_LOG, "R.id.fragment_playlist_list");
-                        } else if ( viewID == R.id.fragment_playlist ) {
-                            ft.replace(viewID, fragment);
-                            Log.i(TAG_LOG, "R.id.fragment_playlist");
-                        }
-
-                        ft.commit();
-
-                        if (menu == null)
-                            return;
-
-                        mHandler.postDelayed(new Runnable() {
-
-                            public void run() {
-
-                                menu.setGroupVisible(R.id.main_menu_group, false);
-
-                            }
-                        }, 300);
-
-
-
-                    } else {
-                        Toast.makeText(mContext, "Vous devez d'abord sélectionner un titre", Toast.LENGTH_LONG).show();
-                    }
+                    goPlayer();
 
                     break;
 
@@ -492,30 +461,41 @@ public class MainActivity extends AppCompatActivity implements
     private void updateShuffleButton() {
         boolean shuffle = PlayerService.isShuffleEnabled();
         ImageView shuffleButton = (ImageView) findViewById(R.id.shuffle0);
+
         if (shuffle) {
             assert shuffleButton != null;
             shuffleButton.setImageResource(R.drawable.ic_shuffle_grey_600_24dp);
+            shuffleBar.setVisibility(View.VISIBLE);
 
         } else {
             assert shuffleButton != null;
             shuffleButton.setImageResource(R.drawable.ic_shuffle_grey_400_24dp);
-
+            shuffleBar.setVisibility(View.GONE);
         }
     }
 
     private void updateRepeatButton() {
         ImageView repeatButton = (ImageView) findViewById(R.id.repeat0);
+
         int mode = PlayerService.getRepeatMode();
+
         if (mode == PlayerService.NO_REPEAT) {
             assert repeatButton != null;
             repeatButton.setImageResource(R.drawable.ic_repeat_grey_400_24dp);
+            repeatBar.setVisibility(View.GONE);
+            repeatBar1.setVisibility(View.GONE);
+
         } else if (mode == PlayerService.REPEAT_ALL) {
             assert repeatButton != null;
             repeatButton.setImageResource(R.drawable.ic_repeat_grey_600_24dp);
+            repeatBar.setVisibility(View.VISIBLE);
+            repeatBar1.setVisibility(View.GONE);
+
         } else if (mode == PlayerService.REPEAT_CURRENT) {
             assert repeatButton != null;
             repeatButton.setImageResource(R.drawable.ic_repeat_one_grey_600_24dp);
-
+            repeatBar.setVisibility(View.GONE);
+            repeatBar1.setVisibility(View.VISIBLE);
         }
     }
 
@@ -732,11 +712,18 @@ public class MainActivity extends AppCompatActivity implements
     @SuppressWarnings("RestrictedApi")
     public void refresh() {
 
-        for (Fragment f : getSupportFragmentManager().getFragments()) {
+        int fragmentNB = getSupportFragmentManager().getFragments().size();
+        Fragment f;
+
+        for (int pos = 0; pos < fragmentNB; pos++) {
+
+            f = getSupportFragmentManager().getFragments().get(pos);
+
             if (f != null) {
                 ((BaseFragment) f).load();
             }
         }
+
     }
 
 
@@ -967,10 +954,12 @@ public class MainActivity extends AppCompatActivity implements
     private void updateAll() {
         if (mPlayerService != null) {
 
+            updateRepeatButton();
+            updateShuffleButton();
             updateQueue();
-
             updateTrackInfo();
             setButtonDrawable();
+
             if (PlayerService.isPlaying()) {
                 mHandler.post(mUpdateProgressBar);
             }
@@ -1092,6 +1081,56 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
+
+
+    private void goPlayer() {
+
+        File file = new File(getApplicationInfo().dataDir, "/databases/Queue.db");
+
+        if (file.exists()) {
+
+            Fragment fragment = PlayerFragment.newInstance();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
+
+            if ( viewID == R.id.fragment_album_list_layout ){
+                ft.replace(viewID, fragment);
+
+                Log.i(TAG_LOG, "R.id.fragment_album_list_layout");
+
+            } else if ( viewID == R.id.fragment_song_layout ){
+                ft.replace(viewID, fragment);
+
+                Log.i(TAG_LOG, "R.id.fragment_song_layout");
+
+            } else if ( viewID == R.id.fragment_playlist_list ) {
+                ft.replace(viewID, fragment);
+
+                Log.i(TAG_LOG, "R.id.fragment_playlist_list");
+            } else if ( viewID == R.id.fragment_playlist ) {
+                ft.replace(viewID, fragment);
+                Log.i(TAG_LOG, "R.id.fragment_playlist");
+            }
+
+            ft.commit();
+
+            if (menu == null)
+                return;
+
+            mHandler.postDelayed(new Runnable() {
+
+                public void run() {
+
+                    menu.setGroupVisible(R.id.main_menu_group, false);
+
+                }
+            }, 300);
+
+        } else {
+            Toast.makeText(mContext, "Vous devez d'abord sélectionner un titre", Toast.LENGTH_LONG).show();
+        }
+
+    }
 
     /******************************************************
      * Mise à jour des informations de la barre de lecture
@@ -1268,7 +1307,6 @@ public class MainActivity extends AppCompatActivity implements
         Toast.makeText(this, arret + " " + minutes + " " + minuteTxt, Toast.LENGTH_LONG).show();
 
         running = true;
-        menu.getItem(1).setIcon(ContextCompat.getDrawable(mContext, R.drawable.ic_timer_indigo_400_24dp));
         timeAfficheur.setVisibility(View.VISIBLE);
 
         Notification.setState(true);
@@ -1288,7 +1326,6 @@ public class MainActivity extends AppCompatActivity implements
         Notification.setState(false);
 
         running = false;
-        menu.getItem(1).setIcon(ContextCompat.getDrawable(context, R.drawable.ic_timer_grey_600_24dp));
     }
 
     private  void annulTimer() {
@@ -1307,7 +1344,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         running = false;
-        menu.getItem(1).setIcon(ContextCompat.getDrawable(mContext, R.drawable.ic_timer_grey_600_24dp));
         timeAfficheur.setVisibility(View.GONE);
 
         Notification.setState(false);

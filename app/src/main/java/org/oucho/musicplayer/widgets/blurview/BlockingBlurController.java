@@ -150,11 +150,6 @@ public class BlockingBlurController implements BlurController {
                 init(measuredWidth, measuredHeight);
             }
 
-            @SuppressWarnings("deprecation")
-            private void legacyRemoveOnGlobalLayoutListener() {
-
-                blurView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-            }
         });
     }
 

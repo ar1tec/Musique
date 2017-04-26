@@ -51,11 +51,28 @@
             android:background="@color/blancTransparent"
             android:visibility="gone">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:text="@string/queue"
+                android:textColor="@color/colorAccent"
+                android:textSize="22sp"
+                android:paddingTop="16dp"
+                android:paddingStart="53dp"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2.5dp"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:background="@drawable/shadow"/>
+
             <org.oucho.musicplayer.widgets.DragRecyclerView
                 android:id="@+id/queue_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/barre_lecture"
+                android:layout_marginTop="?attr/actionBarSize"
                 android:clipToPadding="false"
                 android:scrollbarStyle="outsideOverlay"
                 android:padding="8dp" />

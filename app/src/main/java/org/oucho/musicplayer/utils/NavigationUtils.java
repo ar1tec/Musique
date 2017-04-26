@@ -11,7 +11,7 @@ import org.oucho.musicplayer.activities.SearchActivity;
 
 public class NavigationUtils {
 
-    private static String TAG_LOG = "NavigationUtils";
+    private static final String TAG_LOG = "NavigationUtils";
 
     public static void showSearchActivity(Activity activity) {
 

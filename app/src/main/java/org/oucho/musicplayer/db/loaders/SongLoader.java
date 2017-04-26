@@ -74,13 +74,10 @@ public class SongLoader extends BaseLoader<List<Song>> {
         return mSongList;
     }
 
-    private Uri getContentUri() {
-        return MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-    }
 
     private Cursor getSongCursor() {
 
-        Uri musicUri = getContentUri();
+        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
         String selection = getSelectionString();
         String[] selectionArgs = getSelectionArgs();

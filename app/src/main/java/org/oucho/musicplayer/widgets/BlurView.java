@@ -161,7 +161,7 @@ public class BlurView extends FrameLayout {
     }
 
 
-    public ControllerSettings setupWith(@NonNull ViewGroup rootView) {
+    private ControllerSettings setupWith(@NonNull ViewGroup rootView) {
 
         BlurController blurController = new BlockingBlurController(this, rootView);
         setBlurController(blurController);
@@ -174,7 +174,7 @@ public class BlurView extends FrameLayout {
         return new ControllerSettings(blurController);
     }
 
-    public static class ControllerSettings {
+    private static class ControllerSettings {
         final BlurController blurController;
 
         ControllerSettings(BlurController blurController) {

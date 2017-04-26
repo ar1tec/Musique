@@ -26,8 +26,6 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
     private Context mContext;
     private static final String TAG_LOG = "AlbumSongListAdapter";
 
-    private Handler mHandler = new Handler();
-
     private List<Song> mSongList = Collections.emptyList();
 
     public void setData(List<Song> data) {
@@ -137,6 +135,8 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
         public void onClick(View v) {
             final int position = getAdapterPosition();
             triggerOnItemClickListener(position, v);
+
+            Log.i(TAG_LOG, "onClick()");
 
         }
 

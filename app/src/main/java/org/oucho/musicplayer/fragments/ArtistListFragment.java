@@ -8,6 +8,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,6 +53,7 @@ public class ArtistListFragment extends BaseFragment {
         public void onLoadFinished(Loader<List<Artist>> loader, List<Artist> data) {
             mAdapter.setData(data);
 
+            Log.i(TAG_LOG, "onLoadFinished()");
         }
 
         @Override

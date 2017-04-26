@@ -137,6 +137,7 @@ public class TagEdit {
     }
 
 
+    @SuppressWarnings("SameReturnValue")
     public static boolean editSongTags(Context context, Song song, Map<String, String> tags) {
 
         String newTitle = tags.get(TITLE) == null ? song.getTitle() : tags.get(TITLE);
@@ -251,6 +252,7 @@ public class TagEdit {
         }
     }
 
+    @SuppressWarnings("SameReturnValue")
     public static boolean editAlbumData(Context context, Album mAlbum, HashMap<String, String> data) {
 
         ContentValues values = new ContentValues();

@@ -52,8 +52,8 @@
     <string name="deleteTrackConfirm">Supprimer ce titre ?</string>
 
 
-    <string name="view_queue">Voir la file de lecture</string>
-    <string name="action_add_to_queue">Ajouter à la file de lecture</string>
+    <string name="view_queue">Voir la liste de lecture</string>
+    <string name="action_add_to_queue">Ajouter à la liste de lecture</string>
 
     <string name="context_menu_description">Menu contextuel</string>
 
@@ -155,5 +155,6 @@
     <string name="appupdater_update_not_available_description">Vous avez la dernière version disponible de %s.</string>
     <string name="appupdater_btn_update">Télécharger</string>
     <string name="appupdater_btn_dismiss">Plus tard</string>
+    <string name="queue">Liste de lecture</string>
 
 </resources>

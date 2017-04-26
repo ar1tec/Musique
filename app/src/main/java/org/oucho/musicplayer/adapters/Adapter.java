@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+@SuppressWarnings("SameReturnValue")
 abstract class Adapter<V extends RecyclerView.ViewHolder> extends BaseAdapter<V> {
 
     @Override
