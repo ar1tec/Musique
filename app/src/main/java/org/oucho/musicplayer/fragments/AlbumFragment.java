@@ -504,7 +504,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                         Log.i(TAG_LOG, "onResume()n, KeyEvent, else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null)");
 
-                        //MainActivity.setAlbumFragmentState(false);
+                        MainActivity.setAlbumFragmentState(false);
 
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);

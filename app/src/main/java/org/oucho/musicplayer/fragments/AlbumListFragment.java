@@ -398,8 +398,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                     if (MainActivity.getQueueLayout()) {
 
-                        Log.i(TAG_LOG, "onResume()n, KeyEventb, if (MainActivity.getQueueLayout()) ");
-
+                        Log.i(TAG_LOG, "onResume()n, KeyEvent, if (MainActivity.getQueueLayout()) ");
 
                         Intent intent = new Intent();
                         intent.setAction(INTENT_QUEUEVIEW);
@@ -408,7 +407,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         return true;
 
                     } else if (MainActivity.getAlbumFragmentState()) {
-
 
                         Log.i(TAG_LOG, "onResume()n, KeyEvent, else if (MainActivity.getAlbumFragmentState()) ");
 

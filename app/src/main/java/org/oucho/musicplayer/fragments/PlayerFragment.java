@@ -204,13 +204,8 @@ public class PlayerFragment extends BaseFragment
 
         if ("currentPosition".equals(key)) {
 
-
-
             track = préférences.getInt("currentPosition", 0) + 1;
-
             nbTrack.setText(track + "/" + total_track);
-
-
         }
     }
 
