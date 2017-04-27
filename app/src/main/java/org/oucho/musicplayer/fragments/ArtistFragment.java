@@ -1,15 +1,19 @@
 package org.oucho.musicplayer.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,33 +25,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.MainActivity;
+import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.AlbumListAdapter;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.dialog.AlbumEditorDialog;
-import org.oucho.musicplayer.dialog.SongEditorDialog;
-import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
-import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.db.loaders.AlbumLoader;
+import org.oucho.musicplayer.activities.SearchActivity;
 import org.oucho.musicplayer.db.loaders.SongLoader;
 import org.oucho.musicplayer.db.loaders.SortOrder;
-import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Artist;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
+import org.oucho.musicplayer.dialog.SongEditorDialog;
+import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.List;
 import java.util.Locale;
 
-public class ArtistFragment extends BaseFragment {
+import static android.app.Activity.RESULT_OK;
+
+public class ArtistFragment extends BaseFragment implements MusiqueKeys {
 
     private static final String PARAM_ARTIST_ID = "artist_id";
     private static final String PARAM_ARTIST_NAME = "artist_name";
     private static final String PARAM_ALBUM_COUNT = "album_count";
     private static final String PARAM_TRACK_COUNT = "track_count";
 
+    private final String TAG_LOG = "Artist Fragment";
 
     private Artist mArtist;
 
@@ -70,40 +74,15 @@ public class ArtistFragment extends BaseFragment {
         @Override
         public void onLoaderReset(Loader<List<Song>> loader) {
             //  Auto-generated method stub
-
         }
 
         @Override
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
             mSongListAdapter.setData(songList);
         }
-
-
     };
 
-    private AlbumListAdapter mAlbumListAdapter;
-    private boolean mAlbumListLoaded = false;
-    private final LoaderManager.LoaderCallbacks<List<Album>> mAlbumLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Album>>() {
 
-        @Override
-        public void onLoaderReset(Loader<List<Album>> loader) {
-            //  Auto-generated method stub
-
-        }
-
-        @Override
-        public void onLoadFinished(Loader<List<Album>> loader, List<Album> data) {
-            mAlbumListAdapter.setData(data);
-            mAlbumListLoaded = true;
-        }
-
-        @Override
-        public Loader<List<Album>> onCreateLoader(int id, Bundle args) {
-
-
-            return new AlbumLoader(getActivity(), mArtist.getName());
-        }
-    };
     private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
             = new SongEditorDialog.OnTagsEditionSuccessListener() {
         @Override
@@ -111,40 +90,10 @@ public class ArtistFragment extends BaseFragment {
             ((MainActivity) getActivity()).refresh();
         }
     };
-    private final AlbumEditorDialog.OnEditionSuccessListener mOnEditionSuccessListener
-            = new AlbumEditorDialog.OnEditionSuccessListener() {
-        @Override
-        public void onEditionSuccess() {
-            ((MainActivity) getActivity()).refresh();
-        }
-    };
-    private final BaseAdapter.OnItemClickListener mOnAlbumClickListener
-            = new BaseAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(int position, final View view) {
-            Album album = mAlbumListAdapter.getItem(position);
 
-            switch (view.getId()) {
-                case R.id.album_artwork:
-                case R.id.album_name:
-                    Fragment fragment = AlbumFragment.newInstance(album);
-                    ((MainActivity) getActivity()).setFragment(fragment);
-                    break;
-                case R.id.menu_button:
-                    showAlbumMenu(position, view);
-                    break;
-                default: //do nothing
-                    break;
-
-            }
-        }
-    };
-
-    private MainActivity mActivity;
 
     private int mThumbWidth;
     private int mThumbHeight;
-    private int mArtworkSize;
 
 
     public static ArtistFragment newInstance(Artist artist) {
@@ -152,7 +101,6 @@ public class ArtistFragment extends BaseFragment {
         Bundle args = new Bundle();
         args.putLong(PARAM_ARTIST_ID, artist.getId());
         args.putString(PARAM_ARTIST_NAME, artist.getName());
-        args.putInt(PARAM_ALBUM_COUNT, artist.getAlbumCount());
         args.putInt(PARAM_TRACK_COUNT, artist.getTrackCount());
         fragment.setArguments(args);
         return fragment;
@@ -160,9 +108,35 @@ public class ArtistFragment extends BaseFragment {
 
     private void selectSong(int position) {
 
-        if (mActivity != null) {
-            mActivity.onSongSelected(mSongListAdapter.mSongList, position);
+        if (MainActivity.getChercheActivity()) {
+
+            Log.i(TAG_LOG, "selectedSong(), if (MainActivity.getChercheActivity())");
+
+            Song song = mSongListAdapter.getItem(position);
+            Bundle data = songToBundle(song);
+            returnToMain(ACTION_PLAY_SONG, data);
         }
+    }
+
+    private Bundle songToBundle(Song song) {
+        Bundle data = new Bundle();
+        data.putLong(SONG_ID, song.getId());
+        data.putString(SONG_TITLE, song.getTitle());
+        data.putString(SONG_ARTIST, song.getArtist());
+        data.putString(SONG_ALBUM, song.getAlbum());
+        data.putLong(SONG_ALBUM_ID, song.getAlbumId());
+        data.putInt(SONG_TRACK_NUMBER, song.getTrackNumber());
+        return data;
+    }
+
+    private void returnToMain(String action, Bundle data) {
+        Intent i = new Intent(action);
+
+        if (data != null)
+            i.putExtras(data);
+
+        getActivity().setResult(RESULT_OK, i);
+        getActivity().finish();
     }
 
     private void showSongMenu(final int position, View v) {
@@ -193,78 +167,15 @@ public class ArtistFragment extends BaseFragment {
         popup.show();
     }
 
-    private void showID3TagEditor(Song song) {
-        SongEditorDialog dialog = SongEditorDialog.newInstance(song);
-        dialog.setOnTagsEditionSuccessListener(mOnTagsEditionSuccessListener);
-        dialog.show(getChildFragmentManager(), "edit_tags");
-    }
-
-    private void showPlaylistPicker(final Song song) {
-        PlaylistPickerDialog picker = PlaylistPickerDialog.newInstance();
-        picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
-            @Override
-            public void onPlaylistPicked(Playlist playlist) {
-                PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
-            }
-        });
-        picker.show(getChildFragmentManager(), "pick_playlist");
-
-    }
-
-    private void showAlbumMenu(final int position, View v) {
-
-        PopupMenu popup = new PopupMenu(getActivity(), v);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.album_item, popup.getMenu());
-        final Album album = mAlbumListAdapter.getItem(position);
-
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-
-                    case R.id.action_edit_tags:
-                        AlbumEditorDialog dialog = AlbumEditorDialog.newInstance(album);
-                        dialog.setOnEditionSuccessListener(mOnEditionSuccessListener);
-                        dialog.show(getChildFragmentManager(), "edit_album_tags");
-                        return true;
-                    case R.id.action_add_to_playlist:
-                        showPlaylistPicker(album);
-                        return true;
-                    default: //do nothing
-                        break;
-                }
-                return false;
-            }
-        });
-        popup.show();
-    }
-
-    private void showPlaylistPicker(final Album album) {
-        PlaylistPickerDialog picker = PlaylistPickerDialog.newInstance();
-        picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
-            @Override
-            public void onPlaylistPicked(Playlist playlist) {
-                PlaylistsUtils.addAlbumToPlaylist(getActivity().getContentResolver(), playlist.getId(), album.getId());
-            }
-        });
-        picker.show(getChildFragmentManager(), "pick_playlist");
-
-    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         mThumbWidth = context.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_size);
         //noinspection SuspiciousNameCombination
         mThumbHeight = mThumbWidth;
-        try {
-            mActivity = (MainActivity) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+
     }
 
     @Override
@@ -272,31 +183,40 @@ public class ArtistFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         setHasOptionsMenu(true);
+
+        String name = "";
+
         if (args != null) {
             long id = args.getLong(PARAM_ARTIST_ID);
-            String name = args.getString(PARAM_ARTIST_NAME);
+            name = args.getString(PARAM_ARTIST_NAME);
             int albumCount = args.getInt(PARAM_ALBUM_COUNT);
             int trackCount = args.getInt(PARAM_TRACK_COUNT);
             mArtist = new Artist(id, name, albumCount, trackCount);
         }
 
-        mArtworkSize = getResources().getDimensionPixelSize(R.dimen.art_size);
+        if (MainActivity.getChercheActivity())
+            MainActivity.setArtistFragmentState(true);
+
+
+        if (android.os.Build.VERSION.SDK_INT >= 24) {
+            getActivity().setTitle(Html.fromHtml("<font color=\"#FFA000\">" + name + " </font> <small> <font color=\"#CCCCCC\">", Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            //noinspection deprecation
+            getActivity().setTitle(Html.fromHtml("<font color=\"#FFA000\">" + name + " </font>"));
+        }
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_artist, container,
-                false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
-        mAlbumListAdapter = new AlbumListAdapter(getActivity(), mArtworkSize, mArtworkSize);
-        mAlbumListAdapter.setLayoutId();
-        mAlbumListAdapter.setOnItemClickListener(mOnAlbumClickListener);
+        View rootView = inflater.inflate(R.layout.fragment_artist, container, false);
 
         RecyclerView mSongListView = (RecyclerView) rootView.findViewById(R.id.song_list);
+
+
         mSongListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         mSongListAdapter = new SongListAdapter();
         mSongListView.setAdapter(mSongListAdapter);
 
@@ -310,9 +230,6 @@ public class ArtistFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(0, null, mSongLoaderCallbacks);
-        getLoaderManager().initLoader(1, null, mAlbumLoaderCallbacks);
-
-
     }
 
     @Override
@@ -326,18 +243,67 @@ public class ArtistFragment extends BaseFragment {
     @Override
     public void load() {
         getLoaderManager().restartLoader(0, null, mSongLoaderCallbacks);
-        getLoaderManager().restartLoader(1, null, mAlbumLoaderCallbacks);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG_LOG, "onPause()");
+
+        SearchActivity.setActionBar();
 
     }
 
-    class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG_LOG, "onResume()");
+
+
+        // Active la touche back
+        if (getView() == null) {
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    Log.i(TAG_LOG, "onResume(), KeyEvent");
+
+                    MainActivity.setArtistFragmentState(false);
+
+                    SearchActivity.setActionBar();
+
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                    ft.remove(getFragmentManager().findFragmentById(R.id.container_search));
+                    ft.commit();
+
+                    return true;
+
+                }
+                return false;
+            }
+        });
+
+    }
+
+
+    private class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView vTitle;
         private final TextView vArtist;
         private final ImageView vArtwork;
         private final TextView vDuration;
 
-        public SongViewHolder(View itemView) {
+        SongViewHolder(View itemView) {
             super(itemView);
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vArtist = (TextView) itemView.findViewById(R.id.artist);
@@ -372,23 +338,8 @@ public class ArtistFragment extends BaseFragment {
         }
     }
 
-    class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-
-        public final RecyclerView vRecyclerView;
-
-
-        public RecyclerViewHolder(View itemView) {
-            super(itemView);
-            vRecyclerView = (RecyclerView) itemView;
-            vRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-            vRecyclerView.setNestedScrollingEnabled(false);
-
-            vRecyclerView.setAdapter(mAlbumListAdapter);
-        }
-    }
-
-    class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private static final int FIRST = 1;
         private static final int NORMAL = 2;
@@ -402,10 +353,6 @@ public class ArtistFragment extends BaseFragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == FIRST) {
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_artist_horizontal_recycler_view, parent, false);
-                return new RecyclerViewHolder(itemView);
-            }
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_song_item, parent, false);
 
             return new SongViewHolder(itemView);
@@ -414,13 +361,10 @@ public class ArtistFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             int viewType = getItemViewType(position);
-            if (viewType == FIRST && mAlbumListAdapter.getItemCount() == 0 && mAlbumListLoaded) {
-                View view = ((RecyclerViewHolder) holder).vRecyclerView;
-                ViewGroup.LayoutParams lp = view.getLayoutParams();
-                lp.height = 0;
-                view.setLayoutParams(lp);
-            } else if (viewType == NORMAL) {
-                Song song = getItem(position - 1);
+
+            if (viewType == NORMAL) {
+
+                Song song = getItem(position -1);
 
                 ((SongViewHolder) holder).vTitle.setText(song.getTitle());
                 ((SongViewHolder) holder).vArtist.setText(song.getArtist());
@@ -435,8 +379,6 @@ public class ArtistFragment extends BaseFragment {
             }
         }
 
-
-
         public Song getItem(int position) {
             return mSongList == null ? null : mSongList.get(position);
         }
@@ -449,11 +391,33 @@ public class ArtistFragment extends BaseFragment {
         @Override
         public int getItemCount() {
             return mSongList == null ? 1 : mSongList.size() + 1;
+
         }
+    }
+
+
+    private void showID3TagEditor(Song song) {
+        SongEditorDialog dialog = SongEditorDialog.newInstance(song);
+        dialog.setOnTagsEditionSuccessListener(mOnTagsEditionSuccessListener);
+        dialog.show(getChildFragmentManager(), "edit_tags");
+    }
+
+    private void showPlaylistPicker(final Song song) {
+        PlaylistPickerDialog picker = PlaylistPickerDialog.newInstance();
+        picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
+            @Override
+            public void onPlaylistPicked(Playlist playlist) {
+                PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
+            }
+        });
+        picker.show(getChildFragmentManager(), "pick_playlist");
+
     }
 
     private String msToText(int msec) {
         return String.format(Locale.getDefault(), "%d:%02d", msec / 60000, (msec % 60000) / 1000);
     }
+
+
 
 }

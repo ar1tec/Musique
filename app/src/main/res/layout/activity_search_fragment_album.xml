@@ -122,7 +122,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:paddingBottom="@dimen/barre_lecture"
                 android:clipToPadding="false"
                 android:scrollbarStyle="outsideOverlay" />
 
@@ -131,8 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingRight="10dp"
-                android:paddingTop="10dp"
-                android:layout_marginBottom="@dimen/barre_lecture"/>
+                android:paddingTop="10dp"/>
 
             <View
                 android:layout_width="match_parent"

@@ -43,10 +43,6 @@ public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewH
         Artist artist = mArtistList.get(position);
         viewHolder.vName.setText(artist.getName());
 
-        viewHolder.vAlbumCount.setText(viewHolder.vAlbumCount.getContext().getResources()
-                .getQuantityString(R.plurals.albums_count,
-                        artist.getAlbumCount(), artist.getAlbumCount()));
-
         //évite de charger des images dans les mauvaises vues si elles sont recyclées
         viewHolder.vArtistImage.setTag(position);
 
@@ -75,13 +71,11 @@ public class ArtistListAdapter extends BaseAdapter<ArtistListAdapter.ArtistViewH
     class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView vName; // NOPMD
-        final TextView vAlbumCount; // NOPMD
         final ImageView vArtistImage; // NOPMD
 
         public ArtistViewHolder(View itemView) {
             super(itemView);
             vName = (TextView) itemView.findViewById(R.id.artist_name);
-            vAlbumCount = (TextView) itemView.findViewById(R.id.album_count);
             vArtistImage = (ImageView) itemView.findViewById(R.id.artwork);
             itemView.setOnClickListener(this);
         }

@@ -1,26 +1,25 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="artist">
+    android:background="@color/blanc">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/song_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/album_list"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:paddingBottom="@dimen/barre_lecture"
-        android:clipToPadding="false"
-        android:scrollbarStyle="outsideOverlay"/>
+        android:layout_marginTop="-82dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <org.oucho.musicplayer.widgets.FastScroller
         android:id="@+id/fastscroller"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:layout_marginTop="@dimen/small_album_grid_item_height"
-        android:layout_marginBottom="@dimen/barre_lecture"/>
+        android:paddingTop="10dp"/>
 
-</android.support.design.widget.CoordinatorLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/shadow" />
+</FrameLayout>

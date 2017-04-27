@@ -2,8 +2,9 @@ package org.oucho.musicplayer.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
@@ -13,19 +14,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.loaders.AlbumLoader;
@@ -37,6 +39,8 @@ import org.oucho.musicplayer.db.model.Artist;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
+import org.oucho.musicplayer.fragments.AlbumFragment;
+import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
@@ -46,8 +50,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
+
 
     private static final String FILTER = "filter";
     private boolean mAlbumListLoaded = false;
@@ -136,7 +140,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
     };
 
 
-    private final OnQueryTextListener searchQueryListener = new OnQueryTextListener() {
+    private final SearchView.OnQueryTextListener searchQueryListener = new SearchView.OnQueryTextListener() {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
@@ -180,36 +184,42 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         loader.setFilter(filter);
     }
 
-
-
-    /* *********************************************************************************************
-     * Création de l'activité
-     * ********************************************************************************************/
-
+    static ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Context mContext = getApplicationContext();
+
+        MainActivity.setChercheActivity(true);
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+
+            getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
+            getWindow().setStatusBarColor(ContextCompat.getColor(mContext, R.color.blanc));
+        }
+
+
         setContentView(R.layout.activity_search);
 
-        Context context = getApplicationContext();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
 
-        int couleur = ContextCompat.getColor(context, R.color.colorAccent);
+        actionBar = getSupportActionBar();
 
-        ColorDrawable colorDrawable = new ColorDrawable(couleur);
         assert actionBar != null;
-        actionBar.setBackgroundDrawable(colorDrawable);
-
         SearchView searchView = new SearchView(actionBar.getThemedContext());
+
         searchView.setIconifiedByDefault(false);
         actionBar.setCustomView(searchView);
         actionBar.setDisplayShowCustomEnabled(true);
 
         searchView.setOnQueryTextListener(searchQueryListener);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         mThumbSize = getResources().getDimensionPixelSize(R.dimen.art_thumbnail_search_size);
         mEmptyView = findViewById(R.id.empty_view);
@@ -233,6 +243,21 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        //getMenuInflater().inflate(R.menu.menu_cherche, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
     private void refresh(String newText) {
         Bundle args = null;
         if (newText != null) {
@@ -247,6 +272,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         getSupportLoaderManager().restartLoader(1, args, mArtistLoaderCallbacks);
         getSupportLoaderManager().restartLoader(2, args, mSongLoaderCallbacks);
     }
+
 
     private void returnToMain(String action, Bundle data) {
         Intent i = new Intent(action);
@@ -265,19 +291,41 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         Log.i(TAG_LOG, "onPause()");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG_LOG, "onResume()");
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Log.i(TAG_LOG, "onBackPressed()");
+
+        finish();
+    }
+
+    public static void setActionBar() {
+        actionBar.setDisplayShowCustomEnabled(true);
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG_LOG, "onDestroy()");
 
+        MainActivity.setChercheActivity(false);
+        MainActivity.setArtistFragmentState(false);
+        MainActivity.setAlbumFragmentState(false);
     }
 
     /* *********************************************************************************************
      * Vue liste album
      * ********************************************************************************************/
 
-    private class AlbumViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    private class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final ImageView vArtwork;
         final TextView vName;
@@ -309,7 +357,18 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
                     data.putString(ALBUM_ARTIST, album.getArtistName());
                     data.putInt(ALBUM_YEAR, album.getYear());
                     data.putInt(ALBUM_TRACK_COUNT, album.getTrackCount());
-                    returnToMain(ACTION_SHOW_ALBUM, data);
+
+                    Album toto = getAlbumFromBundle(data);
+                    AlbumFragment fragment = AlbumFragment.newInstance(toto);
+
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
+                    ft.replace(R.id.container_search, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+
+                    actionBar.setDisplayShowCustomEnabled(false);
+
                     break;
 
                 default:
@@ -319,21 +378,38 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
     }
 
 
+    private Album getAlbumFromBundle(Bundle bundle) {
+        long id = bundle.getLong(ALBUM_ID);
+        String title = bundle.getString(ALBUM_NAME);
+        String artist = bundle.getString(ALBUM_ARTIST);
+        int year = bundle.getInt(ALBUM_YEAR);
+        int trackCount = bundle.getInt(ALBUM_TRACK_COUNT);
+
+        return new Album(id, title, artist, year, trackCount);
+    }
+
+    private Artist getArtistFromBundle(Bundle bundle) {
+        long id = bundle.getLong(ARTIST_ARTIST_ID);
+        String name = bundle.getString(ARTIST_ARTIST_NAME);
+        int albumCount = bundle.getInt(ARTIST_ALBUM_COUNT);
+        int trackCount = bundle.getInt(ARTIST_TRACK_COUNT);
+
+        return new Artist(id, name, albumCount, trackCount);
+    }
+
 
     /* *********************************************************************************************
      * Vue liste artiste
      * ********************************************************************************************/
 
-    private class ArtistViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    private class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView vName;
-        final TextView vAlbumCount;
         final ImageView vArtistImage;
 
         ArtistViewHolder(View itemView) {
             super(itemView);
             vName = (TextView) itemView.findViewById(R.id.artist_name);
-            vAlbumCount = (TextView) itemView.findViewById(R.id.album_count);
             vArtistImage = (ImageView) itemView.findViewById(R.id.artwork);
             itemView.setOnClickListener(this);
         }
@@ -348,9 +424,20 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
             Bundle data = new Bundle();
             data.putLong(ARTIST_ARTIST_ID, artist.getId());
             data.putString(ARTIST_ARTIST_NAME, artist.getName());
-            data.putInt(ARTIST_ALBUM_COUNT, artist.getAlbumCount());
             data.putInt(ARTIST_TRACK_COUNT, artist.getTrackCount());
-            returnToMain(ACTION_SHOW_ARTIST, data);
+
+            Artist toto =  getArtistFromBundle(data);
+            ArtistFragment fragment = ArtistFragment.newInstance(toto);
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom);
+            ft.replace(R.id.container_search, fragment, "Artist");
+            ft.addToBackStack(null);
+            ft.commit();
+
+            actionBar.setDisplayShowCustomEnabled(false);
+
+
         }
     }
 
@@ -360,7 +447,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
      * Vue liste morceau
      * ********************************************************************************************/
 
-    private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    private class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView vTitle;
         final TextView vArtist;
@@ -537,26 +624,26 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
                 case ALBUM:
                     itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_album_list_item, parent, false);
 
-                    viewHolder = new AlbumViewHolder(itemView);
+                    viewHolder = new SearchActivity.AlbumViewHolder(itemView);
                     return viewHolder;
 
                 case ARTIST:
                     itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_artist_list_item, parent, false);
 
-                    viewHolder = new ArtistViewHolder(itemView);
+                    viewHolder = new SearchActivity.ArtistViewHolder(itemView);
                     return viewHolder;
 
                 case SONG:
                     itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_song_list_item, parent, false);
 
-                    viewHolder = new SongViewHolder(itemView);
+                    viewHolder = new SearchActivity.SongViewHolder(itemView);
                     return viewHolder;
 
                 case SECTION_ALBUMS:
                 case SECTION_ARTISTS:
                 case SECTION_SONGS:
                     itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_section, parent, false);
-                    viewHolder = new SectionViewHolder(itemView);
+                    viewHolder = new SearchActivity.SectionViewHolder(itemView);
                     return viewHolder;
 
                 default:
@@ -577,41 +664,38 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
             switch (type) {
                 case ALBUM:
                     Album album = mAlbumList.get(position - 1);
-                    ((AlbumViewHolder) viewHolder).vName.setText(album.getAlbumName());
-                    ((AlbumViewHolder) viewHolder).vArtist.setText(album.getArtistName());
-                    ((AlbumViewHolder) viewHolder).vArtwork.setTag(position);
-                    ArtworkCache.getInstance().loadBitmap(album.getId(), ((AlbumViewHolder) viewHolder).vArtwork, mThumbSize, mThumbSize);
+                    ((SearchActivity.AlbumViewHolder) viewHolder).vName.setText(album.getAlbumName());
+                    ((SearchActivity.AlbumViewHolder) viewHolder).vArtist.setText(album.getArtistName());
+                    ((SearchActivity.AlbumViewHolder) viewHolder).vArtwork.setTag(position);
+                    ArtworkCache.getInstance().loadBitmap(album.getId(), ((SearchActivity.AlbumViewHolder) viewHolder).vArtwork, mThumbSize, mThumbSize);
                     break;
 
                 case ARTIST:
                     Artist artist = mArtistList.get(position - albumRows - 1);
-                    ((ArtistViewHolder) viewHolder).vName.setText(artist.getName());
-                    ((ArtistViewHolder) viewHolder).vAlbumCount.setText(getResources()
-                            .getQuantityString(R.plurals.albums_count,
-                                    artist.getAlbumCount(), artist.getAlbumCount()));
-                    ((ArtistViewHolder) viewHolder).vArtistImage.setTag(position);
-                    ArtistImageCache.getInstance().loadBitmap(artist.getName(), ((ArtistViewHolder) viewHolder).vArtistImage, mThumbSize, mThumbSize);
+                    ((SearchActivity.ArtistViewHolder) viewHolder).vName.setText(artist.getName());
+                    ((SearchActivity.ArtistViewHolder) viewHolder).vArtistImage.setTag(position);
+                    ArtistImageCache.getInstance().loadBitmap(artist.getName(), ((SearchActivity.ArtistViewHolder) viewHolder).vArtistImage, mThumbSize, mThumbSize);
                     break;
 
                 case SONG:
 
                     Song song = mSongList.get(position - albumRows - artistRows - 1);
-                    ((SongViewHolder) viewHolder).vTitle.setText(song.getTitle());
-                    ((SongViewHolder) viewHolder).vArtist.setText(song.getArtist());
-                    ((SongViewHolder) viewHolder).vArtwork.setTag(position);
-                    ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), ((SongViewHolder) viewHolder).vArtwork, mThumbSize, mThumbSize);
+                    ((SearchActivity.SongViewHolder) viewHolder).vTitle.setText(song.getTitle());
+                    ((SearchActivity.SongViewHolder) viewHolder).vArtist.setText(song.getArtist());
+                    ((SearchActivity.SongViewHolder) viewHolder).vArtwork.setTag(position);
+                    ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), ((SearchActivity.SongViewHolder) viewHolder).vArtwork, mThumbSize, mThumbSize);
                     break;
 
                 case SECTION_ALBUMS:
-                    ((SectionViewHolder) viewHolder).vSection.setText(R.string.albums);
+                    ((SearchActivity.SectionViewHolder) viewHolder).vSection.setText(R.string.albums);
                     break;
 
                 case SECTION_ARTISTS:
-                    ((SectionViewHolder) viewHolder).vSection.setText(R.string.artists);
+                    ((SearchActivity.SectionViewHolder) viewHolder).vSection.setText(R.string.artists);
                     break;
 
                 case SECTION_SONGS:
-                    ((SectionViewHolder) viewHolder).vSection.setText(R.string.titles);
+                    ((SearchActivity.SectionViewHolder) viewHolder).vSection.setText(R.string.titles);
                     break;
 
                 default:
@@ -654,7 +738,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         public int getItemCount() {
 
             int count = 0;
-            
+
             if (mAlbumList.size() > 0)
                 count += mAlbumList.size() + 1;
 
@@ -667,4 +751,5 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
             return count;
         }
     }
+
 }

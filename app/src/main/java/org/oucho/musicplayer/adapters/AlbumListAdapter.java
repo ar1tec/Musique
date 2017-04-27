@@ -44,9 +44,6 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         notifyDataSetChanged();
     }
 
-    public void setLayoutId() {
-        mLayoutId = R.layout.fragment_artist_small_album_grid_item;
-    }
 
     @Override
     public AlbumViewHolder onCreateViewHolder(ViewGroup parent, int type) {
@@ -65,7 +62,6 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         String getTri = préférences.getString("album_sort_order", "");
 
-        if (mLayoutId != R.layout.fragment_artist_small_album_grid_item) {
 
             if (album.getId() == PlayerService.getAlbumId()) {
 
@@ -119,12 +115,11 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
                 viewHolder.vYear.setVisibility(View.INVISIBLE);
                 viewHolder.vBackgroundYear.setVisibility(View.INVISIBLE);
             }
-        }
+
 
         viewHolder.vName.setText(album.getAlbumName());
-        if (mLayoutId != R.layout.fragment_artist_small_album_grid_item) {
+
             viewHolder.vArtist.setText(album.getArtistName());
-        }
 
         //évite de charger des images dans les mauvaises vues si elles sont recyclées
         viewHolder.vArtwork.setTag(position);
@@ -175,16 +170,13 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
             vArtwork.setOnClickListener(this);
 
 
-            if (mLayoutId != R.layout.fragment_artist_small_album_grid_item) {
                 vArtist = (TextView) itemView.findViewById(R.id.artist_name);
                 itemView.findViewById(R.id.album_info).setOnClickListener(this);
 
                 vArtwork.setOnLongClickListener(this);
                 vAlbumInfo.setOnLongClickListener(this);
 
-            } else {
-                vName.setOnClickListener(this);
-            }
+
 
             ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
             menuButton.setOnClickListener(this);

@@ -231,6 +231,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         isRegistered = true;
     }
 
+
     private class ReloadView extends BroadcastReceiver {
 
         @Override
@@ -392,13 +393,13 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                    Log.i(TAG_LOG, "onResume()n, KeyEvent.KEYCODE_BACK ");
+                    Log.i(TAG_LOG, "onResume(), KeyEvent.KEYCODE_BACK ");
 
                     LibraryFragment.setLock(false);
 
                     if (MainActivity.getQueueLayout()) {
 
-                        Log.i(TAG_LOG, "onResume()n, KeyEvent, if (MainActivity.getQueueLayout()) ");
+                        Log.i(TAG_LOG, "onResume(), KeyEvent, if (MainActivity.getQueueLayout()) ");
 
                         Intent intent = new Intent();
                         intent.setAction(INTENT_QUEUEVIEW);
@@ -408,7 +409,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                     } else if (MainActivity.getAlbumFragmentState()) {
 
-                        Log.i(TAG_LOG, "onResume()n, KeyEvent, else if (MainActivity.getAlbumFragmentState()) ");
+                        Log.i(TAG_LOG, "onResume(), KeyEvent, else if (MainActivity.getAlbumFragmentState()) ");
 
                         MainActivity.setAlbumFragmentState(false);
 

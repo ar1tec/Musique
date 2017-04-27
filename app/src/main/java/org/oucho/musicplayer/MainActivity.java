@@ -129,11 +129,12 @@ public class MainActivity extends AppCompatActivity implements
     private static int viewID;
 
     private static boolean running;
-    private static boolean playBarLayout = false;
+    private static boolean chercheActivity = false;
+
+    private static boolean artistFragmentState = false;
     private static boolean queueLayout = false;
-
+    private static boolean playBarLayout = false;
     private static boolean albumFragmentState = false;
-
     private static boolean playlistFragmentState = false;
 
     private ImageView shuffleBar;
@@ -261,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements
         final View decorView = getWindow().getDecorView();
 
         setupBlurView(mContext, decorView, queueLayout, queueBlurView, bottomBlurView);
+
     }
 
     /* *********************************************************************************************
@@ -551,12 +553,21 @@ public class MainActivity extends AppCompatActivity implements
         if (mQueueLayout.getVisibility() != View.VISIBLE) {
             mQueueLayout.setVisibility(View.VISIBLE);
             queueBlurView.setVisibility(View.VISIBLE);
+
             queueLayout = true;
+
+            queueBlurView.setBlurAutoUpdate(true);
+
             setBlurView();
+
         } else {
             mQueueLayout.setVisibility(View.GONE);
             queueBlurView.setVisibility(View.GONE);
+
             queueLayout = false;
+
+            queueBlurView.setBlurAutoUpdate(false);
+
         }
     }
 
@@ -819,8 +830,11 @@ public class MainActivity extends AppCompatActivity implements
                     mProgressBar.setVisibility(View.GONE);
 
                     playBarLayout = true;
+                    bottomBlurView.setBlurAutoUpdate(false);
 
                 } else {
+
+                    bottomBlurView.setBlurAutoUpdate(true);
 
                     Log.i(TAG_LOG, "else");
 
@@ -987,16 +1001,13 @@ public class MainActivity extends AppCompatActivity implements
         mQueueAdapter.setSelection(position);
 
         if (autoScrollQueue) {
-
             mHandler.postDelayed(new Runnable() {
 
                 public void run() {
-
                     mQueueView.smoothScrollToPosition(position);
                     autoScrollQueue = false;
                 }
             }, 100);
-
         }
 
     }
@@ -1546,6 +1557,13 @@ public class MainActivity extends AppCompatActivity implements
         albumFragmentState = value;
     }
 
+    public static boolean getArtistFragmentState() {
+        return artistFragmentState;
+    }
+    public static void setArtistFragmentState(Boolean value) {
+        artistFragmentState = value;
+    }
+
     public static int getViewID() {
         return viewID;
     }
@@ -1553,6 +1571,11 @@ public class MainActivity extends AppCompatActivity implements
         viewID = id;
     }
 
-
+    public static boolean getChercheActivity() {
+        return chercheActivity;
+    }
+    public static void setChercheActivity(Boolean value) {
+        chercheActivity = value;
+    }
 }
 

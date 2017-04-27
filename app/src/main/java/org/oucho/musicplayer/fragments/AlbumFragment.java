@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.activities.SearchActivity;
 import org.oucho.musicplayer.adapters.AlbumSongListAdapter;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.db.loaders.SongLoader;
@@ -43,6 +45,8 @@ import org.oucho.musicplayer.widgets.FastScroller;
 import java.util.List;
 import java.util.Locale;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
@@ -56,6 +60,10 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     private Album mAlbum;
     private AlbumSongListAdapter mAdapter;
     private MainActivity mActivity;
+
+    private SearchActivity cActivity;
+
+
     private RecyclerView mRecyclerView;
     private Etat_player Etat_player_Receiver;
     private boolean isRegistered = false;
@@ -199,21 +207,34 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         setTri();
 
-        mHandler.postDelayed(new Runnable() {
 
-            public void run() {
+        if (MainActivity.getChercheActivity()) {
 
-                if (tri.equals("a-z"))
-                    getActivity().setTitle(Titre);
-
-                if (tri.equals(getString(R.string.title_sort_artist)))
-                    getActivity().setTitle(Artiste);
-
-                if (tri.equals(getString(R.string.title_sort_year)))
-                    getActivity().setTitle(Année);
-
+            if (android.os.Build.VERSION.SDK_INT >= 24) {
+                getActivity().setTitle(Html.fromHtml("<font color=\"#FFA000\">" + Titre + " </font> <small> <font color=\"#CCCCCC\">", Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                //noinspection deprecation
+                getActivity().setTitle(Html.fromHtml("<font color=\"#FFA000\">" + Titre + " </font>"));
             }
-        }, 300);
+
+        } else {
+
+            mHandler.postDelayed(new Runnable() {
+
+                public void run() {
+
+                    if (tri.equals("a-z"))
+                        getActivity().setTitle(Titre);
+
+                    if (tri.equals(getString(R.string.title_sort_artist)))
+                        getActivity().setTitle(Artiste);
+
+                    if (tri.equals(getString(R.string.title_sort_year)))
+                        getActivity().setTitle(Année);
+
+                }
+            }, 300);
+        }
 
     }
 
@@ -241,7 +262,15 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_album, container, false);
+
+        View rootView;
+
+        if (MainActivity.getChercheActivity()) {
+            rootView = inflater.inflate(R.layout.activity_search_fragment_album, container, false);
+        } else {
+            rootView = inflater.inflate(R.layout.fragment_album, container, false);
+        }
+
 
         ImageView artworkView = (ImageView) rootView.findViewById(R.id.album_artwork);
         ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
@@ -363,11 +392,50 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         getLoaderManager().restartLoader(0, null, mLoaderCallbacks);
     }
 
+    private Bundle songToBundle(Song song) {
+        Bundle data = new Bundle();
+        data.putLong(SONG_ID, song.getId());
+        data.putString(SONG_TITLE, song.getTitle());
+        data.putString(SONG_ARTIST, song.getArtist());
+        data.putString(SONG_ALBUM, song.getAlbum());
+        data.putLong(SONG_ALBUM_ID, song.getAlbumId());
+        data.putInt(SONG_TRACK_NUMBER, song.getTrackNumber());
+        return data;
+    }
+
+    private void returnToMain(String action, Bundle data) {
+        Intent i = new Intent(action);
+
+        if (data != null)
+            i.putExtras(data);
+
+        getActivity().setResult(RESULT_OK, i);
+        getActivity().finish();
+    }
+
     private void selectSong(int position) {
+
+        Log.i(TAG_LOG, "selectedSong(), position:" + String.valueOf(position));
 
         if (mActivity != null) {
             mActivity.onSongSelected(mAdapter.getSongList(), position);
+
+            Log.i(TAG_LOG, "selectedSong(), if (mActivity != null)");
+
         }
+
+        if (MainActivity.getChercheActivity()) {
+
+            Log.i(TAG_LOG, "selectedSong(), if (MainActivity.getChercheActivity())");
+
+            Song song = mAdapter.getSongList().get(position);
+            Bundle data = songToBundle(song);
+            returnToMain(ACTION_PLAY_SONG, data);
+        }
+
+
+
+       // PlayerService.setPlayList(mAdapter.getSongList(), position, true);
     }
 
     private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
@@ -434,10 +502,12 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        try {
-            mActivity = (MainActivity) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnFragmentInteractionListener");
+        if (! MainActivity.getChercheActivity()) {
+            try {
+                mActivity = (MainActivity) context;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(context.toString() + " must implement OnFragmentInteractionListener");
+            }
         }
     }
 
@@ -495,8 +565,27 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         return true;
 
 
-                    } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
+                    } else if (MainActivity.getChercheActivity()) {
 
+                        Log.i(TAG_LOG, "onResume()n, KeyEvent, else if (MainActivity.getChercheActivity()");
+
+                        if (MainActivity.getArtistFragmentState()) {
+
+                            return false;
+                        } else {
+
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                            ft.remove(getFragmentManager().findFragmentById(R.id.container_search));
+                            ft.commit();
+                        }
+
+                        SearchActivity.setActionBar();
+
+
+                        return true;
+
+                    } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
 
                         Log.i(TAG_LOG, "onResume()n, KeyEvent, else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null)");
 
@@ -509,7 +598,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         Intent intent = new Intent();
                         intent.setAction("reload");
                         mContext.sendBroadcast(intent);
-
 
                         // rustine blurview
                         mHandler.postDelayed(new Runnable() {

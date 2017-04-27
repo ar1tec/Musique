@@ -79,7 +79,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
     }
 
 
-    public class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView vTitle;
         private final TextView vArtist;
@@ -87,8 +87,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
 
         private final ImageView vArtwork;
 
-
-        public SongViewHolder(View itemView) {
+        SongViewHolder(View itemView) {
             super(itemView);
             vTitle = (TextView) itemView.findViewById(R.id.title);
             vArtist = (TextView) itemView.findViewById(R.id.artist);
@@ -99,15 +98,12 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> {
 
             ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
             menuButton.setOnClickListener(this);
-
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             triggerOnItemClickListener(position, v);
-
-
         }
     }
 

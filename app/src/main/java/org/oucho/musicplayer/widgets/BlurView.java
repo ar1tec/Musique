@@ -148,6 +148,8 @@ public class BlurView extends FrameLayout {
     }
 
     private void setBlurController(@NonNull BlurController blurController) {
+        Log.w(TAG_LOG, "setBlurController()");
+
         this.blurController.destroy();
         this.blurController = blurController;
     }
@@ -162,6 +164,8 @@ public class BlurView extends FrameLayout {
 
 
     private ControllerSettings setupWith(@NonNull ViewGroup rootView) {
+
+        Log.w(TAG_LOG, "setupWith()");
 
         BlurController blurController = new BlockingBlurController(this, rootView);
         setBlurController(blurController);
@@ -181,6 +185,7 @@ public class BlurView extends FrameLayout {
             this.blurController = blurController;
         }
 
+
         public ControllerSettings blurRadius(float radius) {
             blurController.setBlurRadius(radius);
             return this;
@@ -199,6 +204,8 @@ public class BlurView extends FrameLayout {
 
     //Used in edit mode and in case if no BlurController was set
     private BlurController createStubController() {
+
+        Log.w(TAG_LOG, "createStubController()");
 
         return new BlurController() {
             @Override
@@ -233,6 +240,7 @@ public class BlurView extends FrameLayout {
 
 
     public static void setupBlurView(Context context, View decorView, Boolean queueLayout, BlurView queueBlurView, BlurView bottomBlurView) {
+        Log.w(TAG_LOG, "setupBlurView()");
 
         final float radius = 5f;
 
@@ -243,12 +251,11 @@ public class BlurView extends FrameLayout {
             queueBlurView.setupWith(rootView)
                     .blurAlgorithm(new RenderScriptBlur(context, true))
                     .blurRadius(radius);
-        }
 
+        }
 
         bottomBlurView.setupWith(rootView)
                 .blurAlgorithm(new RenderScriptBlur(context, true))
                 .blurRadius(radius);
-
     }
 }

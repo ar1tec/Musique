@@ -7,13 +7,9 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="controlsTint">@color/controls_tint_light</item>
-
         <item name="ImageControlColor">@color/controls_tint_light</item>
-
         <item name="android:colorBackground">@color/blanc</item>
-
         <item name="ToolBar">@style/ToolBarTitleColor</item>
-
         <item name="android:windowActionBarOverlay">true</item>
 
     </style>
@@ -35,7 +31,7 @@
 
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-    <item name="android:textSize">18sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="DefFastScrollerStyle">
@@ -45,7 +41,7 @@
     </style>
 
     <declare-styleable name="BlurView">
-        <attr name="blurOverlayColor" format="color"/>
+        <attr name="blurOverlayColor" format="color" />
     </declare-styleable>
 
 </resources>

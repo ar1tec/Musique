@@ -17,11 +17,6 @@
     <string name="default_time">00:00</string>
 
 
-    <plurals name="albums_count">
-        <item quantity="one">%d album</item>
-        <item quantity="other">%d albums</item>
-    </plurals>
-
     <string name="titles">Titres</string>
     <string name="title">Titre</string>
 
@@ -79,8 +74,6 @@
     <string name="sort_order_entry_year">Année</string>
     <string name="sort_order_entry_artist">Artiste</string>
     <string name="sort_order_entry_album">Album</string>
-    <string name="sort_order_entry_number_of_songs">Nombre de titres</string>
-    <string name="sort_order_entry_number_of_albums">Nombre d\'albums</string>
 
 
     <string name="title_sort_year">année</string>
