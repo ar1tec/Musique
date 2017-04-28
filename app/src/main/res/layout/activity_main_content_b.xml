@@ -35,8 +35,7 @@
                 android:contentDescription="image_description"
                 android:padding="10dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_repeat_grey_400_24dp"
-                tools:ignore="HardcodedText" />
+                android:src="@drawable/ic_repeat_grey_400_24dp" />
 
             <ImageButton
                 android:id="@+id/quick_prev0"
@@ -84,8 +83,7 @@
                 android:contentDescription="image description"
                 android:padding="10dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_shuffle_grey_400_24dp"
-                tools:ignore="HardcodedText" />
+                android:src="@drawable/ic_shuffle_grey_400_24dp" />
         </LinearLayout>
 
 

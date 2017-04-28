@@ -80,11 +80,9 @@
                 android:ellipsize="end"
                 android:paddingLeft="4dp"
                 android:maxLines="1"
-                android:text="Titre"
                 android:textColor="@android:color/black"
                 android:textSize="17sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/song_artist"
@@ -96,10 +94,8 @@
                 android:ellipsize="end"
                 android:paddingLeft="4dp"
                 android:maxLines="1"
-                android:text="Artiste"
                 android:textColor="?attr/controlsTint"
-                android:textSize="15sp"
-                tools:ignore="HardcodedText" />
+                android:textSize="15sp" />
 
         </RelativeLayout>
 

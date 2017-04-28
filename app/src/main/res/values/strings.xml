@@ -70,7 +70,7 @@
     <string name="permission">Permission</string>
     <string name="permission_read_phone_state">It is recommended (but not necessary) to give permission
         \"Make and manage phone calls \" to the application,
-        This will allow the player to pause when you receive a call.</string>
+        This will allow the player to pause when you receive a call.</string>
 
     <string name="sort_order_entry_az">Alphabetical order</string>
     <string name="sort_order_entry_year">Year</string>

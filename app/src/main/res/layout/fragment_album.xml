@@ -49,11 +49,9 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Album"
                         android:textColor="@color/grey_600"
                         android:textSize="20sp"
-                        android:textStyle="bold"
-                        card_view:ignore="HardcodedText" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/line2"
@@ -63,10 +61,8 @@
                         android:layout_marginTop="4.0dip"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Artiste"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="18sp"
-                        card_view:ignore="HardcodedText" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/line3"
@@ -76,10 +72,8 @@
                         android:layout_marginTop="10.0dip"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Année"
                         android:textSize="16sp"
-                        android:visibility="visible"
-                        card_view:ignore="HardcodedText" />
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/line4"
@@ -88,11 +82,9 @@
                         android:layout_marginTop="10.0dip"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Nombre morceaux"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp"
-                        android:visibility="visible"
-                        card_view:ignore="HardcodedText" />
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/duration"
@@ -101,10 +93,8 @@
                         android:layout_marginTop="4.0dip"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Durée"
                         android:textSize="14sp"
-                        android:visibility="visible"
-                        card_view:ignore="HardcodedText" />
+                        android:visibility="visible" />
 
                 </LinearLayout>
 

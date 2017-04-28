@@ -50,11 +50,9 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:maxLines="1"
-            android:text="Title"
             android:textAlignment="center"
             android:textColor="@color/grey_900"
-            android:textSize="20sp"
-            card_view:ignore="HardcodedText" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/song_artist"
@@ -65,10 +63,8 @@
             android:layout_marginTop="40dp"
             android:gravity="center"
             android:maxLines="1"
-            android:text="artiste"
             android:textAlignment="center"
-            android:textSize="16sp"
-            card_view:ignore="HardcodedText" />
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
