@@ -243,20 +243,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        //getMenuInflater().inflate(R.menu.menu_cherche, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-
-
 
     private void refresh(String newText) {
         Bundle args = null;
@@ -347,7 +333,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
 
             Album album = (Album) mAdapter.getItem(position);
 
-
             switch (v.getId()) {
                 case R.id.album_info:
                     Log.i(TAG_LOG, "album id " + album.getId() + " " + album.getAlbumName());
@@ -436,8 +421,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
             ft.commit();
 
             actionBar.setDisplayShowCustomEnabled(false);
-
-
         }
     }
 
@@ -616,26 +599,22 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int type) {
 
-
             View itemView;
             RecyclerView.ViewHolder viewHolder;
 
             switch (type) {
                 case ALBUM:
                     itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_album_list_item, parent, false);
-
                     viewHolder = new SearchActivity.AlbumViewHolder(itemView);
                     return viewHolder;
 
                 case ARTIST:
                     itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_artist_list_item, parent, false);
-
                     viewHolder = new SearchActivity.ArtistViewHolder(itemView);
                     return viewHolder;
 
                 case SONG:
                     itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_song_list_item, parent, false);
-
                     viewHolder = new SearchActivity.SongViewHolder(itemView);
                     return viewHolder;
 

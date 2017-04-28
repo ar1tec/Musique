@@ -62,5 +62,6 @@ public interface MusiqueKeys {
     String ACTION_SHOW_ALBUM = "show_album";
     String ACTION_SHOW_ARTIST = "show_artist";
     String ACTION_ADD_TO_QUEUE = "add_to_queue";
+
     String ACTION_SET_AS_NEXT_TRACK = "set_as_next_track";
 }

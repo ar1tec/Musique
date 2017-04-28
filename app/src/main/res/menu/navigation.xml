@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <group>
+    <group android:id="@+id/top">
 
         <item
             android:id="@+id/action_equalizer"
@@ -15,7 +15,7 @@
 
     </group>
 
-    <group>
+    <group android:id="@+id/bottom">
 
         <item
             android:id="@+id/nav_update"
