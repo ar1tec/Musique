@@ -149,5 +149,6 @@
     <string name="appupdater_btn_update">Télécharger</string>
     <string name="appupdater_btn_dismiss">Plus tard</string>
     <string name="queue">Liste de lecture</string>
+    <string name="title_activity_cherche">ChercheActivity</string>
 
 </resources>

@@ -31,7 +31,8 @@
         android:layout_marginEnd="12dp"
         android:layout_marginTop="5dp"
         android:src="@drawable/ic_shuffle_grey_600_18dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/bar0_repeat"
@@ -42,7 +43,8 @@
         android:layout_marginTop="5dp"
 
         android:src="@drawable/ic_repeat_grey_600_18dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/bar0_repeat1"
@@ -53,7 +55,8 @@
         android:layout_marginTop="5dp"
 
         android:src="@drawable/ic_repeat_one_grey_600_18dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"

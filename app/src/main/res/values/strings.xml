@@ -4,7 +4,7 @@
     <string name="app_name">Musique</string>
 
     <!-- nav header activity main_activity -->
-    <string name="by">Old Geek, avril 2017</string>
+    <string name="by">Old Geek, april 2017</string>
 
     <string name="album">Album</string>
 
@@ -17,88 +17,89 @@
     <string name="default_time">00:00</string>
 
 
-    <string name="titles">Titres</string>
-    <string name="title">Titre</string>
+    <string name="titles">Titles</string>
+    <string name="title">Title</string>
 
-    <string name="artists">Artistes</string>
-    <string name="unknown_artist">Artiste inconnu</string>
-    <string name="artist">Artiste</string>
+    <string name="artist">Artist</string>
+    <string name="artists">Artists</string>
+    <string name="unknown_artist">Unknow artist</string>
 
     <string name="genre">Genre</string>
 
 
-    <string name="play">Lecture</string>
-    <string name="prev">Précédent</string>
-    <string name="next">Suivant</string>
+    <string name="play">Playback</string>
+    <string name="prev">Previous</string>
+    <string name="next">Next</string>
 
-    <string name="reorder">Réordonner</string>
+    <string name="reorder">Reorder</string>
 
     <string name="custom">Custom</string>
-    <string name="bass_boost">Amplificateur de basses</string>
+    <string name="bass_boost">Bass Amplifier</string>
 
     <string name="playlists">Playlists</string>
-    <string name="choose_playlist">Choisir une playlist</string>
-    <string name="new_playlist">Nouvelle playlist</string>
-    <string name="playlist_name">Nom de la playlist</string>
-    <string name="create_playlist">Créer une playlist</string>
-    <string name="action_add_to_playlist">Ajouter à une playlist</string>
+    <string name="choose_playlist">Choose playlist</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="playlist_name">Playlist name</string>
+    <string name="create_playlist">Create playlist</string>
+    <string name="action_add_to_playlist">Add to playlist</string>
 
-    <string name="deletePlaylistConfirm">Supprimer cette playlist ?</string>
-    <string name="deleteTrackConfirm">Supprimer ce titre ?</string>
-
-
-    <string name="queue">Liste de lecture</string>
-    <string name="view_queue">Voir la liste de lecture</string>
-    <string name="action_add_to_queue">Ajouter à la liste de lecture</string>
+    <string name="deletePlaylistConfirm">Delete this playlist?</string>
+    <string name="deleteTrackConfirm">Delete yhis title?</string>
 
 
-    <string name="context_menu_description">Menu contextuel</string>
+    <string name="queue">Current playlist</string>
+    <string name="view_queue">See the current playlist</string>
+    <string name="action_add_to_queue">Add to current playlist</string>
 
-    <string name="equalizer">Égaliseur</string>
-    <string name="action_equalizer">Égaliseur</string>
 
-    <string name="search">Rechercher</string>
-    <string name="edit_tags">Editer données</string>
-    <string name="action_edit_tags">Editer données</string>
-    <string name="tags_edition_failed">L\'édition des données a échoué</string>
-    <string name="year">Année</string>
-    <string name="no_results">Aucun résultat</string>
+    <string name="context_menu_description">Context menu</string>
 
-    <string name="delete">supprimer</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="action_equalizer">Equalizer</string>
+
+    <string name="search">Search</string>
+    <string name="edit_tags">Edit data</string>
+    <string name="action_edit_tags">Edit data</string>
+    <string name="tags_edition_failed">Data editing failed</string>
+    <string name="year">Year</string>
+    <string name="no_results">No results</string>
+
+    <string name="delete">delete</string>
 
 
     <string name="permission">Permission</string>
-    <string name="permission_read_phone_state">Il est recommandé (mais pas nécessaire) de donner la permission
-        \"Effectuer et gérer des appels téléphoniques\" à l\'application,
-        cela permet au lecteur de se mettre en pause lorsque vous recevrez un appel.</string>
+    <string name="permission_read_phone_state">It is recommended (but not necessary) to give permission
+        \"Make and manage phone calls \" to the application,
+        This will allow the player to pause when you receive a call.</string>
 
-    <string name="sort_order_entry_az">Ordre alphabétique</string>
-    <string name="sort_order_entry_year">Année</string>
-    <string name="sort_order_entry_artist">Artiste</string>
+    <string name="sort_order_entry_az">Alphabetical order</string>
+    <string name="sort_order_entry_year">Year</string>
+    <string name="sort_order_entry_artist">Artist</string>
     <string name="sort_order_entry_album">Album</string>
 
 
-    <string name="title_sort_year">année</string>
-    <string name="title_sort_artist">artiste</string>
+    <string name="title_sort_year">year</string>
+    <string name="title_sort_artist">artist</string>
     <string name="title_sort_album">album</string>
 
     <string name="help">Information</string>
 
     <string name="help_message">
         \n
-        Le but de ce logiciel et d\'avoir une application minimaliste et la plus simple possible, l\'inverse
-        d\'une \"usine à gaz\", sans pub ni autre parasitage lié.\n
-        \n
-        Toutes les fonctionnalitées sont dépendantes de votre système Android comme la reconnaissance
-        de format de fichier. Si votre système n\'est pas fait pour lire les fichiers de type lossless cette
-        application ne le permettra pas non plus.\n
-        \n
-        Cette application ne gère en rien les fichiers, elle dépend à 100% d\'Android, si des morceaux n\'apparaissent pas
-        c\'est que la base de données Android est corrompu. Il existe des outils qui permettent de réparer cette base.\n
-        \n
-        La modification des tags ne touche pas aux fichiers, elle apporte uniquement un ajout dans la base d\'Android.\n
-        Il en est de même pour la création des playlists, elles sont stockées dans la base de données d\'Android, si
-        vous desinstallez l\'application vos playlists seront toujours en place.\n
+        The purpose of this software and to have a minimalist application and the simplest possible, the reverse
+        Of a \ "gas factory \", without any pub or other related parasite. \n
+        \n
+        All features are dependent on your Android system like recognition
+        Of file format. If your system is not ready to read lossless files this
+        Application will not allow it either. \n
+        \n
+        This app does not handle the files, it depends on 100% Android, if songs do not appear
+        It is that the Android database is corrupted. There are tools to fix this.
+        \n
+        Editing tags does not affect files, it only brings an addition to the Android database. \n
+        The same is true for the creation of playlists, they are stored in the Android database, if
+        You uninstall the application your playlists will still be in place. \n
+        \n
         \n
     </string>
 
@@ -111,45 +112,47 @@
         \n
         Old Geek, 2017\n
         \n
-        Licence: aucune, profitez, partagez.\n
+        License: none, enjoy, share.\n
         \n
         \n
-        Code source: https://github.com/Old-Geek/Musique\n
+        Source code: https://github.com/Old-Geek/Musique\n
         \n
     </string>
 
-    <string name="exit">Quitter</string>
+    <string name="exit">Exit</string>
 
     <!-- Timer -->
     <string name="timer_info" formatted="false" tools:ignore="StringFormatInvalid">%02d:%02d</string>
-    <string name="start">démarrer</string>
-    <string name="cancel">annuler</string>
-    <string name="continuer">continuer</string>
-    <string name="cancel_timer">annuler le timer</string>
-    <string name="impossible">0 impossible</string>
+    <string name="start">start</string>
+    <string name="cancel">cancel</string>
+    <string name="continuer">continue</string>
+    <string name="cancel_timer">cancel the timer</string>
+    <string name="impossible">0 not possible</string>
 
 
     <string name="minute_singulier">minute</string>
     <string name="minute_pluriel">minutes</string>
 
-    <string name="arret">Arrêt dans</string>
+    <string name="arret">Stop in</string>
 
-    <string name="stop_timer">Timer arrêté</string>
+    <string name="stop_timer">Timer stopped</string>
 
-    <string name="action_sleep_timer">Minuteur sommeil</string>
+    <string name="action_sleep_timer">Sleep Timer</string>
 
     <!-- update -->
-    <string name="update">Mise à jour</string>
+    <string name="update">Update</string>
 
-    <string name="appupdater_update_available">Nouvelle mise à jour disponible</string>
+    <string name="appupdater_update_available">New Available Update</string>
 
-    <string name="appupdater_update_available_description_dialog">La mise à jour %1$s est disponible. En téléchargeant cette version de l\'application, vous aurez accès aux dernières fonctionnalités et améliorations de %2$s.</string>
-    <string name="appupdater_update_available_description_dialog_before_release_notes">La mise à jour %1$s est disponible.\n\nNOUVEAUTÉS:\n%2$s</string>
-    <string name="appupdater_update_available_description_snackbar">Mise à jour %1$s disponible.</string>
-    <string name="appupdater_update_not_available">Aucune mise à jour disponible</string>
-    <string name="appupdater_update_not_available_description">Vous avez la dernière version disponible de %s.</string>
+    <string name="appupdater_update_available_description_dialog">Update %1$s is available. By downloading this version of the application, you will have access to the latest features and improvements of %2$s.</string>
+
+    <string name="appupdater_update_available_description_dialog_before_release_notes">Update %1$s is available.\n\nNEWS:\n%2$s</string>
+    <string name="appupdater_update_available_description_snackbar">Update %1$s is available.</string>
+    <string name="appupdater_update_not_available">No update available </string>
+    <string name="appupdater_update_not_available_description">You have the latest available version of %s.</string>
     <string name="appupdater_btn_update">Download</string>
-    <string name="appupdater_btn_dismiss">Plus tard</string>
-    <string name="title_activity_cherche">ChercheActivity</string>
+    <string name="appupdater_btn_dismiss">Later</string>
+
+    <string name="title_activity_cherche">SearchActivity</string>
 
 </resources>

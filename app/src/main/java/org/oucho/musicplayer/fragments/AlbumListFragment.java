@@ -464,11 +464,11 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                     getActivity().setTitle(Html.fromHtml("<font>"
                             + titre
                             + " </font> <small> <font color='" + couleurTitre + "'>"
-
-
                             + tri
                             + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+
                 } else {
+
                     //noinspection deprecation
                     getActivity().setTitle(Html.fromHtml("<font>"
                             + titre
