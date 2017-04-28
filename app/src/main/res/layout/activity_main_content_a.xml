@@ -18,7 +18,7 @@
         android:gravity="right"
         android:paddingEnd="9dp"
         android:text="zZz"
-        android:textColor="@color/zzz"
+        android:textColor="@color/blue_900_trans"
         android:textSize="12sp"
         android:visibility="gone"
         tools:ignore="HardcodedText" />

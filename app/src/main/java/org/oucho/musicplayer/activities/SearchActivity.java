@@ -17,7 +17,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -198,7 +197,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
             final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 
             getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
-            getWindow().setStatusBarColor(ContextCompat.getColor(mContext, R.color.blanc));
+            getWindow().setStatusBarColor(ContextCompat.getColor(mContext, R.color.white));
         }
 
 

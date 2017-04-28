@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -369,17 +370,32 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
 
-        if (visible || isResumed())
+        if (visible || isResumed()) {
+
+            int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_300);
+
             if (android.os.Build.VERSION.SDK_INT >= 24) {
-                getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+                getActivity().setTitle(Html.fromHtml(
+                        "<font>" + titre
+                                + " " + " "
+                                + " </font> <small> <font color='" + couleurTitre + "'>"
+                                + tri
+                                + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
                 MainActivity.setViewID(R.id.fragment_song_layout);
 
             } else {
                 //noinspection deprecation
-                getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color=\"#CCCCCC\">" + tri + "</small></font>"));
+                getActivity().setTitle(Html.fromHtml(
+                        "<font>" + titre
+                                + " " + " "
+                                + " </font> <small> <font color='" + couleurTitre + "'>"
+                                + tri
+                                + "</small></font>"));
+
                 MainActivity.setViewID(R.id.fragment_song_layout);
 
             }
+        }
     }
 
 }

@@ -6,9 +6,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="controlsTint">@color/controls_tint_light</item>
-        <item name="ImageControlColor">@color/controls_tint_light</item>
-        <item name="android:colorBackground">@color/blanc</item>
+        <item name="controlsTint">@color/grey_700</item>
+        <item name="ImageControlColor">@color/grey_700</item>
+        <item name="android:colorBackground">@color/white</item>
         <item name="ToolBar">@style/ToolBarTitleColor</item>
         <item name="android:windowActionBarOverlay">true</item>
 

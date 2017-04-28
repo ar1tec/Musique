@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:tag="playlist"
     android:id="@+id/fragment_playlist"
-    android:background="@color/blanc"
+    android:background="@color/white"
     tools:mContext="org.oucho.musicplayer.fragments.PlaylistFragment"
     tools:ignore="Overdraw">
 

@@ -15,7 +15,7 @@
         android:layout_marginBottom="10dp"
         android:layout_gravity="center"
         android:padding="30dp"
-        seekarc:arcColor="@color/arcColor"
+        seekarc:arcColor="@color/grey_300"
         seekarc:clockwise="true"
         seekarc:max="120"
         seekarc:progressColor0="@color/colorAccent"
@@ -32,7 +32,7 @@
         android:layout_marginTop="-20dp"
         android:layout_gravity="center"
         android:text="ZZzzz..."
-        android:textColor="@color/zzz"
+        android:textColor="@color/blue_900_trans"
         android:textSize="20sp"
         android:textStyle="bold"
         tools:ignore="HardcodedText" />

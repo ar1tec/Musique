@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -456,17 +457,22 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             // délai affichage lors du premier chargement nom appli --> tri actuel
             if (run) {
 
+                int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_300);
+
+
                 if (android.os.Build.VERSION.SDK_INT >= 24) {
                     getActivity().setTitle(Html.fromHtml("<font>"
                             + titre
-                            + " </font> <small> <font color=\"#CCCCCC\">"
+                            + " </font> <small> <font color='" + couleurTitre + "'>"
+
+
                             + tri
                             + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
                 } else {
                     //noinspection deprecation
                     getActivity().setTitle(Html.fromHtml("<font>"
                             + titre
-                            + " </font> <small> <font color=\"#CCCCCC\">"
+                            + " </font> <small> <font color='" + couleurTitre + "'>"
                             + tri
                             + "</small></font>"));
                 }

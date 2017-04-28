@@ -14,7 +14,7 @@ public class ArtistImageHelper {
 
     static Drawable getDefaultArtistImage(Context c) {
         if (sDefaultArtistImage == null) {
-            sDefaultArtistImage = ContextCompat.getDrawable(c, R.drawable.default_artist_image);
+            sDefaultArtistImage = ContextCompat.getDrawable(c, R.drawable.ic_person_grey_600_48dp);
 
         }
         //noinspection ConstantConditions
@@ -23,7 +23,7 @@ public class ArtistImageHelper {
 
     public static Drawable getDefaultArtistThumb(Context c) {
         if (sDefaultArtistThumb == null) {
-            sDefaultArtistThumb = ContextCompat.getDrawable(c, R.drawable.default_artist_thumb);
+            sDefaultArtistThumb = ContextCompat.getDrawable(c, R.drawable.ic_person_grey_600_48dp);
 
         }
         //noinspection ConstantConditions

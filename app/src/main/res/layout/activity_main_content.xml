@@ -13,7 +13,7 @@
         android:layout_height="@dimen/barre_lecture"
         android:elevation="8dp"
         android:outlineProvider="bounds"
-        app:blurOverlayColor="@color/colorOverlay"
+        app:blurOverlayColor="@color/colorBlurViewOverlay"
         android:layout_alignParentBottom="true"
         tools:targetApi="lollipop">
 
@@ -40,7 +40,7 @@
         android:layout_height="match_parent"
         android:elevation="4dp"
         android:outlineProvider="bounds"
-        app:blurOverlayColor="@color/colorOverlay"
+        app:blurOverlayColor="@color/colorBlurViewOverlay"
         tools:targetApi="lollipop"
         android:visibility="gone">
 

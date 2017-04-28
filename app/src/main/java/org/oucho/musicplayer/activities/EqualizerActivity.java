@@ -45,7 +45,7 @@ public class EqualizerActivity extends AppCompatActivity {
 
         int couleurFond = ContextCompat.getColor(context, R.color.colorPrimary_0);
 
-        int couleurTitre = ContextCompat.getColor(context, R.color.colorAccent);
+        int couleurTitre = ContextCompat.getColor(context, R.color.amber_700);
 
         String titre = context.getString(R.string.equalizer);
 

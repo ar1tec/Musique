@@ -5,7 +5,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanc"
+    android:background="@color/white"
     android:padding="0dp"
     card_view:ignore="Overdraw">
 
@@ -52,7 +52,7 @@
             android:maxLines="1"
             android:text="Title"
             android:textAlignment="center"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/grey_900"
             android:textSize="20sp"
             card_view:ignore="HardcodedText" />
 
@@ -88,7 +88,7 @@
             android:paddingRight="5dp"
             android:text="@string/default_time"
             android:textAlignment="center"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/grey_900"
             android:textSize="15sp"
             card_view:ignore="RelativeOverlap" />
 
@@ -109,7 +109,7 @@
             android:paddingLeft="5dp"
             android:text="@string/default_time"
             android:textAlignment="center"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/grey_900"
             android:textSize="15sp" />
 
     </RelativeLayout>

@@ -61,7 +61,7 @@
             android:ellipsize="end"
             android:paddingLeft="@dimen/big_content_padding"
             android:maxLines="1"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/grey_900"
             android:textSize="16sp"
             android:text="Titre"
             tools:ignore="HardcodedText" />
@@ -73,7 +73,7 @@
             android:ellipsize="end"
             android:paddingLeft="@dimen/big_content_padding"
             android:maxLines="1"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/grey_600"
             android:textSize="14sp"
             android:text="Artiste"
             tools:ignore="HardcodedText" />
@@ -87,7 +87,7 @@
             android:ellipsize="end"
             android:paddingLeft="@dimen/big_content_padding"
             android:maxLines="1"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/grey_900"
             android:textSize="12sp"
             android:text="(Durée)"
             tools:ignore="HardcodedText" />

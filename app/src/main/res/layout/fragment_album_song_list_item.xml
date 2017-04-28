@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_view"
     android:layout_width="match_parent"
-    android:layout_height="42.5dp"
+    android:layout_height="49dp"
     android:layout_centerVertical="true"
     android:background="?attr/selectableItemBackground"
     android:orientation="vertical">
@@ -30,7 +30,7 @@
         android:layout_height="0.5dp"
         android:layout_marginRight="6dp"
         android:layout_marginLeft="6dp"
-        android:background="@color/filet_song_album_list_item"
+        android:background="@color/grey_200"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -43,7 +43,7 @@
         android:maxLines="1"
         android:paddingLeft="10dp"
         android:paddingRight="14dp"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/grey_600"
         android:textSize="14sp" />
 
     <LinearLayout
@@ -61,7 +61,7 @@
             android:paddingStart="@dimen/big_content_padding"
             android:maxLines="1"
             android:ellipsize="end"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/grey_900"
             android:textSize="17sp"
             android:gravity="center_vertical" />
 

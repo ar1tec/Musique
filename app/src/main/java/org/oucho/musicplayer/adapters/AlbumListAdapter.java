@@ -76,11 +76,11 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
             if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
 
-                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.secondary_text));
+                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
                 viewHolder.vName.setTextSize(14);
                 viewHolder.vName.setTypeface(null, Typeface.NORMAL);
 
-                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
                 viewHolder.vArtist.setTextSize(15);
                 viewHolder.vArtist.setTypeface(null, Typeface.BOLD);
 
@@ -89,11 +89,11 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
             } else if ("minyear DESC".equals(getTri)) {
 
-                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
                 viewHolder.vName.setTextSize(15);
                 viewHolder.vName.setTypeface(null, Typeface.NORMAL);
 
-                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.secondary_text));
+                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
                 viewHolder.vArtist.setTextSize(14);
                 viewHolder.vArtist.setTypeface(null, Typeface.NORMAL);
 
@@ -104,11 +104,11 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
             } else {
 
-                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
                 viewHolder.vName.setTextSize(15);
                 viewHolder.vName.setTypeface(null, Typeface.BOLD);
 
-                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.secondary_text));
+                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
                 viewHolder.vArtist.setTextSize(14);
                 viewHolder.vArtist.setTypeface(null, Typeface.NORMAL);
 

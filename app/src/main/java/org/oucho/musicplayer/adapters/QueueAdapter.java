@@ -66,11 +66,11 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
         }
 
         if (song.getId() == PlayerService.getSongID()) {
-            viewHolder.vTitle.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+            viewHolder.vTitle.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
             currentSong = position;
 
         } else {
-            viewHolder.vTitle.setTextColor(ContextCompat.getColor(mContext, R.color.secondary_text));
+            viewHolder.vTitle.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));
         }
 
         viewHolder.vTitle.setText(song.getTitle());

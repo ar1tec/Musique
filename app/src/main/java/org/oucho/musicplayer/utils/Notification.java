@@ -73,13 +73,13 @@ public class Notification {
         builder.setContentIntent(pendInt);
 
         if (!timer) {
-            builder.setSmallIcon(R.drawable.notification);
+            builder.setSmallIcon(R.drawable.ic_audiotrack_white_24dp);
         } else {
-            builder.setSmallIcon(R.drawable.notification_sleeptimer);
+            builder.setSmallIcon(R.drawable.ic_timer2_white_24dp);
         }
 
         builder.setShowWhen(false);
-        builder.setColor(ContextCompat.getColor(playerbackService, R.color.controls_bg_dark));
+        builder.setColor(ContextCompat.getColor(playerbackService, R.color.grey_900));
 
 
         Resources res = playerbackService.getResources();
@@ -110,7 +110,7 @@ public class Notification {
         Bitmap image = bitmap;
 
         if (image == null) {
-            BitmapDrawable d = ((BitmapDrawable) ContextCompat.getDrawable(playerbackService, R.drawable.notification));
+            BitmapDrawable d = ((BitmapDrawable) ContextCompat.getDrawable(playerbackService, R.drawable.ic_audiotrack_white_24dp));
             image = d.getBitmap();
         }
         builder.setLargeIcon(image);
