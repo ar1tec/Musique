@@ -73,7 +73,7 @@ import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.utils.VolumeTimer;
-import org.oucho.musicplayer.widgets.BlurView;
+import org.oucho.musicplayer.widgets.blurview.BlurView;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.ProgressBar;
 
@@ -86,7 +86,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static org.oucho.musicplayer.R.id.drawer_layout;
-import static org.oucho.musicplayer.widgets.BlurView.setupBlurView;
+import static org.oucho.musicplayer.widgets.blurview.BlurView.setupBlurView;
 
 public class MainActivity extends AppCompatActivity implements
         MusiqueKeys,
@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements
     private TextView timeAfficheur;
     private RelativeLayout layoutA;
     private RelativeLayout layoutB;
-    private BlurView bottomBlurView;
     private ProgressBar mProgressBar;
     private DrawerLayout mDrawerLayout;
     private ImageButton forwardButton;
@@ -230,7 +229,6 @@ public class MainActivity extends AppCompatActivity implements
         timeAfficheur = ((TextView) findViewById(R.id.zZz));
 
         queueBlurView = (BlurView) findViewById(R.id.queueBlurView);
-        bottomBlurView = (BlurView) findViewById(R.id.bottomBlurView);
 
         mDrawerLayout = (DrawerLayout) findViewById(drawer_layout);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -261,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements
     private void setBlurView() {
         final View decorView = getWindow().getDecorView();
 
-        setupBlurView(mContext, decorView, queueLayout, queueBlurView, bottomBlurView);
+        setupBlurView(mContext, decorView, queueLayout, queueBlurView);
 
     }
 
@@ -359,7 +357,6 @@ public class MainActivity extends AppCompatActivity implements
                     Intent intentPl = new Intent(INTENT_STATE);
                     intentPl.putExtra("state", "play");
                     sendBroadcast(intentPl);
-                    setBlurView();
 
                     break;
 
@@ -628,7 +625,6 @@ public class MainActivity extends AppCompatActivity implements
             filter.addAction(PlayerService.POSITION_CHANGED);
             filter.addAction(PlayerService.ITEM_ADDED);
             filter.addAction(PlayerService.ORDER_CHANGED);
-            filter.addAction(INTENT_BLURVIEW);
             filter.addAction(INTENT_QUIT);
             filter.addAction(INTENT_QUEUEVIEW);
             filter.addAction(INTENT_LAYOUTVIEW);
@@ -716,8 +712,10 @@ public class MainActivity extends AppCompatActivity implements
         long albumId = bundle.getLong(SONG_ALBUM_ID);
         int trackNumber = bundle.getInt(SONG_TRACK_NUMBER);
         int duration = bundle.getInt(SONG_DURATION);
+        int yearCol = bundle.getInt(SONG_YEAR);
 
-        return new Song(id, title, artist, album, albumId, trackNumber, duration);
+
+        return new Song(id, title, artist, album, albumId, trackNumber, duration, yearCol);
     }
 
     @SuppressWarnings("RestrictedApi")
@@ -830,11 +828,9 @@ public class MainActivity extends AppCompatActivity implements
                     mProgressBar.setVisibility(View.GONE);
 
                     playBarLayout = true;
-                    bottomBlurView.setBlurAutoUpdate(false);
 
                 } else {
 
-                    bottomBlurView.setBlurAutoUpdate(true);
 
                     Log.i(TAG_LOG, "else");
 
@@ -907,9 +903,6 @@ public class MainActivity extends AppCompatActivity implements
             if (receiveIntent.equals(PlayerService.META_CHANGED)) {
                 updateTrackInfo();
             }
-
-            if (receiveIntent.equals(INTENT_BLURVIEW))
-                setBlurView();
 
             if (receiveIntent.equals(INTENT_QUIT) && "exit".equals(intent.getStringExtra("halt")))
                 exit();

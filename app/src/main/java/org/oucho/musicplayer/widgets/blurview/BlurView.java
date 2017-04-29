@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.widgets;
+package org.oucho.musicplayer.widgets.blurview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,10 +14,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.widgets.blurview.BlockingBlurController;
-import org.oucho.musicplayer.widgets.blurview.BlurAlgorithm;
-import org.oucho.musicplayer.widgets.blurview.BlurController;
-import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
 
 
 public class BlurView extends FrameLayout {
@@ -239,7 +235,7 @@ public class BlurView extends FrameLayout {
 
 
 
-    public static void setupBlurView(Context context, View decorView, Boolean queueLayout, BlurView queueBlurView, BlurView bottomBlurView) {
+    public static void setupBlurView(Context context, View decorView, Boolean queueLayout, BlurView queueBlurView) {
         Log.w(TAG_LOG, "setupBlurView()");
 
         final float radius = 5f;
@@ -253,9 +249,5 @@ public class BlurView extends FrameLayout {
                     .blurRadius(radius);
 
         }
-
-        bottomBlurView.setupWith(rootView)
-                .blurAlgorithm(new RenderScriptBlur(context, true))
-                .blurRadius(radius);
     }
 }

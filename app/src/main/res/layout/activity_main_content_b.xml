@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/track_info0"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/barre_lecture"
-    android:background="@color/blancTransparent"
+    android:layout_height="match_parent"
     android:clipToPadding="false"
     xmlns:android="http://schemas.android.com/apk/res/android">
 

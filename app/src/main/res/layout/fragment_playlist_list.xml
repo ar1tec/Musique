@@ -2,24 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_playlist_list"
     tools:mContext="org.oucho.musicplayer.fragments.PlaylistListFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_view"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/barre_lecture"
-        android:clipToPadding="false"
-        android:scrollbarStyle="outsideOverlay" />
+        android:layout_marginBottom="@dimen/barre_lecture">
 
-    <org.oucho.musicplayer.widgets.FastScroller
-        android:id="@+id/fastscroller"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:layout_marginBottom="@dimen/barre_lecture" />
+        <org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bubbleColor="@color/noirTransparent"
+            app:bubbleTextColor="@color/amber_700"
+            app:handleColor="@color/amber_700"
+            app:hideScrollbar="true"/>
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

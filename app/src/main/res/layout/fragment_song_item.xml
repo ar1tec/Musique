@@ -62,7 +62,7 @@
             android:paddingLeft="@dimen/big_content_padding"
             android:maxLines="1"
             android:textColor="@color/grey_900"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/artist"
@@ -72,8 +72,32 @@
             android:paddingLeft="@dimen/big_content_padding"
             android:maxLines="1"
             android:textColor="@color/grey_600"
-            android:textSize="14sp" />
+            android:textSize="15sp" />
 
+
+        <TextView
+            android:id="@+id/album"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:paddingLeft="@dimen/big_content_padding"
+            android:maxLines="1"
+            android:textColor="@color/amber_700"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:paddingLeft="@dimen/big_content_padding"
+            android:maxLines="1"
+            android:textColor="@color/amber_700"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/duration"
@@ -83,8 +107,8 @@
             android:ellipsize="end"
             android:paddingLeft="@dimen/big_content_padding"
             android:maxLines="1"
-            android:textColor="@color/grey_900"
-            android:textSize="12sp" />
+            android:textColor="@color/grey_600"
+            android:textSize="13sp" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -40,7 +39,7 @@ import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.widgets.FastScroller;
+import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 import java.util.Locale;
@@ -64,7 +63,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     private SearchActivity cActivity;
 
 
-    private RecyclerView mRecyclerView;
+    private FastScrollRecyclerView mRecyclerView;
     private Etat_player Etat_player_Receiver;
     private boolean isRegistered = false;
 
@@ -136,17 +135,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                 durée.setText(temps);
             }
 
-
-
-            mHandler.postDelayed(new Runnable() {
-
-                public void run() {
-
-                    Intent intent0 = new Intent();
-                    intent0.setAction(INTENT_BLURVIEW);
-                    mContext.sendBroadcast(intent0);
-                }
-            }, 1000);
         }
 
         @Override
@@ -201,8 +189,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             }
         }
 
-        mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.artist_image_req_width);
-        mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.artist_image_req_height);
+        mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.fragment_album_artist_image_req_width);
+        mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.fragment_album_artist_image_req_height);
 
 
         setTri();
@@ -309,19 +297,15 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         }
 
 
-
         durée = (TextView) rootView.findViewById(R.id.duration);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list);
+        mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new CustomLayoutManager(getActivity()));
         mAdapter = new AlbumSongListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
 
         mRecyclerView.setAdapter(mAdapter);
-
-        FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        mFastScroller.setRecyclerView(mRecyclerView);
 
 
         return rootView;
@@ -598,17 +582,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         Intent intent = new Intent();
                         intent.setAction("reload");
                         mContext.sendBroadcast(intent);
-
-                        // rustine blurview
-                        mHandler.postDelayed(new Runnable() {
-
-                            public void run() {
-
-                                Intent intent0 = new Intent();
-                                intent0.setAction(INTENT_BLURVIEW);
-                                mContext.sendBroadcast(intent0);
-                            }
-                        }, 1000);
 
                         return true;
                     }

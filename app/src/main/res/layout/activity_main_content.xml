@@ -7,21 +7,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.oucho.musicplayer.widgets.BlurView
-        android:id="@+id/bottomBlurView"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/barre_lecture"
         android:elevation="8dp"
-        android:outlineProvider="bounds"
-        app:blurOverlayColor="@color/colorBlurViewOverlay"
         android:layout_alignParentBottom="true"
-        tools:targetApi="lollipop">
+        android:background="@color/white">
 
         <org.oucho.musicplayer.widgets.ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_alignParentTop="true"
             android:padding="0dp"
             app:progressColor="@color/colorAccent" />
 
@@ -30,11 +27,10 @@
 
         <include layout="@layout/activity_main_content_b"
             android:visibility="gone"/>
+    </FrameLayout>
 
 
-    </org.oucho.musicplayer.widgets.BlurView>
-
-    <org.oucho.musicplayer.widgets.BlurView
+    <org.oucho.musicplayer.widgets.blurview.BlurView
         android:id="@+id/queueBlurView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -78,6 +74,6 @@
                 android:padding="8dp" />
         </FrameLayout>
 
-    </org.oucho.musicplayer.widgets.BlurView>
+    </org.oucho.musicplayer.widgets.blurview.BlurView>
 
 </RelativeLayout>

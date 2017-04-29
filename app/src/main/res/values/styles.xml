@@ -11,9 +11,7 @@
         <item name="android:colorBackground">@color/white</item>
         <item name="ToolBar">@style/ToolBarTitleColor</item>
         <item name="android:windowActionBarOverlay">true</item>
-
     </style>
-
 
     <style name="ToolBarTitleColor" parent="Base.Widget.AppCompat.Toolbar">
         <item name="android:textColorPrimary">@color/colorAccent</item>
@@ -32,12 +30,6 @@
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="DefFastScrollerStyle">
-        <item name="scrollerColor">@color/colorAccent</item>
-        <item name="handleHeight">64dp</item>
-        <item name="handleWidth">3dp</item>
     </style>
 
     <declare-styleable name="BlurView">

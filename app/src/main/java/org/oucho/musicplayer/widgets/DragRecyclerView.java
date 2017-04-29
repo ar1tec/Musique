@@ -14,8 +14,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
-public class DragRecyclerView extends RecyclerView {
+
+public class DragRecyclerView extends FastScrollRecyclerView {
     private boolean mDragging = false;
     private boolean mAnimating = false;
     private int mCurrentTop;

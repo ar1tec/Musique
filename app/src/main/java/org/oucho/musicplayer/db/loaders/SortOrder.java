@@ -17,6 +17,8 @@ public final class SortOrder {
 
 
     public interface AlbumSortOrder {
+
+        //titre
         String ALBUM_A_Z = MediaStore.Audio.Albums.DEFAULT_SORT_ORDER;
 
         //String ALBUM_ARTIST = MediaStore.Audio.Albums.ARTIST;
@@ -29,9 +31,12 @@ public final class SortOrder {
 
 
     public interface SongSortOrder {
-        String SONG_A_Z = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
+        // titre
+        String SONG_A_Z = MediaStore.Audio.Media.TITLE;
 
-        String SONG_ARTIST = MediaStore.Audio.Media.ARTIST;
+        String SONG_ARTIST = "REPLACE ('<BEGIN>' || " + MediaStore.Audio.Media.ARTIST +", '<BEGIN>The ', '<BEGIN>')";
+
+        //String SONG_ARTIST = MediaStore.Audio.Media.ARTIST;
 
         String SONG_ALBUM = MediaStore.Audio.Media.ALBUM;
 

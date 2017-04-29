@@ -133,6 +133,7 @@ public class QueueDbHelper extends SQLiteOpenHelper {
             int albumIdCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_ALBUM_ID);
             int trackCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_NUMBER);
             int trackDur = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_DURATION);
+            int yearCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_YEAR);
 
             do {
                 long id = cursor.getLong(idCol);
@@ -148,7 +149,10 @@ public class QueueDbHelper extends SQLiteOpenHelper {
 
                 int duration = cursor.getInt(trackDur);
 
-                list.add(new Song(id, title, artist, album, albumId, track, duration));
+                int year = 0;
+
+
+                list.add(new Song(id, title, artist, album, albumId, track, duration, year));
             } while (cursor.moveToNext());
         }
 

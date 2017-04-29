@@ -20,7 +20,7 @@ public class SongLoader extends BaseLoader<List<Song>> {
             MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media.ARTIST_ID, MediaStore.Audio.Media.TRACK,
-            MediaStore.Audio.Media.DURATION};
+            MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.YEAR};
 
     public SongLoader(Context context) {
         super(context);
@@ -47,6 +47,8 @@ public class SongLoader extends BaseLoader<List<Song>> {
 
             int trackDur = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
 
+            int yearCol = cursor.getColumnIndex(MediaStore.Audio.Media.YEAR);
+
             do {
                 long id = cursor.getLong(idCol);
                 String title = cursor.getString(titleCol);
@@ -61,8 +63,10 @@ public class SongLoader extends BaseLoader<List<Song>> {
 
                 int duration = cursor.getInt(trackDur);
 
+                int year = cursor.getInt(yearCol);
 
-                mSongList.add(new Song(id, title, artist, album, albumId, track, duration));
+
+                mSongList.add(new Song(id, title, artist, album, albumId, track, duration, year));
             } while (cursor.moveToNext());
 
         }

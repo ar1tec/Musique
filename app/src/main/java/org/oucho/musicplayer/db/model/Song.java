@@ -11,8 +11,9 @@ public class Song {
     private final long albumId;
     private String genre;
     private final int duration;
+    private final int year;
 
-    public Song(long id, String title, String artist, String album, long albumId, int trackNumber, int duration) {
+    public Song(long id, String title, String artist, String album, long albumId, int trackNumber, int duration, int year) {
         super();
         this.id = id;
         this.title = title == null ? MediaStore.UNKNOWN_STRING : title;
@@ -21,6 +22,8 @@ public class Song {
         this.albumId = albumId;
         this.trackNumber = trackNumber;
         this.duration = duration;
+        this.year = year;
+
 
     }
 
@@ -59,4 +62,9 @@ public class Song {
     public void setGenre(String genre) {
         this.genre = genre;
     }
+
+    public int getYear() {
+        return year;
+    }
+
 }

@@ -37,7 +37,7 @@ import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.widgets.FastScroller;
+import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 import java.util.Locale;
@@ -212,16 +212,10 @@ public class ArtistFragment extends BaseFragment implements MusiqueKeys {
 
         View rootView = inflater.inflate(R.layout.fragment_artist, container, false);
 
-        RecyclerView mSongListView = (RecyclerView) rootView.findViewById(R.id.song_list);
-
-
-        mSongListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        FastScrollRecyclerView mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mSongListAdapter = new SongListAdapter();
-        mSongListView.setAdapter(mSongListAdapter);
-
-        FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        mFastScroller.setRecyclerView(mSongListView);
+        mRecyclerView.setAdapter(mSongListAdapter);
 
         return rootView;
     }

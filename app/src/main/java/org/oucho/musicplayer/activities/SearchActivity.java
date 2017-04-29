@@ -43,7 +43,7 @@ import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.widgets.FastScroller;
+import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +59,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
     private View mEmptyView;
     private SearchAdapter mAdapter;
     private int mThumbSize;
-    private RecyclerView mRecyclerView;
+    private FastScrollRecyclerView mRecyclerView;
 
     private static final String TAG_LOG = "Search Activity";
 
@@ -223,7 +223,7 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         mThumbSize = getResources().getDimensionPixelSize(R.dimen.art_thumbnail_search_size);
         mEmptyView = findViewById(R.id.empty_view);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.list_view);
+        mRecyclerView = (FastScrollRecyclerView) findViewById(R.id.recycler_view);
         mAdapter = new SearchAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -234,10 +234,6 @@ public class SearchActivity extends AppCompatActivity implements MusiqueKeys {
         getSupportLoaderManager().initLoader(0, null, mAlbumLoaderCallbacks);
         getSupportLoaderManager().initLoader(1, null, mArtistLoaderCallbacks);
         getSupportLoaderManager().initLoader(2, null, mSongLoaderCallbacks);
-
-        FastScroller mFastScroller = (FastScroller) findViewById(R.id.fastscroller);
-        assert mFastScroller != null;
-        mFastScroller.setRecyclerView(mRecyclerView);
 
     }
 

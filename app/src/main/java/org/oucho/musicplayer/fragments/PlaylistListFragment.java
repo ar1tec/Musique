@@ -13,7 +13,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +27,7 @@ import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.PlaylistListAdapter;
 import org.oucho.musicplayer.dialog.CreatePlaylistDialog;
 import org.oucho.musicplayer.db.model.Playlist;
-import org.oucho.musicplayer.widgets.FastScroller;
+import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -116,23 +115,16 @@ public class PlaylistListFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_playlist_list, container, false);
 
-
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_view);
+        FastScrollRecyclerView mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
         mAdapter = new PlaylistListAdapter();
-
         mAdapter.setOnItemClickListener(mOnItemClickListener);
 
         mRecyclerView.setAdapter(mAdapter);
 
-        FastScroller scroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        scroller.setRecyclerView(mRecyclerView);
         return rootView;
     }
 

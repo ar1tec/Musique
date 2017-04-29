@@ -12,7 +12,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height"
+        android:layout_height="@dimen/fragment_playlist_item_height"
         android:background="?attr/selectableItemBackground"
         android:orientation="vertical"
         android:paddingBottom="@dimen/small_content_padding"

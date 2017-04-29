@@ -50,7 +50,7 @@ public class ArtistImageCache extends BitmapCache<String> {
         super();
 
         final Resources res = context.getResources();
-        mLargeImageSize = res.getDimensionPixelSize(R.dimen.artist_image_req_width);
+        mLargeImageSize = res.getDimensionPixelSize(R.dimen.fragment_album_artist_image_req_width);
 
         mThumbSize = res.getDimensionPixelSize(R.dimen.art_thumbnail_size);
 

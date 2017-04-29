@@ -11,7 +11,6 @@ public interface MusiqueKeys {
 
     String INTENT_QUIT = "org.oucho.musicplayer.QUIT";
     String INTENT_STATE = "org.oucho.musicplayer.STATE";
-    String INTENT_BLURVIEW = "org.oucho.musicplayer.BLURVIEW";
     String INTENT_QUEUEVIEW = "org.oucho.musicplayer.QUEUEVIEW";
     String INTENT_LAYOUTVIEW = "org.oucho.musicplayer.LAYOUTVIEW";
 
@@ -50,6 +49,7 @@ public interface MusiqueKeys {
     String ALBUM_TRACK_COUNT = "track_count";
 
     String SONG_ID = "song_id";
+    String SONG_YEAR = "song_year";
     String SONG_TITLE = "song_title";
     String SONG_ALBUM = "song_album";
     String SONG_ARTIST = "song_artist";

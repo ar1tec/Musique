@@ -18,7 +18,7 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
             MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media.ARTIST_ID, MediaStore.Audio.Media.TRACK,
-            MediaStore.Audio.Media.DURATION};
+            MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.YEAR};
 
     private final long mPlaylistId;
 
@@ -47,6 +47,7 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
             int albumIdCol = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
             int trackCol = cursor.getColumnIndex(MediaStore.Audio.Media.TRACK);
             int trackDur = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
+            int yearCol = cursor.getColumnIndex(MediaStore.Audio.Media.YEAR);
 
             do {
                 long id = cursor.getLong(idCol);
@@ -62,7 +63,10 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
 
                 int duration = cursor.getInt(trackDur);
 
-                playlist.add(new Song(id, title, artist, album, albumId, track, duration));
+                int year = cursor.getInt(yearCol);
+
+
+                playlist.add(new Song(id, title, artist, album, albumId, track, duration, year));
 
             } while (cursor.moveToNext());
 

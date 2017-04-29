@@ -30,7 +30,6 @@ import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
-import org.oucho.musicplayer.widgets.FastScroller;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,9 +140,6 @@ public class PlaylistFragment extends BaseFragment {
                 mAdapter.moveItem(oldPosition, newPosition);
             }
         });
-
-        FastScroller scroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        scroller.setRecyclerView(mRecyclerView);
 
         return rootView;
     }

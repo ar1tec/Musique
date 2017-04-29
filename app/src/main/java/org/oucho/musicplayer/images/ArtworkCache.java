@@ -60,7 +60,7 @@ public class ArtworkCache extends BitmapCache<Long> {
     private ArtworkCache(Context context) {
         super();
         mContext = context;
-        mLargeArtworkSize = context.getResources().getDimensionPixelSize(R.dimen.playback_activity_art_size);
+        mLargeArtworkSize = context.getResources().getDimensionPixelSize(R.dimen.fragment_player_art_size);
         mThumbSize = context.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_size);
     }
 

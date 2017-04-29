@@ -17,7 +17,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.Display;
@@ -44,7 +43,7 @@ import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
-import org.oucho.musicplayer.widgets.FastScroller;
+import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 
@@ -65,10 +64,8 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     private boolean run = false;
     private boolean isRegistered = false;
 
-    private RecyclerView mRecyclerView;
+    private FastScrollRecyclerView mRecyclerView;
     private final Handler mHandler = new Handler();
-
-
 
 
     private List<Album> listeTitre;
@@ -262,7 +259,8 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_liste_album, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_view);
+        mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
+
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
 
         Resources res = getActivity().getResources();
@@ -271,7 +269,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         Point size = new Point();
         display.getSize(size);
         float screenWidth = size.x;
-        float itemWidth = res.getDimension(R.dimen.album_grid_item_width);
+        float itemWidth = res.getDimension(R.dimen.fragmen_album_list_grid_item_width);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), Math.round(screenWidth / itemWidth)));
 
         int artworkSize = res.getDimensionPixelSize(R.dimen.art_size);
@@ -280,10 +278,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         mAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
 
         mRecyclerView.setAdapter(mAdapter);
-
-        FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        mFastScroller.setRecyclerView(mRecyclerView);
-
 
         return rootView;
     }
@@ -366,11 +360,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         super.onResume();
 
         Log.i(TAG_LOG, "onResume()");
-
-        // attendre la fin du chargement de l'interface avant d'activer blurview, bug charge CPU
-        Intent intent = new Intent();
-        intent.setAction(INTENT_BLURVIEW);
-        mContext.sendBroadcast(intent);
 
 
         if (!isRegistered) {

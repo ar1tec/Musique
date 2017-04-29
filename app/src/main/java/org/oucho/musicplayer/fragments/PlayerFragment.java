@@ -110,7 +110,7 @@ public class PlayerFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_player, container, false);
 
-        mArtworkSize = getResources().getDimensionPixelSize(R.dimen.playback_activity_art_size);
+        mArtworkSize = getResources().getDimensionPixelSize(R.dimen.fragment_player_art_size);
 
         SharedPreferences préférences = mContext.getSharedPreferences(STATE_PREFS_NAME, MODE_PRIVATE);
         track = préférences.getInt("currentPosition", 0) + 1;
@@ -334,17 +334,6 @@ public class PlayerFragment extends BaseFragment
 
                         if (!MainActivity.getPlaylistFragmentState())
                             MainActivity.setMenu(true);
-
-                        // rustine blurview
-                        mHandler.postDelayed(new Runnable() {
-
-                            public void run() {
-
-                                Intent intent0 = new Intent();
-                                intent0.setAction(INTENT_BLURVIEW);
-                                mContext.sendBroadcast(intent0);
-                            }
-                        }, 1000);
 
                         return true;
                     }

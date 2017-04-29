@@ -8,14 +8,13 @@
         <attr name="cardStyle" format="reference" />
     </declare-styleable>
 
-    <attr name="fastScrollerStyle" format="reference" />
 
-    <declare-styleable name="FastScroller">
-        <attr name="scrollerColor" format="color" />
-        <attr name="handleHeight" format="dimension" />
-        <attr name="handleWidth" format="dimension" />
+    <declare-styleable name="FastScrollRecyclerView">
+        <attr name="hideScrollbar" format="boolean" />
+        <attr name="handleColor" format="color" />
+        <attr name="bubbleColor" format="color" />
+        <attr name="bubbleTextColor" format="color" />
     </declare-styleable>
-
 
     <attr name="seekBarControl" format="reference" />
     <attr name="seekBarProgress" format="reference" />

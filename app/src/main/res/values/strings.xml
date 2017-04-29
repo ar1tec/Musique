@@ -93,7 +93,7 @@
         Of file format. If your system is not ready to read lossless files this
         Application will not allow it either. \n
         \n
-        This app does not handle the files, it depends on 100% Android, if songs do not appear
+        This app does not handle the files, it depends on 100\% Android, if songs do not appear
         It is that the Android database is corrupted. There are tools to fix this.
         \n
         Editing tags does not affect files, it only brings an addition to the Android database. \n

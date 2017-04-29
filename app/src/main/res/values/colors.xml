@@ -19,6 +19,8 @@
  <color name="transparent">#00000000</color>
  <color name="blancTransparent">#64ffffff</color>
 
+ <color name="noirTransparent">#a5000000</color>
+
  <color name="colorBlurViewOverlay">#afffffff</color>
 
 

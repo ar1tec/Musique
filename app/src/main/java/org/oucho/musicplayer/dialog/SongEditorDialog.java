@@ -30,6 +30,8 @@ public class SongEditorDialog extends DialogFragment {
     private static final String ARG_ALBUM_ID = "album_id";
     private static final String ARG_TRACK_NUMBER = "track_number";
     private static final String ARG_TRACK_DURATION = "duration";
+    private static final String ARG_YEAR = "year";
+
 
     private Song mSong;
 
@@ -71,7 +73,9 @@ public class SongEditorDialog extends DialogFragment {
             long albumId = args.getLong(ARG_ALBUM_ID);
             int trackNumber = args.getInt(ARG_TRACK_NUMBER);
             int trackDur = args.getInt(ARG_TRACK_DURATION);
-            mSong = new Song(id, title, artist, album, albumId, trackNumber, trackDur);
+            int yearCol = args.getInt(ARG_YEAR);
+
+            mSong = new Song(id, title, artist, album, albumId, trackNumber, trackDur, yearCol);
         }
     }
 

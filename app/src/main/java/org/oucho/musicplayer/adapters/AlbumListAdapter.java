@@ -19,12 +19,14 @@ import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.images.ArtworkHelper;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.MusiqueKeys;
+import org.oucho.musicplayer.widgets.fastscroll.FastScroller;
 
+import java.text.Normalizer;
 import java.util.Collections;
 import java.util.List;
 
 
-public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHolder> implements MusiqueKeys {
+public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHolder> implements FastScroller.SectionIndexer, MusiqueKeys {
 
     private final int mArtworkWidth;
     private final int mArtworkHeight;
@@ -51,6 +53,48 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
                 mLayoutId, parent, false);
 
         return new AlbumViewHolder(itemView);
+    }
+
+    @Override
+    public String getSectionText(int position) {
+
+        Album album = mAlbumList.get(position);
+
+        SharedPreferences préférences = mContext.getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+
+
+        String getTri = préférences.getString("album_sort_order", "");
+
+
+        if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
+
+            String toto = String.valueOf(album.getArtistName())
+                    .replaceFirst("The ", "");
+
+            return stripAccents(String.valueOf(toto.toUpperCase().charAt(0)));
+
+
+        } else if ("minyear DESC".equals(getTri)) {
+
+
+            String toto = String.valueOf(album.getYear());
+
+            return String.valueOf(toto);
+
+        } else {
+
+            String toto = String.valueOf(album.getAlbumName())
+                    .replaceFirst("The ", "");
+
+            return stripAccents(String.valueOf(toto.toUpperCase().charAt(0)));
+        }
+
+    }
+
+    private static String stripAccents(String s) {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
     }
 
     @Override

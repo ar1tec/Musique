@@ -11,7 +11,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -35,7 +34,7 @@ import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
-import org.oucho.musicplayer.widgets.FastScroller;
+import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 
@@ -217,17 +216,14 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_song, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_view);
+        FastScrollRecyclerView mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new SongListAdapter(getActivity());
         mAdapter.setOnItemClickListener(mOnItemClickListener);
 
         mRecyclerView.setAdapter(mAdapter);
-
-
-        FastScroller mFastScroller = (FastScroller) rootView.findViewById(R.id.fastscroller);
-        mFastScroller.setRecyclerView(mRecyclerView);
 
         return rootView;
     }
@@ -352,7 +348,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
             tri = mContext.getString(R.string.title_sort_year);
 
-        } else if ("artist".equals(getTri)) {
+        } else if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
 
             tri = mContext.getString(R.string.title_sort_artist);
 

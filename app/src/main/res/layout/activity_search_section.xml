@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/small_list_item_height"
+    android:layout_height="@dimen/activity_search_small_list_item_height"
     android:gravity="center_vertical"
     android:maxLines="1"
     android:padding="@dimen/small_content_padding"
     android:textSize="22sp"
-    android:textColor="@color/colorAccent" />
+    android:textColor="@color/amber_700" />
 
 
 

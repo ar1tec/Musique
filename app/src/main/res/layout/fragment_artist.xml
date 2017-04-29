@@ -4,22 +4,25 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/song_list"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-82dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:orientation="vertical">
 
-    <org.oucho.musicplayer.widgets.FastScroller
-        android:id="@+id/fastscroller"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"/>
+        <org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bubbleColor="@color/noirTransparent"
+            app:bubbleTextColor="@color/amber_700"
+            app:handleColor="@color/amber_700"
+            app:hideScrollbar="true" />
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@drawable/shadow" />
 </FrameLayout>
+
