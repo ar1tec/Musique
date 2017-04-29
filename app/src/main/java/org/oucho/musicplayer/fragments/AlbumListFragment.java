@@ -445,7 +445,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
             // délai affichage lors du premier chargement nom appli --> tri actuel
             if (run) {
-
                 int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_300);
 
 
@@ -465,9 +464,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                             + tri
                             + "</small></font>"));
                 }
-
-                MainActivity.setViewID(R.id.fragment_album_list_layout);
-
 
 
             } else {

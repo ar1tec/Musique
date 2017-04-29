@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,6 +47,8 @@ public class PlaylistListFragment extends BaseFragment {
             MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME};
 
     private PlaylistListAdapter mAdapter;
+
+    private final String TAG_LOG = "Playlist List Fragment";
 
 
 

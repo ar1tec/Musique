@@ -180,8 +180,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
         try {
             mActivity = (MainActivity) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -370,26 +369,18 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
             int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_300);
 
+            MainActivity.setViewID(R.id.fragment_song_layout);
+
             if (android.os.Build.VERSION.SDK_INT >= 24) {
-                getActivity().setTitle(Html.fromHtml(
-                        "<font>" + titre
-                                + " " + " "
+                getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " "
                                 + " </font> <small> <font color='" + couleurTitre + "'>"
-                                + tri
-                                + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
-                MainActivity.setViewID(R.id.fragment_song_layout);
+                                + tri + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
 
             } else {
                 //noinspection deprecation
-                getActivity().setTitle(Html.fromHtml(
-                        "<font>" + titre
-                                + " " + " "
+                getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " "
                                 + " </font> <small> <font color='" + couleurTitre + "'>"
-                                + tri
-                                + "</small></font>"));
-
-                MainActivity.setViewID(R.id.fragment_song_layout);
-
+                                + tri + "</small></font>"));
             }
         }
     }

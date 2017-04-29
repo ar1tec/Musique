@@ -60,9 +60,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     private AlbumSongListAdapter mAdapter;
     private MainActivity mActivity;
 
-    private SearchActivity cActivity;
-
-
     private FastScrollRecyclerView mRecyclerView;
     private Etat_player Etat_player_Receiver;
     private boolean isRegistered = false;
