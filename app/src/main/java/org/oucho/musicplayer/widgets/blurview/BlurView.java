@@ -159,7 +159,7 @@ public class BlurView extends FrameLayout {
     }
 
 
-    private ControllerSettings setupWith(@NonNull ViewGroup rootView) {
+    public ControllerSettings setupWith(@NonNull ViewGroup rootView) {
 
         Log.w(TAG_LOG, "setupWith()");
 
@@ -174,7 +174,7 @@ public class BlurView extends FrameLayout {
         return new ControllerSettings(blurController);
     }
 
-    private static class ControllerSettings {
+    public static class ControllerSettings {
         final BlurController blurController;
 
         ControllerSettings(BlurController blurController) {
@@ -233,21 +233,4 @@ public class BlurView extends FrameLayout {
         };
     }
 
-
-
-    public static void setupBlurView(Context context, View decorView, Boolean queueLayout, BlurView queueBlurView) {
-        Log.w(TAG_LOG, "setupBlurView()");
-
-        final float radius = 5f;
-
-        //Activity's root View. Can also be root View of your layout (preferably)
-        final ViewGroup rootView = (ViewGroup) decorView.findViewById(R.id.drawer_layout);
-
-        if (queueLayout) {
-            queueBlurView.setupWith(rootView)
-                    .blurAlgorithm(new RenderScriptBlur(context, true))
-                    .blurRadius(radius);
-
-        }
-    }
 }

@@ -39,6 +39,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -76,6 +77,7 @@ import org.oucho.musicplayer.utils.VolumeTimer;
 import org.oucho.musicplayer.widgets.blurview.BlurView;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.ProgressBar;
+import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -86,7 +88,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static org.oucho.musicplayer.R.id.drawer_layout;
-import static org.oucho.musicplayer.widgets.blurview.BlurView.setupBlurView;
 
 public class MainActivity extends AppCompatActivity implements
         MusiqueKeys,
@@ -257,10 +258,14 @@ public class MainActivity extends AppCompatActivity implements
 
 
     private void setBlurView() {
-        final View decorView = getWindow().getDecorView();
+        final float radius = 5f;
 
-        setupBlurView(mContext, decorView, queueLayout, queueBlurView);
+        //Activity's root View. Can also be root View of your layout (preferably)
+        final ViewGroup rootView = (ViewGroup) findViewById(R.id.drawer_layout);
 
+        queueBlurView.setupWith(rootView)
+                .blurAlgorithm(new RenderScriptBlur(mContext, true))
+                .blurRadius(radius);
     }
 
     /* *********************************************************************************************
@@ -323,6 +328,10 @@ public class MainActivity extends AppCompatActivity implements
      **************/
 
     private void showAboutDialog(){
+
+        View rootView = getLayoutInflater().inflate(R.layout.dialog_main_noshadow, null);
+
+
         AboutDialog dialog = new AboutDialog();
         dialog.show(getSupportFragmentManager(), "about");
     }

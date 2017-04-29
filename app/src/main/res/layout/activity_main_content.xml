@@ -45,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/blancTransparent"
+            android:layout_marginBottom="@dimen/barre_lecture"
             android:visibility="gone">
 
             <TextView
@@ -63,16 +64,23 @@
                 android:layout_marginTop="?attr/actionBarSize"
                 android:background="@drawable/shadow"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize">
+
             <org.oucho.musicplayer.widgets.DragRecyclerView
                 android:id="@+id/queue_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/barre_lecture"
-                android:layout_marginTop="?attr/actionBarSize"
-                android:clipToPadding="false"
-                android:scrollbarStyle="outsideOverlay"
-                android:padding="8dp" />
+                app:handleColor="@color/amber_700"/>
+
+            </RelativeLayout>
+
         </FrameLayout>
+
+
+
 
     </org.oucho.musicplayer.widgets.blurview.BlurView>
 
