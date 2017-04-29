@@ -238,7 +238,9 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             String receiveIntent = intent.getAction();
 
             if ("reload".equals(receiveIntent)) {
-                setUserVisibleHint(true);
+                if (MainActivity.getViewID() != R.id.fragment_song_layout)
+                    setUserVisibleHint(true);
+
                 showOverflowMenu(true);
                 LibraryFragment.setLock(false);
 
@@ -246,7 +248,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
             // recharge la vue via Adapter
             mAdapter.notifyDataSetChanged();
-
         }
     }
 
@@ -445,8 +446,10 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
             // délai affichage lors du premier chargement nom appli --> tri actuel
             if (run) {
-                int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_300);
 
+                MainActivity.setViewID(R.id.fragment_album_list_layout);
+
+                int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_300);
 
                 if (android.os.Build.VERSION.SDK_INT >= 24) {
                     getActivity().setTitle(Html.fromHtml("<font>"
