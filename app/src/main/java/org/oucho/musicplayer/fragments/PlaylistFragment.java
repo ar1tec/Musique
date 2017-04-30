@@ -30,6 +30,7 @@ import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
+import org.oucho.musicplayer.widgets.LockableViewPager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -151,6 +152,8 @@ public class PlaylistFragment extends BaseFragment {
 
         MainActivity.setPlaylistFragmentState(true);
 
+        LockableViewPager.setSwipeLocked(true);
+
         //final int viewID = MainActivity.getViewID();
         // Active la touche back
         if(getView() == null){
@@ -164,6 +167,8 @@ public class PlaylistFragment extends BaseFragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    LockableViewPager.setSwipeLocked(false);
 
                     if (MainActivity.getQueueLayout()) {
 

@@ -39,6 +39,7 @@ import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
+import org.oucho.musicplayer.widgets.LockableViewPager;
 import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
@@ -510,14 +511,13 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         MainActivity.setAlbumFragmentState(true);
 
+        LockableViewPager.setSwipeLocked(true);
+
         if (!isRegistered) {
             IntentFilter filter = new IntentFilter(INTENT_STATE);
             mContext.registerReceiver(Etat_player_Receiver, filter);
             isRegistered = true;
         }
-
-
-        LibraryFragment.setLock(true);
 
         // Active la touche back
         if (getView() == null) {
@@ -535,7 +535,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                     Log.i(TAG_LOG, "onResume()n, KeyEvent");
 
-                    LibraryFragment.setLock(false);
+                    LockableViewPager.setSwipeLocked(false);
+
 
                     if (MainActivity.getQueueLayout()) {
 

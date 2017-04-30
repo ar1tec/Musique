@@ -26,6 +26,7 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.images.ArtworkCache;
+import org.oucho.musicplayer.widgets.LockableViewPager;
 
 import java.util.List;
 import java.util.Locale;
@@ -292,6 +293,8 @@ public class PlayerFragment extends BaseFragment
         }
 
 
+        LockableViewPager.setSwipeLocked(true);
+
         // Active la touche back
         if (getView() == null) {
             return;
@@ -307,6 +310,10 @@ public class PlayerFragment extends BaseFragment
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
                     int viewID = MainActivity.getViewID();
+
+                    if( ! MainActivity.getPlaylistFragmentState() && ! MainActivity.getAlbumFragmentState())
+                    LockableViewPager.setSwipeLocked(false);
+
 
                     if (MainActivity.getQueueLayout()) {
 

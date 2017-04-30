@@ -28,6 +28,7 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.activities.SearchActivity;
+import org.oucho.musicplayer.adapters.AlbumListAdapter;
 import org.oucho.musicplayer.db.loaders.SongLoader;
 import org.oucho.musicplayer.db.loaders.SortOrder;
 import org.oucho.musicplayer.db.model.Artist;
@@ -290,6 +291,16 @@ public class ArtistFragment extends BaseFragment implements MusiqueKeys {
     }
 
 
+
+    private class BlankViewHolder extends RecyclerView.ViewHolder {
+
+        BlankViewHolder(View itemView) {
+            super(itemView);
+
+        }
+
+    }
+
     private class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView vTitle;
@@ -335,8 +346,8 @@ public class ArtistFragment extends BaseFragment implements MusiqueKeys {
 
     private class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private static final int FIRST = 1;
-        private static final int NORMAL = 2;
+        private static final int ALBUM = 1;
+        private static final int SONG = 2;
 
         private List<Song> mSongList;
 
@@ -345,18 +356,28 @@ public class ArtistFragment extends BaseFragment implements MusiqueKeys {
             notifyDataSetChanged();
         }
 
+
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            if (viewType == ALBUM) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_song_item, parent, false);
+
+                //return new BlankViewHolder(itemView);
+            }
+
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_song_item, parent, false);
 
             return new SongViewHolder(itemView);
         }
 
+
+
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             int viewType = getItemViewType(position);
 
-            if (viewType == NORMAL) {
+            if (viewType == SONG) {
 
                 Song song = getItem(position -1);
 
@@ -374,19 +395,50 @@ public class ArtistFragment extends BaseFragment implements MusiqueKeys {
         }
 
         public Song getItem(int position) {
+
+            Log.e(TAG_LOG, "getItem(int " + String.valueOf(position) + ")");
+            Log.e(TAG_LOG, "return " + String.valueOf(mSongList == null ? null : mSongList.get(position)) );
+
+
             return mSongList == null ? null : mSongList.get(position);
         }
 
         @Override
         public int getItemViewType(int position) {
-            return position == 0 ? FIRST : NORMAL;
+
+            Log.e(TAG_LOG, "getItemViewType(int " + String.valueOf(position) + ")");
+            Log.e(TAG_LOG, "return " + String.valueOf(position == 0 ? ALBUM : SONG));
+
+            if (position == 0) {
+                return ALBUM;
+            } else {
+                return SONG;
+            }
         }
 
         @Override
         public int getItemCount() {
-            return mSongList == null ? 1 : mSongList.size() + 1;
+            //return mSongList == null ? 1 : mSongList.size() + 1;
+
+
+            if (mSongList == null) {
+
+                Log.e(TAG_LOG, "getItemCount(), return 1;");
+
+
+                return 1;
+
+            } else {
+
+                Log.e(TAG_LOG, "getItemCount(), return mSongList.size() + 1;");
+
+
+                return mSongList.size() + 1;
+            }
 
         }
+
+
     }
 
 

@@ -43,6 +43,7 @@ import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
+import org.oucho.musicplayer.widgets.LockableViewPager;
 import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
@@ -242,7 +243,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                     setUserVisibleHint(true);
 
                 showOverflowMenu(true);
-                LibraryFragment.setLock(false);
 
             }
 
@@ -386,8 +386,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                     Log.i(TAG_LOG, "onResume(), KeyEvent.KEYCODE_BACK ");
 
-                    LibraryFragment.setLock(false);
-
                     if (MainActivity.getQueueLayout()) {
 
                         Log.i(TAG_LOG, "onResume(), KeyEvent, if (MainActivity.getQueueLayout()) ");
@@ -403,6 +401,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         Log.i(TAG_LOG, "onResume(), KeyEvent, else if (MainActivity.getAlbumFragmentState()) ");
 
                         MainActivity.setAlbumFragmentState(false);
+                        LockableViewPager.setSwipeLocked(false);
 
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);

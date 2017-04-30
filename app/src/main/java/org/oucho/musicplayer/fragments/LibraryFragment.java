@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.utils.ToolbarDrawerToggle;
+import org.oucho.musicplayer.widgets.LockableViewPager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,6 @@ public class LibraryFragment extends BaseFragment {
     private static final String TAG_LOG = "Search Activity";
 
     private static SectionsPagerAdapter mSectionsPagerAdapter;
-    private static boolean lock = false;
 
     public static LibraryFragment newInstance() {
 
@@ -37,7 +37,7 @@ public class LibraryFragment extends BaseFragment {
 
 
     @SuppressLint("StaticFieldLeak")
-    private static ViewPager mViewPager;
+    private static LockableViewPager mViewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,7 +46,7 @@ public class LibraryFragment extends BaseFragment {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getChildFragmentManager());
 
-        mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
+        mViewPager = (LockableViewPager) rootView.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         MainActivity activity = (MainActivity) getActivity();
@@ -67,17 +67,6 @@ public class LibraryFragment extends BaseFragment {
 
     public static void backToPrevious() {
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-    }
-
-
-    private boolean getLock() {
-        return lock;
-    }
-
-    public static void  setLock(boolean value) {
-        lock = value;
-        mSectionsPagerAdapter.notifyDataSetChanged();
-
     }
 
 
@@ -113,8 +102,6 @@ public class LibraryFragment extends BaseFragment {
             switch (position) {
                 case 0:
                     return AlbumListFragment.newInstance();
-                //case 1:
-                //    return ArtistListFragment.newInstance();
                 case 1:
                     return SongListFragment.newInstance();
                 case 2:
@@ -148,12 +135,7 @@ public class LibraryFragment extends BaseFragment {
         @Override
         public int getCount() {
 
-            if (!getLock()) {
-                return 3;
-        } else {
-                return 1;
-            }
-
+            return 3;
         }
 
     }

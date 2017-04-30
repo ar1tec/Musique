@@ -28,6 +28,7 @@ import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.PlaylistListAdapter;
 import org.oucho.musicplayer.dialog.CreatePlaylistDialog;
 import org.oucho.musicplayer.db.model.Playlist;
+import org.oucho.musicplayer.widgets.LockableViewPager;
 import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.text.Collator;
@@ -158,6 +159,8 @@ public class PlaylistListFragment extends BaseFragment {
                     } else if (MainActivity.getPlaylistFragmentState()) {
 
                         MainActivity.setPlaylistFragmentState(false);
+                        LockableViewPager.setSwipeLocked(false);
+
 
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
