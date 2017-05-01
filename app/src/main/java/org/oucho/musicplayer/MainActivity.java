@@ -877,9 +877,6 @@ public class MainActivity extends AppCompatActivity implements
                         mProgressBar.setAnimation(fadeIn);
                         mProgressBar.setVisibility(View.VISIBLE);
 
-
-                        ///shadow_bottom.setVisibility(View.VISIBLE);
-
                         float elevation = mContext.getResources().getDimension(R.dimen.playbar_elevation);
                         playbarShadow.setElevation(elevation);
 
@@ -888,7 +885,6 @@ public class MainActivity extends AppCompatActivity implements
                         mProgressBar.setVisibility(View.VISIBLE);
 
                     }
-
                 }
 
                 refresh();

@@ -135,7 +135,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys{
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             mHandler.removeCallbacks(removeDot);
-            mHandler.postDelayed(removeDot, 1000);
+            mHandler.postDelayed(removeDot, 500);
 
         }
 
