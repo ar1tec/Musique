@@ -74,7 +74,6 @@ import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.utils.VolumeTimer;
-import org.oucho.musicplayer.widgets.LockableViewPager;
 import org.oucho.musicplayer.widgets.blurview.BlurView;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.ProgressBar;
@@ -141,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements
     private ImageView shuffleBar;
     private ImageView repeatBar;
     private ImageView repeatBar1;
+
+    private RelativeLayout playbarShadow;
 
     /* *********************************************************************************************
      * Création de l'activité
@@ -243,6 +244,8 @@ public class MainActivity extends AppCompatActivity implements
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        playbarShadow = (RelativeLayout) findViewById(R.id.playbar_shadow);
+
 
         PrefUtils.init(this);
         ArtworkCache.init(this);
@@ -329,9 +332,6 @@ public class MainActivity extends AppCompatActivity implements
      **************/
 
     private void showAboutDialog(){
-
-        View rootView = getLayoutInflater().inflate(R.layout.dialog_main_noshadow, null);
-
 
         AboutDialog dialog = new AboutDialog();
         dialog.show(getSupportFragmentManager(), "about");
@@ -814,6 +814,8 @@ public class MainActivity extends AppCompatActivity implements
 
                 final float tailleBarre = getResources().getDimension(R.dimen.barre_lecture);
 
+                // View shadow_bottom = (View) findViewById(R.id.shadow_inverse);
+
 
                 if ("playBarLayout".equals(intent.getStringExtra("vue"))) {
 
@@ -837,6 +839,8 @@ public class MainActivity extends AppCompatActivity implements
                     mProgressBar.setAnimation(fadeOut);
                     mProgressBar.setVisibility(View.GONE);
 
+
+                    playbarShadow.setElevation(0);
                     playBarLayout = true;
 
                 } else {
@@ -872,6 +876,12 @@ public class MainActivity extends AppCompatActivity implements
                         fadeIn.setDuration(400);
                         mProgressBar.setAnimation(fadeIn);
                         mProgressBar.setVisibility(View.VISIBLE);
+
+
+                        ///shadow_bottom.setVisibility(View.VISIBLE);
+
+                        float elevation = mContext.getResources().getDimension(R.dimen.playbar_elevation);
+                        playbarShadow.setElevation(elevation);
 
                         playBarLayout = false;
                     } else {
@@ -1333,7 +1343,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    public static void stopTimer(Context context) {
+    public static void stopTimer() {
         if (running)
             mTask.cancel(true);
 
@@ -1580,5 +1590,6 @@ public class MainActivity extends AppCompatActivity implements
     public static void setChercheActivity(Boolean value) {
         chercheActivity = value;
     }
+
 }
 

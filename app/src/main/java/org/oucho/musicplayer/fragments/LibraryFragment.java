@@ -1,7 +1,13 @@
 package org.oucho.musicplayer.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,8 +19,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 import org.oucho.musicplayer.MainActivity;
+import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.utils.ToolbarDrawerToggle;
 import org.oucho.musicplayer.widgets.LockableViewPager;
@@ -22,13 +32,28 @@ import org.oucho.musicplayer.widgets.LockableViewPager;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.oucho.musicplayer.R.id.pager;
 
-public class LibraryFragment extends BaseFragment {
+
+public class LibraryFragment extends BaseFragment implements MusiqueKeys{
 
 
     private static final String TAG_LOG = "Search Activity";
 
+    private Context mContext;
+
+    private LinearLayout shadow;
+    private TabLayout tabLayout;
+
     private static SectionsPagerAdapter mSectionsPagerAdapter;
+
+    private boolean receiver = false;
+    private boolean pagerVisible = false;
+
+
+    @SuppressLint("StaticFieldLeak")
+    private static LockableViewPager mViewPager;
+
 
     public static LibraryFragment newInstance() {
 
@@ -36,21 +61,38 @@ public class LibraryFragment extends BaseFragment {
     }
 
 
-    @SuppressLint("StaticFieldLeak")
-    private static LockableViewPager mViewPager;
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (receiver) {
+            mContext.unregisterReceiver(mServiceListener);
+            receiver = false;
+        }
+    }
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onResume() {
+        super.onResume();
+
+        if (!receiver) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(INTENT_TOOLBAR8_SHADOW);
+
+            mContext.registerReceiver(mServiceListener, filter);
+            receiver = true;
+        }
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter( getChildFragmentManager());
-
-        mViewPager = (LockableViewPager) rootView.findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
 
         MainActivity activity = (MainActivity) getActivity();
 
+        mContext = activity.getApplicationContext();
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
 
         DrawerLayout drawerLayout = activity.getDrawerLayout();
@@ -60,9 +102,62 @@ public class LibraryFragment extends BaseFragment {
         ToolbarDrawerToggle drawerToggle = new ToolbarDrawerToggle(activity,drawerLayout,toolbar, new int[]{Gravity.START});
         drawerLayout.addDrawerListener(drawerToggle);
 
-        return rootView;
+        mSectionsPagerAdapter = new SectionsPagerAdapter( getChildFragmentManager());
 
+        mViewPager = (LockableViewPager) rootView.findViewById(pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(mViewPagerChangeListener);
+
+        tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout_indicator);
+        tabLayout.setupWithViewPager(mViewPager, true);
+
+        shadow = (LinearLayout) rootView.findViewById(R.id.toolbar_shadow);
+
+        return rootView;
     }
+
+    Handler mHandler = new Handler();
+
+    private ViewPager.OnPageChangeListener mViewPagerChangeListener = new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+            if (!pagerVisible) {
+                Animation anime = AnimationUtils.loadAnimation(mContext, R.anim.pager_fade_in);
+                tabLayout.startAnimation(anime);
+                tabLayout.setVisibility(View.VISIBLE);
+                pagerVisible = true;
+            }
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            mHandler.removeCallbacks(removeDot);
+            mHandler.postDelayed(removeDot, 1000);
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+
+        }
+    };
+
+
+    private final Runnable removeDot = new Runnable() {
+        @Override
+        public void run() {
+
+            if (pagerVisible) {
+                Animation anime = AnimationUtils.loadAnimation(mContext, R.anim.pager_fade_out);
+                tabLayout.startAnimation(anime);
+                tabLayout.setVisibility(View.GONE);
+                pagerVisible = false;
+            }
+        }
+    };
 
 
     public static void backToPrevious() {
@@ -139,4 +234,25 @@ public class LibraryFragment extends BaseFragment {
         }
 
     }
+
+
+    private final BroadcastReceiver mServiceListener = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String receiveIntent = intent.getAction();
+
+            if (receiveIntent.equals(INTENT_TOOLBAR8_SHADOW)) {
+
+                boolean value = intent.getBooleanExtra("boolean", true);
+
+                if (value)
+                    shadow.setElevation(mContext.getResources().getDimension(R.dimen.toolbar_elevation));
+
+                if (!value)
+                    shadow.setElevation(0);
+            }
+        }
+    };
 }

@@ -82,6 +82,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     private Context mContext;
 
+
     public static AlbumFragment newInstance(Album album) {
         AlbumFragment fragment = new AlbumFragment();
         Bundle args = new Bundle();
@@ -217,6 +218,12 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                     if (tri.equals(getString(R.string.title_sort_year)))
                         getActivity().setTitle(Année);
+
+
+                    Intent intent = new Intent();
+                    intent.setAction(INTENT_TOOLBAR8_SHADOW);
+                    intent.putExtra("boolean", false);
+                    mContext.sendBroadcast(intent);
 
                 }
             }, 300);
@@ -424,7 +431,11 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             = new SongEditorDialog.OnTagsEditionSuccessListener() {
         @Override
         public void onTagsEditionSuccess() {
+
+            Log.e(TAG_LOG, "mOnTagsEditionSuccessListener");
+
             ((MainActivity) getActivity()).refresh();
+
         }
     };
 
@@ -581,6 +592,12 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         intent.setAction("reload");
                         mContext.sendBroadcast(intent);
 
+                        Intent shadow = new Intent();
+                        shadow.setAction(INTENT_TOOLBAR8_SHADOW);
+                        shadow.putExtra("boolean", true);
+                        mContext.sendBroadcast(shadow);
+
+
                         return true;
                     }
 
@@ -588,6 +605,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                     return false;
                 }
+
                 return false;
             }
         });
@@ -601,6 +619,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         public void onReceive(Context context, Intent intent) {
 
             String receiveIntent = intent.getAction();
+
 
             if (INTENT_STATE.equals(receiveIntent)
                     && intent.getStringExtra("state").equals("prev")

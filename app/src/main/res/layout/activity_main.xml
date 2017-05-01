@@ -29,5 +29,4 @@
         app:menu="@menu/navigation"
         app:itemTextColor="@color/lime_700" />
 
-
 </android.support.v4.widget.DrawerLayout>

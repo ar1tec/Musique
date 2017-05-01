@@ -85,6 +85,12 @@ public class PlayerFragment extends BaseFragment
         total_track = getSizeQueue();
         track = préférences.getInt("currentPosition", 0) + 1;
 
+        Intent intent = new Intent();
+        intent.setAction(INTENT_LAYOUTVIEW);
+        intent.putExtra("vue", "playBarLayout");
+        mContext.sendBroadcast(intent);
+
+
         mHandler.postDelayed(new Runnable() {
 
             public void run() {
@@ -92,13 +98,14 @@ public class PlayerFragment extends BaseFragment
                 String artist = PlayerService.getAlbumName();
                 getActivity().setTitle(artist);
 
+                Intent intent = new Intent();
+                intent.setAction(INTENT_TOOLBAR8_SHADOW);
+                intent.putExtra("boolean", false);
+                mContext.sendBroadcast(intent);
+
             }
         }, 300);
 
-        Intent intent = new Intent();
-        intent.setAction(INTENT_LAYOUTVIEW);
-        intent.putExtra("vue", "playBarLayout");
-        mContext.sendBroadcast(intent);
     }
 
 
@@ -335,9 +342,15 @@ public class PlayerFragment extends BaseFragment
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
                         ft.remove(getFragmentManager().findFragmentById(viewID));
                         ft.commit();
+
                         Intent intent = new Intent();
                         intent.setAction("reload");
                         mContext.sendBroadcast(intent);
+
+                        Intent shadow = new Intent();
+                        shadow.setAction(INTENT_TOOLBAR8_SHADOW);
+                        shadow.putExtra("boolean", true);
+                        mContext.sendBroadcast(shadow);
 
                         if (!MainActivity.getPlaylistFragmentState())
                             MainActivity.setMenu(true);

@@ -84,7 +84,8 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         } else {
 
             String toto = String.valueOf(album.getAlbumName())
-                    .replaceFirst("The ", "");
+                    .replaceFirst("The ", "")
+                    .replaceFirst("A ", "");
 
             return stripAccents(String.valueOf(toto.toUpperCase().charAt(0)));
         }

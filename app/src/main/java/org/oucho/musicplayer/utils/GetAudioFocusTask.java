@@ -15,6 +15,6 @@ public class GetAudioFocusTask implements Runnable {
 
 	public void run() {
 		((AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE)).requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-		MainActivity.stopTimer(mContext);
+		MainActivity.stopTimer();
 	}
 }

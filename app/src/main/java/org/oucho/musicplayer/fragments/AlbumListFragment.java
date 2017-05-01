@@ -470,6 +470,10 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
             } else {
 
+                MainActivity.setViewID(R.id.fragment_album_list_layout);
+
+                run = true;
+
                 mHandler.postDelayed(new Runnable() {
 
                     public void run() {
@@ -499,10 +503,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         }
                     }
                 }, 1000);
-
-                run = true;
-
-                MainActivity.setViewID(R.id.fragment_album_list_layout);
             }
         }
     }

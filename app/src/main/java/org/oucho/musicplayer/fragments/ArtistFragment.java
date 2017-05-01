@@ -28,7 +28,6 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.activities.SearchActivity;
-import org.oucho.musicplayer.adapters.AlbumListAdapter;
 import org.oucho.musicplayer.db.loaders.SongLoader;
 import org.oucho.musicplayer.db.loaders.SortOrder;
 import org.oucho.musicplayer.db.model.Artist;
@@ -359,13 +358,6 @@ public class ArtistFragment extends BaseFragment implements MusiqueKeys {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-            if (viewType == ALBUM) {
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_song_item, parent, false);
-
-                //return new BlankViewHolder(itemView);
-            }
-
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_song_item, parent, false);
 
             return new SongViewHolder(itemView);

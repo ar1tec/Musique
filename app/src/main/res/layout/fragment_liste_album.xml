@@ -9,22 +9,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/barre_lecture">
+        android:layout_marginBottom="@dimen/barre_lecture"
+        tools:ignore="UselessParent">
 
-    <org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:bubbleColor="@color/noirTransparent"
-        app:bubbleTextColor="@color/amber_700"
-        app:handleColor="@color/amber_700"
-        app:hideScrollbar="true" />
+        <org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bubbleColor="@color/noirTransparent"
+            app:bubbleTextColor="@color/amber_700"
+            app:handleColor="@color/amber_700"
+            app:hideScrollbar="true" />
 
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@drawable/shadow"/>
 
 </FrameLayout>

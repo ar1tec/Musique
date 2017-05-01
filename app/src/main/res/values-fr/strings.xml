@@ -4,7 +4,7 @@
     <string name="app_name">Musique</string>
 
     <!-- nav header activity main_activity -->
-    <string name="by">Old Geek, avril 2017</string>
+    <string name="by">Old Geek, mai 2017</string>
 
     <string name="album">Album</string>
 
@@ -82,7 +82,7 @@
 
     <string name="help">Information</string>
 
-    <string name="help_message">
+    <string name="help_message" tools:ignore="StringFormatCount">
         \n
         Le but de ce logiciel et d\'avoir une application minimaliste et la plus simple possible, l\'inverse
         d\'une \"usine à gaz\", sans pub ni autre parasitage lié.\n
@@ -148,7 +148,6 @@
     <string name="appupdater_update_not_available_description">Vous avez la dernière version disponible de %s.</string>
     <string name="appupdater_btn_update">Télécharger</string>
     <string name="appupdater_btn_dismiss">Plus tard</string>
-    <string name="queue">Liste de lecture</string>
     <string name="title_activity_cherche">ChercheActivity</string>
 
 </resources>

@@ -4,7 +4,7 @@
     <string name="app_name">Musique</string>
 
     <!-- nav header activity main_activity -->
-    <string name="by">Old Geek, april 2017</string>
+    <string name="by">Old Geek, may 2017</string>
 
     <string name="album">Album</string>
 
@@ -46,8 +46,6 @@
     <string name="deletePlaylistConfirm">Delete this playlist?</string>
     <string name="deleteTrackConfirm">Delete yhis title?</string>
 
-
-    <string name="queue">Current playlist</string>
     <string name="view_queue">See the current playlist</string>
     <string name="action_add_to_queue">Add to current playlist</string>
 
@@ -84,7 +82,7 @@
 
     <string name="help">Information</string>
 
-    <string name="help_message">
+    <string name="help_message" tools:ignore="StringFormatCount">
         \n
         The purpose of this software and to have a minimalist application and the simplest possible, the reverse
         Of a \ "gas factory \", without any pub or other related parasite. \n

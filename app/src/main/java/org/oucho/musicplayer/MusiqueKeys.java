@@ -13,6 +13,7 @@ public interface MusiqueKeys {
     String INTENT_STATE = "org.oucho.musicplayer.STATE";
     String INTENT_QUEUEVIEW = "org.oucho.musicplayer.QUEUEVIEW";
     String INTENT_LAYOUTVIEW = "org.oucho.musicplayer.LAYOUTVIEW";
+    String INTENT_TOOLBAR8_SHADOW = "org.oucho.musicplayer.SHADOW";
 
     String ACTION_NEXT = "org.oucho.musicplayer.ACTION_NEXT";
     String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
