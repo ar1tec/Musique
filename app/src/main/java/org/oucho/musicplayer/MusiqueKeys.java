@@ -4,7 +4,7 @@ package org.oucho.musicplayer;
 public interface MusiqueKeys {
 
 
-    int SEARCH_ACTIVITY = 234;
+    int SEARCH_ACTIVITY = 42;
 
     int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
