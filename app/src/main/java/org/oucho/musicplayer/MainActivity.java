@@ -878,6 +878,7 @@ public class MainActivity extends AppCompatActivity implements
                         mProgressBar.setVisibility(View.VISIBLE);
 
                         float elevation = mContext.getResources().getDimension(R.dimen.playbar_elevation);
+
                         playbarShadow.setElevation(elevation);
 
                         playBarLayout = false;

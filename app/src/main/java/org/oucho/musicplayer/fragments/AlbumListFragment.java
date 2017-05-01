@@ -408,6 +408,11 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
                         ft.commit();
 
+                        Intent shadow = new Intent();
+                        shadow.setAction(INTENT_TOOLBAR8_SHADOW);
+                        shadow.putExtra("boolean", true);
+                        mContext.sendBroadcast(shadow);
+
                         return true;
                     }
 

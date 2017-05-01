@@ -347,10 +347,12 @@ public class PlayerFragment extends BaseFragment
                         intent.setAction("reload");
                         mContext.sendBroadcast(intent);
 
-                        Intent shadow = new Intent();
-                        shadow.setAction(INTENT_TOOLBAR8_SHADOW);
-                        shadow.putExtra("boolean", true);
-                        mContext.sendBroadcast(shadow);
+                        if (!MainActivity.getAlbumFragmentState()) {
+                            Intent shadow = new Intent();
+                            shadow.setAction(INTENT_TOOLBAR8_SHADOW);
+                            shadow.putExtra("boolean", true);
+                            mContext.sendBroadcast(shadow);
+                        }
 
                         if (!MainActivity.getPlaylistFragmentState())
                             MainActivity.setMenu(true);
