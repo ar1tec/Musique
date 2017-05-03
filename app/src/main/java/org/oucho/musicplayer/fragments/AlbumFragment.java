@@ -588,6 +588,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
                         ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
                         ft.commit();
+
                         Intent intent = new Intent();
                         intent.setAction("reload");
                         mContext.sendBroadcast(intent);
@@ -596,6 +597,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         shadow.setAction(INTENT_TOOLBAR8_SHADOW);
                         shadow.putExtra("boolean", true);
                         mContext.sendBroadcast(shadow);
+
 
 
                         return true;

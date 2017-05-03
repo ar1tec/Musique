@@ -41,6 +41,7 @@ import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
+import org.oucho.musicplayer.utils.CustomGridLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.widgets.LockableViewPager;
@@ -76,7 +77,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         @Override
         public Loader<List<Album>> onCreateLoader(int id, Bundle args) {
 
-            AlbumLoader loader = new AlbumLoader(getActivity());
+            AlbumLoader loader = new AlbumLoader(mContext);
             loader.setSortOrder(PrefUtils.getInstance().getAlbumSortOrder());
 
             return loader;
@@ -163,7 +164,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
     private void showMenu(final int position, View v) {
 
-        PopupMenu popup = new PopupMenu(getActivity(), v);
+        PopupMenu popup = new PopupMenu(mContext, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.album_item, popup.getMenu());
         final Album album = mAdapter.getItem(position);
@@ -199,7 +200,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
             @Override
             public void onPlaylistPicked(Playlist playlist) {
-                PlaylistsUtils.addAlbumToPlaylist(getActivity().getContentResolver(), playlist.getId(), album.getId());
+                PlaylistsUtils.addAlbumToPlaylist(mContext.getContentResolver(), playlist.getId(), album.getId());
             }
         });
         picker.show(getChildFragmentManager(), "pick_playlist");
@@ -218,7 +219,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
         mContext = getContext();
 
-        préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        préférences = this.mContext.getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
 
         titre = mContext.getString(R.string.albums);
 
@@ -242,7 +243,9 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                 if (MainActivity.getViewID() != R.id.fragment_song_layout)
                     setUserVisibleHint(true);
 
-                showOverflowMenu(true);
+
+                if (!MainActivity.getAlbumFragmentState())
+                    showOverflowMenu(true);
 
             }
 
@@ -262,19 +265,19 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
         mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
 
-        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 
-        Resources res = getActivity().getResources();
+        Resources res = mContext.getResources();
 
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         float screenWidth = size.x;
         float itemWidth = res.getDimension(R.dimen.fragmen_album_list_grid_item_width);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), Math.round(screenWidth / itemWidth)));
+        mRecyclerView.setLayoutManager(new CustomGridLayoutManager(mContext, Math.round(screenWidth / itemWidth)));
 
         int artworkSize = res.getDimensionPixelSize(R.dimen.art_size);
-        mAdapter = new AlbumListAdapter(getActivity(), artworkSize, artworkSize);
+        mAdapter = new AlbumListAdapter(mContext, artworkSize, artworkSize);
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
 
@@ -339,7 +342,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showOverflowMenu(boolean showMenu){
+    public void showOverflowMenu(boolean showMenu){
         if(menu == null)
             return;
 
@@ -402,6 +405,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                         MainActivity.setAlbumFragmentState(false);
                         LockableViewPager.setSwipeLocked(false);
+                        showOverflowMenu(true);
 
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);

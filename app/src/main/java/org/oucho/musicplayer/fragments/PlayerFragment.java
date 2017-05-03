@@ -354,7 +354,7 @@ public class PlayerFragment extends BaseFragment
                             mContext.sendBroadcast(shadow);
                         }
 
-                        if (!MainActivity.getPlaylistFragmentState())
+                        if (!MainActivity.getPlaylistFragmentState() && !MainActivity.getAlbumFragmentState())
                             MainActivity.setMenu(true);
 
                         return true;
