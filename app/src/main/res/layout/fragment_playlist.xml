@@ -16,8 +16,8 @@
         android:layout_below="@id/toolbar"
         android:layout_marginBottom="@dimen/barre_lecture"
         app:bubbleColor="@color/noirTransparent"
-        app:bubbleTextColor="@color/amber_700"
-        app:handleColor="@color/amber_700"
+        app:bubbleTextColor="@color/colorAccent"
+        app:handleColor="@color/colorAccent"
         app:hideScrollbar="true" />
 
 </RelativeLayout>

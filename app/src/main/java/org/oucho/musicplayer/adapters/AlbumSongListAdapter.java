@@ -61,7 +61,7 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
         if (song.getId() == PlayerService.getSongID()) {
 
-            holder.vTime.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
+            holder.vTime.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             holder.vTime.setTextSize(15);
 
             if (PlayerService.isPlaying()) {

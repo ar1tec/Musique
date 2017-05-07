@@ -6,7 +6,7 @@
     android:maxLines="1"
     android:padding="@dimen/small_content_padding"
     android:textSize="22sp"
-    android:textColor="@color/amber_700" />
+    android:textColor="@color/colorAccent" />
 
 
 

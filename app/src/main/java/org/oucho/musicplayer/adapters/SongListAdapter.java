@@ -128,7 +128,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> imp
 
         if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
 
-            holder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
+            holder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             holder.vArtist.setTextSize(16);
             holder.vArtist.setTypeface(null, Typeface.BOLD);
 
@@ -148,7 +148,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> imp
 
         } else {
 
-            holder.vTitle.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
+            holder.vTitle.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             holder.vTitle.setTextSize(16);
             holder.vTitle.setTypeface(null, Typeface.BOLD);
 

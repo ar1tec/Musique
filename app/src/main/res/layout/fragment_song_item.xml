@@ -81,7 +81,7 @@
             android:ellipsize="end"
             android:paddingLeft="@dimen/big_content_padding"
             android:maxLines="1"
-            android:textColor="@color/amber_700"
+            android:textColor="@color/colorAccent"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="gone"/>
@@ -93,7 +93,7 @@
             android:ellipsize="end"
             android:paddingLeft="@dimen/big_content_padding"
             android:maxLines="1"
-            android:textColor="@color/amber_700"
+            android:textColor="@color/colorAccent"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="gone"/>

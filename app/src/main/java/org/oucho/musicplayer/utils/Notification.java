@@ -38,17 +38,13 @@ public class Notification {
         }
 
         PendingIntent togglePlayIntent = PendingIntent.getService(playerbackService, 0,
-                new Intent(playerbackService, PlayerService.class)
-                        .setAction(PlayerService.ACTION_TOGGLE), 0);
+                new Intent(playerbackService, PlayerService.class).setAction(PlayerService.ACTION_TOGGLE), 0);
 
-
-
-        PendingIntent nextIntent = PendingIntent.getService(playerbackService, 0, new Intent(playerbackService, PlayerService.class)
-                        .setAction(PlayerService.ACTION_NEXT), 0);
+        PendingIntent nextIntent = PendingIntent.getService(playerbackService, 0,
+                new Intent(playerbackService, PlayerService.class).setAction(PlayerService.ACTION_NEXT), 0);
 
         PendingIntent previousIntent = PendingIntent.getService(playerbackService, 0,
-                new Intent(playerbackService, PlayerService.class)
-                        .setAction(PlayerService.ACTION_PREVIOUS), 0);
+                new Intent(playerbackService, PlayerService.class).setAction(PlayerService.ACTION_PREVIOUS), 0);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(playerbackService);
 

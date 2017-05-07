@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:bubbleColor="@color/noirTransparent"
-            app:bubbleTextColor="@color/amber_700"
-            app:handleColor="@color/amber_700"
+            app:bubbleTextColor="@color/colorAccent"
+            app:handleColor="@color/colorAccent"
             app:hideScrollbar="true"/>
 
     </RelativeLayout>

@@ -125,7 +125,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
                 viewHolder.vName.setTextSize(14);
                 viewHolder.vName.setTypeface(null, Typeface.NORMAL);
 
-                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
+                viewHolder.vArtist.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                 viewHolder.vArtist.setTextSize(15);
                 viewHolder.vArtist.setTypeface(null, Typeface.BOLD);
 
@@ -134,7 +134,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
             } else if ("minyear DESC".equals(getTri)) {
 
-                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
+                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                 viewHolder.vName.setTextSize(15);
                 viewHolder.vName.setTypeface(null, Typeface.NORMAL);
 
@@ -149,7 +149,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
             } else {
 
-                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.amber_700));
+                viewHolder.vName.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                 viewHolder.vName.setTextSize(15);
                 viewHolder.vName.setTypeface(null, Typeface.BOLD);
 
