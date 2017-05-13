@@ -68,14 +68,11 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
 
-            String toto = String.valueOf(album.getArtistName())
-                    .replaceFirst("The ", "");
+            String toto = String.valueOf(album.getArtistName()).replaceFirst("The ", "");
 
             return stripAccents(String.valueOf(toto.toUpperCase().charAt(0)));
 
-
         } else if ("minyear DESC".equals(getTri)) {
-
 
             String toto = String.valueOf(album.getYear());
 
@@ -214,14 +211,11 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
             vArtwork.setOnClickListener(this);
 
+            vArtist = (TextView) itemView.findViewById(R.id.artist_name);
+            itemView.findViewById(R.id.album_info).setOnClickListener(this);
 
-                vArtist = (TextView) itemView.findViewById(R.id.artist_name);
-                itemView.findViewById(R.id.album_info).setOnClickListener(this);
-
-                vArtwork.setOnLongClickListener(this);
-                vAlbumInfo.setOnLongClickListener(this);
-
-
+            vArtwork.setOnLongClickListener(this);
+            vAlbumInfo.setOnLongClickListener(this);
 
             ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
             menuButton.setOnClickListener(this);

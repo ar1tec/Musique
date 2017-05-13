@@ -3,6 +3,7 @@ package org.oucho.musicplayer.widgets.fastscroll;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -18,6 +19,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
+
+import static org.oucho.musicplayer.MusiqueKeys.fichier_préférence;
 
 public class FastScroller extends LinearLayout {
 
@@ -236,6 +241,24 @@ public class FastScroller extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+
+        SharedPreferences préférences = getContext().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        String getTriSong = préférences.getString("song_sort_order", "");
+        String getTriAlbum = préférences.getString("album_sort_order", "");
+        int currentView = MainActivity.getViewID();
+        boolean songByID = currentView == R.id.fragment_song_layout;
+        boolean albumByID = currentView == R.id.fragment_album_list_layout;
+
+        boolean voirBubulle = true;
+
+        if (albumByID && ("_id DESC".equals(getTriAlbum)))
+            voirBubulle = false;
+
+        if (songByID && ("_id DESC".equals(getTriSong)))
+            voirBubulle = false;
+
+
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
             if (event.getX() < mHandleView.getX() - ViewCompat.getPaddingStart(mHandleView)) {
@@ -252,7 +275,7 @@ public class FastScroller extends LinearLayout {
                 showScrollbar();
             }
 
-            if (mSectionIndexer != null && !isViewVisible(mBubbleView)) {
+            if (mSectionIndexer != null && !isViewVisible(mBubbleView) && voirBubulle ) {
                 showBubble();
             }
 
