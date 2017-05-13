@@ -105,7 +105,7 @@
 
     <string name="about_message">
         \n
-        Musique 1.15.2\n
+        Musique 1.15.3\n
         \n
         Old Geek, 2017\n
         \n
@@ -149,5 +149,7 @@
     <string name="appupdater_btn_update">Télécharger</string>
     <string name="appupdater_btn_dismiss">Plus tard</string>
     <string name="title_activity_cherche">ChercheActivity</string>
+    <string name="sort_order_entry_latest_add">Dernier ajout</string>
+    <string name="title_sort_add">ajout</string>
 
 </resources>

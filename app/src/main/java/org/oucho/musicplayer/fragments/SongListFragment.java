@@ -322,6 +322,13 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
                 setUserVisibleHint(true);
                 break;
 
+            case R.id.menu_sort_by_ajout:
+                prefUtils.setSongSortOrder(SortOrder.SongSortOrder.SONG_ADD);
+                load();
+                tri = mContext.getString(R.string.title_sort_add);
+                setUserVisibleHint(true);
+                break;
+
             default: //do nothing
                 break;
         }
@@ -344,19 +351,14 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
         String getTri = préférences.getString("song_sort_order", "");
 
         if ("year DESC".equals(getTri)) {
-
             tri = mContext.getString(R.string.title_sort_year);
-
         } else if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
-
             tri = mContext.getString(R.string.title_sort_artist);
-
         } else if ("album".equals(getTri)) {
-
             tri = mContext.getString(R.string.title_sort_album);
-
+        } else if ("_id DESC".equals(getTri)) {
+            tri = mContext.getString(R.string.title_sort_add);
         } else {
-
             tri = "a-z";
         }
     }
@@ -367,7 +369,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
         if (visible || isResumed()) {
 
-            int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_300);
+            int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
 
             MainActivity.setViewID(R.id.fragment_song_layout);
 
@@ -375,7 +377,6 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
                 getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " "
                                 + " </font> <small> <font color='" + couleurTitre + "'>"
                                 + tri + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
-
             } else {
                 //noinspection deprecation
                 getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " "

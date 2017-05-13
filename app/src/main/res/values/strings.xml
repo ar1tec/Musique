@@ -74,11 +74,14 @@
     <string name="sort_order_entry_year">Year</string>
     <string name="sort_order_entry_artist">Artist</string>
     <string name="sort_order_entry_album">Album</string>
+    <string name="sort_order_entry_latest_add">Latest addition</string>
 
 
     <string name="title_sort_year">year</string>
     <string name="title_sort_artist">artist</string>
     <string name="title_sort_album">album</string>
+    <string name="title_sort_add">addition</string>
+
 
     <string name="help">Information</string>
 
@@ -106,7 +109,7 @@
 
     <string name="about_message">
         \n
-        Musique 1.15.2\n
+        Musique 1.15.3\n
         \n
         Old Geek, 2017\n
         \n
