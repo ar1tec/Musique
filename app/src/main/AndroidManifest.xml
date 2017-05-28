@@ -53,6 +53,7 @@
                 <action android:name="org.oucho.musicplayer.CLOSE_AUDIO_EFFECT_SESSION" />
             </intent-filter>
         </receiver>
+        
         <receiver
             android:name=".utils.StopReceive"
             tools:ignore="ExportedReceiver">

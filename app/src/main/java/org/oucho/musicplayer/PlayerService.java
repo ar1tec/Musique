@@ -313,10 +313,15 @@ public class PlayerService extends Service implements
                 Notification.updateNotification(this);
 
             if (isPlaying()) {
-                Intent intent = new Intent();
-                intent.setAction("org.oucho.radio2.STOP");
-		        intent.putExtra("halt", "stop");
-                sendBroadcast(intent);
+                Intent music = new Intent();
+                music.setAction("org.oucho.radio2.STOP");
+                music.putExtra("halt", "stop");
+                sendBroadcast(music);
+
+                Intent radio = new Intent();
+                radio.setAction("org.oucho.clementine.STOP");
+                radio.putExtra("halt", "stop");
+                sendBroadcast(radio);
             }
         }
 
