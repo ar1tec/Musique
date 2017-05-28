@@ -140,6 +140,10 @@
 
     <string name="action_sleep_timer">Sleep Timer</string>
 
+    <string name="action_radio">Radio</string>
+    <string name="action_clementine">Clementine</string>
+
+
     <!-- update -->
     <string name="update">Update</string>
 

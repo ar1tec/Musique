@@ -26,7 +26,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/activity_main_navigation_header"
-        app:menu="@menu/navigation"
         app:itemTextColor="@color/lime_700" />
 
 </android.support.v4.widget.DrawerLayout>

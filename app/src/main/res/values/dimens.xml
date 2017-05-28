@@ -39,7 +39,7 @@
 
     <dimen name="fastscroll_scrollbar_padding">6dp</dimen>
 
-    <dimen name="toolbar_elevation">2dp</dimen>
+    <dimen name="toolbar_elevation">3dp</dimen>
     <dimen name="playbar_elevation">5dp</dimen>
     <dimen name="queue_layout_elevation">6dp</dimen>
 

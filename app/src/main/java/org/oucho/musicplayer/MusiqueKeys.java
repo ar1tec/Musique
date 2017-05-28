@@ -9,6 +9,9 @@ public interface MusiqueKeys {
     int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
 
+    String APP_RADIO = "org.oucho.radio2";
+    String APP_CLEMENTINE = "org.oucho.clementine";
+
     String INTENT_QUIT = "org.oucho.musicplayer.QUIT";
     String INTENT_STATE = "org.oucho.musicplayer.STATE";
     String INTENT_QUEUEVIEW = "org.oucho.musicplayer.QUEUEVIEW";

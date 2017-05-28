@@ -123,6 +123,10 @@ public class MainActivity extends AppCompatActivity implements
 
     private final Handler mHandler = new Handler();
 
+    private boolean radioIsInstalled = false;
+    private boolean clementineIsInstalled = false;
+
+
     private boolean mServiceBound = false;
     private boolean autoScrollQueue = false;
 
@@ -176,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements
         mQueueView = (DragRecyclerView) findViewById(R.id.queue_view);
         mQueueView.setLayoutManager(new CustomLayoutManager(this));
 
-
         mQueueAdapter = new QueueAdapter(mContext, mQueueView);
 
         mQueueView.setOnItemMovedListener(new DragRecyclerView.OnItemMovedListener() {
@@ -198,8 +201,6 @@ public class MainActivity extends AppCompatActivity implements
         });
 
         mQueueView.setAdapter(mQueueAdapter);
-
-
 
         findViewById(R.id.repeat0).setOnClickListener(mOnClickListener);
         findViewById(R.id.shuffle0).setOnClickListener(mOnClickListener);
@@ -240,9 +241,13 @@ public class MainActivity extends AppCompatActivity implements
         repeatBar = (ImageView) findViewById(R.id.bar0_repeat);
         repeatBar1 = (ImageView) findViewById(R.id.bar0_repeat1);
 
+        radioIsInstalled = checkApp(APP_RADIO);
+        clementineIsInstalled = checkApp(APP_CLEMENTINE);
 
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+
+        setNavigationMenu();
 
         playbarShadow = (RelativeLayout) findViewById(R.id.playbar_shadow);
 
@@ -257,6 +262,30 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         CheckUpdate.onStart(this);
+    }
+
+    private void setNavigationMenu() {
+
+        if (radioIsInstalled && clementineIsInstalled) {
+            mNavigationView.inflateMenu(R.menu.navigation_radio_clementine);
+        } else if (radioIsInstalled) {
+            mNavigationView.inflateMenu(R.menu.navigation_radio);
+        } else if (clementineIsInstalled) {
+            mNavigationView.inflateMenu(R.menu.navigation_clementine);
+        } else {
+            mNavigationView.inflateMenu(R.menu.navigation);
+        }
+    }
+
+    private boolean checkApp(String packagename) {
+        PackageManager packageManager = getPackageManager();
+
+        try {
+                packageManager.getPackageInfo(packagename, 0);
+                return true;
+            } catch (PackageManager.NameNotFoundException e) {
+                return false;
+            }
     }
 
 
@@ -289,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         }, 300);
 
+
         switch (menuItem.getItemId()) {
             case R.id.action_equalizer:
                 NavigationUtils.showEqualizer(this);
@@ -302,6 +332,16 @@ public class MainActivity extends AppCompatActivity implements
                     showTimerInfo();
                 }
 
+                break;
+
+            case R.id.action_radio:
+                Intent radio = getPackageManager().getLaunchIntentForPackage(APP_RADIO);
+                startActivity(radio);
+                break;
+
+            case R.id.action_clementine:
+                Intent clementine = getPackageManager().getLaunchIntentForPackage(APP_CLEMENTINE);
+                startActivity(clementine);
                 break;
 
             case R.id.nav_update:
@@ -585,7 +625,6 @@ public class MainActivity extends AppCompatActivity implements
      * ************************/
 
     private void showLibrary() {
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         getSupportFragmentManager()
                 .beginTransaction()
