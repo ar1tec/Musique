@@ -46,4 +46,8 @@ dependencies {
     compile 'com.android.support:design:' + androidSupportVersion
     compile 'com.android.support:palette-v7:' + androidSupportVersion
     compile 'com.android.support.constraint:constraint-layout:' + constraintLayoutVersion
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 }

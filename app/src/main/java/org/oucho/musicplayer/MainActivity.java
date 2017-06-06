@@ -50,6 +50,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.QueueAdapter;
@@ -156,6 +158,13 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(getApplication());
+
         setContentView(R.layout.activity_main);
 
         mContext = getApplicationContext();
@@ -206,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.shuffle0).setOnClickListener(mOnClickListener);
 
         findViewById(R.id.track_info).setOnClickListener(mOnClickListener);
-        findViewById(R.id.track_info0).setOnClickListener(mOnClickListener);
 
         findViewById(R.id.quick_prev).setOnClickListener(mOnClickListener);
         findViewById(R.id.quick_next).setOnClickListener(mOnClickListener);
@@ -234,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements
 
         queueBlurView = (BlurView) findViewById(R.id.queueBlurView);
 
-        mDrawerLayout = (DrawerLayout) findViewById(drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         shuffleBar = (ImageView) findViewById(R.id.bar0_shuffle);

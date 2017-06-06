@@ -56,7 +56,6 @@
                 android:layout_height="match_parent"
                 app:handleColor="@color/colorAccent"/>
 
-
         </FrameLayout>
 
     </org.oucho.musicplayer.widgets.blurview.BlurView>

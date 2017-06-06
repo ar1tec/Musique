@@ -4,7 +4,9 @@
  <color name="colorPrimary_0">#37474f</color>
  <color name="colorPrimary">#ffffff</color>
  <color name="colorPrimaryDark">#263238</color>
- <color name="colorAccent">#FFAB00</color>
+ <color name="colorAccent">#FFAB00</color><!--amber_700-->
+
+
 
  <color name="blue_900_trans">#980d47a1</color>
  <color name="lime_700">#AFB42B</color>

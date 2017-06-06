@@ -35,7 +35,7 @@ import java.util.Map;
 import static org.oucho.musicplayer.R.id.pager;
 
 
-public class LibraryFragment extends BaseFragment implements MusiqueKeys{
+public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 
 
     private static final String TAG_LOG = "Search Activity";
@@ -104,7 +104,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys{
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getChildFragmentManager());
 
-        mViewPager = (LockableViewPager) rootView.findViewById(pager);
+        mViewPager = (LockableViewPager) rootView.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(mViewPagerChangeListener);
 
