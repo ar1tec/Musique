@@ -317,11 +317,6 @@ public class PlayerService extends Service implements
                 music.setAction("org.oucho.radio2.STOP");
                 music.putExtra("halt", "stop");
                 sendBroadcast(music);
-
-                Intent radio = new Intent();
-                radio.setAction("org.oucho.clementine.STOP");
-                radio.putExtra("halt", "stop");
-                sendBroadcast(radio);
             }
         }
 

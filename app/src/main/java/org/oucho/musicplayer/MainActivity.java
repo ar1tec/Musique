@@ -50,8 +50,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.leakcanary.LeakCanary;
-
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.adapters.BaseAdapter;
 import org.oucho.musicplayer.adapters.QueueAdapter;
@@ -126,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements
     private final Handler mHandler = new Handler();
 
     private boolean radioIsInstalled = false;
-    private boolean clementineIsInstalled = false;
-
 
     private boolean mServiceBound = false;
     private boolean autoScrollQueue = false;
@@ -157,13 +153,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(getApplication());
 
         setContentView(R.layout.activity_main);
 
@@ -250,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements
         repeatBar1 = (ImageView) findViewById(R.id.bar0_repeat1);
 
         radioIsInstalled = checkApp(APP_RADIO);
-        clementineIsInstalled = checkApp(APP_CLEMENTINE);
 
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -274,12 +262,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setNavigationMenu() {
 
-        if (radioIsInstalled && clementineIsInstalled) {
-            mNavigationView.inflateMenu(R.menu.navigation_radio_clementine);
-        } else if (radioIsInstalled) {
+        if (radioIsInstalled) {
             mNavigationView.inflateMenu(R.menu.navigation_radio);
-        } else if (clementineIsInstalled) {
-            mNavigationView.inflateMenu(R.menu.navigation_clementine);
         } else {
             mNavigationView.inflateMenu(R.menu.navigation);
         }
@@ -345,11 +329,6 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.action_radio:
                 Intent radio = getPackageManager().getLaunchIntentForPackage(APP_RADIO);
                 startActivity(radio);
-                break;
-
-            case R.id.action_clementine:
-                Intent clementine = getPackageManager().getLaunchIntentForPackage(APP_CLEMENTINE);
-                startActivity(clementine);
                 break;
 
             case R.id.nav_update:

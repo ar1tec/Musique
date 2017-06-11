@@ -4,7 +4,7 @@
     <string name="app_name">Musique</string>
 
     <!-- nav header activity main_activity -->
-    <string name="by">Old Geek, mai 2017</string>
+    <string name="by">Old Geek, juin 2017</string>
 
     <string name="album">Album</string>
 
@@ -105,7 +105,7 @@
 
     <string name="about_message">
         \n
-        Musique 1.15.3\n
+        Musique 1.15.4\n
         \n
         Old Geek, 2017\n
         \n
@@ -151,5 +151,6 @@
     <string name="title_activity_cherche">ChercheActivity</string>
     <string name="sort_order_entry_latest_add">Dernier ajout</string>
     <string name="title_sort_add">ajout</string>
+    <string name="action_radio">Radio</string>
 
 </resources>
