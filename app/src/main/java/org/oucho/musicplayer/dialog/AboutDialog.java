@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.oucho.musicplayer.BuildConfig;
 import org.oucho.musicplayer.R;
 
 public class AboutDialog extends DialogFragment {
@@ -30,8 +31,14 @@ public class AboutDialog extends DialogFragment {
         toolbar.setTitle(title);
         toolbar.setTitleTextColor(0xffffffff);
 
+
+        String versionName = BuildConfig.VERSION_NAME;
+
+        String version = getContext().getResources().getString(R.string.about_message, versionName);
+
+
         final TextView text = (TextView) rootView.findViewById(R.id.showrules_dialog);
-        text.setText(getString(R.string.about_message));
+        text.setText(version);
 
         about.setView(rootView);
 
