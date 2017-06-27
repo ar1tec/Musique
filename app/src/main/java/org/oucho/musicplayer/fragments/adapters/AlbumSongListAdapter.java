@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.adapters;
+package org.oucho.musicplayer.fragments.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

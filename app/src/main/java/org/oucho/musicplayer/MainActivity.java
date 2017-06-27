@@ -33,6 +33,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -51,8 +52,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.adapters.QueueAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
 import org.oucho.musicplayer.audiofx.AudioEffects;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Artist;
@@ -74,6 +75,7 @@ import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.utils.VolumeTimer;
+import org.oucho.musicplayer.widgets.CustomSwipe;
 import org.oucho.musicplayer.widgets.blurview.BlurView;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.ProgressBar;
@@ -163,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements
             final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 
             getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
-            getWindow().setStatusBarColor(ContextCompat.getColor(mContext, R.color.white));
+           // getWindow().setStatusBarColor(ContextCompat.getColor(mContext, R.color.white));
         }
 
         if (android.os.Build.VERSION.SDK_INT >= 23) {
@@ -179,6 +181,11 @@ public class MainActivity extends AppCompatActivity implements
         mQueueView.setLayoutManager(new CustomLayoutManager(this));
 
         mQueueAdapter = new QueueAdapter(mContext, mQueueView);
+
+
+        ItemTouchHelper.Callback callback = new CustomSwipe(mQueueAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mQueueView);
 
         mQueueView.setOnItemMovedListener(new DragRecyclerView.OnItemMovedListener() {
             @Override
@@ -1156,7 +1163,7 @@ public class MainActivity extends AppCompatActivity implements
                 Log.i(TAG_LOG, "R.id.fragment_playlist_list");
             } else if ( viewID == R.id.fragment_playlist ) {
                 ft.replace(viewID, fragment);
-                Log.i(TAG_LOG, "R.id.fragment_playlist");
+                Log.i(TAG_LOG, "R.id.fragment_playlist_content");
             }
 
             ft.commit();

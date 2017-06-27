@@ -1,9 +1,10 @@
-package org.oucho.musicplayer.adapters;
+package org.oucho.musicplayer.fragments.adapters;
 
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,12 +16,13 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.widgets.CustomSwipeAdapter;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 
 import java.util.Collections;
 import java.util.List;
 
-public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> {
+public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> implements CustomSwipeAdapter {
 
     private final DragRecyclerView mQueueView;
     private final Context mContext;
@@ -94,10 +96,6 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
         notifyItemMoved(oldPosition, newPosition);
     }
 
-    private void removeItem(int position) {
-        mQueue.remove(position);
-        notifyItemRemoved(position);
-    }
 
     public void setSelection(int position) {
         int oldSelection = mSelectedItemPosition;
@@ -122,6 +120,13 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
     }
 
 
+    @Override
+    public void onItemSwiped(int position) {
+        mQueue.remove(position);
+        notifyItemRemoved(position);
+    }
+
+
     class QueueItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnTouchListener {
 
         final TextView vTitle;
@@ -138,7 +143,6 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
             vReorderButton.setOnTouchListener(this);
 
             itemView.findViewById(R.id.song_info).setOnClickListener(this);
-            itemView.findViewById(R.id.delete_button).setOnClickListener(this);
 
             itemView.setOnClickListener(this);
 
@@ -163,15 +167,6 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
                     case R.id.song_info:
                         MainActivity.getPlayerService().setPosition(position, true);
                         break;
-
-                    case R.id.delete_button:
-
-
-                        if (getItemCount() > 0 && position != currentSong)
-                            removeItem(position);
-
-                        break;
-
                     default:
                         break;
                 }

@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.adapters;
+package org.oucho.musicplayer.fragments.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;

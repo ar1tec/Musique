@@ -23,12 +23,12 @@ import android.view.ViewGroup;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.adapters.SongListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.adapters.SongListAdapter;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
-import org.oucho.musicplayer.db.loaders.SongLoader;
-import org.oucho.musicplayer.db.loaders.SortOrder;
+import org.oucho.musicplayer.fragments.loaders.SongLoader;
+import org.oucho.musicplayer.fragments.loaders.SortOrder;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.MusiqueKeys;

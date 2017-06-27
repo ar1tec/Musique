@@ -92,6 +92,7 @@ public class ArtworkCache extends BitmapCache<Long> {
         if (key == -1) {
             return null;
         }
+
         Uri uri = ContentUris.withAppendedId(ArtworkHelper.getArtworkUri(), key);
 
         try {

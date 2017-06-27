@@ -32,10 +32,10 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.AlbumListAdapter;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.db.loaders.AlbumLoader;
-import org.oucho.musicplayer.db.loaders.SortOrder;
+import org.oucho.musicplayer.fragments.adapters.AlbumListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.loaders.AlbumLoader;
+import org.oucho.musicplayer.fragments.loaders.SortOrder;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.dialog.AlbumEditorDialog;
@@ -459,12 +459,14 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
         if (visible || isResumed()) {
 
+
             // délai affichage lors du premier chargement nom appli --> tri actuel
+
             if (run) {
 
                 MainActivity.setViewID(R.id.fragment_album_list_layout);
 
-                int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
+                final int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
 
                 if (android.os.Build.VERSION.SDK_INT >= 24) {
                     getActivity().setTitle(Html.fromHtml("<font>"
@@ -493,12 +495,15 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                 mHandler.postDelayed(new Runnable() {
 
                     public void run() {
+                        int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
 
                         // Actions to do after xx seconds
                         if (android.os.Build.VERSION.SDK_INT >= 24) {
+
+
                             getActivity().setTitle(Html.fromHtml("<font>"
                                     + titre
-                                    + " </font> <small> <font color=\"#CCCCCC\">"
+                                    + " </font> <small> <font color='" + couleurTitre + "'>"
                                     + tri
                                     + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
                         } else {
@@ -507,7 +512,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                                 //noinspection deprecation
                                 getActivity().setTitle(Html.fromHtml("<font>"
                                         + titre
-                                        + " </font> <small> <font color=\"#CCCCCC\">"
+                                        + " </font> <small> <font color='" + couleurTitre + "'"
                                         + tri
                                         + "</small></font>"));
                             } catch (NullPointerException ignore) {

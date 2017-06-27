@@ -11,6 +11,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,10 +26,12 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.images.ArtworkHelper;
-import org.oucho.musicplayer.db.loaders.PlaylistLoader;
+import org.oucho.musicplayer.fragments.loaders.PlaylistLoader;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
+import org.oucho.musicplayer.widgets.CustomSwipe;
+import org.oucho.musicplayer.widgets.CustomSwipeAdapter;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.LockableViewPager;
 
@@ -39,7 +42,7 @@ import java.util.List;
 import static org.oucho.musicplayer.MusiqueKeys.INTENT_QUEUEVIEW;
 
 
-public class PlaylistFragment extends BaseFragment {
+public class PlaylistContentFragment extends BaseFragment {
 
     private static final String PARAM_PLAYLIST_ID = "playlist_id";
     private static final String PARAM_PLAYLIST_NAME = "playlist_name";
@@ -78,8 +81,8 @@ public class PlaylistFragment extends BaseFragment {
         }
     };
 
-    public static PlaylistFragment newInstance(Playlist playlist) {
-        PlaylistFragment fragment = new PlaylistFragment();
+    public static PlaylistContentFragment newInstance(Playlist playlist) {
+        PlaylistContentFragment fragment = new PlaylistContentFragment();
 
         Bundle args = new Bundle();
 
@@ -128,12 +131,19 @@ public class PlaylistFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_playlist, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_playlist_content, container, false);
 
         mRecyclerView = (DragRecyclerView) rootView.findViewById(R.id.list_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new SongListAdapter();
+
+
+        ItemTouchHelper.Callback callback = new CustomSwipe(mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mRecyclerView);
+
+
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setOnItemMovedListener(new DragRecyclerView.OnItemMovedListener() {
             @Override
@@ -231,8 +241,6 @@ public class PlaylistFragment extends BaseFragment {
             vReorderButton = (ImageButton) itemView.findViewById(R.id.reorder_button);
 
             itemView.findViewById(R.id.song_info).setOnClickListener(this);
-            itemView.findViewById(R.id.delete_button).setOnClickListener(this);
-
             vReorderButton.setOnTouchListener(this);
 
         }
@@ -244,9 +252,6 @@ public class PlaylistFragment extends BaseFragment {
             switch (v.getId()) {
                 case R.id.song_info:
                     selectSong(position);
-                    break;
-                case R.id.delete_button:
-                    deleteSong(position);
                     break;
                 default:
                     break;
@@ -279,13 +284,13 @@ public class PlaylistFragment extends BaseFragment {
     }
 
 
-    class SongListAdapter extends RecyclerView.Adapter<SongViewHolder> {
+    class SongListAdapter extends RecyclerView.Adapter<SongViewHolder> implements CustomSwipeAdapter {
 
         private final Context context = getContext(); // NOPMD
 
         @Override
         public SongViewHolder onCreateViewHolder(ViewGroup parent, int type) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_playlist_list_item, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_playlist_content_item, parent, false);
 
 
             return new SongViewHolder(itemView);
@@ -317,7 +322,6 @@ public class PlaylistFragment extends BaseFragment {
             }
             Collections.swap(mSongList, oldPosition, newPosition);
 
-
             PlaylistsUtils.moveItem(getActivity().getContentResolver(), mPlaylist.getId(), oldPosition, newPosition);
 
             notifyItemMoved(oldPosition, newPosition);
@@ -330,6 +334,17 @@ public class PlaylistFragment extends BaseFragment {
             PlaylistsUtils.removeFromPlaylist(getActivity().getContentResolver(), mPlaylist.getId(), s.getId());
             notifyItemRemoved(position);
         }
+
+        @Override
+        public void onItemSwiped(int position) {
+
+            Song s = mSongList.remove(position);
+
+            PlaylistsUtils.removeFromPlaylist(getActivity().getContentResolver(), mPlaylist.getId(), s.getId());
+            notifyItemRemoved(position);
+
+        }
+
     }
 
 

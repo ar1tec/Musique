@@ -21,8 +21,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.adapters.BaseAdapter;
-import org.oucho.musicplayer.adapters.PlaylistListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.adapters.PlaylistListAdapter;
 import org.oucho.musicplayer.db.model.Playlist;
 
 import java.text.Collator;

@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.db.loaders;
+package org.oucho.musicplayer.fragments.loaders;
 
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
