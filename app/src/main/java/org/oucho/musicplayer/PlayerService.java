@@ -31,17 +31,16 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
-import org.oucho.musicplayer.images.ArtworkCache;
+import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.utils.Notification;
+import org.oucho.musicplayer.utils.Permissions;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.oucho.musicplayer.utils.Permissions;
-import org.oucho.musicplayer.db.QueueDbHelper;
 
 
 public class PlayerService extends Service implements
@@ -599,6 +598,8 @@ public class PlayerService extends Service implements
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 mCurrentSong.getId());
 
+        setUri(songUri);
+
         try {
             mMediaPlayer.setDataSource(getApplicationContext(), songUri);
             mMediaPlayer.prepareAsync();
@@ -611,6 +612,21 @@ public class PlayerService extends Service implements
         }
 
     }
+
+    public static Uri uriForPlayer;
+
+    public void setUri(Uri songUri) {
+
+        Log.d(TAG_LOG, "realPath songUri = " + songUri);
+
+        uriForPlayer = songUri;
+    }
+
+    public static Uri getSongPath() {
+        return uriForPlayer;
+    }
+
+
 
 
     private final BroadcastReceiver mHeadsetStateReceiver = new BroadcastReceiver() {

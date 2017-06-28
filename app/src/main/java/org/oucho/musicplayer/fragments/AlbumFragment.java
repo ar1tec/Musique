@@ -544,10 +544,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                    Log.i(TAG_LOG, "onResume()n, KeyEvent");
-
                     LockableViewPager.setSwipeLocked(false);
-
 
                     if (MainActivity.getQueueLayout()) {
 
@@ -559,8 +556,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
 
                     } else if (MainActivity.getChercheActivity()) {
-
-                        Log.i(TAG_LOG, "onResume()n, KeyEvent, else if (MainActivity.getChercheActivity()");
 
                         if (MainActivity.getArtistFragmentState()) {
 
@@ -580,8 +575,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                     } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
 
-                        Log.i(TAG_LOG, "onResume()n, KeyEvent, else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null)");
-
                         MainActivity.setAlbumFragmentState(false);
 
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -597,8 +590,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         shadow.setAction(INTENT_TOOLBAR8_SHADOW);
                         shadow.putExtra("boolean", true);
                         mContext.sendBroadcast(shadow);
-
-
 
                         return true;
                     }

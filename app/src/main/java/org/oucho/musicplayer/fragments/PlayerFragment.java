@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.MediaExtractor;
+import android.media.MediaFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -28,6 +30,7 @@ import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.widgets.LockableViewPager;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,6 +49,9 @@ public class PlayerFragment extends BaseFragment
     private TextView nbTrack;
     private SharedPreferences préférences;
     private final PlayerService mPlayerService = MainActivity.getPlayerService();
+
+
+    private TextView bitrate;
 
     private final Handler mHandler = new Handler();
 
@@ -125,6 +131,9 @@ public class PlayerFragment extends BaseFragment
 
         nbTrack = (TextView) rootView.findViewById(R.id.nombre_titre);
         nbTrack.setText(track + "/" + total_track);
+
+        bitrate = (TextView) rootView.findViewById(R.id.bitrate);
+        bitrate.setText(getBitrate());
 
         mSeekBar = (SeekBar) rootView.findViewById(R.id.seek_bar);
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
@@ -393,23 +402,22 @@ public class PlayerFragment extends BaseFragment
 
 
             String title = PlayerService.getSongTitle();
-            String artist = PlayerService.getArtistName();
+            final String artist = PlayerService.getArtistName();
+            String album = PlayerService.getAlbumName();
 
-            final String album = PlayerService.getAlbumName();
-
-            if (album != null) {
+            if (artist != null) {
 
                 if (first_run) {
 
                     mHandler.postDelayed(new Runnable() {
                         public void run() {
-                            getActivity().setTitle(album);
+                            getActivity().setTitle(artist);
                             first_run = false;
                         }
                     }, 300);
 
                 }  else {
-                    getActivity().setTitle(album);
+                    getActivity().setTitle(artist);
                 }
             }
 
@@ -420,9 +428,9 @@ public class PlayerFragment extends BaseFragment
                 ((TextView) rootView.findViewById(R.id.song_title)).setText(title);
             }
 
-            if (artist != null) {
+            if (album != null) {
                 //noinspection ConstantConditions
-                ((TextView) rootView.findViewById(R.id.song_artist)).setText(artist);
+                ((TextView) rootView.findViewById(R.id.song_album)).setText(album);
             }
 
             ImageView artworkView = (ImageView) rootView.findViewById(R.id.artwork);
@@ -460,6 +468,56 @@ public class PlayerFragment extends BaseFragment
         }
     }
 
+
+    private String getBitrate() {
+        MediaExtractor mex = new MediaExtractor();
+        try {
+            mex.setDataSource(getContext(), PlayerService.getSongPath(), null);// the adresss location of the sound on sdcard.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        MediaFormat mf = mex.getTrackFormat(0);
+
+        Log.d(TAG_LOG, "mf = " + mf);
+
+        String mime = mf.getString(MediaFormat.KEY_MIME);
+        Log.d(TAG_LOG, "mime = " + mime);
+
+        if (mime.equals("audio/mp4a-latm")) {
+            mime = "aac";
+        } else if (mime.equals("audio/mpeg")) {
+            mime = "mp3";
+        }
+
+
+        String bitRate = "";
+        try {
+            bitRate = String.valueOf((mf.getInteger("bit-rate") / 1000) + "kb/s - ");
+        } catch (NullPointerException ignore) {
+
+        }
+
+        try {
+            bitRate = String.valueOf(mf.getInteger(MediaFormat.KEY_BIT_RATE));
+        } catch (NullPointerException ignore) {
+
+        }
+
+        int sampleRate = -1;
+        try {
+            sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE);
+        } catch (NullPointerException ignore) {
+
+        }
+
+        Log.d(TAG_LOG, "getBitRate : " + bitRate + " " + sampleRate + " ");
+
+        return bitRate + mime + " - " + sampleRate + "Hz";
+
+
+
+    }
 
 
 }

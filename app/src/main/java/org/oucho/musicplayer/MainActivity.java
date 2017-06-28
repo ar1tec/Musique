@@ -52,8 +52,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
-import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
 import org.oucho.musicplayer.audiofx.AudioEffects;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Artist;
@@ -65,6 +63,8 @@ import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.fragments.PlayerFragment;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
 import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.update.CheckUpdate;
@@ -76,9 +76,9 @@ import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.utils.VolumeTimer;
 import org.oucho.musicplayer.widgets.CustomSwipe;
-import org.oucho.musicplayer.widgets.blurview.BlurView;
 import org.oucho.musicplayer.widgets.DragRecyclerView;
 import org.oucho.musicplayer.widgets.ProgressBar;
+import org.oucho.musicplayer.widgets.blurview.BlurView;
 import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
 
 import java.io.File;
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements
         MusiqueKeys,
         OnNavigationItemSelectedListener {
 
-    private static final String TAG_LOG = "Main Activity";
+    private static final String TAG = "Main Activity";
 
     private Context mContext;
 
@@ -163,9 +163,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final int mUIFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-
             getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
-           // getWindow().setStatusBarColor(ContextCompat.getColor(mContext, R.color.white));
         }
 
         if (android.os.Build.VERSION.SDK_INT >= 23) {
@@ -827,7 +825,7 @@ public class MainActivity extends AppCompatActivity implements
 
             String receiveIntent = intent.getAction();
 
-            Log.i(TAG_LOG, "private final BroadcastReceiver mServiceListener = " + receiveIntent);
+            Log.i(TAG, "private final BroadcastReceiver mServiceListener = " + receiveIntent);
 
 
             if (mPlayerService == null) {
@@ -852,7 +850,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 if ("playBarLayout".equals(intent.getStringExtra("vue"))) {
 
-                    Log.i(TAG_LOG, "playBarLayout");
+                    Log.i(TAG, "playBarLayout");
 
                     TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
                     animate.setDuration(400);
@@ -879,7 +877,7 @@ public class MainActivity extends AppCompatActivity implements
                 } else {
 
 
-                    Log.i(TAG_LOG, "else");
+                    Log.i(TAG, "else");
 
                     // TranslateAnimation(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta)
                     TranslateAnimation animate2 = new TranslateAnimation(0, 0, -tailleBarre, 0);
@@ -965,7 +963,7 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
 
-            Log.i(TAG_LOG, "ServiceConnection, onServiceConnected");
+            Log.i(TAG, "ServiceConnection, onServiceConnected");
 
             PlayerService.PlaybackBinder binder = (PlaybackBinder) service;
             mPlayerService = binder.getService();
@@ -1001,7 +999,7 @@ public class MainActivity extends AppCompatActivity implements
         if (requestCode == SEARCH_ACTIVITY && resultCode == RESULT_OK) {
             mOnActivityResultIntent = data;
 
-            Log.i(TAG_LOG, "onActivityResult, SEARCH_ACTIVITY");
+            Log.i(TAG, "onActivityResult, SEARCH_ACTIVITY");
 
             //overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
 
@@ -1135,8 +1133,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
+    /******************************************************
+     * Lancement du fragment player
+     ******************************************************/
 
-
+    // Todo coller son propre frame pour simplifer ?
     private void goPlayer() {
 
         File file = new File(getApplicationInfo().dataDir, "/databases/Queue.db");
@@ -1150,20 +1151,20 @@ public class MainActivity extends AppCompatActivity implements
             if ( viewID == R.id.fragment_album_list_layout ){
                 ft.replace(viewID, fragment);
 
-                Log.i(TAG_LOG, "R.id.fragment_album_list_layout");
+                Log.i(TAG, "R.id.fragment_album_list_layout");
 
             } else if ( viewID == R.id.fragment_song_layout ){
                 ft.replace(viewID, fragment);
 
-                Log.i(TAG_LOG, "R.id.fragment_song_layout");
+                Log.i(TAG, "R.id.fragment_song_layout");
 
             } else if ( viewID == R.id.fragment_playlist_list ) {
                 ft.replace(viewID, fragment);
 
-                Log.i(TAG_LOG, "R.id.fragment_playlist_list");
+                Log.i(TAG, "R.id.fragment_playlist_list");
             } else if ( viewID == R.id.fragment_playlist ) {
                 ft.replace(viewID, fragment);
-                Log.i(TAG_LOG, "R.id.fragment_playlist_content");
+                Log.i(TAG, "R.id.fragment_playlist_content");
             }
 
             ft.commit();
@@ -1203,7 +1204,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (artist != null) {
             //noinspection ConstantConditions
-            ((TextView) findViewById(R.id.song_artist)).setText(artist + ", "  + PlayerService.getAlbumName());
+            ((TextView) findViewById(R.id.song_album)).setText(artist + ", "  + PlayerService.getAlbumName());
         }
 
         int duration = PlayerService.getTrackDuration();

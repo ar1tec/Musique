@@ -392,11 +392,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                    Log.i(TAG_LOG, "onResume(), KeyEvent.KEYCODE_BACK ");
-
                     if (MainActivity.getQueueLayout()) {
-
-                        Log.i(TAG_LOG, "onResume(), KeyEvent, if (MainActivity.getQueueLayout()) ");
 
                         Intent intent = new Intent();
                         intent.setAction(INTENT_QUEUEVIEW);
@@ -405,8 +401,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         return true;
 
                     } else if (MainActivity.getAlbumFragmentState()) {
-
-                        Log.i(TAG_LOG, "onResume(), KeyEvent, else if (MainActivity.getAlbumFragmentState()) ");
 
                         MainActivity.setAlbumFragmentState(false);
                         LockableViewPager.setSwipeLocked(false);
