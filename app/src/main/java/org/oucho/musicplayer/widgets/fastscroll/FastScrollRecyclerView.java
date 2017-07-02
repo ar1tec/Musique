@@ -10,6 +10,7 @@ import android.view.ViewParent;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.widgets.fastscroll.FastScroller.SectionIndexer;
 
+@SuppressWarnings("unused")
 public class FastScrollRecyclerView extends RecyclerView {
 
     private FastScroller mFastScroller;
@@ -41,7 +42,7 @@ public class FastScrollRecyclerView extends RecyclerView {
     }
 
 
-    public void setSectionIndexer(SectionIndexer sectionIndexer) {
+    private void setSectionIndexer(SectionIndexer sectionIndexer) {
         mFastScroller.setSectionIndexer(sectionIndexer);
     }
 

@@ -77,11 +77,6 @@ public final class RenderScriptBlur implements BlurAlgorithm {
         }
     }
 
-    @Override
-    public boolean canModifyBitmap() {
-        return canModifyBitmap;
-    }
-
     @NonNull
     @Override
     public Bitmap.Config getSupportedBitmapConfig() {

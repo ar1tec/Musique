@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 
+@SuppressWarnings("WeakerAccess")
 public abstract class BaseAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<V> {
 
     private OnItemClickListener mOnItemClickListener;

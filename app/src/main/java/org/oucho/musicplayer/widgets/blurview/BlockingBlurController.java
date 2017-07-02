@@ -3,9 +3,7 @@ package org.oucho.musicplayer.widgets.blurview;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +50,6 @@ public class BlockingBlurController implements BlurController {
 
     //Used to distinct parent draw() calls from Controller's draw() calls
     private boolean isMeDrawingNow;
-    private boolean isBlurEnabled = true;
 
     //must be set from message queue
     private final Runnable onDrawEndTask = new Runnable() {
@@ -62,10 +59,6 @@ public class BlockingBlurController implements BlurController {
             isMeDrawingNow = false;
         }
     };
-
-    //By default, window's background is not drawn on canvas. We need to draw it manually
-    @Nullable
-    private Drawable windowBackground;
 
     private boolean shouldTryToOffsetCoords = true;
 
@@ -205,11 +198,6 @@ public class BlockingBlurController implements BlurController {
      * Draws whole view hierarchy on internal canvas
      */
     private void drawUnderlyingViews() {
-
-        //draw activity window background
-        if (windowBackground != null) {
-            windowBackground.draw(internalCanvas);
-        }
         rootView.draw(internalCanvas);
     }
 
@@ -218,15 +206,13 @@ public class BlockingBlurController implements BlurController {
 
         isMeDrawingNow = true;
 
-        if (isBlurEnabled) {
-            internalCanvas.save();
-            setupInternalCanvasMatrix();
-            drawUnderlyingViews();
-            internalCanvas.restore();
+        internalCanvas.save();
+        setupInternalCanvasMatrix();
+        drawUnderlyingViews();
+        internalCanvas.restore();
 
-            blurAndSave();
-            draw(canvas);
-        }
+        blurAndSave();
+        draw(canvas);
     }
 
     private void draw(Canvas canvas) {
@@ -237,7 +223,7 @@ public class BlockingBlurController implements BlurController {
     }
 
     @Override
-    public void onDrawEnd(Canvas canvas) {
+    public void onDrawEnd() {
         blurView.post(onDrawEndTask);
     }
 
@@ -272,19 +258,6 @@ public class BlockingBlurController implements BlurController {
     @Override
     public void setBlurAlgorithm(BlurAlgorithm algorithm) {
         this.blurAlgorithm = algorithm;
-    }
-
-    @Override
-    public void setWindowBackground(@Nullable Drawable windowBackground) {
-        this.windowBackground = windowBackground;
-    }
-
-    @Override
-    public void setBlurEnabled(boolean enabled) {
-        Log.w(TAG_LOG, "setBlurAutoUpdate()");
-        this.isBlurEnabled = enabled;
-        setBlurAutoUpdate(enabled);
-        blurView.invalidate();
     }
 
     @Override

@@ -69,7 +69,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     private FastScrollRecyclerView mRecyclerView;
     private final Handler mHandler = new Handler();
 
-    Artist mArtist = null;
+    private Artist mArtist = null;
 
 
     private List<Album> listeTitre;
@@ -390,7 +390,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showOverflowMenu(boolean showMenu){
+    private void showOverflowMenu(boolean showMenu){
         if(menu == null)
             return;
 
@@ -407,7 +407,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             isRegistered = false;
         }
 
-        AlbumLoader.setArtist(null);
+        AlbumLoader.resetArtist();
 
     }
 

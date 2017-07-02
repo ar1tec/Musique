@@ -31,7 +31,6 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
     private final int mArtworkWidth;
     private final int mArtworkHeight;
     private final Context mContext;
-    private int mLayoutId = R.layout.fragment_liste_album_item;
     private List<Album> mAlbumList = Collections.emptyList();
 
 
@@ -49,8 +48,8 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
     @Override
     public AlbumViewHolder onCreateViewHolder(ViewGroup parent, int type) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                mLayoutId, parent, false);
+        int mLayoutId = R.layout.fragment_liste_album_item;
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(mLayoutId, parent, false);
 
         return new AlbumViewHolder(itemView);
     }
@@ -195,7 +194,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         private final LinearLayout vAlbumInfo;
 
-        private TextView vArtist;
+        private final TextView vArtist;
 
         private AlbumViewHolder(View itemView) {
             super(itemView);

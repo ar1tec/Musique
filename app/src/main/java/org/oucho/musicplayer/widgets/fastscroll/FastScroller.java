@@ -62,7 +62,7 @@ public class FastScroller extends LinearLayout {
 
     private FastScrollStateChangeListener mFastScrollStateChangeListener;
 
-    private Runnable mScrollbarHider = new Runnable() {
+    private final Runnable mScrollbarHider = new Runnable() {
 
         @Override
         public void run() {
@@ -70,7 +70,7 @@ public class FastScroller extends LinearLayout {
         }
     };
 
-    private RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
+    private final RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -340,7 +340,8 @@ public class FastScroller extends LinearLayout {
         return mHeight * proportion;
     }
 
-    private int getValueInRange(int min, int max, int value) {
+    @SuppressWarnings("SameParameterValue")
+    private int getValueInRange( int min, int max, int value) {
         int minimum = Math.max(min, value);
         return Math.min(minimum, max);
     }

@@ -25,9 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import org.oucho.musicplayer.MainActivity;
@@ -44,9 +42,7 @@ import org.oucho.musicplayer.search.fragment.SearchAlbumFragment;
 import org.oucho.musicplayer.search.fragment.SearchArtistFragment;
 import org.oucho.musicplayer.search.fragment.SearchSongFragment;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.oucho.musicplayer.MusiqueKeys.FILTER;
 
@@ -54,11 +50,6 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
 
     private static SectionsPagerAdapter mSectionsPagerAdapter;
-    static TabLayout tabLayout;
-
-    private static ViewPager mViewPager;
-
-    private String mSearchKeywords;
 
     private static ActionBar actionBar;
 
@@ -94,13 +85,11 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.addOnPageChangeListener(mViewPagerChangeListener);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
+        viewPager.setAdapter(mSectionsPagerAdapter);
 
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
 
         actionBar = getSupportActionBar();
@@ -155,7 +144,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
         if (mPlayerService == null) {
             return;
         }
-        mPlayerService.setPlayList(songList, position, true);
+        mPlayerService.setPlayList(songList, position);
     }
 
     public void addToQueue(Song song) {
@@ -165,7 +154,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
     }
 
 
-    public void showTab(final boolean value) {
+    private void showTab(final boolean value) {
 
         Handler mHandler = new Handler();
 
@@ -173,14 +162,14 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
             mHandler.postDelayed(new Runnable() {
                 public void run() {
-                    actionBar.setDisplayShowCustomEnabled(value);
+                    actionBar.setDisplayShowCustomEnabled(false);
                 }
             }, 200);
         } else {
 
             mHandler.postDelayed(new Runnable() {
                 public void run() {
-                    actionBar.setDisplayShowCustomEnabled(value);
+                    actionBar.setDisplayShowCustomEnabled(true);
                 }
             }, 200);
 
@@ -294,7 +283,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            mSearchKeywords = newText.toLowerCase();
+            String mSearchKeywords = newText.toLowerCase();
 
             textNew = mSearchKeywords;
 
@@ -338,49 +327,14 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
     }
 
 
-    private ViewPager.OnPageChangeListener mViewPagerChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-        }
-    };
-
-
-    public static void backToPrevious() {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-    }
-
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private final Map<Integer, String> mFragmentTags;
 
         @SuppressLint("UseSparseArrays")
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            mFragmentTags = new HashMap<>();
-
         }
 
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Object obj = super.instantiateItem(container, position);
-            if (obj instanceof Fragment) {
-                Fragment f = (Fragment) obj;
-                String tag = f.getTag();
-                mFragmentTags.put(position, tag);
-                Log.i("SearchActivity", "fragtag" + tag);
-
-            }
-            return obj;
-        }
 
         @Override
         public Fragment getItem(int position) {
@@ -523,7 +477,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
     /******************************************************************************
      * Titre
      ******************************************************************************/
-    public void setTitre(String titre){
+    private void setTitre(String titre){
 
 
         final int couleurTitre = ContextCompat.getColor(mContext, R.color.colorAccent);

@@ -19,8 +19,8 @@ public class NavigationUtils {
 
         Intent i = new Intent(activity, SearchActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        activity.startActivityForResult(i, MainActivity.SEARCH_ACTIVITY);
-        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
+        activity.startActivity(i);
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     public static void showEqualizer(Activity activity) {
@@ -30,7 +30,7 @@ public class NavigationUtils {
         Intent i = new Intent(activity, EqualizerActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(i);
-        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     public static void showMainActivity(Activity activity) {
@@ -40,6 +40,6 @@ public class NavigationUtils {
         Intent i = new Intent(activity, MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(i);
-        activity.overridePendingTransition(R.anim.fade_in, R.anim.slide_out_bottom);
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

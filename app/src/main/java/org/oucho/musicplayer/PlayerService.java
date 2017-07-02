@@ -65,7 +65,6 @@ public class PlayerService extends Service implements
     private static MediaSessionCompat mMediaSession;
 
     private List<Song> mOriginalSongList = new ArrayList<>();
-    private static final List<Song> mPlayList = new ArrayList<>();
 
     private static boolean mShuffle = false;
     private static boolean mIsPaused = false;
@@ -87,8 +86,6 @@ public class PlayerService extends Service implements
     private AudioManager mAudioManager;
     private SharedPreferences mStatePrefs;
     private TelephonyManager mTelephonyManager;
-
-
 
     @Override
     public void onCreate() {
@@ -126,7 +123,7 @@ public class PlayerService extends Service implements
         if (intent != null) {
             String action = intent.getAction();
             if (action != null) {
-                if (mPlayList.size() == 0 || action.equals(ACTION_CHOOSE_SONG)) {
+                if (mQueuePlayList.size() == 0 || action.equals(ACTION_CHOOSE_SONG)) {
 
                     Intent dialogIntent = new Intent(this, MainActivity.class);
                     dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -253,15 +250,11 @@ public class PlayerService extends Service implements
     }
 
 
-    public static List<Song> getPlayList() {
-        return mPlayList;
-    }
-
-    public void setPlayList(List<Song> songList, int position, boolean play) {
+    public void setPlayList(List<Song> songList, int position) {
 
         setPlayListInternal(songList);
 
-        setPosition(position, play);
+        setPosition(position, true);
         if (mShuffle) {
             shuffle();
         }
@@ -274,14 +267,14 @@ public class PlayerService extends Service implements
         }
 
         mOriginalSongList = songList;
-        mPlayList.clear();
-        mPlayList.addAll(mOriginalSongList);
+        mQueuePlayList.clear();
+        mQueuePlayList.addAll(mOriginalSongList);
         mHasPlaylist = true;
     }
 
     public void addToQueue(Song song) {
         mOriginalSongList.add(song);
-        mPlayList.add(song);
+        mQueuePlayList.add(song);
         notifyChange(ITEM_ADDED);
     }
 
@@ -290,14 +283,14 @@ public class PlayerService extends Service implements
 
         boolean saveQueue = (QUEUE_CHANGED.equals(what) || ITEM_ADDED.equals(what) || ORDER_CHANGED.equals(what));
 
-        if (mPlayList.size() > 0) {
+        if (mQueuePlayList.size() > 0) {
             SharedPreferences.Editor editor = mStatePrefs.edit();
             editor.putBoolean("stateSaved", true);
 
             if (saveQueue) {
                 QueueDbHelper dbHelper = new QueueDbHelper(this);
                 dbHelper.removeAll();
-                dbHelper.add(mPlayList);
+                dbHelper.add();
                 dbHelper.close();
             }
 
@@ -428,29 +421,29 @@ public class PlayerService extends Service implements
 
 
     public void playPrev() {
-        int position = getPreviousPosition(true);
+        int position = getPreviousPosition();
 
-        if (position >= 0 && position < mPlayList.size()) {
+        if (position >= 0 && position < mQueuePlayList.size()) {
             mCurrentPosition = position;
-            mCurrentSong = mPlayList.get(position);
+            mCurrentSong = mQueuePlayList.get(position);
             openAndPlay();
         }
     }
 
-    private int getPreviousPosition(boolean force) {
+    private int getPreviousPosition() {
 
         updateCurrentPosition();
         int position = mCurrentPosition;
 
 
-        if ((mRepeatMode == REPEAT_CURRENT && !force) || (isPlaying() && getPlayerPosition() >= 1500)) {
+        if ((isPlaying() && getPlayerPosition() >= 1500)) {
             return position;
         }
 
 
         if (position - 1 < 0) {
             if (mRepeatMode == REPEAT_ALL) {
-                return mPlayList.size() - 1;
+                return mQueuePlayList.size() - 1;
             }
             return -1;// NO_REPEAT;
         }
@@ -462,9 +455,9 @@ public class PlayerService extends Service implements
     public void playNext(boolean force) {
         int position = getNextPosition(force);
 
-        if (position >= 0 && position < mPlayList.size()) {
+        if (position >= 0 && position < mQueuePlayList.size()) {
             mCurrentPosition = position;
-            mCurrentSong = mPlayList.get(position);
+            mCurrentSong = mQueuePlayList.get(position);
             openAndPlay();
 
             Intent intentN = new Intent(INTENT_STATE);
@@ -483,7 +476,7 @@ public class PlayerService extends Service implements
         }
 
 
-        if (position + 1 >= mPlayList.size()) {
+        if (position + 1 >= mQueuePlayList.size()) {
             if (mRepeatMode == REPEAT_ALL) {
                 return 0;
             }
@@ -493,16 +486,6 @@ public class PlayerService extends Service implements
     }
 
 
-
-    public void setAsNextTrack(Song song) {
-        mOriginalSongList.add(song);
-        int currentPos = mCurrentPosition;
-        mPlayList.add(currentPos + 1, song);
-
-        Log.i(TAG_LOG, "setAsNextTrack");
-
-        notifyChange(ITEM_ADDED);
-    }
 
     public int getNextRepeatMode() {
         switch (mRepeatMode) {
@@ -530,8 +513,8 @@ public class PlayerService extends Service implements
             if (enable) {
                 shuffle();
             } else {
-                mPlayList.clear();
-                mPlayList.addAll(mOriginalSongList);
+                mQueuePlayList.clear();
+                mQueuePlayList.addAll(mOriginalSongList);
             }
 
             //on met à jour la position
@@ -543,20 +526,20 @@ public class PlayerService extends Service implements
     }
 
     private void shuffle() {
-        boolean b = mPlayList.remove(mCurrentSong);
-        Collections.shuffle(mPlayList);
+        boolean b = mQueuePlayList.remove(mCurrentSong);
+        Collections.shuffle(mQueuePlayList);
         if (b) {
-            mPlayList.add(0, mCurrentSong);
+            mQueuePlayList.add(0, mCurrentSong);
         }
         setPosition(0, false);
     }
 
     public void setPosition(int position, boolean play) {
-        if (position >= mPlayList.size()) {
+        if (position >= mQueuePlayList.size()) {
             return;
         }
         mCurrentPosition = position;
-        Song song = mPlayList.get(position);
+        Song song = mQueuePlayList.get(position);
         if (!song.equals(mCurrentSong)) {
             mCurrentSong = song;
             if (play) {
@@ -571,7 +554,7 @@ public class PlayerService extends Service implements
 
 
     private void updateCurrentPosition() {
-        int pos = mPlayList.indexOf(mCurrentSong);
+        int pos = mQueuePlayList.indexOf(mCurrentSong);
         if (pos != -1) {
             mCurrentPosition = pos;
         }
@@ -613,9 +596,9 @@ public class PlayerService extends Service implements
 
     }
 
-    public static Uri uriForPlayer;
+    private static Uri uriForPlayer;
 
-    public void setUri(Uri songUri) {
+    private void setUri(Uri songUri) {
 
         Log.d(TAG_LOG, "realPath songUri = " + songUri);
 
@@ -709,7 +692,7 @@ public class PlayerService extends Service implements
 
         playNext(false);
 
-        if (mCurrentPosition+1 == mPlayList.size()) {
+        if (mCurrentPosition+1 == mQueuePlayList.size()) {
             mIsPlaying = false;
             mIsPaused = true;
             notifyChange(PLAYSTATE_CHANGED);
@@ -757,7 +740,7 @@ public class PlayerService extends Service implements
             return true;
         }
 
-        if (mPlayList.size() > 0) {
+        if (mQueuePlayList.size() > 0) {
             Message msg = mDelayedStopHandler.obtainMessage();
             mDelayedStopHandler.sendMessageDelayed(msg, IDLE_DELAY);
             return true;
@@ -850,7 +833,7 @@ public class PlayerService extends Service implements
     }
 
     public static int getPositionWithinPlayList() {
-        return mPlayList.indexOf(mCurrentSong);
+        return mQueuePlayList.indexOf(mCurrentSong);
     }
 
     public static MediaSessionCompat getMediaSession() {

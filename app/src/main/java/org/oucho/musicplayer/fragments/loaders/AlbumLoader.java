@@ -26,7 +26,7 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
 
     private static String mArtist = null;
 
-    private String TAG= "AlbumLoader";
+    private final String TAG= "AlbumLoader";
 
 
     public AlbumLoader(Context context) {
@@ -41,8 +41,8 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
 
     }
 
-    public static void setArtist(String value) {
-        mArtist = value;
+    public static void resetArtist() {
+        mArtist = null;
     }
 
     @Override

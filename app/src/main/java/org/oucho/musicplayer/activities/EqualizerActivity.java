@@ -43,18 +43,14 @@ public class EqualizerActivity extends AppCompatActivity {
 
         Context context = getApplicationContext();
 
-        int couleurFond = ContextCompat.getColor(context, R.color.colorPrimary_0);
 
         int couleurTitre = ContextCompat.getColor(context, R.color.colorAccent);
 
         String titre = context.getString(R.string.equalizer);
 
-        ColorDrawable colorDrawable = new ColorDrawable(couleurFond);
 
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setBackgroundDrawable(colorDrawable);
-
         if (android.os.Build.VERSION.SDK_INT >= 24) {
             actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>" + titre + "</font>", Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -268,8 +264,7 @@ public class EqualizerActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.equalizer, menu);
         MenuItem item = menu.findItem(R.id.action_switch);
 
-        mSwitchButton = (SwitchCompat) MenuItemCompat.getActionView(item)
-                .findViewById(R.id.switch_button);
+        mSwitchButton = (SwitchCompat) MenuItemCompat.getActionView(item).findViewById(R.id.switch_button);
         bindSwitchToEqualizer();
         return true;
     }

@@ -13,7 +13,7 @@ import android.util.DisplayMetrics;
 public class CustomGridLayoutManager extends GridLayoutManager {
     private static final float MILLISECONDS_PER_INCH = 40f;
 
-    private Context mContext;
+    private final Context mContext;
 
     public CustomGridLayoutManager(Context context, int value) {
         super(context, value);

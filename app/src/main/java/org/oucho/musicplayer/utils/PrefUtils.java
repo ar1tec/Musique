@@ -42,10 +42,6 @@ public class PrefUtils {
         putString(SONG_SORT_ORDER, value);
     }
 
-    public void setArtistSortOrder(String value) {
-        putString(ARTIST_SORT_ORDER, value);
-    }
-
     public void setAlbumSortOrder(String value) {
         putString(ALBUM_SORT_ORDER, value);
     }

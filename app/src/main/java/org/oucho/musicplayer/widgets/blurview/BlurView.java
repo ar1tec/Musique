@@ -3,10 +3,8 @@ package org.oucho.musicplayer.widgets.blurview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -88,23 +86,6 @@ public class BlurView extends FrameLayout {
         });
     }
 
-    public void updateBlur() {
-        Log.w(TAG_LOG, "updateBlur()");
-
-        invalidate();
-    }
-
-    public void setBlurEnabled(final boolean enabled) {
-        Log.w(TAG_LOG, "setBlurEnabled()");
-
-        post(new Runnable() {
-            @Override
-            public void run() {
-                blurController.setBlurEnabled(enabled);
-            }
-        });
-    }
-
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -114,7 +95,7 @@ public class BlurView extends FrameLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        blurController.onDrawEnd(canvas);
+        blurController.onDrawEnd();
     }
 
     private void drawColorOverlay(Canvas canvas) {
@@ -150,14 +131,6 @@ public class BlurView extends FrameLayout {
     }
 
 
-    public void setOverlayColor(@ColorInt int overlayColor) {
-        if (overlayColor != this.overlayColor) {
-            this.overlayColor = overlayColor;
-            invalidate();
-        }
-    }
-
-
     public ControllerSettings setupWith(@NonNull ViewGroup rootView) {
 
         Log.w(TAG_LOG, "setupWith()");
@@ -181,6 +154,7 @@ public class BlurView extends FrameLayout {
         }
 
 
+        @SuppressWarnings("UnusedReturnValue")
         public ControllerSettings blurRadius(float radius) {
             blurController.setBlurRadius(radius);
             return this;
@@ -191,10 +165,6 @@ public class BlurView extends FrameLayout {
             return this;
         }
 
-        public ControllerSettings windowBackground(@Nullable Drawable windowBackground) {
-            blurController.setWindowBackground(windowBackground);
-            return this;
-        }
     }
 
     //Used in edit mode and in case if no BlurController was set
@@ -210,7 +180,7 @@ public class BlurView extends FrameLayout {
             public void updateBlurViewSize() {}
 
             @Override
-            public void onDrawEnd(Canvas canvas) {}
+            public void onDrawEnd() {}
 
             @Override
             public void setBlurRadius(float radius) {}
@@ -219,13 +189,7 @@ public class BlurView extends FrameLayout {
             public void setBlurAlgorithm(BlurAlgorithm algorithm) {}
 
             @Override
-            public void setWindowBackground(@Nullable Drawable windowBackground) {}
-
-            @Override
             public void destroy() {}
-
-            @Override
-            public void setBlurEnabled(boolean enabled) {}
 
             @Override
             public void setBlurAutoUpdate(boolean enabled) {}

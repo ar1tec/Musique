@@ -5,6 +5,7 @@ import android.util.Log;
 
 class Version implements Comparable<Version> {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final String TAG_LOG = "Version";
 
     private final String version;

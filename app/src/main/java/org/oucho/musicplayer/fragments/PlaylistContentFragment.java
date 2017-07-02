@@ -1,14 +1,12 @@
 package org.oucho.musicplayer.fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -225,8 +223,6 @@ public class PlaylistContentFragment extends BaseFragment {
 
     private class SongViewHolder extends RecyclerView.ViewHolder implements OnClickListener, OnTouchListener {
 
-        private final Context context = getContext();
-
         final View itemView;
         final TextView vTitle;
         final TextView vArtist;
@@ -265,22 +261,6 @@ public class PlaylistContentFragment extends BaseFragment {
             return false;
         }
 
-        private void deleteSong(int position) {
-
-
-            final int song = position;
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(context.getString(R.string.deleteTrackConfirm));
-            builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-
-                    mAdapter.removeItem(song);
-                }
-            });
-            builder.setNegativeButton(R.string.cancel, null);
-            builder.show();
-        }
     }
 
 
@@ -328,12 +308,6 @@ public class PlaylistContentFragment extends BaseFragment {
 
         }
 
-        void removeItem(int position) {
-            Song s = mSongList.remove(position);
-
-            PlaylistsUtils.removeFromPlaylist(getActivity().getContentResolver(), mPlaylist.getId(), s.getId());
-            notifyItemRemoved(position);
-        }
 
         @Override
         public void onItemSwiped(int position) {

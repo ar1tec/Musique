@@ -51,8 +51,6 @@ public class PlayerFragment extends BaseFragment
     private final PlayerService mPlayerService = MainActivity.getPlayerService();
 
 
-    private TextView bitrate;
-
     private final Handler mHandler = new Handler();
 
     private int track = -1;
@@ -132,7 +130,7 @@ public class PlayerFragment extends BaseFragment
         nbTrack = (TextView) rootView.findViewById(R.id.nombre_titre);
         nbTrack.setText(track + "/" + total_track);
 
-        bitrate = (TextView) rootView.findViewById(R.id.bitrate);
+        TextView bitrate = (TextView) rootView.findViewById(R.id.bitrate);
         bitrate.setText(getBitrate());
 
         mSeekBar = (SeekBar) rootView.findViewById(R.id.seek_bar);

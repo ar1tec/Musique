@@ -52,7 +52,7 @@ public class SearchAlbumFragment extends BaseFragment {
     private long albumID;
 
 
-    Context mContext;
+    private Context mContext;
 
     public static SearchAlbumFragment newInstance() {
 

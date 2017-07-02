@@ -25,6 +25,7 @@ public class Artist {
         return name;
     }
 
+    @SuppressWarnings("unused")
     public int getAlbumCount() {
         return albumCount;
     }

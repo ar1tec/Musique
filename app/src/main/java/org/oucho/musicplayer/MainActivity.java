@@ -53,8 +53,6 @@ import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.audiofx.AudioEffects;
-import org.oucho.musicplayer.db.model.Album;
-import org.oucho.musicplayer.db.model.Artist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.dialog.HelpDialog;
@@ -111,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements
     private DragRecyclerView mQueueView;
     private CountDownTimer minuteurVolume;
     private NavigationView mNavigationView;
-    private PlaybackRequests mPlaybackRequests;
+
     private final VolumeTimer volume = new VolumeTimer();
 
     private static Menu menu;
@@ -130,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements
     private static boolean running;
     private static boolean chercheActivity = false;
 
-    private static boolean artistFragmentState = false;
     private static boolean queueLayout = false;
     private static boolean playBarLayout = false;
     private static boolean albumFragmentState = false;
@@ -166,8 +163,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-        mPlaybackRequests = new PlaybackRequests();
 
         mQueueLayout = findViewById(R.id.queue_layout);
         mQueueView = (DragRecyclerView) findViewById(R.id.queue_view);
@@ -235,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements
         repeatBar = (ImageView) findViewById(R.id.bar0_repeat);
         repeatBar1 = (ImageView) findViewById(R.id.bar0_repeat1);
 
-        radioIsInstalled = checkApp(APP_RADIO);
+        radioIsInstalled = checkApp();
 
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -265,11 +260,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private boolean checkApp(String packagename) {
+    private boolean checkApp() {
         PackageManager packageManager = getPackageManager();
 
         try {
-                packageManager.getPackageInfo(packagename, 0);
+                packageManager.getPackageInfo(MusiqueKeys.APP_RADIO, 0);
                 return true;
             } catch (PackageManager.NameNotFoundException e) {
                 return false;
@@ -660,89 +655,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-/*    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-
-        if (mOnActivityResultIntent != null) {
-            Bundle bundle = mOnActivityResultIntent.getExtras();
-
-            if (mOnActivityResultIntent.getAction().equals(ACTION_REFRESH)) {
-                refresh();
-
-            } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ALBUM)) {
-
-                Album album = getAlbumFromBundle(bundle);
-                AlbumFragment fragment = AlbumFragment.newInstance(album);
-                setFragment(fragment);
-                
-            } else if (mOnActivityResultIntent.getAction().equals(ACTION_SHOW_ARTIST)) {
-
-                Artist artist = getArtistFromBundle(bundle);
-                ArtistFragment fragment = ArtistFragment.newInstance(artist);
-                setFragment(fragment);
-
-            } else {
-
-                Song song = getSongFromBundle(bundle);
-
-                if (mOnActivityResultIntent.getAction().equals(ACTION_PLAY_SONG)) {
-                    ArrayList<Song> songList = new ArrayList<>();
-                    songList.add(song);
-                    mPlaybackRequests.requestPlayList(songList);
-                } else if (mOnActivityResultIntent.getAction().equals(ACTION_ADD_TO_QUEUE)) {
-                    mPlaybackRequests.requestAddToQueue(song);
-                } else if (mOnActivityResultIntent.getAction().equals(ACTION_SET_AS_NEXT_TRACK)) {
-                    mPlaybackRequests.requestAsNextTrack(song);
-                }
-            }
-
-            mOnActivityResultIntent = null;
-        }
-    }*/
-
-
     /* *********************************************************************************************
      * Prepare fragments.
      * ********************************************************************************************/
 
-    public void setFragment(Fragment f) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, f).addToBackStack(null).commit();
-    }
-
-    private Album getAlbumFromBundle(Bundle bundle) {
-        long id = bundle.getLong(ALBUM_ID);
-        String title = bundle.getString(ALBUM_NAME);
-        String artist = bundle.getString(ALBUM_ARTIST);
-        int year = bundle.getInt(ALBUM_YEAR);
-        int trackCount = bundle.getInt(ALBUM_TRACK_COUNT);
-
-        return new Album(id, title, artist, year, trackCount);
-    }
-
-    private Artist getArtistFromBundle(Bundle bundle) {
-        long id = bundle.getLong(ARTIST_ARTIST_ID);
-        String name = bundle.getString(ARTIST_ARTIST_NAME);
-        int albumCount = bundle.getInt(ARTIST_ALBUM_COUNT);
-        int trackCount = bundle.getInt(ARTIST_TRACK_COUNT);
-
-        return new Artist(id, name, albumCount, trackCount);
-    }
-
-    private Song getSongFromBundle(Bundle bundle) {
-        long id = bundle.getLong(SONG_ID);
-        String title = bundle.getString(SONG_TITLE);
-        String artist = bundle.getString(SONG_ARTIST);
-        String album = bundle.getString(SONG_ALBUM);
-        long albumId = bundle.getLong(SONG_ALBUM_ID);
-        int trackNumber = bundle.getInt(SONG_TRACK_NUMBER);
-        int duration = bundle.getInt(SONG_DURATION);
-        int yearCol = bundle.getInt(SONG_YEAR);
-
-
-        return new Song(id, title, artist, album, albumId, trackNumber, duration, yearCol);
-    }
 
     @SuppressWarnings("RestrictedApi")
     public void refresh() {
@@ -943,7 +859,6 @@ public class MainActivity extends AppCompatActivity implements
             PlayerService.PlaybackBinder binder = (PlaybackBinder) service;
             mPlayerService = binder.getService();
             mServiceBound = true;
-            mPlaybackRequests.sendRequests();
 
             updateAll();
         }
@@ -958,7 +873,7 @@ public class MainActivity extends AppCompatActivity implements
         if (mPlayerService == null) {
             return;
         }
-        mPlayerService.setPlayList(songList, position, true);
+        mPlayerService.setPlayList(songList, position);
     }
 
     public void addToQueue(Song song) {
@@ -989,7 +904,7 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
-        List<Song> queue = PlayerService.getPlayList();
+        List<Song> queue = mQueuePlayList;
         if (!queue.equals(mQueue)) {
             mQueue = queue;
             mQueueAdapter.setQueue(mQueue);
@@ -1038,62 +953,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-
-    private class PlaybackRequests {
-
-        private List<Song> mPlayList;
-        private int mIndex;
-        private boolean mAutoPlay;
-        private Song mNextTrack;
-        private Song mAddToQueue;
-
-        private void requestPlayList(List<Song> playList) {
-            if (mPlayerService != null) {
-                mPlayerService.setPlayList(playList, 0, true);
-            } else {
-                mPlayList = playList;
-                mIndex = 0;
-                mAutoPlay = true;
-            }
-        }
-
-        void requestAddToQueue(Song song) {
-            if (mPlayerService != null) {
-                mPlayerService.addToQueue(song);
-            } else {
-                mAddToQueue = song;
-            }
-        }
-
-        void requestAsNextTrack(Song song) {
-            if (mPlayerService != null) {
-                mPlayerService.setAsNextTrack(song);
-            } else {
-                mNextTrack = song;
-            }
-        }
-
-        void sendRequests() {
-            if (mPlayerService == null) {
-                return;
-            }
-
-            if (mPlayList != null) {
-                mPlayerService.setPlayList(mPlayList, mIndex, mAutoPlay);
-                mPlayList = null;
-            }
-
-            if (mAddToQueue != null) {
-                mPlayerService.addToQueue(mAddToQueue);
-                mAddToQueue = null;
-            }
-
-            if (mNextTrack != null) {
-                mPlayerService.setAsNextTrack(mNextTrack);
-                mNextTrack = null;
-            }
-        }
-    }
 
 
     /******************************************************
@@ -1555,13 +1414,6 @@ public class MainActivity extends AppCompatActivity implements
     }
     public static void setAlbumFragmentState(Boolean value) {
         albumFragmentState = value;
-    }
-
-    public static boolean getArtistFragmentState() {
-        return artistFragmentState;
-    }
-    public static void setArtistFragmentState(Boolean value) {
-        artistFragmentState = value;
     }
 
     public static int getViewID() {

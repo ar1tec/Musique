@@ -69,8 +69,8 @@
             android:textColor="@color/grey_900"
             android:textSize="10sp"
             android:fontFamily="sans-serif-light"
-
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            tools:ignore="SmallSp" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

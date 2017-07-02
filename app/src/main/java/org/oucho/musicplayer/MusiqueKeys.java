@@ -1,12 +1,19 @@
 package org.oucho.musicplayer;
 
 
+import org.oucho.musicplayer.db.model.Song;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public interface MusiqueKeys {
 
 
     int SEARCH_ACTIVITY = 42;
 
     String FILTER = "filter";
+
+    List<Song> mQueuePlayList = new ArrayList<>();
 
 
     int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
@@ -43,31 +50,4 @@ public interface MusiqueKeys {
 
     String STATE_PREFS_NAME = "PlayerState";
 
-    String ARTIST_ARTIST_ID = "artist_id";
-    String ARTIST_ARTIST_NAME = "artist_name";
-    String ARTIST_ALBUM_COUNT = "album_count";
-    String ARTIST_TRACK_COUNT = "track_count";
-
-    String ALBUM_ID = "id";
-    String ALBUM_NAME = "name";
-    String ALBUM_ARTIST = "artist";
-    String ALBUM_YEAR = "year";
-    String ALBUM_TRACK_COUNT = "track_count";
-
-    String SONG_ID = "song_id";
-    String SONG_YEAR = "song_year";
-    String SONG_TITLE = "song_title";
-    String SONG_ALBUM = "song_album";
-    String SONG_ARTIST = "song_artist";
-    String SONG_ALBUM_ID = "song_album_id";
-    String SONG_DURATION = "song_duration";
-    String SONG_TRACK_NUMBER = "song_track_number";
-
-    String ACTION_REFRESH = "resfresh";
-    String ACTION_PLAY_SONG = "play_song";
-    String ACTION_SHOW_ALBUM = "show_album";
-    String ACTION_SHOW_ARTIST = "show_artist";
-    String ACTION_ADD_TO_QUEUE = "add_to_queue";
-
-    String ACTION_SET_AS_NEXT_TRACK = "set_as_next_track";
 }

@@ -13,6 +13,15 @@
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 
+    <style name="AppThemeEqualizer" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/grey_800</item>
+        <item name="colorPrimaryDark">@color/grey_900</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
     <style name="ToolBarTitleColor" parent="Base.Widget.AppCompat.Toolbar">
         <item name="android:textColorPrimary">@color/colorAccent</item>
         <item name="android:gravity">center_vertical</item>
@@ -23,10 +32,19 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppThemeEqualizer.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppThemeEqualizer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppThemeEqualizer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">18sp</item>

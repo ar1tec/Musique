@@ -114,9 +114,9 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
         return rootView;
     }
 
-    Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
-    private ViewPager.OnPageChangeListener mViewPagerChangeListener = new ViewPager.OnPageChangeListener() {
+    private final ViewPager.OnPageChangeListener mViewPagerChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
         public void onPageScrollStateChanged(int state) {

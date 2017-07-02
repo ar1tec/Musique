@@ -30,7 +30,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> imp
     private final int mThumbWidth;
     private final int mThumbHeight;
     private final Context mContext;
-    private SharedPreferences préférences;
+    private final SharedPreferences préférences;
     private String getTri;
     private List<Song> mSongList = Collections.emptyList();
 

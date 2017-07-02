@@ -29,9 +29,6 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
     private List<Song> mQueue;
     private int mSelectedItemPosition = -1;
 
-    private int currentSong;
-
-
     public QueueAdapter(Context context, DragRecyclerView drag) {
         mContext = context;
         mQueueView = drag;
@@ -68,7 +65,6 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
 
         if (song.getId() == PlayerService.getSongID()) {
             viewHolder.vTitle.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
-            currentSong = position;
 
         } else {
             viewHolder.vTitle.setTextColor(ContextCompat.getColor(mContext, R.color.grey_600));

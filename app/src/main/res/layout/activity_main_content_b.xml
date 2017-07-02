@@ -31,10 +31,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="?selectableItemBackgroundBorderless"
-                android:contentDescription="image_description"
                 android:padding="10dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_repeat_grey_400_24dp" />
+                android:src="@drawable/ic_repeat_grey_400_24dp"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/quick_prev0"
@@ -79,10 +79,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="?selectableItemBackgroundBorderless"
-                android:contentDescription="image description"
                 android:padding="10dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_shuffle_grey_400_24dp" />
+                android:src="@drawable/ic_shuffle_grey_400_24dp"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
 
 

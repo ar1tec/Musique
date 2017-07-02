@@ -44,7 +44,6 @@
     <string name="action_add_to_playlist">Add to playlist</string>
 
     <string name="deletePlaylistConfirm">Delete this playlist?</string>
-    <string name="deleteTrackConfirm">Delete yhis title?</string>
 
     <string name="view_queue">See the current playlist</string>
     <string name="action_add_to_queue">Add to current playlist</string>

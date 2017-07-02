@@ -48,7 +48,8 @@ public class PlaylistListFragment extends BaseFragment {
 
     private PlaylistListAdapter mAdapter;
 
-    private final String TAG_LOG = "Playlist List Fragment";
+    @SuppressWarnings("unused")
+    private final String TAG_LOG = "PlaylistListFragment";
 
 
 
