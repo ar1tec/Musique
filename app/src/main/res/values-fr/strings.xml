@@ -60,7 +60,6 @@
     <string name="action_edit_tags">Editer données</string>
     <string name="tags_edition_failed">L\'édition des données a échoué</string>
     <string name="year">Année</string>
-    <string name="no_results">Aucun résultat</string>
 
     <string name="delete">supprimer</string>
 
@@ -148,9 +147,14 @@
     <string name="appupdater_update_not_available_description">Vous avez la dernière version disponible de %s.</string>
     <string name="appupdater_btn_update">Télécharger</string>
     <string name="appupdater_btn_dismiss">Plus tard</string>
-    <string name="title_activity_cherche">ChercheActivity</string>
     <string name="sort_order_entry_latest_add">Dernier ajout</string>
     <string name="title_sort_add">ajout</string>
     <string name="action_radio">Radio</string>
+
+    <string name="title_activity_plop">Recherche</string>
+
+    <string name="no_result">aucun résultat</string>
+
+    <string name="action_play_album">Lecure</string>
 
 </resources>

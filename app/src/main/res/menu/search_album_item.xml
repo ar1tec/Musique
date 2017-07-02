@@ -1,15 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:mContext="com.example.musicplayer.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/action_add_to_queue"
-        android:title="@string/action_add_to_queue"
+        android:id="@+id/action_play_album"
+        android:title="@string/action_play_album"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_add_to_playlist"
         android:title="@string/action_add_to_playlist"
         app:showAsAction="never" />
+
 </menu>

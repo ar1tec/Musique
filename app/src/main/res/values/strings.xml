@@ -60,7 +60,6 @@
     <string name="action_edit_tags">Edit data</string>
     <string name="tags_edition_failed">Data editing failed</string>
     <string name="year">Year</string>
-    <string name="no_results">No results</string>
 
     <string name="delete">delete</string>
 
@@ -156,6 +155,11 @@
     <string name="appupdater_btn_update">Download</string>
     <string name="appupdater_btn_dismiss">Later</string>
 
-    <string name="title_activity_cherche">SearchActivity</string>
+    <string name="title_activity_plop">Search</string>
+
+    <string name="no_result">no result</string>
+
+    <string name="action_play_album">Play</string>
+
 
 </resources>

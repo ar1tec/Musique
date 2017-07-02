@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +12,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +25,6 @@ import android.widget.TextView;
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.activities.SearchActivity;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.fragments.loaders.SortOrder;
 import org.oucho.musicplayer.db.model.Artist;
@@ -83,8 +80,7 @@ public class ArtistFragment extends BaseFragment implements MusiqueKeys {
     };
 
 
-    private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
-            = new SongEditorDialog.OnTagsEditionSuccessListener() {
+    private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener = new SongEditorDialog.OnTagsEditionSuccessListener() {
         @Override
         public void onTagsEditionSuccess() {
             ((MainActivity) getActivity()).refresh();
@@ -244,48 +240,7 @@ public class ArtistFragment extends BaseFragment implements MusiqueKeys {
         super.onPause();
         Log.i(TAG_LOG, "onPause()");
 
-        SearchActivity.setActionBar();
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG_LOG, "onResume()");
-
-
-        // Active la touche back
-        if (getView() == null) {
-            return;
-        }
-
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-
-                    Log.i(TAG_LOG, "onResume(), KeyEvent");
-
-                    MainActivity.setArtistFragmentState(false);
-
-                    SearchActivity.setActionBar();
-
-
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                    ft.remove(getFragmentManager().findFragmentById(R.id.container_search));
-                    ft.commit();
-
-                    return true;
-
-                }
-                return false;
-            }
-        });
+      //  SearchActivityOLD.setActionBar();
 
     }
 

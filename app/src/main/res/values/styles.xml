@@ -36,4 +36,12 @@
         <attr name="blurOverlayColor" format="color" />
     </declare-styleable>
 
+
+    <style name="ThemeToolbarOverflow" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/grey_600</item>
+    </style>
+
 </resources>

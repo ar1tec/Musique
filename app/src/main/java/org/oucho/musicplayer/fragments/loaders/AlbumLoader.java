@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.support.v4.database.DatabaseUtilsCompat;
+import android.util.Log;
 
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
@@ -23,7 +24,9 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
             MediaStore.Audio.AlbumColumns.FIRST_YEAR,
             MediaStore.Audio.AlbumColumns.NUMBER_OF_SONGS};
 
-    private String mArtist = null;
+    private static String mArtist = null;
+
+    private String TAG= "AlbumLoader";
 
 
     public AlbumLoader(Context context) {
@@ -33,16 +36,26 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
     public AlbumLoader(Context context, String artist) {
         super(context);
         mArtist = artist;
+
+        Log.d(TAG, "AlbumLoader " + mArtist);
+
     }
 
+    public static void setArtist(String value) {
+        mArtist = value;
+    }
 
     @Override
     public List<Album> loadInBackground() {
 
+        Log.d(TAG, "loadInBackground " + mArtist);
+
+        final String nomArtist = mArtist;
 
         List<Album> mAlbumList = new ArrayList<>();
 
-        Cursor cursor = getAlbumCursor();
+
+        Cursor cursor = getAlbumCursor(nomArtist);
 
         if (cursor != null && cursor.moveToFirst()) {
             int idCol = cursor.getColumnIndex(BaseColumns._ID);
@@ -51,8 +64,7 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
             int artistCol = cursor.getColumnIndex(MediaStore.Audio.AlbumColumns.ARTIST);
             int yearCol = cursor.getColumnIndex(MediaStore.Audio.AlbumColumns.FIRST_YEAR);
 
-            int songsNbCol = cursor
-                    .getColumnIndex(MediaStore.Audio.AlbumColumns.NUMBER_OF_SONGS);
+            int songsNbCol = cursor.getColumnIndex(MediaStore.Audio.AlbumColumns.NUMBER_OF_SONGS);
 
             do {
 
@@ -82,15 +94,22 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
         return mAlbumList;
     }
 
-    private Cursor getAlbumCursor() {
+    private Cursor getAlbumCursor(String nomartist) {
 
         Uri musicUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
 
         String selection = getSelectionString();
         String[] selectionArgs = getSelectionArgs();
+
+
+        Log.d(TAG, "getAlbumCursor() " + nomartist  );
+
         if (mArtist != null) {
+
+            Log.d(TAG, "getAlbumCursor() (mArtist != null) "  );
+
             selection = DatabaseUtilsCompat.concatenateWhere(selection, MediaStore.Audio.Albums.ARTIST + " = ?");
-            selectionArgs = DatabaseUtilsCompat.appendSelectionArgs(selectionArgs, new String[]{mArtist});
+            selectionArgs = DatabaseUtilsCompat.appendSelectionArgs(selectionArgs, new String[]{nomartist});
 
         }
 

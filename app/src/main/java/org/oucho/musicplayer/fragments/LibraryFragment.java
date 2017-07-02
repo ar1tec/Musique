@@ -32,8 +32,6 @@ import org.oucho.musicplayer.widgets.LockableViewPager;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.oucho.musicplayer.R.id.pager;
-
 
 public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 

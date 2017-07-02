@@ -58,14 +58,11 @@ import org.oucho.musicplayer.db.model.Artist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.dialog.HelpDialog;
-import org.oucho.musicplayer.fragments.AlbumFragment;
-import org.oucho.musicplayer.fragments.ArtistFragment;
 import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.fragments.PlayerFragment;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
-import org.oucho.musicplayer.images.ArtistImageCache;
 import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
@@ -82,7 +79,6 @@ import org.oucho.musicplayer.widgets.blurview.BlurView;
 import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -114,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements
     private ImageButton previousButton0;
     private DragRecyclerView mQueueView;
     private CountDownTimer minuteurVolume;
-    private Intent mOnActivityResultIntent;
     private NavigationView mNavigationView;
     private PlaybackRequests mPlaybackRequests;
     private final VolumeTimer volume = new VolumeTimer();
@@ -180,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements
 
         mQueueAdapter = new QueueAdapter(mContext, mQueueView);
 
-
         ItemTouchHelper.Callback callback = new CustomSwipe(mQueueAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mQueueView);
@@ -196,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements
         mQueueAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int oldPosition, View newPosition) {
-
                 updateQueue();
                 mQueueAdapter.notifyDataSetChanged();
                 mPlayerService.notifyChange(QUEUE_CHANGED);
@@ -222,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements
 
         findViewById(R.id.play_pause_toggle).setOnClickListener(mOnClickListener);
         findViewById(R.id.play_pause_toggle0).setOnClickListener(mOnClickListener);
-
 
         layoutA = (RelativeLayout) findViewById(R.id.track_info);
         layoutB = (RelativeLayout) findViewById(R.id.track_info0);
@@ -255,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements
 
         PrefUtils.init(this);
         ArtworkCache.init(this);
-        ArtistImageCache.init(this);
         AudioEffects.init(this);
 
         if (savedInstanceState == null) {
@@ -290,7 +281,6 @@ public class MainActivity extends AppCompatActivity implements
     private void setBlurView() {
         final float radius = 5f;
 
-        //Activity's root View. Can also be root View of your layout (preferably)
         final ViewGroup rootView = (ViewGroup) findViewById(R.id.drawer_layout);
 
         queueBlurView.setupWith(rootView)
@@ -315,7 +305,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         }, 300);
 
-
         switch (menuItem.getItemId()) {
             case R.id.action_equalizer:
                 NavigationUtils.showEqualizer(this);
@@ -328,7 +317,6 @@ public class MainActivity extends AppCompatActivity implements
                 } else {
                     showTimerInfo();
                 }
-
                 break;
 
             case R.id.action_radio:
@@ -364,7 +352,6 @@ public class MainActivity extends AppCompatActivity implements
      **************/
 
     private void showAboutDialog(){
-
         AboutDialog dialog = new AboutDialog();
         dialog.show(getSupportFragmentManager(), "about");
     }
@@ -399,7 +386,6 @@ public class MainActivity extends AppCompatActivity implements
                     Intent intentPl = new Intent(INTENT_STATE);
                     intentPl.putExtra("state", "play");
                     sendBroadcast(intentPl);
-
                     break;
 
                 case R.id.quick_prev:
@@ -412,7 +398,6 @@ public class MainActivity extends AppCompatActivity implements
 
                     updateQueue();
                     mQueueAdapter.notifyDataSetChanged();
-
                     break;
 
                 case R.id.quick_next:
@@ -427,7 +412,6 @@ public class MainActivity extends AppCompatActivity implements
 
                     updateQueue();
                     mQueueAdapter.notifyDataSetChanged();
-
                     break;
 
                 case R.id.shuffle0:
@@ -473,20 +457,17 @@ public class MainActivity extends AppCompatActivity implements
             if (mPlayerService == null) {
                 return false;
             }
+
             switch (v.getId()) {
 
                 case R.id.quick_prev:
                 case R.id.quick_prev0:
-
                     mHandler.postDelayed(fRewind, 300);
-
                     break;
 
                 case R.id.quick_next:
                 case R.id.quick_next0:
-
                     mHandler.postDelayed(fForward, 300);
-
                     break;
 
                 default:
@@ -679,7 +660,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    @Override
+/*    @Override
     protected void onPostResume() {
         super.onPostResume();
 
@@ -718,8 +699,12 @@ public class MainActivity extends AppCompatActivity implements
 
             mOnActivityResultIntent = null;
         }
-    }
+    }*/
 
+
+    /* *********************************************************************************************
+     * Prepare fragments.
+     * ********************************************************************************************/
 
     public void setFragment(Fragment f) {
         getSupportFragmentManager().beginTransaction()
@@ -818,6 +803,7 @@ public class MainActivity extends AppCompatActivity implements
     };
 
 
+
     private final BroadcastReceiver mServiceListener = new BroadcastReceiver() {
 
         @Override
@@ -842,15 +828,9 @@ public class MainActivity extends AppCompatActivity implements
 
             if (receiveIntent.equals(INTENT_LAYOUTVIEW)) {
 
-
                 final float tailleBarre = getResources().getDimension(R.dimen.barre_lecture);
 
-                // View shadow_bottom = (View) findViewById(R.id.shadow_inverse);
-
-
                 if ("playBarLayout".equals(intent.getStringExtra("vue"))) {
-
-                    Log.i(TAG, "playBarLayout");
 
                     TranslateAnimation animate = new TranslateAnimation(0, 0, tailleBarre, 0);
                     animate.setDuration(400);
@@ -875,9 +855,6 @@ public class MainActivity extends AppCompatActivity implements
                     playBarLayout = true;
 
                 } else {
-
-
-                    Log.i(TAG, "else");
 
                     // TranslateAnimation(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta)
                     TranslateAnimation animate2 = new TranslateAnimation(0, 0, -tailleBarre, 0);
@@ -963,8 +940,6 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
 
-            Log.i(TAG, "ServiceConnection, onServiceConnected");
-
             PlayerService.PlaybackBinder binder = (PlaybackBinder) service;
             mPlayerService = binder.getService();
             mServiceBound = true;
@@ -993,18 +968,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SEARCH_ACTIVITY && resultCode == RESULT_OK) {
-            mOnActivityResultIntent = data;
-
-            Log.i(TAG, "onActivityResult, SEARCH_ACTIVITY");
-
-            //overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-
-        }
-    }
 
     private void updateAll() {
         if (mPlayerService != null) {
@@ -1137,7 +1100,7 @@ public class MainActivity extends AppCompatActivity implements
      * Lancement du fragment player
      ******************************************************/
 
-    // Todo coller son propre frame pour simplifer ?
+    // Todo coller son propre frame dans un layout pour simplifer ?
     private void goPlayer() {
 
         File file = new File(getApplicationInfo().dataDir, "/databases/Queue.db");
@@ -1370,7 +1333,6 @@ public class MainActivity extends AppCompatActivity implements
         showTimeEcran();
 
         volume.baisser(mContext, mTask, delay);
-        //baisseVolume(delay);
     }
 
 
@@ -1392,10 +1354,8 @@ public class MainActivity extends AppCompatActivity implements
             minuteurVolume.cancel();
             minuteurVolume = null;
 
-
             volume.getMinuteur().cancel();
             volume.setVolume(1.0f);
-
         }
 
         running = false;
@@ -1411,8 +1371,6 @@ public class MainActivity extends AppCompatActivity implements
     * ********************************/
 
     private void showTimeEcran() {
-
-
 
         assert timeAfficheur != null;
         timeAfficheur.setVisibility(View.VISIBLE);
@@ -1442,7 +1400,6 @@ public class MainActivity extends AppCompatActivity implements
    /* ********************************
     * Réduction progressive du volume
     * ********************************/
-
 
     private void exit() {
 
@@ -1499,7 +1456,6 @@ public class MainActivity extends AppCompatActivity implements
      * Purge du cache
      **********************************************************************************************/
     private void clearCache() {
-        ArtistImageCache.getInstance().clear();
         ArtworkCache.getInstance().clear();
     }
 

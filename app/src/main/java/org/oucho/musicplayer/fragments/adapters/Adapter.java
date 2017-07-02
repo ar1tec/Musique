@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 
 @SuppressWarnings("SameReturnValue")
-abstract class Adapter<V extends RecyclerView.ViewHolder> extends BaseAdapter<V> {
+public abstract class Adapter<V extends RecyclerView.ViewHolder> extends BaseAdapter<V> {
 
     @Override
     public V onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,7 +33,7 @@ abstract class Adapter<V extends RecyclerView.ViewHolder> extends BaseAdapter<V>
 
     @SuppressWarnings("EmptyMethod")
     @Override
-    void triggerOnItemClickListener(int position, View view) {
+    public void triggerOnItemClickListener(int position, View view) {
         super.triggerOnItemClickListener(position, view);
     }
 

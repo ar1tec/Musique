@@ -30,6 +30,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".search.SearchActivity"
+            android:label="@string/title_activity_plop"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".activities.EqualizerActivity"
             android:label="@string/equalizer"
             android:parentActivityName=".MainActivity"
@@ -53,7 +60,6 @@
                 <action android:name="org.oucho.musicplayer.CLOSE_AUDIO_EFFECT_SESSION" />
             </intent-filter>
         </receiver>
-        
         <receiver
             android:name=".utils.StopReceive"
             tools:ignore="ExportedReceiver">
@@ -62,12 +68,6 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".activities.SearchActivity"
-            android:label="@string/title_activity_cherche"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
     </application>
 
 </manifest>

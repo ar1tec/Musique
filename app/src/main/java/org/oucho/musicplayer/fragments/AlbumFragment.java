@@ -27,16 +27,16 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.activities.SearchActivity;
-import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
-import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
+import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
+import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
+import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.images.ArtworkCache;
+import org.oucho.musicplayer.search.SearchActivity;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.LockableViewPager;
@@ -44,8 +44,6 @@ import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 import java.util.Locale;
-
-import static android.app.Activity.RESULT_OK;
 
 
 public class AlbumFragment extends BaseFragment implements MusiqueKeys {
@@ -81,6 +79,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     private List<Song> listeTitre;
 
     private Context mContext;
+
+    private SearchActivity mSearchActivity = null;
 
 
     public static AlbumFragment newInstance(Album album) {
@@ -197,6 +197,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         if (MainActivity.getChercheActivity()) {
 
+            mSearchActivity = (SearchActivity) mContext;
+
             if (android.os.Build.VERSION.SDK_INT >= 24) {
                 getActivity().setTitle(Html.fromHtml("<font color=\"#FFA000\">" + Titre + " </font> <small> <font color=\"#CCCCCC\">", Html.FROM_HTML_MODE_LEGACY));
             } else {
@@ -259,7 +261,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         View rootView;
 
         if (MainActivity.getChercheActivity()) {
-            rootView = inflater.inflate(R.layout.activity_search_fragment_album, container, false);
+            rootView = inflater.inflate(R.layout.fragment_album_search, container, false);
         } else {
             rootView = inflater.inflate(R.layout.fragment_album, container, false);
         }
@@ -373,59 +375,23 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         getLoaderManager().initLoader(0, null, mLoaderCallbacks);
     }
 
-
-
-
     @Override
     public void load() {
         getLoaderManager().restartLoader(0, null, mLoaderCallbacks);
-    }
-
-    private Bundle songToBundle(Song song) {
-        Bundle data = new Bundle();
-        data.putLong(SONG_ID, song.getId());
-        data.putString(SONG_TITLE, song.getTitle());
-        data.putString(SONG_ARTIST, song.getArtist());
-        data.putString(SONG_ALBUM, song.getAlbum());
-        data.putLong(SONG_ALBUM_ID, song.getAlbumId());
-        data.putInt(SONG_TRACK_NUMBER, song.getTrackNumber());
-        return data;
-    }
-
-    private void returnToMain(String action, Bundle data) {
-        Intent i = new Intent(action);
-
-        if (data != null)
-            i.putExtras(data);
-
-        getActivity().setResult(RESULT_OK, i);
-        getActivity().finish();
     }
 
     private void selectSong(int position) {
 
         Log.i(TAG_LOG, "selectedSong(), position:" + String.valueOf(position));
 
-        if (mActivity != null) {
+        if (mSearchActivity != null) {
+            mSearchActivity.onSongSelected(mAdapter.getSongList(), position);
+
+        } else if (mActivity != null) {
             mActivity.onSongSelected(mAdapter.getSongList(), position);
-
-            Log.i(TAG_LOG, "selectedSong(), if (mActivity != null)");
-
         }
-
-        if (MainActivity.getChercheActivity()) {
-
-            Log.i(TAG_LOG, "selectedSong(), if (MainActivity.getChercheActivity())");
-
-            Song song = mAdapter.getSongList().get(position);
-            Bundle data = songToBundle(song);
-            returnToMain(ACTION_PLAY_SONG, data);
-        }
-
-
-
-       // PlayerService.setPlayList(mAdapter.getSongList(), position, true);
     }
+
 
     private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
             = new SongEditorDialog.OnTagsEditionSuccessListener() {
@@ -455,7 +421,13 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_add_to_queue:
-                        ((MainActivity) getActivity()).addToQueue(song);
+
+                        if (MainActivity.getChercheActivity()) {
+                            ((SearchActivity) getActivity()).addToQueue(song);
+                        } else {
+                            ((MainActivity) getActivity()).addToQueue(song);
+                        }
+
                         return true;
 
                     case R.id.action_edit_tags:
@@ -513,6 +485,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
             isRegistered = false;
         }
+
+        MainActivity.setAlbumFragmentState(false);
     }
 
 
@@ -530,78 +504,64 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             isRegistered = true;
         }
 
-        // Active la touche back
-        if (getView() == null) {
-            return;
-        }
 
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
+        if (!MainActivity.getChercheActivity()) {
 
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (getView() == null) {
+                return;
+            }
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+            getView().setFocusableInTouchMode(true);
+            getView().requestFocus();
+            getView().setOnKeyListener(new View.OnKeyListener() {
 
-                    LockableViewPager.setSwipeLocked(false);
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                    if (MainActivity.getQueueLayout()) {
+                    if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                        Intent intent = new Intent();
-                        intent.setAction(INTENT_QUEUEVIEW);
-                        mContext.sendBroadcast(intent);
+                        LockableViewPager.setSwipeLocked(false);
 
-                        return true;
+                        if (MainActivity.getQueueLayout()) {
+
+                            Intent intent = new Intent();
+                            intent.setAction(INTENT_QUEUEVIEW);
+                            mContext.sendBroadcast(intent);
+
+                            return true;
 
 
-                    } else if (MainActivity.getChercheActivity()) {
+                        } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
 
-                        if (MainActivity.getArtistFragmentState()) {
-
-                            return false;
-                        } else {
+                            MainActivity.setAlbumFragmentState(false);
 
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                            ft.remove(getFragmentManager().findFragmentById(R.id.container_search));
+                            ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
                             ft.commit();
+
+                            Intent intent = new Intent();
+                            intent.setAction("reload");
+                            mContext.sendBroadcast(intent);
+
+                            Intent shadow = new Intent();
+                            shadow.setAction(INTENT_TOOLBAR8_SHADOW);
+                            shadow.putExtra("boolean", true);
+                            mContext.sendBroadcast(shadow);
+
+                            return true;
                         }
-
-                        SearchActivity.setActionBar();
-
-
-                        return true;
-
-                    } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
 
                         MainActivity.setAlbumFragmentState(false);
 
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                        ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
-                        ft.commit();
-
-                        Intent intent = new Intent();
-                        intent.setAction("reload");
-                        mContext.sendBroadcast(intent);
-
-                        Intent shadow = new Intent();
-                        shadow.setAction(INTENT_TOOLBAR8_SHADOW);
-                        shadow.putExtra("boolean", true);
-                        mContext.sendBroadcast(shadow);
-
-                        return true;
+                        return false;
                     }
-
-                    MainActivity.setAlbumFragmentState(false);
 
                     return false;
                 }
+            });
 
-                return false;
-            }
-        });
+        }
 
     }
 
