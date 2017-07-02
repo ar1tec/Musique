@@ -26,7 +26,7 @@ public class ArtworkCache extends BitmapCache<Long> {
 
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 
-        final int cacheSize = maxMemory / 8;
+        final int cacheSize = maxMemory / 10;
 
         sLargeImageCache = new LruCache<Long, Bitmap>(cacheSize) {
 

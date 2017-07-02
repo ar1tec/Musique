@@ -118,8 +118,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                 loader = new AlbumLoader(mContext);
                 loader.setSortOrder(PrefUtils.getInstance().getAlbumSortOrder());
             }
-            loader = new AlbumLoader(mContext);
-            loader.setSortOrder(PrefUtils.getInstance().getAlbumSortOrder());
 
             return loader;
         }
