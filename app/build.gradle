@@ -19,18 +19,32 @@ android {
     }
 
     buildTypes {
+
         release {
             // false nécéssaire pour renderscript sinon crash en mode release
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
+
+
+
+            debug {
+                debuggable true
+                minifyEnabled false
+                zipAlignEnabled false
+
+                productFlavors {
+                    prod { ndk { abiFilter "x86" } }
+                }
+            }
         }
+
     }
 }
 
-def androidSupportVersion       = "25.3.1"
-def constraint       = "1.0.2"
+def androidSupportVersion  = "25.3.1"
+def constraint             = "1.0.2"
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
