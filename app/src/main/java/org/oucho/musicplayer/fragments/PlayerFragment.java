@@ -103,7 +103,7 @@ public class PlayerFragment extends BaseFragment
                 getActivity().setTitle(artist);
 
                 Intent intent = new Intent();
-                intent.setAction(INTENT_TOOLBAR8_SHADOW);
+                intent.setAction(INTENT_TOOLBAR_SHADOW);
                 intent.putExtra("boolean", false);
                 mContext.sendBroadcast(intent);
 
@@ -258,7 +258,7 @@ public class PlayerFragment extends BaseFragment
                     break;
 
                 case PlayerService.META_CHANGED:
-                    Log.i(TAG_LOG, "mServiceListener, case PlayerService.META_CHANGED:");
+                   // Log.i(TAG_LOG, "mServiceListener, case PlayerService.META_CHANGED:");
 
                     updateTrackInfo();
                     break;
@@ -356,7 +356,7 @@ public class PlayerFragment extends BaseFragment
 
                         if (!MainActivity.getAlbumFragmentState()) {
                             Intent shadow = new Intent();
-                            shadow.setAction(INTENT_TOOLBAR8_SHADOW);
+                            shadow.setAction(INTENT_TOOLBAR_SHADOW);
                             shadow.putExtra("boolean", true);
                             mContext.sendBroadcast(shadow);
                         }
@@ -391,12 +391,12 @@ public class PlayerFragment extends BaseFragment
 
     private void updateTrackInfo() {
 
-        Log.i(TAG_LOG, "updateTrackInfo");
+       // Log.i(TAG_LOG, "updateTrackInfo");
 
 
         if (mPlayerService != null) {
 
-            Log.i(TAG_LOG, "updateTrackInfo, if (mPlayerService != null)");
+          //  Log.i(TAG_LOG, "updateTrackInfo, if (mPlayerService != null)");
 
 
             String title = PlayerService.getSongTitle();

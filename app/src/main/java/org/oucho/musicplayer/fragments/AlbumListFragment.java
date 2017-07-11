@@ -457,7 +457,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                             ft.commit();
 
                             Intent shadow = new Intent();
-                            shadow.setAction(INTENT_TOOLBAR8_SHADOW);
+                            shadow.setAction(INTENT_TOOLBAR_SHADOW);
                             shadow.putExtra("boolean", true);
                             mContext.sendBroadcast(shadow);
 

@@ -76,7 +76,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 
         if (!receiver) {
             IntentFilter filter = new IntentFilter();
-            filter.addAction(INTENT_TOOLBAR8_SHADOW);
+            filter.addAction(INTENT_TOOLBAR_SHADOW);
 
             mContext.registerReceiver(mServiceListener, filter);
             receiver = true;
@@ -241,7 +241,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 
             String receiveIntent = intent.getAction();
 
-            if (receiveIntent.equals(INTENT_TOOLBAR8_SHADOW)) {
+            if (receiveIntent.equals(INTENT_TOOLBAR_SHADOW)) {
 
                 boolean value = intent.getBooleanExtra("boolean", true);
 

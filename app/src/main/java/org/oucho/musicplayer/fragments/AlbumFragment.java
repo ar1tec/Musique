@@ -223,7 +223,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
 
                     Intent intent = new Intent();
-                    intent.setAction(INTENT_TOOLBAR8_SHADOW);
+                    intent.setAction(INTENT_TOOLBAR_SHADOW);
                     intent.putExtra("boolean", false);
                     mContext.sendBroadcast(intent);
 
@@ -545,7 +545,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                             mContext.sendBroadcast(intent);
 
                             Intent shadow = new Intent();
-                            shadow.setAction(INTENT_TOOLBAR8_SHADOW);
+                            shadow.setAction(INTENT_TOOLBAR_SHADOW);
                             shadow.putExtra("boolean", true);
                             mContext.sendBroadcast(shadow);
 
