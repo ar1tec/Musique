@@ -32,7 +32,7 @@ import android.widget.TextView;
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 
-import static org.oucho.musicplayer.MusiqueKeys.fichier_préférence;
+import static org.oucho.musicplayer.MusiqueKeys.FICHIER_PREFS;
 
 public class FastScroller extends LinearLayout {
 
@@ -242,7 +242,7 @@ public class FastScroller extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event) {
 
 
-        SharedPreferences préférences = getContext().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        SharedPreferences préférences = getContext().getSharedPreferences(FICHIER_PREFS, Context.MODE_PRIVATE);
         String getTriSong = préférences.getString("song_sort_order", "");
         String getTriAlbum = préférences.getString("album_sort_order", "");
         int currentView = MainActivity.getViewID();

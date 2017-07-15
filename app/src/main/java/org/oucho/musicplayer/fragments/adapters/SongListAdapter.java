@@ -41,7 +41,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> imp
         //noinspection SuspiciousNameCombination
         mThumbHeight = mThumbWidth;
 
-        préférences = mContext.getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        préférences = mContext.getSharedPreferences(FICHIER_PREFS, Context.MODE_PRIVATE);
 
     }
 

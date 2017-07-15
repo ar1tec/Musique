@@ -30,7 +30,6 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
 import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.images.ArtworkCache;
@@ -51,7 +50,6 @@ public class PlayerService extends Service implements MusiqueKeys {
 
     public static final int NO_REPEAT = 20;
     public static final int REPEAT_ALL = 21;
-    public static final int REPEAT_CURRENT = 22;
 
     private static final int IDLE_DELAY = 60000;
 
@@ -69,10 +67,10 @@ public class PlayerService extends Service implements MusiqueKeys {
     private static boolean mHasPlaylist = false;
 
     private boolean mBound = false;
+    private boolean firstPlay = true;
     private boolean mPausedByFocusLoss;
     private boolean mAutoPause = false;
     private boolean mPlayImmediately = false;
-
 
     private int mStartId;
     private int mCurrentPosition;
@@ -109,13 +107,6 @@ public class PlayerService extends Service implements MusiqueKeys {
         mediaPlayer2.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer2.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
 
-        Intent i = new Intent(this, AudioEffectsReceiver.class);
-        i.setAction(AudioEffectsReceiver.ACTION_OPEN_AUDIO_EFFECT_SESSION);
-        i.putExtra(AudioEffectsReceiver.EXTRA_AUDIO_SESSION_ID1, mediaPlayer1.getAudioSessionId());
-        i.putExtra(AudioEffectsReceiver.EXTRA_AUDIO_SESSION_ID2, mediaPlayer2.getAudioSessionId());
-
-        sendBroadcast(i);
-
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(mHeadsetStateReceiver, receiverFilter);
 
@@ -150,7 +141,7 @@ public class PlayerService extends Service implements MusiqueKeys {
                         stopSelf(mStartId);
 
                 } else if (action.equals(ACTION_NEXT)) {
-                    playNext(true);
+                    playNext();
                 } else if (action.equals(ACTION_PREVIOUS)) {
                     playPrev();
                 }
@@ -180,11 +171,6 @@ public class PlayerService extends Service implements MusiqueKeys {
 
         mediaPlayer2.stop();
         mediaPlayer2.release();
-
-        Intent i = new Intent(this, AudioEffectsReceiver.class);
-        i.setAction(AudioEffectsReceiver.ACTION_CLOSE_AUDIO_EFFECT_SESSION);
-        sendBroadcast(i);
-
 
         super.onDestroy();
     }
@@ -236,7 +222,7 @@ public class PlayerService extends Service implements MusiqueKeys {
 
             @Override
             public void onSkipToNext() {
-                playNext(true);
+                playNext();
             }
 
             @Override
@@ -384,29 +370,22 @@ public class PlayerService extends Service implements MusiqueKeys {
 
         int result = mAudioManager.requestAudioFocus(mAudioFocusChangeListener,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN);
 
-        // previent crash lors du premier lancement à vide de l'application
-        // et qu' aucun titre n'a été sélectionné
-        try {
+        if(result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED && mQueuePlayList.size() >= 1) {
 
-            if(result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-
-                if (currentPlayer == 1) {
-                    mediaPlayer1.start();
-                } else {
-                    mediaPlayer2.start();
-                }
-
-                mIsPlaying = true;
-                mIsPaused = false;
-
-                Log.i(TAG_LOG, "play");
-                notifyChange(PLAYSTATE_CHANGED);
-
+            if (currentPlayer == 1) {
+                mediaPlayer1.start();
+            } else {
+                mediaPlayer2.start();
             }
-        } catch (NullPointerException ignore) {
-            Log.e(TAG_LOG, "Erreur de lecture, fichier invalide ou inexistant");
+
+            mIsPlaying = true;
+            mIsPaused = false;
+
+            Log.i(TAG_LOG, "play");
+            notifyChange(PLAYSTATE_CHANGED);
         }
     }
+
 
     private void pause() {
 
@@ -423,9 +402,11 @@ public class PlayerService extends Service implements MusiqueKeys {
         notifyChange(PLAYSTATE_CHANGED);
     }
 
+
     private void resume() {
         play();
     }
+
 
     public void toggle() {
 
@@ -436,15 +417,6 @@ public class PlayerService extends Service implements MusiqueKeys {
             resume();
         }
     }
-
-
-/*    public void stop() {
-        mediaPlayer1.stop();
-
-        mIsPlaying = false;
-
-        notifyChange(PLAYSTATE_CHANGED);
-    }*/
 
 
     public void playPrev() {
@@ -485,8 +457,8 @@ public class PlayerService extends Service implements MusiqueKeys {
     }
 
 
-    public void playNext(boolean force) {
-        int position = getNextPosition(force);
+    public void playNext() {
+        int position = getNextPosition();
 
 
         if (position >= 0 && position < mQueuePlayList.size()) {
@@ -505,32 +477,11 @@ public class PlayerService extends Service implements MusiqueKeys {
     }
 
 
-    private int getNextPosition(boolean force) {
+    private int getNextPosition() {
 
         updateCurrentPosition();
-        int position = mCurrentPosition;
-        if (mRepeatMode == REPEAT_CURRENT && !force) {
-            return position;
-        }
-
-
-        if (position + 1 >= mQueuePlayList.size()) {
-            if (mRepeatMode == REPEAT_ALL) {
-                return 0;
-            }
-            return -1;
-        }
-        return position + 1;
-    }
-
-
-    private int getNextForGapless() {
 
         int position = mCurrentPosition;
-        if (mRepeatMode == REPEAT_CURRENT) {
-            return position;
-        }
-
 
         if (position + 1 >= mQueuePlayList.size()) {
             if (mRepeatMode == REPEAT_ALL) {
@@ -549,9 +500,6 @@ public class PlayerService extends Service implements MusiqueKeys {
                 return REPEAT_ALL;
 
             case REPEAT_ALL:
-                return REPEAT_CURRENT;
-
-            case REPEAT_CURRENT:
                 return NO_REPEAT;
 
             default:
@@ -659,9 +607,43 @@ public class PlayerService extends Service implements MusiqueKeys {
         }
     }
 
-    private boolean firstPlay = true;
 
-    private OnPreparedListener mOnPreparedListener1 = new OnPreparedListener() {
+    private int getNextForGapless() {
+
+        int position = mCurrentPosition;
+
+        if (position + 1 >= mQueuePlayList.size()) {
+            if (mRepeatMode == REPEAT_ALL) {
+                return 0;
+            }
+            return -1;
+        }
+        return position + 1;
+    }
+
+
+    private void prepareNext(MediaPlayer mplayer) {
+        Log.d(TAG_LOG, "prepareNext");
+
+        int position = getNextForGapless();
+
+        if (position >= 0 && position < mQueuePlayList.size()) {
+
+            Song nSong = mQueuePlayList.get(position);
+            Uri nextSong = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, nSong.getId());
+
+            try {
+                mplayer.reset();
+                mplayer.setDataSource(getApplicationContext(), nextSong);
+                mplayer.prepareAsync();
+            } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
+                Log.e("open() ee", "ee", e);
+            }
+        }
+    }
+
+
+    private final OnPreparedListener mOnPreparedListener1 = new OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             Log.d(TAG_LOG, "mOnPreparedListener1");
@@ -689,7 +671,7 @@ public class PlayerService extends Service implements MusiqueKeys {
         }
     };
 
-    private OnPreparedListener mOnPreparedListener2 = new OnPreparedListener() {
+    private final OnPreparedListener mOnPreparedListener2 = new OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             Log.d(TAG_LOG, "mOnPreparedListener2");
@@ -700,7 +682,7 @@ public class PlayerService extends Service implements MusiqueKeys {
     };
 
 
-    OnCompletionListener mOnCompletionListener1 = new OnCompletionListener() {
+    private final OnCompletionListener mOnCompletionListener1 = new OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
             Log.d(TAG_LOG, "mOnCompletionListener1");
@@ -709,7 +691,7 @@ public class PlayerService extends Service implements MusiqueKeys {
                 mIsPlaying = false;
                 mIsPaused = true;
                 notifyChange(PLAYSTATE_CHANGED);
-            } else {
+            } else if (mQueuePlayList.size() >= 1) {
 
                 currentPlayer = 2;
 
@@ -717,15 +699,13 @@ public class PlayerService extends Service implements MusiqueKeys {
                 mCurrentPosition = position;
                 mCurrentSong = mQueuePlayList.get(position);
                 notifyChange(META_CHANGED);
-
                 prepareNext(mediaPlayer1);
-
             }
 
         }
     };
 
-    OnCompletionListener mOnCompletionListener2 = new OnCompletionListener() {
+    private final OnCompletionListener mOnCompletionListener2 = new OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
             Log.d(TAG_LOG, "mOnCompletionListener2");
@@ -734,7 +714,7 @@ public class PlayerService extends Service implements MusiqueKeys {
                 mIsPlaying = false;
                 mIsPaused = true;
                 notifyChange(PLAYSTATE_CHANGED);
-            } else {
+            } else if (mQueuePlayList.size() >= 1) {
 
                 currentPlayer = 1;
 
@@ -742,90 +722,28 @@ public class PlayerService extends Service implements MusiqueKeys {
                 mCurrentPosition = position;
                 mCurrentSong = mQueuePlayList.get(position);
                 notifyChange(META_CHANGED);
-
                 prepareNext(mediaPlayer2);
-
             }
         }
     };
 
-    private void prepareNext(MediaPlayer mplayer) {
-        Log.d(TAG_LOG, "prepareNext");
-
-        int position = getNextForGapless();
-
-        if (position >= 0 && position < mQueuePlayList.size()) {
-            int nextPosition = getNextForGapless();
-            Song nSong = mQueuePlayList.get(nextPosition);
-            Uri nextSong = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, nSong.getId());
-
-            try {
-                mplayer.reset();
-                mplayer.setDataSource(getApplicationContext(), nextSong);
-                mplayer.prepareAsync();
-            } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
-                Log.e("open() ee", "ee", e);
-            }
-        }
-    }
 
 
-    private OnErrorListener mOnErrorListener1 = new OnErrorListener() {
+    private final OnErrorListener mOnErrorListener1 = new OnErrorListener() {
         @Override
-        public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-            Log.d(TAG_LOG, "mOnErrorListener1");
+        public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
+            Log.e(TAG_LOG, "onError 1: " + String.valueOf(what) + " " + String.valueOf(extra));
             return false;
         }
     };
 
-    private OnErrorListener mOnErrorListener2 = new OnErrorListener() {
+    private final OnErrorListener mOnErrorListener2 = new OnErrorListener() {
         @Override
-        public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-            Log.d(TAG_LOG, "mOnErrorListener2");
+        public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
+            Log.e(TAG_LOG, "onError 2: " + String.valueOf(what) + " " + String.valueOf(extra));
             return false;
         }
     };
-
-/*
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-
-        playNext(false);
-
-        if (mCurrentPosition+1 == mQueuePlayList.size()) {
-            mIsPlaying = false;
-            mIsPaused = true;
-            notifyChange(PLAYSTATE_CHANGED);
-            Log.i(TAG_LOG, "onCompletion");
-
-        }
-    }
-
-
-    @Override
-    public boolean onError(MediaPlayer mp, int what, int extra) {
-        Log.e(TAG_LOG, "onError " + String.valueOf(what) + " " + String.valueOf(extra));
-
-        return true;
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-        // évite de charger la notification au démarrage de l'application
-        if (!start) {
-            start = true;
-        } else {
-            Log.i(TAG_LOG, "onPrepared");
-
-            notifyChange(META_CHANGED);
-        }
-
-        if (mPlayImmediately) {
-            play();
-            mPlayImmediately = false;
-        }
-    }
-*/
 
 
     private final BroadcastReceiver mHeadsetStateReceiver = new BroadcastReceiver() {
@@ -1045,9 +963,6 @@ public class PlayerService extends Service implements MusiqueKeys {
     }
 
     private void setUri(Uri songUri) {
-
-        Log.d(TAG_LOG, "realPath songUri = " + songUri);
-
         uriForPlayer = songUri;
     }
 

@@ -9,11 +9,6 @@
             android:title="@string/action_radio" />
 
         <item
-            android:id="@+id/action_equalizer"
-            android:icon="@drawable/ic_equalizer_black_24dp"
-            android:title="@string/action_equalizer" />
-
-        <item
             android:id="@+id/action_timer"
             android:icon="@drawable/ic_timer_black_24dp"
             android:title="@string/action_sleep_timer" />

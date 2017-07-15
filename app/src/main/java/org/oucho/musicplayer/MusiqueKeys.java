@@ -8,13 +8,9 @@ import java.util.List;
 
 public interface MusiqueKeys {
 
-
-    int SEARCH_ACTIVITY = 42;
-
     String FILTER = "filter";
 
     List<Song> mQueuePlayList = new ArrayList<>();
-
 
     int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
@@ -45,8 +41,7 @@ public interface MusiqueKeys {
     String PLAYSTATE_CHANGED = "org.oucho.musicplayer.PLAYSTATE_CHANGED";
     String REPEAT_MODE_CHANGED = "org.oucho.musicplayer.REPEAT_MODE_CHANGED";
 
-
-    String fichier_préférence = "org.oucho.musicplayer_preferences";
+    String FICHIER_PREFS = "org.oucho.musicplayer_preferences";
 
     String STATE_PREFS_NAME = "PlayerState";
 

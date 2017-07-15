@@ -236,7 +236,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     private void setTri() {
 
-        SharedPreferences préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        SharedPreferences préférences = this.getActivity().getSharedPreferences(FICHIER_PREFS, Context.MODE_PRIVATE);
 
         String getTri = préférences.getString("album_sort_order", "");
 

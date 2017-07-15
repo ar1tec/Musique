@@ -37,31 +37,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity
-            android:name=".activities.EqualizerActivity"
-            android:label="@string/equalizer"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeEqualizer">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.oucho.musicplayer.MainActivity" />
-        </activity>
-
         <service
             android:name=".PlayerService"
             android:enabled="true"
             android:exported="false" />
 
-        <receiver
-            android:name=".audiofx.AudioEffectsReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="org.oucho.musicplayer.OPEN_AUDIO_EFFECT_SESSION" />
-                <action android:name="org.oucho.musicplayer.CLOSE_AUDIO_EFFECT_SESSION" />
-            </intent-filter>
-        </receiver>
         <receiver
             android:name=".utils.StopReceive"
             tools:ignore="ExportedReceiver">

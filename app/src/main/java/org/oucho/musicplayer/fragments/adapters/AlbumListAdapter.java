@@ -59,7 +59,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         Album album = mAlbumList.get(position);
 
-        SharedPreferences préférences = mContext.getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        SharedPreferences préférences = mContext.getSharedPreferences(FICHIER_PREFS, Context.MODE_PRIVATE);
 
 
         String getTri = préférences.getString("album_sort_order", "");
@@ -98,7 +98,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
     public void onBindViewHolder(AlbumViewHolder viewHolder, int position) {
         Album album = mAlbumList.get(position);
 
-        SharedPreferences préférences = mContext.getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        SharedPreferences préférences = mContext.getSharedPreferences(FICHIER_PREFS, Context.MODE_PRIVATE);
 
 
         String getTri = préférences.getString("album_sort_order", "");

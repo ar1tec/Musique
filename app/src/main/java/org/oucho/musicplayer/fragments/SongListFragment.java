@@ -197,7 +197,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
         mContext = getContext();
 
-        préférences = this.getActivity().getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        préférences = this.getActivity().getSharedPreferences(FICHIER_PREFS, Context.MODE_PRIVATE);
 
         titre = mContext.getString(R.string.titles);
 

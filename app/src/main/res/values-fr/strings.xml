@@ -33,9 +33,6 @@
 
     <string name="reorder">Réordonner</string>
 
-    <string name="custom">Custom</string>
-    <string name="bass_boost">Amplificateur de basses</string>
-
     <string name="playlists">Playlists</string>
     <string name="choose_playlist">Choisir une playlist</string>
     <string name="new_playlist">Nouvelle playlist</string>
@@ -51,7 +48,6 @@
 
     <string name="context_menu_description">Menu contextuel</string>
 
-    <string name="equalizer">Égaliseur</string>
     <string name="action_equalizer">Égaliseur</string>
 
     <string name="search">Rechercher</string>

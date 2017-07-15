@@ -52,7 +52,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
-import org.oucho.musicplayer.audiofx.AudioEffects;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.dialog.HelpDialog;
@@ -62,10 +61,10 @@ import org.oucho.musicplayer.fragments.PlayerFragment;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
 import org.oucho.musicplayer.images.ArtworkCache;
+import org.oucho.musicplayer.search.SearchActivity;
 import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
-import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SeekArc;
@@ -118,24 +117,22 @@ public class MainActivity extends AppCompatActivity implements
 
     private final Handler mHandler = new Handler();
 
-    private boolean radioIsInstalled = false;
+    private static int viewID;
 
     private boolean mServiceBound = false;
     private boolean autoScrollQueue = false;
-
-    private static int viewID;
+    private boolean radioIsInstalled = false;
 
     private static boolean running;
-    private static boolean chercheActivity = false;
-
     private static boolean queueLayout = false;
     private static boolean playBarLayout = false;
+    private static boolean chercheActivity = false;
     private static boolean albumFragmentState = false;
     private static boolean playlistFragmentState = false;
 
-    private ImageView shuffleBar;
     private ImageView repeatBar;
     private ImageView repeatBar1;
+    private ImageView shuffleBar;
 
     private RelativeLayout playbarShadow;
 
@@ -242,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements
 
         PrefUtils.init(this);
         ArtworkCache.init(this);
-        AudioEffects.init(this);
 
         if (savedInstanceState == null) {
             showLibrary();
@@ -301,9 +297,6 @@ public class MainActivity extends AppCompatActivity implements
         }, 300);
 
         switch (menuItem.getItemId()) {
-            case R.id.action_equalizer:
-                NavigationUtils.showEqualizer(this);
-                break;
 
             case R.id.action_timer:
 
@@ -399,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.quick_next0:
                     autoScrollQueue = true;
 
-                    mPlayerService.playNext(true);
+                    mPlayerService.playNext();
 
                     Intent intentN = new Intent(INTENT_STATE);
                     intentN.putExtra("state", "next");
@@ -508,12 +501,12 @@ public class MainActivity extends AppCompatActivity implements
             repeatBar.setVisibility(View.VISIBLE);
             repeatBar1.setVisibility(View.GONE);
 
-        } else if (mode == PlayerService.REPEAT_CURRENT) {
+        } /*else if (mode == PlayerService.REPEAT_CURRENT) {
             assert repeatButton != null;
             repeatButton.setImageResource(R.drawable.ic_repeat_one_grey_600_24dp);
             repeatBar.setVisibility(View.GONE);
             repeatBar1.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 
     /* *********************************************************************************************
@@ -553,7 +546,12 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.action_search:
-                NavigationUtils.showSearchActivity(this);
+
+                Intent i = new Intent(this, SearchActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                this.startActivity(i);
+                this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                 return true;
 
             default:

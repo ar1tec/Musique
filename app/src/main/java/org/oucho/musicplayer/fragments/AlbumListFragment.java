@@ -164,7 +164,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
         mContext = getContext();
 
-        préférences = this.mContext.getSharedPreferences(fichier_préférence, Context.MODE_PRIVATE);
+        préférences = this.mContext.getSharedPreferences(FICHIER_PREFS, Context.MODE_PRIVATE);
 
         titre = mContext.getString(R.string.albums);
 
