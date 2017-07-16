@@ -30,6 +30,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
 import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.images.ArtworkCache;
@@ -72,6 +73,7 @@ public class PlayerService extends Service implements MusiqueKeys {
     private boolean mAutoPause = false;
     private boolean mPlayImmediately = false;
 
+
     private int mStartId;
     private int mCurrentPosition;
     private static int mRepeatMode = NO_REPEAT;
@@ -106,6 +108,12 @@ public class PlayerService extends Service implements MusiqueKeys {
         mediaPlayer2.setOnCompletionListener(mOnCompletionListener2);
         mediaPlayer2.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer2.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+
+        Intent i = new Intent(this, AudioEffectsReceiver.class);
+        i.setAction(AudioEffectsReceiver.ACTION_OPEN_AUDIO_EFFECT_SESSION);
+        i.putExtra(AudioEffectsReceiver.EXTRA_AUDIO_SESSION_ID, mediaPlayer1.getAudioSessionId());
+
+        sendBroadcast(i);
 
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(mHeadsetStateReceiver, receiverFilter);
@@ -171,6 +179,11 @@ public class PlayerService extends Service implements MusiqueKeys {
 
         mediaPlayer2.stop();
         mediaPlayer2.release();
+
+        Intent i = new Intent(this, AudioEffectsReceiver.class);
+        i.setAction(AudioEffectsReceiver.ACTION_CLOSE_AUDIO_EFFECT_SESSION);
+        sendBroadcast(i);
+
 
         super.onDestroy();
     }
@@ -480,7 +493,6 @@ public class PlayerService extends Service implements MusiqueKeys {
     private int getNextPosition() {
 
         updateCurrentPosition();
-
         int position = mCurrentPosition;
 
         if (position + 1 >= mQueuePlayList.size()) {
@@ -608,46 +620,10 @@ public class PlayerService extends Service implements MusiqueKeys {
     }
 
 
-    private int getNextForGapless() {
-
-        int position = mCurrentPosition;
-
-        if (position + 1 >= mQueuePlayList.size()) {
-            if (mRepeatMode == REPEAT_ALL) {
-                return 0;
-            }
-            return -1;
-        }
-        return position + 1;
-    }
-
-
-    private void prepareNext(MediaPlayer mplayer) {
-        Log.d(TAG_LOG, "prepareNext");
-
-        int position = getNextForGapless();
-
-        if (position >= 0 && position < mQueuePlayList.size()) {
-
-            Song nSong = mQueuePlayList.get(position);
-            Uri nextSong = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, nSong.getId());
-
-            try {
-                mplayer.reset();
-                mplayer.setDataSource(getApplicationContext(), nextSong);
-                mplayer.prepareAsync();
-            } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
-                Log.e("open() ee", "ee", e);
-            }
-        }
-    }
-
-
     private final OnPreparedListener mOnPreparedListener1 = new OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             Log.d(TAG_LOG, "mOnPreparedListener1");
-
 
             // évite de charger la notification au démarrage de l'application
             if (!start) {
@@ -681,7 +657,6 @@ public class PlayerService extends Service implements MusiqueKeys {
         }
     };
 
-
     private final OnCompletionListener mOnCompletionListener1 = new OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
@@ -701,7 +676,6 @@ public class PlayerService extends Service implements MusiqueKeys {
                 notifyChange(META_CHANGED);
                 prepareNext(mediaPlayer1);
             }
-
         }
     };
 
@@ -714,6 +688,7 @@ public class PlayerService extends Service implements MusiqueKeys {
                 mIsPlaying = false;
                 mIsPaused = true;
                 notifyChange(PLAYSTATE_CHANGED);
+
             } else if (mQueuePlayList.size() >= 1) {
 
                 currentPlayer = 1;
@@ -726,8 +701,6 @@ public class PlayerService extends Service implements MusiqueKeys {
             }
         }
     };
-
-
 
     private final OnErrorListener mOnErrorListener1 = new OnErrorListener() {
         @Override
@@ -744,6 +717,40 @@ public class PlayerService extends Service implements MusiqueKeys {
             return false;
         }
     };
+
+
+    private int getNextForGapless() {
+
+        int position = mCurrentPosition;
+
+        if (position + 1 >= mQueuePlayList.size()) {
+            if (mRepeatMode == REPEAT_ALL) {
+                return 0;
+            }
+            return -1;
+        }
+        return position + 1;
+    }
+
+    private void prepareNext(MediaPlayer mplayer) {
+        Log.d(TAG_LOG, "prepareNext");
+
+        int position = getNextForGapless();
+
+        if (position >= 0 && position < mQueuePlayList.size()) {
+
+            Song nSong = mQueuePlayList.get(position);
+            Uri nextSong = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, nSong.getId());
+
+            try {
+                mplayer.reset();
+                mplayer.setDataSource(getApplicationContext(), nextSong);
+                mplayer.prepareAsync();
+            } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
+                Log.e("open() ee", "ee", e);
+            }
+        }
+    }
 
 
     private final BroadcastReceiver mHeadsetStateReceiver = new BroadcastReceiver() {
