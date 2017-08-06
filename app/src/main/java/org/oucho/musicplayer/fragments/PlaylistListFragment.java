@@ -44,14 +44,11 @@ public class PlaylistListFragment extends BaseFragment {
     private Context mCntext;
 
     private static final String[] sProjection = {
-            MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME};
+            MediaStore.Audio.Playlists._ID,
+            MediaStore.Audio.Playlists.NAME
+    };
 
     private PlaylistListAdapter mAdapter;
-
-    @SuppressWarnings("unused")
-    private final String TAG_LOG = "PlaylistListFragment";
-
-
 
     private final LoaderManager.LoaderCallbacks<Cursor> mLoaderCallbacks = new LoaderCallbacks<Cursor>() {
 

@@ -35,7 +35,7 @@ import static org.oucho.musicplayer.search.SearchActivity.setLoaderFilter;
 public class SearchArtistFragment extends BaseFragment implements MusiqueKeys {
 
 
-    private final String TAG = "SearchArtistFragmebt";
+    private static final String TAG = "SearchArtistFragmebt";
 
     private ArtistViewAdapter mArtistAdapter;
     private TextView noArtistResult;

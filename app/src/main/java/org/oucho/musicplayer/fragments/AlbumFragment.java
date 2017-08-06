@@ -48,7 +48,7 @@ import java.util.Locale;
 
 public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
-    private final String TAG_LOG = "Album Fragment";
+    private static final String TAG_LOG = "Album Fragment";
     private static final String ARG_ID = "id";
     private static final String ARG_NAME = "name";
     private static final String ARG_ARTIST = "artist";

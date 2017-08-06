@@ -62,6 +62,9 @@ public class PlayerService extends Service implements MusiqueKeys {
 
     private List<Song> mOriginalSongList = new ArrayList<>();
 
+    private static final List<Song> mQueuePlayList = new ArrayList<>();
+
+
     private static boolean mShuffle = false;
     private static boolean mIsPaused = false;
     private static boolean mIsPlaying = false;
@@ -976,4 +979,9 @@ public class PlayerService extends Service implements MusiqueKeys {
     public static Uri getSongPath() {
         return uriForPlayer;
     }
+
+    public static List<Song> getQueuePlayList() {
+        return mQueuePlayList;
+    }
+
 }

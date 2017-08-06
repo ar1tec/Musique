@@ -1,16 +1,9 @@
 package org.oucho.musicplayer;
 
 
-import org.oucho.musicplayer.db.model.Song;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public interface MusiqueKeys {
 
     String FILTER = "filter";
-
-    List<Song> mQueuePlayList = new ArrayList<>();
 
     int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;

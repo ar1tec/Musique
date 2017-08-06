@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import org.oucho.musicplayer.MusiqueKeys;
+import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.db.model.Song;
 
 import java.util.ArrayList;
@@ -95,8 +96,10 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
 
+        List<Song> queuePlaylist = PlayerService.getQueuePlayList();
+
         try {
-            for(Song song: mQueuePlayList) {
+            for(Song song: queuePlaylist) {
                 addInternal(db, song);
             }
             db.setTransactionSuccessful();
@@ -134,9 +137,6 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
             int albumIdCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_ALBUM_ID);
             int trackCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_NUMBER);
             int trackDur = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_DURATION);
-
-            @SuppressWarnings("UnusedAssignment")
-            int yearCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_YEAR);
 
             do {
                 long id = cursor.getLong(idCol);

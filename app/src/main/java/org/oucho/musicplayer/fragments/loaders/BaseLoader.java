@@ -62,11 +62,17 @@ abstract public class BaseLoader<D> extends AsyncTaskLoader<D> {
         }
     }
 
+
+
     public void setSelection(String selectionString, String[] selectionArgs) {
+
         mSelectionString = selectionString;
-        mSelectionArgs = selectionArgs;
+        setSelectionArgs(selectionArgs);
     }
 
+    private void setSelectionArgs (String[] value) {
+        mSelectionArgs = value;
+    }
 
     String getSelectionString() {
         return mSelectionString;

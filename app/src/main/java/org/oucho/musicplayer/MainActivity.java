@@ -525,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_activity, menu);
 
-        MainActivity.menu = menu;
+        setMainMenu(menu);
 
         return true;
     }
@@ -904,7 +904,7 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
-        List<Song> queue = mQueuePlayList;
+        List<Song> queue = PlayerService.getQueuePlayList();
         if (!queue.equals(mQueue)) {
             mQueue = queue;
             mQueueAdapter.setQueue(mQueue);
@@ -1428,6 +1428,10 @@ public class MainActivity extends AppCompatActivity implements
     }
     public static void setChercheActivity(Boolean value) {
         chercheActivity = value;
+    }
+
+    private static void setMainMenu(Menu value) {
+        menu = value;
     }
 
 }

@@ -101,6 +101,8 @@ public class FastScroller extends LinearLayout {
                     }
 
                     break;
+                default:
+                    break;
                 }
             }
         }
@@ -281,6 +283,7 @@ public class FastScroller extends LinearLayout {
             if (mFastScrollStateChangeListener != null) {
                 mFastScrollStateChangeListener.onFastScrollStart();
             }
+            return true;
         case MotionEvent.ACTION_MOVE:
             final float y = event.getY();
             setViewPositions(y);

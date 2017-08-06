@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 
-public class BlockingBlurController implements BlurController {
+class BlockingBlurController implements BlurController {
 
     private static final String TAG_LOG = "BlockingBlurController";
 
@@ -18,7 +18,7 @@ public class BlockingBlurController implements BlurController {
     //Bitmap size should be divisible by 16 to meet stride requirement
     private static final int ROUNDING_VALUE = 16;
 
-    private final float scaleFactor = DEFAULT_SCALE_FACTOR;
+    private static final float scaleFactor = DEFAULT_SCALE_FACTOR;
     private float blurRadius = DEFAULT_BLUR_RADIUS;
     private float roundingWidthScaleFactor = 1f;
     private float roundingHeightScaleFactor = 1f;
