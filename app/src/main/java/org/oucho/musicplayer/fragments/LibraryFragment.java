@@ -38,20 +38,24 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 
     private static final String TAG_LOG = "Search Activity";
 
+    private final Handler mHandler = new Handler();
+
     private Context mContext;
 
     private LinearLayout shadow;
     private TabLayout tabLayout;
 
-    private static SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private boolean receiver = false;
     private boolean pagerVisible = false;
 
 
-    @SuppressLint("StaticFieldLeak")
     private static LockableViewPager mViewPager;
 
+    private static void setmViewPager(LockableViewPager value) {
+        mViewPager = value;
+    }
 
     public static LibraryFragment newInstance() {
 
@@ -102,7 +106,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getChildFragmentManager());
 
-        mViewPager = (LockableViewPager) rootView.findViewById(R.id.pager);
+        setmViewPager((LockableViewPager) rootView.findViewById(R.id.pager));
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(mViewPagerChangeListener);
 
@@ -114,7 +118,6 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
         return rootView;
     }
 
-    private final Handler mHandler = new Handler();
 
     private final ViewPager.OnPageChangeListener mViewPagerChangeListener = new ViewPager.OnPageChangeListener() {
 

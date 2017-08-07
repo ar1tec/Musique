@@ -165,7 +165,6 @@ public class PlaylistListFragment extends BaseFragment {
                         ft.commit();
 
                     } else {
-
                         LibraryFragment.backToPrevious();
                     }
 

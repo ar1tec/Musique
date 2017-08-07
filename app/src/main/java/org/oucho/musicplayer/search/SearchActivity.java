@@ -109,6 +109,10 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
     }
 
 
+    private static void setTextNew(String value) {
+        textNew = value;
+    }
+
     public static String getNewText() {
         return textNew;
     }
@@ -159,26 +163,24 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
         Handler mHandler = new Handler();
 
         if (!value) {
-
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     actionBar.setDisplayShowCustomEnabled(false);
                 }
             }, 200);
         } else {
-
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     actionBar.setDisplayShowCustomEnabled(true);
                 }
             }, 200);
-
         }
-
-
     }
 
 
+    private static void setmPlayerService(PlayerService value) {
+        mPlayerService = value;
+    }
 
     @Override
     protected void onPause() {
@@ -186,7 +188,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
 
         if (mServiceBound) {
-            mPlayerService = null;
+            setmPlayerService(null);
 
             unbindService(mServiceConnection);
             mServiceBound = false;
@@ -197,7 +199,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
             receiver = false;
         }
 
-        textNew = "";
+        setTextNew("");
 
         MainActivity.setChercheActivity(false);
 
@@ -230,9 +232,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
             filter.addAction(PlayerService.POSITION_CHANGED);
             filter.addAction(PlayerService.ITEM_ADDED);
             filter.addAction(PlayerService.ORDER_CHANGED);
-
         }
-
     }
 
 
@@ -285,7 +285,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
         public boolean onQueryTextChange(String newText) {
             String mSearchKeywords = newText.toLowerCase();
 
-            textNew = mSearchKeywords;
+            setTextNew(mSearchKeywords);
 
             Intent i = new Intent();
             i.setAction("search.newkey");
@@ -301,7 +301,6 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
             return true;
         }
-
     };
 
 
@@ -329,12 +328,10 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-
         @SuppressLint("UseSparseArrays")
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
 
         @Override
         public Fragment getItem(int position) {
@@ -346,7 +343,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
                     return SearchAlbumFragment.newInstance();
                 case 2:
                     return SearchSongFragment.newInstance();
-                default: //do nothing
+                default:
                     break;
             }
             return null;
@@ -441,7 +438,6 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
         @Override
         public void onLoaderReset(Loader<List<Artist>> loader) {}
-
     };
 
 

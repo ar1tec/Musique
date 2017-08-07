@@ -204,7 +204,8 @@ public class PlayerService extends Service implements MusiqueKeys {
             dbHelper.close();
 
             mRepeatMode = mStatePrefs.getInt("repeatMode", mRepeatMode);
-            mShuffle = mStatePrefs.getBoolean("shuffle", mShuffle);
+
+            setShuffle(mStatePrefs.getBoolean("shuffle", mShuffle));
 
             setPlayListInternal(playList);
             setPosition(position, false);
@@ -529,8 +530,8 @@ public class PlayerService extends Service implements MusiqueKeys {
 
         if (mShuffle != enable) {
 
+            setShuffle(true);
 
-            mShuffle = enable;
             if (enable) {
                 shuffle();
             } else {
@@ -898,6 +899,10 @@ public class PlayerService extends Service implements MusiqueKeys {
         return mHasPlaylist;
     }
 
+    private static void setShuffle(boolean value) {
+        mShuffle = value;
+    }
+
     public static boolean isShuffleEnabled() {
         return mShuffle;
     }
@@ -909,10 +914,12 @@ public class PlayerService extends Service implements MusiqueKeys {
     }
 
     public void setRepeatMode(int mode) {
-        mRepeatMode = mode;
-        Log.i(TAG_LOG, "setRepeatMode");
-
+        setmRepeatMode(mode);
         notifyChange(REPEAT_MODE_CHANGED);
+    }
+
+    private static void setmRepeatMode(int value) {
+        mRepeatMode = value;
     }
 
     public static int getRepeatMode() {

@@ -35,10 +35,12 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
 
     public AlbumLoader(Context context, String artist) {
         super(context);
-        mArtist = artist;
 
-        Log.d(TAG, "AlbumLoader " + mArtist);
+        setmArtist(artist);
+    }
 
+    private static void setmArtist(String value) {
+        mArtist = value;
     }
 
     public static void resetArtist() {

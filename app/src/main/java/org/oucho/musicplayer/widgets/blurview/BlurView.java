@@ -1,10 +1,10 @@
 package org.oucho.musicplayer.widgets.blurview;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -17,9 +17,6 @@ public class BlurView extends FrameLayout {
 
     private static final String TAG_LOG = "BlurView";
 
-    @ColorInt
-    private static final int TRANSPARENT = 0x00000000;
-
     private BlurController blurController = createStubController();
 
     @ColorInt
@@ -28,36 +25,30 @@ public class BlurView extends FrameLayout {
     public BlurView(Context context) {
         super(context);
 
-        init(null, 0);
+        init();
     }
 
     public BlurView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        init(attrs, 0);
+        init();
     }
 
     public BlurView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        init(attrs, defStyleAttr);
+        init();
     }
 
-    private void init(AttributeSet attrs, int defStyleAttr) {
+    private void init() {
 
-        Log.w(TAG_LOG, "init()");
+        overlayColor =  ContextCompat.getColor(getContext(), R.color.colorBlurViewOverlay);
 
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.BlurView, defStyleAttr, 0);
-        overlayColor = a.getColor(R.styleable.BlurView_blurOverlayColor, TRANSPARENT);
-        a.recycle();
-        //we need to draw even without background set
         setWillNotDraw(false);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        //Log.w(TAG_LOG, "draw()");
-
         //draw only on system's hardware accelerated canvas
         if (canvas.isHardwareAccelerated()) {
             blurController.drawBlurredContent(canvas);

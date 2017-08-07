@@ -39,7 +39,6 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:elevation="@dimen/queue_layout_elevation"
         android:outlineProvider="bounds"
-        app:blurOverlayColor="@color/colorBlurViewOverlay"
         tools:targetApi="lollipop"
         android:visibility="gone">
 

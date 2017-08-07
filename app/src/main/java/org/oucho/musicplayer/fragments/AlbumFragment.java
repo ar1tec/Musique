@@ -143,8 +143,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     };
 
     private String msToTextMinut(int msec) {
-        //noinspection MalformedFormatString
-        return String.format(Locale.getDefault(), "%d", msec / 60000, (msec % 60000) / 1000);
+        return String.format(Locale.getDefault(), "%d", msec / 60000);
     }
 
 
