@@ -60,8 +60,6 @@ public class FastScroller extends LinearLayout {
     private ViewPropertyAnimator mScrollbarAnimator;
     private ViewPropertyAnimator mBubbleAnimator;
 
-    private FastScrollStateChangeListener mFastScrollStateChangeListener;
-
     private final Runnable mScrollbarHider = new Runnable() {
 
         @Override
@@ -229,11 +227,6 @@ public class FastScroller extends LinearLayout {
         mBubbleView.setTextColor(color);
     }
 
-
-    public void setFastScrollStateChangeListener(FastScrollStateChangeListener fastScrollStateChangeListener) {
-        mFastScrollStateChangeListener = fastScrollStateChangeListener;
-    }
-
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
@@ -280,9 +273,6 @@ public class FastScroller extends LinearLayout {
                 showBubble();
             }
 
-            if (mFastScrollStateChangeListener != null) {
-                mFastScrollStateChangeListener.onFastScrollStart();
-            }
             return true;
         case MotionEvent.ACTION_MOVE:
             final float y = event.getY();
@@ -298,9 +288,6 @@ public class FastScroller extends LinearLayout {
 
             if (isViewVisible(mBubbleView))
                 hideBubble();
-
-            if (mFastScrollStateChangeListener != null)
-                mFastScrollStateChangeListener.onFastScrollStop();
 
             return true;
         }
@@ -371,7 +358,6 @@ public class FastScroller extends LinearLayout {
         mBubbleAnimator = mBubbleView.animate().alpha(1f)
                 .setDuration(sBubbleAnimDuration)
                 .setListener(new AnimatorListenerAdapter() {
-                    // adapter required for new alpha value to stick
                 });
     }
 
