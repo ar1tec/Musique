@@ -91,6 +91,7 @@ public class PlayerService extends Service implements MusiqueKeys {
 
     private static int currentPlayer = 1;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -98,14 +99,14 @@ public class PlayerService extends Service implements MusiqueKeys {
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-        mediaPlayer1 = new MediaPlayer();
+        setMediaPlayer1();
         mediaPlayer1.setOnErrorListener(mOnErrorListener1);
         mediaPlayer1.setOnPreparedListener(mOnPreparedListener1);
         mediaPlayer1.setOnCompletionListener(mOnCompletionListener1);
         mediaPlayer1.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer1.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
 
-        mediaPlayer2 = new MediaPlayer();
+        setMediaPlayer2();
         mediaPlayer2.setOnErrorListener(mOnErrorListener2);
         mediaPlayer2.setOnPreparedListener(mOnPreparedListener2);
         mediaPlayer2.setOnCompletionListener(mOnCompletionListener2);
@@ -445,7 +446,7 @@ public class PlayerService extends Service implements MusiqueKeys {
                 mediaPlayer2.stop();
 
             mCurrentPosition = position;
-            mCurrentSong = mQueuePlayList.get(position);
+            setCurrentSong(mQueuePlayList.get(position));
             openAndPlay();
         }
     }
@@ -483,7 +484,7 @@ public class PlayerService extends Service implements MusiqueKeys {
                 mediaPlayer2.stop();
 
             mCurrentPosition = position;
-            mCurrentSong = mQueuePlayList.get(position);
+            setCurrentSong(mQueuePlayList.get(position));
             openAndPlay();
 
             Intent intentN = new Intent(INTENT_STATE);
@@ -528,6 +529,7 @@ public class PlayerService extends Service implements MusiqueKeys {
 
         if (mShuffle != enable) {
 
+
             mShuffle = enable;
             if (enable) {
                 shuffle();
@@ -562,7 +564,7 @@ public class PlayerService extends Service implements MusiqueKeys {
         mCurrentPosition = position;
         Song song = mQueuePlayList.get(position);
         if (!song.equals(mCurrentSong)) {
-            mCurrentSong = song;
+            setCurrentSong(song);
             if (play) {
                 openAndPlay();
             } else {
@@ -675,7 +677,7 @@ public class PlayerService extends Service implements MusiqueKeys {
 
                 int position = getNextForGapless();
                 mCurrentPosition = position;
-                mCurrentSong = mQueuePlayList.get(position);
+                setCurrentSong(mQueuePlayList.get(position));
                 notifyChange(META_CHANGED);
                 prepareNext(mediaPlayer1);
             }
@@ -698,7 +700,7 @@ public class PlayerService extends Service implements MusiqueKeys {
 
                 int position = getNextForGapless();
                 mCurrentPosition = position;
-                mCurrentSong = mQueuePlayList.get(position);
+                setCurrentSong(mQueuePlayList.get(position));
                 notifyChange(META_CHANGED);
                 prepareNext(mediaPlayer2);
             }
@@ -869,6 +871,19 @@ public class PlayerService extends Service implements MusiqueKeys {
         } else {
             mediaPlayer2.seekTo(msec);
         }
+    }
+
+
+    private void setMediaPlayer1() {
+        mediaPlayer1 = new MediaPlayer();
+    }
+
+    private void setMediaPlayer2() {
+        mediaPlayer2 = new MediaPlayer();
+    }
+
+    private void setCurrentSong(Song value) {
+        mCurrentSong = value;
     }
 
     public static boolean isPlaying() {

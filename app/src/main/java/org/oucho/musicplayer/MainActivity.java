@@ -233,12 +233,12 @@ public class MainActivity extends AppCompatActivity implements
         radioIsInstalled = checkApp();
 
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mNavigationView.inflateMenu(R.menu.navigation);
         mNavigationView.setNavigationItemSelectedListener(this);
 
         setNavigationMenu();
 
         playbarShadow = (RelativeLayout) findViewById(R.id.playbar_shadow);
-
 
         PrefUtils.init(this);
         ArtworkCache.init(this);
@@ -253,10 +253,15 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setNavigationMenu() {
 
+        Menu navigatioMenu = mNavigationView.getMenu();
+
         if (radioIsInstalled) {
-            mNavigationView.inflateMenu(R.menu.navigation_radio);
+            navigatioMenu.setGroupVisible(R.id.add_radio, true);
+            navigatioMenu.setGroupVisible(R.id.haut_default, false);
+
         } else {
-            mNavigationView.inflateMenu(R.menu.navigation);
+            navigatioMenu.setGroupVisible(R.id.add_radio, false);
+            navigatioMenu.setGroupVisible(R.id.haut_default, true);
         }
     }
 
@@ -302,11 +307,12 @@ public class MainActivity extends AppCompatActivity implements
 
         switch (menuItem.getItemId()) {
             case R.id.action_equalizer:
+            case R.id.action_equalizer0:
                 NavigationUtils.showEqualizer(this);
                 break;
 
             case R.id.action_timer:
-
+            case R.id.action_timer0:
                 if (! running) {
                     showTimePicker();
                 } else {

@@ -327,7 +327,7 @@ public class FastScroller extends LinearLayout {
                 proportion = y / (float) mHeight;
             }
 
-            int targetPos = getValueInRange(0, itemCount - 1, (int) (proportion * (float) itemCount));
+            int targetPos = getValueInRange(itemCount - 1, (int) (proportion * (float) itemCount));
             mRecyclerView.getLayoutManager().scrollToPosition(targetPos);
 
             if (mSectionIndexer != null) {
@@ -343,8 +343,8 @@ public class FastScroller extends LinearLayout {
         return mHeight * proportion;
     }
 
-    private int getValueInRange( int min, int max, int value) {
-        int minimum = Math.max(min, value);
+    private int getValueInRange(int max, int value) {
+        int minimum = Math.max(0, value);
         return Math.min(minimum, max);
     }
 
@@ -352,8 +352,8 @@ public class FastScroller extends LinearLayout {
         int bubbleHeight = mBubbleView.getHeight();
         int handleHeight = mHandleView.getHeight();
 
-        mBubbleView.setY(getValueInRange(0, mHeight - bubbleHeight - handleHeight / 2, (int) (y - bubbleHeight)));
-        mHandleView.setY(getValueInRange(0, mHeight - handleHeight, (int) (y - (float) handleHeight / 2)));
+        mBubbleView.setY(getValueInRange(mHeight - bubbleHeight - handleHeight / 2, (int) (y - bubbleHeight)));
+        mHandleView.setY(getValueInRange(mHeight - handleHeight, (int) (y - (float) handleHeight / 2)));
     }
 
     private boolean isViewVisible(View view) {

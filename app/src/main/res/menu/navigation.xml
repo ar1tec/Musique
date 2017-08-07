@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <group>
+    <group
+        android:id="@+id/add_radio"
+        android:visible="false">
+
+        <item
+            android:id="@+id/action_radio"
+            android:icon="@drawable/ic_radio_black_24dp"
+            android:title="@string/action_radio" />
+
+        <item
+            android:id="@+id/action_equalizer0"
+            android:icon="@drawable/ic_equalizer_black_24dp"
+            android:title="@string/action_equalizer" />
+
+        <item
+            android:id="@+id/action_timer0"
+            android:icon="@drawable/ic_timer_black_24dp"
+            android:title="@string/action_sleep_timer" />
+
+    </group>
+
+    <group android:id="@+id/haut_default">
 
         <item
             android:id="@+id/action_equalizer"
@@ -15,7 +36,7 @@
 
     </group>
 
-    <group>
+
 
         <item
             android:id="@+id/nav_update"
@@ -37,5 +58,5 @@
             android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="@string/exit" />
 
-    </group>
+
 </menu>
