@@ -40,9 +40,4 @@ class Version implements Comparable<Version> {
         return 0;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        return this == that || that != null && this.getClass() == that.getClass() && this.compareTo((Version) that) == 0;
-    }
-
 }

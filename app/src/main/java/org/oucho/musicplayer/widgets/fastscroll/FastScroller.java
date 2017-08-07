@@ -343,7 +343,6 @@ public class FastScroller extends LinearLayout {
         return mHeight * proportion;
     }
 
-    @SuppressWarnings("SameParameterValue")
     private int getValueInRange( int min, int max, int value) {
         int minimum = Math.max(min, value);
         return Math.min(minimum, max);
@@ -354,7 +353,7 @@ public class FastScroller extends LinearLayout {
         int handleHeight = mHandleView.getHeight();
 
         mBubbleView.setY(getValueInRange(0, mHeight - bubbleHeight - handleHeight / 2, (int) (y - bubbleHeight)));
-        mHandleView.setY(getValueInRange(0, mHeight - handleHeight, (int) (y - handleHeight / 2)));
+        mHandleView.setY(getValueInRange(0, mHeight - handleHeight, (int) (y - (float) handleHeight / 2)));
     }
 
     private boolean isViewVisible(View view) {

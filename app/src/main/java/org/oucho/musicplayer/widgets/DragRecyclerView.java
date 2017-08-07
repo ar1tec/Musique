@@ -84,8 +84,7 @@ public class DragRecyclerView extends FastScrollRecyclerView {
         mCurrentBottom = mDraggedView.getBottom();
         mCurrentPosition = getChildAdapterPosition(mDraggedView);
 
-        Bitmap bitmap = Bitmap.createBitmap(mDraggedView.getWidth(),
-                mDraggedView.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(mDraggedView.getWidth(), mDraggedView.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         mDraggedView.draw(canvas);
         mHandleDrawable = new BitmapDrawable(context.getResources(), bitmap);
@@ -125,7 +124,7 @@ public class DragRecyclerView extends FastScrollRecyclerView {
             }
             float y = ev.getY();
 
-            View v = recyclerView.findChildViewUnder(recyclerView.getWidth() / 2, y);
+            View v = recyclerView.findChildViewUnder((float) recyclerView.getWidth() / 2, y);
             if (v == null) {
                 return;
             }
@@ -134,7 +133,7 @@ public class DragRecyclerView extends FastScrollRecyclerView {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_MOVE:
 
-                    mHandleBounds.offsetTo(mHandleBounds.left, (int) (y - mHandleBounds.height() / 2));
+                    mHandleBounds.offsetTo(mHandleBounds.left, (int) (y - (float) mHandleBounds.height() / 2));
                     mHandleDrawable.setBounds(mHandleBounds);
 
                     if (mCurrentPosition != position
