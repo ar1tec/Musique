@@ -131,10 +131,10 @@ public class QueueAdapter extends BaseAdapter<QueueAdapter.QueueItemViewHolder> 
 
         QueueItemViewHolder(View itemView) {
             super(itemView);
-            vTitle = (TextView) itemView.findViewById(R.id.title);
-            vArtist = (TextView) itemView.findViewById(R.id.artist);
+            vTitle = itemView.findViewById(R.id.title);
+            vArtist = itemView.findViewById(R.id.artist);
 
-            vReorderButton = (ImageButton) itemView.findViewById(R.id.reorder_button);
+            vReorderButton = itemView.findViewById(R.id.reorder_button);
             vReorderButton.setOnTouchListener(this);
 
             itemView.findViewById(R.id.song_info).setOnClickListener(this);

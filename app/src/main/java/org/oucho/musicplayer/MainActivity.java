@@ -61,7 +61,6 @@ import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.fragments.PlayerFragment;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
-import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
@@ -241,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements
         playbarShadow = (RelativeLayout) findViewById(R.id.playbar_shadow);
 
         PrefUtils.init(this);
-        ArtworkCache.init(this);
         AudioEffects.init(this);
 
         if (savedInstanceState == null) {
@@ -258,7 +256,6 @@ public class MainActivity extends AppCompatActivity implements
         if (radioIsInstalled) {
             navigatioMenu.setGroupVisible(R.id.add_radio, true);
             navigatioMenu.setGroupVisible(R.id.haut_default, false);
-
         } else {
             navigatioMenu.setGroupVisible(R.id.add_radio, false);
             navigatioMenu.setGroupVisible(R.id.haut_default, true);
@@ -1061,8 +1058,8 @@ public class MainActivity extends AppCompatActivity implements
         final SeekArc mSeekArc;
         final TextView mSeekArcProgress;
 
-        mSeekArc = (SeekArc) view.findViewById(R.id.seekArc);
-        mSeekArcProgress = (TextView) view.findViewById(R.id.seekArcProgress);
+        mSeekArc = view.findViewById(R.id.seekArc);
+        mSeekArcProgress = view.findViewById(R.id.seekArcProgress);
         mSeekArc.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
 
             @Override
@@ -1126,7 +1123,7 @@ public class MainActivity extends AppCompatActivity implements
 
         @SuppressLint("InflateParams")
         View view = getLayoutInflater().inflate(R.layout.dialog_timer_info, null);
-        final TextView timeLeft = ((TextView) view.findViewById(R.id.time_left));
+        final TextView timeLeft = view.findViewById(R.id.time_left);
 
         final String stopTimer = getString(R.string.stop_timer);
 
@@ -1193,7 +1190,7 @@ public class MainActivity extends AppCompatActivity implements
         timeAfficheur.setVisibility(View.VISIBLE);
 
         Notification.setState(true);
-        Notification.updateNotification(mPlayerService);
+        Notification.updateNotification(mContext, mPlayerService);
 
         showTimeEcran();
 
@@ -1228,7 +1225,7 @@ public class MainActivity extends AppCompatActivity implements
 
         Notification.setState(false);
 
-        Notification.updateNotification(mPlayerService);
+        Notification.updateNotification(mContext, mPlayerService);
     }
 
        /* ********************************
@@ -1277,7 +1274,6 @@ public class MainActivity extends AppCompatActivity implements
         PlayerService.setVolume(1.0f);
 
         killNotif();
-        clearCache();
         finish();
     }
 
@@ -1316,19 +1312,6 @@ public class MainActivity extends AppCompatActivity implements
         }, 500);
     }
 
-
-    /***********************************************************************************************
-     * Purge du cache
-     **********************************************************************************************/
-    private void clearCache() {
-        ArtworkCache.getInstance().clear();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        clearCache();
-    }
 
     /* *********************************************************************************************
     * Gestion des permissions (Android >= 6.0)

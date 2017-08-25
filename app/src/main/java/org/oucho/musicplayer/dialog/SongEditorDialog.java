@@ -91,11 +91,11 @@ public class SongEditorDialog extends DialogFragment {
         View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_song_tag_editor, null);
         builder.setView(dialogView);
 
-        mTitleEditText = (EditText) dialogView.findViewById(R.id.title);
-        mArtistEditText = (EditText) dialogView.findViewById(R.id.artist);
-        mAlbumEditText = (EditText) dialogView.findViewById(R.id.album);
-        mTrackEditText = (EditText) dialogView.findViewById(R.id.track_number);
-        mGenreEditText = (EditText) dialogView.findViewById(R.id.genre);
+        mTitleEditText = dialogView.findViewById(R.id.title);
+        mArtistEditText = dialogView.findViewById(R.id.artist);
+        mAlbumEditText = dialogView.findViewById(R.id.album);
+        mTrackEditText = dialogView.findViewById(R.id.track_number);
+        mGenreEditText = dialogView.findViewById(R.id.genre);
 
         mTitleEditText.setText(mSong.getTitle());
         mArtistEditText.setText(mSong.getArtist());

@@ -179,7 +179,7 @@ public class EqualizerActivity extends AppCompatActivity {
                 View v = getLayoutInflater().inflate(R.layout.activity_equalizer_slider, layout, false);
 
 
-                SeekBar seekBar = (SeekBar) v.findViewById(R.id.seek_bar);
+                SeekBar seekBar = v.findViewById(R.id.seek_bar);
 
 
                 assert range != null;
@@ -187,7 +187,7 @@ public class EqualizerActivity extends AppCompatActivity {
 
                 seekBar.setTag(band);
 
-                final TextView levelTextView = (TextView) v
+                final TextView levelTextView = v
                         .findViewById(R.id.level);
                 seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -233,10 +233,10 @@ public class EqualizerActivity extends AppCompatActivity {
             assert layout != null;
             View v = layout.getChildAt(band);
 
-            final TextView freqTextView = (TextView) v.findViewById(R.id.frequency);
-            final TextView levelTextView = (TextView) v
+            final TextView freqTextView = v.findViewById(R.id.frequency);
+            final TextView levelTextView = v
                     .findViewById(R.id.level);
-            final SeekBar seekBar = (SeekBar) v.findViewById(R.id.seek_bar);
+            final SeekBar seekBar = v.findViewById(R.id.seek_bar);
 
 
             int freq = AudioEffects.getCenterFreq(band);
@@ -263,7 +263,7 @@ public class EqualizerActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.equalizer, menu);
         MenuItem item = menu.findItem(R.id.action_switch);
 
-        mSwitchButton = (SwitchCompat) MenuItemCompat.getActionView(item).findViewById(R.id.switch_button);
+        mSwitchButton = item.getActionView().findViewById(R.id.switch_button);
         bindSwitchToEqualizer();
         return true;
     }

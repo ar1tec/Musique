@@ -89,7 +89,7 @@ public class ArtistViewAdapter extends BaseAdapter<ArtistViewAdapter.ArtistViewH
         ArtistViewHolder(View itemView) {
             super(itemView);
 
-            vArtist = (TextView) itemView.findViewById(R.id.title);
+            vArtist = itemView.findViewById(R.id.title);
             itemView.findViewById(R.id.item_view).setOnClickListener(this);
 
         }

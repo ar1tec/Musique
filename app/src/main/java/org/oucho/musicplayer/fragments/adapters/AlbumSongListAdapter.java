@@ -115,13 +115,13 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
             mContext = itemView.getContext();
 
-            vTime = (TextView) itemView.findViewById(R.id.time);
+            vTime = itemView.findViewById(R.id.time);
 
-            vTitle = (TextView) itemView.findViewById(R.id.title);
+            vTitle = itemView.findViewById(R.id.title);
 
-            vTrackNumber = (TextView) itemView.findViewById(R.id.track_number);
+            vTrackNumber = itemView.findViewById(R.id.track_number);
 
-            PlayView = (ImageView) itemView.findViewById(R.id.play);
+            PlayView = itemView.findViewById(R.id.play);
 
             itemView.setOnClickListener(this);
 

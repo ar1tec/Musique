@@ -2,12 +2,14 @@ package org.oucho.musicplayer.fragments;
 
 
 import android.content.BroadcastReceiver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -21,13 +23,14 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.widgets.LockableViewPager;
 
 import java.io.IOException;
@@ -50,7 +53,6 @@ public class PlayerFragment extends BaseFragment
     private SharedPreferences préférences;
     private final PlayerService mPlayerService = MainActivity.getPlayerService();
 
-
     private final Handler mHandler = new Handler();
 
     private int track = -1;
@@ -59,7 +61,6 @@ public class PlayerFragment extends BaseFragment
 
     private boolean mServiceBound;
     private boolean first_run = true;
-
 
     public static PlayerFragment newInstance() {
         PlayerFragment fragment = new PlayerFragment();
@@ -127,17 +128,16 @@ public class PlayerFragment extends BaseFragment
         SharedPreferences préférences = mContext.getSharedPreferences(STATE_PREFS_NAME, MODE_PRIVATE);
         track = préférences.getInt("currentPosition", 0) + 1;
 
-        nbTrack = (TextView) rootView.findViewById(R.id.nombre_titre);
+        nbTrack = rootView.findViewById(R.id.nombre_titre);
         nbTrack.setText(track + "/" + total_track);
 
-        TextView bitrate = (TextView) rootView.findViewById(R.id.bitrate);
+        TextView bitrate = rootView.findViewById(R.id.bitrate);
         bitrate.setText(getBitrate());
 
-        mSeekBar = (SeekBar) rootView.findViewById(R.id.seek_bar);
+        mSeekBar = rootView.findViewById(R.id.seek_bar);
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
-        //mSeekBar.getThumb().mutate().setAlpha(0);
 
-        LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.root);
+        LinearLayout linearLayout = rootView.findViewById(R.id.root);
         linearLayout.setOnClickListener(mOnClickListener);
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
 
@@ -231,20 +231,13 @@ public class PlayerFragment extends BaseFragment
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Log.i(TAG_LOG, "onReceive");
-            //updateTrackInfo();
-
             if (mPlayerService == null) {
                 Log.i(TAG_LOG, "if (mPlayerService == null)");
 
                 return;
             }
 
-
             String action = intent.getAction();
-
-            Log.i(TAG_LOG, action);
-
 
             switch (action) {
 
@@ -258,8 +251,6 @@ public class PlayerFragment extends BaseFragment
                     break;
 
                 case PlayerService.META_CHANGED:
-                   // Log.i(TAG_LOG, "mServiceListener, case PlayerService.META_CHANGED:");
-
                     updateTrackInfo();
                     break;
 
@@ -275,7 +266,6 @@ public class PlayerFragment extends BaseFragment
         }
 
     };
-
 
 
     @Override
@@ -305,7 +295,6 @@ public class PlayerFragment extends BaseFragment
         } else {
             updateAll();
         }
-
 
         LockableViewPager.setSwipeLocked(true);
 
@@ -378,8 +367,6 @@ public class PlayerFragment extends BaseFragment
     private void updateAll() {
         if (mPlayerService != null) {
 
-            Log.i(TAG_LOG, "updateAll(), if (mPlayerService != null)");
-
             updateTrackInfo();
 
             if (PlayerService.isPlaying()) {
@@ -391,13 +378,7 @@ public class PlayerFragment extends BaseFragment
 
     private void updateTrackInfo() {
 
-       // Log.i(TAG_LOG, "updateTrackInfo");
-
-
         if (mPlayerService != null) {
-
-          //  Log.i(TAG_LOG, "updateTrackInfo, if (mPlayerService != null)");
-
 
             String title = PlayerService.getSongTitle();
             final String artist = PlayerService.getArtistName();
@@ -419,8 +400,6 @@ public class PlayerFragment extends BaseFragment
                 }
             }
 
-
-
             if (title != null) {
                 //noinspection ConstantConditions
                 ((TextView) rootView.findViewById(R.id.song_title)).setText(title);
@@ -431,16 +410,16 @@ public class PlayerFragment extends BaseFragment
                 ((TextView) rootView.findViewById(R.id.song_album)).setText(album);
             }
 
-            ImageView artworkView = (ImageView) rootView.findViewById(R.id.artwork);
-            ArtworkCache.getInstance().loadBitmap(PlayerService.getAlbumId(), artworkView, mArtworkSize, mArtworkSize);
+            ImageView artworkView = rootView.findViewById(R.id.artwork);
+
+            Uri uri = ContentUris.withAppendedId(ARTWORK_URI, PlayerService.getAlbumId());
+
+            Picasso.with(mContext).load(uri).resize(mArtworkSize, mArtworkSize).into(artworkView);
 
 
             final int duration = PlayerService.getTrackDuration();
 
             if (duration != -1) {
-
-                Log.i(TAG_LOG, "updateTrackInfo, mHandler.postDelayed(new Runnable()");
-
                 ((TextView) rootView.findViewById(R.id.track_duration)).setText(msToText(duration));
 
                 mSeekBar.setMax(duration);
@@ -452,8 +431,7 @@ public class PlayerFragment extends BaseFragment
 
 
     private String msToText(int msec) {
-        return String.format(Locale.getDefault(), "%d:%02d", msec / 60000,
-                (msec % 60000) / 1000);
+        return String.format(Locale.getDefault(), "%d:%02d", msec / 60000, (msec % 60000) / 1000);
     }
 
     private void updateSeekBar() {
@@ -505,16 +483,11 @@ public class PlayerFragment extends BaseFragment
         int sampleRate = -1;
         try {
             sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE);
-        } catch (NullPointerException ignore) {
-
-        }
+        } catch (NullPointerException ignore) {}
 
         Log.d(TAG_LOG, "getBitRate : " + bitRate + " " + sampleRate + " ");
 
         return bitRate + mime + " - " + sampleRate + "Hz";
-
-
-
     }
 
 

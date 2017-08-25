@@ -430,8 +430,8 @@ public class FastScroller extends LinearLayout {
         setClipChildren(false);
         setOrientation(HORIZONTAL);
 
-        mBubbleView = (TextView) findViewById(R.id.fastscroll_bubble);
-        mHandleView = (ImageView) findViewById(R.id.fastscroll_handle);
+        mBubbleView = findViewById(R.id.fastscroll_bubble);
+        mHandleView = findViewById(R.id.fastscroll_handle);
         mScrollbar = findViewById(R.id.fastscroll_scrollbar);
 
         @ColorInt int bubbleColor = Color.GRAY;

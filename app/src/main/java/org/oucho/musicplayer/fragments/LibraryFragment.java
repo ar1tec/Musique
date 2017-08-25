@@ -95,7 +95,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
         MainActivity activity = (MainActivity) getActivity();
 
         mContext = activity.getApplicationContext();
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
 
         DrawerLayout drawerLayout = activity.getDrawerLayout();
 
@@ -110,10 +110,10 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(mViewPagerChangeListener);
 
-        tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout_indicator);
+        tabLayout = rootView.findViewById(R.id.tab_layout_indicator);
         tabLayout.setupWithViewPager(mViewPager, true);
 
-        shadow = (LinearLayout) rootView.findViewById(R.id.toolbar_shadow);
+        shadow = rootView.findViewById(R.id.toolbar_shadow);
 
         return rootView;
     }

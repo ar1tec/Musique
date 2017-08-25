@@ -1,8 +1,10 @@
 package org.oucho.musicplayer.fragments.adapters;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,10 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.images.ArtworkCache;
-import org.oucho.musicplayer.images.ArtworkHelper;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.widgets.fastscroll.FastScroller;
 
@@ -159,7 +161,10 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> imp
         //évite de charger des images dans les mauvaises vues si elles sont recyclées
         holder.vArtwork.setTag(position);
 
-        ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), holder.vArtwork, mThumbWidth, mThumbHeight, ArtworkHelper.getDefaultThumbDrawable(mContext));
+       // ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), holder.vArtwork, mThumbWidth, mThumbHeight, ArtworkHelper.getDefaultThumbDrawable(mContext));
+
+        Uri uri = ContentUris.withAppendedId(ARTWORK_URI, song.getAlbumId());
+        Picasso.with(holder.vArtwork.getContext()).load(uri).resize(mThumbWidth, mThumbHeight).into(holder.vArtwork);
     }
 
     public Song getItem(int position) {
@@ -190,17 +195,17 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> imp
 
         SongViewHolder(View itemView) {
             super(itemView);
-            vTitle = (TextView) itemView.findViewById(R.id.title);
-            vArtist = (TextView) itemView.findViewById(R.id.artist);
-            vDuration = (TextView) itemView.findViewById(R.id.duration);
-            vAlbum = (TextView) itemView.findViewById(R.id.album);
-            vYear = (TextView) itemView.findViewById(R.id.year);
+            vTitle = itemView.findViewById(R.id.title);
+            vArtist = itemView.findViewById(R.id.artist);
+            vDuration = itemView.findViewById(R.id.duration);
+            vAlbum = itemView.findViewById(R.id.album);
+            vYear = itemView.findViewById(R.id.year);
 
 
-            vArtwork = (ImageView) itemView.findViewById(R.id.artwork);
+            vArtwork = itemView.findViewById(R.id.artwork);
             itemView.setOnClickListener(this);
 
-            ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
+            ImageButton menuButton = itemView.findViewById(R.id.menu_button);
             menuButton.setOnClickListener(this);
         }
 

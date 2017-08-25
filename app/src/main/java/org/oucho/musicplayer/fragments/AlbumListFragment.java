@@ -199,7 +199,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
         View rootView = inflater.inflate(layout, container, false);
 
-        mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
+        mRecyclerView = rootView.findViewById(R.id.recycler_view);
 
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 

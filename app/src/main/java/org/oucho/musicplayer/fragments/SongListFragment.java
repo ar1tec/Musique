@@ -215,7 +215,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_song, container, false);
 
-        FastScrollRecyclerView mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
+        FastScrollRecyclerView mRecyclerView = rootView.findViewById(R.id.recycler_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

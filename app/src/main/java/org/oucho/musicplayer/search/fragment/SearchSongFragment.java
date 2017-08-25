@@ -96,14 +96,14 @@ public class SearchSongFragment extends BaseFragment implements MusiqueKeys {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_search_fragment, container, false);
 
-        FastScrollRecyclerView mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
+        FastScrollRecyclerView mRecyclerView = rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mSongAdapert = new SongViewAdapter();
         mSongAdapert.setOnItemClickListener(mOnItemClickListener);
 
         mRecyclerView.setAdapter(mSongAdapert);
 
-        noSongResult = (TextView) rootView.findViewById(R.id.no_result);
+        noSongResult = rootView.findViewById(R.id.no_result);
         return rootView;
     }
 

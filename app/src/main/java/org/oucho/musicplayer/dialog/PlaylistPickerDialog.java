@@ -150,17 +150,17 @@ public class PlaylistPickerDialog extends DialogFragment {
         @SuppressLint("InflateParams")
         View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_playlist_picker, null);
 
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.dialog_playlist_picker_toolbar);
+        Toolbar toolbar = rootView.findViewById(R.id.dialog_playlist_picker_toolbar);
         toolbar.setTitle(R.string.choose_playlist);
         toolbar.setTitleTextColor(0xffffffff);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mRecyclerView.setAdapter(mAdapter);
 
 
-        Button newPlaylistButton = (Button) rootView.findViewById(R.id.new_playlist);
+        Button newPlaylistButton = rootView.findViewById(R.id.new_playlist);
         newPlaylistButton.setOnClickListener(mOnClickListener);
 
         builder.setView(rootView);

@@ -1,21 +1,13 @@
-package org.oucho.musicplayer.images;
+package org.oucho.musicplayer.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-class BitmapHelper {
-    static Drawable createBitmapDrawable(Context context, Bitmap bitmap) {
-        BitmapDrawable d = new BitmapDrawable(context.getResources(), bitmap);
-        //noinspection ConstantConditions
-        return d.getConstantState().newDrawable(context.getResources()).mutate();
-    }
+public class BitmapHelper {
 
     private static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -31,8 +23,7 @@ class BitmapHelper {
 
             // Calculate the largest inSampleSize value that is a power of 2 and keeps both
             // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
+            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
                 inSampleSize *= 2;
             }
         }
@@ -40,7 +31,7 @@ class BitmapHelper {
         return inSampleSize;
     }
 
-    static Bitmap decode(InputStream in, int reqWidth, int reqHeight) throws IOException {
+    public static Bitmap decode(InputStream in, int reqWidth, int reqHeight) throws IOException {
         BufferedInputStream inputStream = new BufferedInputStream(in);
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

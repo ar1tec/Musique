@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 
-@SuppressWarnings("WeakerAccess")
+//@SuppressWarnings("WeakerAccess")
 public abstract class BaseAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<V> {
 
     private OnItemClickListener mOnItemClickListener;
@@ -15,7 +15,7 @@ public abstract class BaseAdapter<V extends RecyclerView.ViewHolder> extends Rec
         mOnItemClickListener = listener;
     }
 
-    public void triggerOnItemClickListener(int position, View view)
+    protected void triggerOnItemClickListener(int position, View view)
     {
         if(mOnItemClickListener != null)
         {
@@ -33,7 +33,7 @@ public abstract class BaseAdapter<V extends RecyclerView.ViewHolder> extends Rec
         mOnItemLongClickListener = listener;
     }
 
-    public void triggerOnItemLongClickListener(int position, View view)
+    void triggerOnItemLongClickListener(int position, View view)
     {
         if(mOnItemLongClickListener != null)
         {

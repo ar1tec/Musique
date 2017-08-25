@@ -85,11 +85,11 @@ public class AlbumViewAdapter extends BaseAdapter<AlbumViewAdapter.AlbumViewHold
         AlbumViewHolder(View itemView) {
             super(itemView);
 
-            vTitle = (TextView) itemView.findViewById(R.id.title);
-            vArtist = (TextView) itemView.findViewById(R.id.artist);
+            vTitle = itemView.findViewById(R.id.title);
+            vArtist = itemView.findViewById(R.id.artist);
             itemView.findViewById(R.id.item_view).setOnClickListener(this);
 
-            ImageButton menuButton = (ImageButton) itemView.findViewById(R.id.menu_button);
+            ImageButton menuButton = itemView.findViewById(R.id.menu_button);
             menuButton.setOnClickListener(this);
 
         }

@@ -118,14 +118,14 @@ public class SearchAlbumFragment extends BaseFragment {
 
         View rootView = inflater.inflate(R.layout.activity_search_fragment, container, false);
 
-        FastScrollRecyclerView mRecyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recycler_view);
+        FastScrollRecyclerView mRecyclerView = rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapterAlbum = new AlbumViewAdapter();
         mAdapterAlbum.setOnItemClickListener(mOnItemClickListener);
 
         mRecyclerView.setAdapter(mAdapterAlbum);
 
-        noAlbumResult = (TextView) rootView.findViewById(R.id.no_result);
+        noAlbumResult = rootView.findViewById(R.id.no_result);
 
         return rootView;
 

@@ -28,8 +28,7 @@ public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistVie
         notifyDataSetChanged();
     }
 
-    public Playlist getItem(int position)
-    {
+    public Playlist getItem(int position) {
         return mPlaylistList.get(position);
     }
 
@@ -64,7 +63,7 @@ public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistVie
 
         public PlaylistViewHolder(View itemView) {
             super(itemView);
-            vName = (TextView) itemView.findViewById(R.id.name);
+            vName = itemView.findViewById(R.id.name);
 
             itemView.findViewById(R.id.delete_playlist).setOnClickListener(this);
 

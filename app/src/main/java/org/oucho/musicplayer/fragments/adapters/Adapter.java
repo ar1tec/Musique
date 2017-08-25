@@ -33,7 +33,7 @@ public abstract class Adapter<V extends RecyclerView.ViewHolder> extends BaseAda
 
     @SuppressWarnings("EmptyMethod")
     @Override
-    public void triggerOnItemClickListener(int position, View view) {
+    protected void triggerOnItemClickListener(int position, View view) {
         super.triggerOnItemClickListener(position, view);
     }
 

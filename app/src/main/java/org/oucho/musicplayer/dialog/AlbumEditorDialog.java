@@ -84,9 +84,9 @@ public class AlbumEditorDialog extends DialogFragment {
         View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_album_tag_editor, null);
         builder.setView(dialogView);
 
-        mAlbumEditText = (EditText) dialogView.findViewById(R.id.album);
-        mArtistEditText = (EditText) dialogView.findViewById(R.id.artist);
-        mYearEditText = (EditText) dialogView.findViewById(R.id.year);
+        mAlbumEditText = dialogView.findViewById(R.id.album);
+        mArtistEditText = dialogView.findViewById(R.id.artist);
+        mYearEditText = dialogView.findViewById(R.id.year);
 
         mAlbumEditText.setText(mAlbum.getAlbumName());
         mArtistEditText.setText(mAlbum.getArtistName());

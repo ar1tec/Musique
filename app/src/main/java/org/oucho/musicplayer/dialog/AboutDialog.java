@@ -27,7 +27,7 @@ public class AboutDialog extends DialogFragment {
         AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
 
         View rootView = getActivity().getLayoutInflater().inflate(R.layout.dialog_main_noshadow, nullParent);
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.dialog_toolbar_noshadow);
+        Toolbar toolbar = rootView.findViewById(R.id.dialog_toolbar_noshadow);
         toolbar.setTitle(title);
         toolbar.setTitleTextColor(0xffffffff);
 
@@ -37,7 +37,7 @@ public class AboutDialog extends DialogFragment {
         String version = getContext().getResources().getString(R.string.about_message, versionName);
 
 
-        final TextView text = (TextView) rootView.findViewById(R.id.showrules_dialog);
+        final TextView text = rootView.findViewById(R.id.showrules_dialog);
         text.setText(version);
 
         about.setView(rootView);
