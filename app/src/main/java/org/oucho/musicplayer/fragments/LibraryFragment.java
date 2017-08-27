@@ -106,7 +106,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getChildFragmentManager());
 
-        setmViewPager((LockableViewPager) rootView.findViewById(R.id.pager));
+        setmViewPager(rootView.findViewById(R.id.pager));
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(mViewPagerChangeListener);
 

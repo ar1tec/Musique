@@ -15,7 +15,7 @@ public abstract class BaseAdapter<V extends RecyclerView.ViewHolder> extends Rec
         mOnItemClickListener = listener;
     }
 
-    protected void triggerOnItemClickListener(int position, View view)
+    public void triggerOnItemClickListener(int position, View view)
     {
         if(mOnItemClickListener != null)
         {
@@ -33,7 +33,7 @@ public abstract class BaseAdapter<V extends RecyclerView.ViewHolder> extends Rec
         mOnItemLongClickListener = listener;
     }
 
-    void triggerOnItemLongClickListener(int position, View view)
+    public void triggerOnItemLongClickListener(int position, View view)
     {
         if(mOnItemLongClickListener != null)
         {

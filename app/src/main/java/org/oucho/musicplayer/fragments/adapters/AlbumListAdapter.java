@@ -1,10 +1,8 @@
 package org.oucho.musicplayer.fragments.adapters;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,12 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.images.ArtworkCache;
+import org.oucho.musicplayer.images.ArtworkHelper;
 import org.oucho.musicplayer.db.model.Album;
+import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.widgets.fastscroll.FastScroller;
 
 import java.text.Normalizer;
@@ -87,6 +85,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
             return stripAccents(String.valueOf(toto.toUpperCase().charAt(0)));
         }
+
     }
 
     private static String stripAccents(String s) {
@@ -101,7 +100,9 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
 
         SharedPreferences préférences = mContext.getSharedPreferences(FICHIER_PREFS, Context.MODE_PRIVATE);
 
+
         String getTri = préférences.getString("album_sort_order", "");
+
 
             if (album.getId() == PlayerService.getAlbumId()) {
 
@@ -156,19 +157,19 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
                 viewHolder.vBackgroundYear.setVisibility(View.INVISIBLE);
             }
 
+
         viewHolder.vName.setText(album.getAlbumName());
-        viewHolder.vArtist.setText(album.getArtistName());
+
+            viewHolder.vArtist.setText(album.getArtistName());
 
         //évite de charger des images dans les mauvaises vues si elles sont recyclées
         viewHolder.vArtwork.setTag(position);
 
-
-        if (album.getId() == -1) {
-            return;
-        }
-
-        Uri uri = ContentUris.withAppendedId(ARTWORK_URI, album.getId());
-        Picasso.with(viewHolder.itemView.getContext()).load(uri).resize(mArtworkWidth, mArtworkHeight).into(viewHolder.vArtwork);
+        ArtworkCache.getInstance().loadBitmap(album.getId(),
+                viewHolder.vArtwork,
+                mArtworkWidth,
+                mArtworkHeight,
+                ArtworkHelper.getDefaultArtworkDrawable(mContext));
     }
 
     @Override

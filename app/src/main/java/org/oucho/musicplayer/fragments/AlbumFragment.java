@@ -1,12 +1,10 @@
 package org.oucho.musicplayer.fragments;
 
 import android.content.BroadcastReceiver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -24,8 +22,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
@@ -37,6 +33,7 @@ import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
+import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.search.SearchActivity;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
@@ -265,11 +262,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
 
         ImageView artworkView = rootView.findViewById(R.id.album_artwork);
-
-        Uri uri = ContentUris.withAppendedId(ARTWORK_URI, mAlbum.getId());
-        Picasso.with(mContext).load(uri).resize(mArtworkWidth, mArtworkHeight).into(artworkView);
-
-       // ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
+        ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
 
         TextView titreAlbum = rootView.findViewById(R.id.line1);
 

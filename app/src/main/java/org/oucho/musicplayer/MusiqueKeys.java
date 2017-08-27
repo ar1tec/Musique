@@ -1,8 +1,6 @@
 package org.oucho.musicplayer;
 
 
-import android.net.Uri;
-
 public interface MusiqueKeys {
 
     String FILTER = "filter";
@@ -40,5 +38,4 @@ public interface MusiqueKeys {
 
     String STATE_PREFS_NAME = "PlayerState";
 
-    Uri ARTWORK_URI = Uri.parse("content://media/external/audio/albumart");
 }

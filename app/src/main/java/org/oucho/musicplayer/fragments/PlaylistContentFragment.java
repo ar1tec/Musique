@@ -1,9 +1,7 @@
 package org.oucho.musicplayer.fragments;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -22,13 +20,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.images.ArtworkCache;
+import org.oucho.musicplayer.images.ArtworkHelper;
+import org.oucho.musicplayer.fragments.loaders.PlaylistLoader;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.fragments.loaders.PlaylistLoader;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.widgets.CustomSwipe;
 import org.oucho.musicplayer.widgets.CustomSwipeAdapter;
@@ -39,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.oucho.musicplayer.MusiqueKeys.ARTWORK_URI;
 import static org.oucho.musicplayer.MusiqueKeys.INTENT_QUEUEVIEW;
 
 
@@ -280,10 +277,7 @@ public class PlaylistContentFragment extends BaseFragment {
             viewHolder.vTitle.setText(song.getTitle());
             viewHolder.vArtist.setText(song.getArtist());
 
-            //ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), viewHolder.vReorderButton, mThumbSize, mThumbSize, ArtworkHelper.getDefaultThumbDrawable(context));
-
-            Uri uri = ContentUris.withAppendedId(ARTWORK_URI, song.getAlbumId());
-            Picasso.with(viewHolder.vReorderButton.getContext()).load(uri).resize(mThumbSize, mThumbSize).into(viewHolder.vReorderButton);
+            ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), viewHolder.vReorderButton, mThumbSize, mThumbSize, ArtworkHelper.getDefaultThumbDrawable(context));
 
         }
 
