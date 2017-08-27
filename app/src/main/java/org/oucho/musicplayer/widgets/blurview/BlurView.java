@@ -69,12 +69,7 @@ public class BlurView extends FrameLayout {
         Log.w(TAG_LOG, "setBlurAutoUpdate()");
 
 
-        post(new Runnable() {
-            @Override
-            public void run() {
-                blurController.setBlurAutoUpdate(enabled);
-            }
-        });
+        post(() -> blurController.setBlurAutoUpdate(enabled));
     }
 
     @Override

@@ -122,12 +122,7 @@ public class AlbumEditorDialog extends DialogFragment {
 
 
             }
-        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dismiss();
-            }
-        });
+        }).setNegativeButton(android.R.string.cancel, (dialog, which) -> dismiss());
 
 
         return builder.create();

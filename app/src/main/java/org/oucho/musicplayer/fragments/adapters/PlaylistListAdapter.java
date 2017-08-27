@@ -1,7 +1,6 @@
 package org.oucho.musicplayer.fragments.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -93,11 +92,7 @@ public class PlaylistListAdapter extends Adapter<PlaylistListAdapter.PlaylistVie
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage(mContext.getString(R.string.deletePlaylistConfirm));
-        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                PlaylistsUtils.deletePlaylist(mContext.getContentResolver(), playlist);
-            }
-        });
+        builder.setPositiveButton(R.string.delete, (dialog, which) -> PlaylistsUtils.deletePlaylist(mContext.getContentResolver(), playlist));
         builder.setNegativeButton(R.string.cancel, null);
         builder.show();
     }

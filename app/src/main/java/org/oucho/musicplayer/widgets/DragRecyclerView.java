@@ -176,13 +176,10 @@ public class DragRecyclerView extends FastScrollRecyclerView {
                         }
 
                     });
-                    anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            mHandleBounds.offsetTo(mHandleBounds.left, (Integer) animation.getAnimatedValue());
-                            mHandleDrawable.setBounds(mHandleBounds);
-                            invalidate();
-                        }
+                    anim.addUpdateListener(animation -> {
+                        mHandleBounds.offsetTo(mHandleBounds.left, (Integer) animation.getAnimatedValue());
+                        mHandleDrawable.setBounds(mHandleBounds);
+                        invalidate();
                     });
                     anim.start();
                     if (mCurrentPosition != position) {

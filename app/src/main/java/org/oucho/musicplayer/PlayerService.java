@@ -718,20 +718,14 @@ public class PlayerService extends Service implements MusiqueKeys {
         }
     };
 
-    private final OnErrorListener mOnErrorListener1 = new OnErrorListener() {
-        @Override
-        public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
-            Log.e(TAG_LOG, "onError 1: " + String.valueOf(what) + " " + String.valueOf(extra));
-            return false;
-        }
+    private final OnErrorListener mOnErrorListener1 = (mediaPlayer, what, extra) -> {
+        Log.e(TAG_LOG, "onError 1: " + String.valueOf(what) + " " + String.valueOf(extra));
+        return false;
     };
 
-    private final OnErrorListener mOnErrorListener2 = new OnErrorListener() {
-        @Override
-        public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
-            Log.e(TAG_LOG, "onError 2: " + String.valueOf(what) + " " + String.valueOf(extra));
-            return false;
-        }
+    private final OnErrorListener mOnErrorListener2 = (mediaPlayer, what, extra) -> {
+        Log.e(TAG_LOG, "onError 2: " + String.valueOf(what) + " " + String.valueOf(extra));
+        return false;
     };
 
 

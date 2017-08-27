@@ -14,14 +14,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
-import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.fragments.AlbumFragment;
@@ -183,22 +181,18 @@ public class SearchAlbumFragment extends BaseFragment {
         final Album album = mAdapterAlbum.getItem(position);
         inflater.inflate(R.menu.search_album_item, popup.getMenu());
 
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_play_album:
-                        playAlbum(album);
-                        return true;
-                    case R.id.action_add_to_playlist:
-                        showPlaylistPicker(album);
-                        return true;
-                    default:
-                        break;
-                }
-                return false;
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_play_album:
+                    playAlbum(album);
+                    return true;
+                case R.id.action_add_to_playlist:
+                    showPlaylistPicker(album);
+                    return true;
+                default:
+                    break;
             }
+            return false;
         });
         popup.show();
     }
@@ -206,12 +200,7 @@ public class SearchAlbumFragment extends BaseFragment {
 
     private void showPlaylistPicker(final Album album) {
         PlaylistPickerDialog picker = PlaylistPickerDialog.newInstance();
-        picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
-            @Override
-            public void onPlaylistPicked(Playlist playlist) {
-                PlaylistsUtils.addAlbumToPlaylist(mContext.getContentResolver(), playlist.getId(), album.getId());
-            }
-        });
+        picker.setListener(playlist -> PlaylistsUtils.addAlbumToPlaylist(mContext.getContentResolver(), playlist.getId(), album.getId()));
         picker.show(getChildFragmentManager(), "pick_playlist");
 
     }

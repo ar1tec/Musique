@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,7 +28,6 @@ import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.fragments.loaders.SortOrder;
-import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
@@ -79,26 +77,18 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
         mAdapter.setData(songList);
     }
 
-    private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener = new SongEditorDialog.OnTagsEditionSuccessListener() {
-        @Override
-        public void onTagsEditionSuccess() {
-            ((MainActivity) getActivity()).refresh();
-        }
-    };
+    private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener = () -> ((MainActivity) getActivity()).refresh();
 
-    private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(int position, View view) {
-            switch (view.getId()) {
-                case R.id.item_view:
-                    selectSong(position);
-                    break;
-                case R.id.menu_button:
-                    showMenu(position, view);
-                    break;
-                default: //do nothing
-                    break;
-            }
+    private final BaseAdapter.OnItemClickListener mOnItemClickListener = (position, view) -> {
+        switch (view.getId()) {
+            case R.id.item_view:
+                selectSong(position);
+                break;
+            case R.id.menu_button:
+                showMenu(position, view);
+                break;
+            default: //do nothing
+                break;
         }
     };
 
@@ -118,26 +108,22 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
         MenuInflater inflater = popup.getMenuInflater();
         final Song song = mAdapter.getItem(position);
         inflater.inflate(R.menu.album_song_item, popup.getMenu());
-        popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_add_to_queue:
+                    ((MainActivity) getActivity()).addToQueue(song);
+                    return true;
 
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_add_to_queue:
-                        ((MainActivity) getActivity()).addToQueue(song);
-                        return true;
-
-                    case R.id.action_edit_tags:
-                        showID3TagEditor(song);
-                        return true;
-                    case R.id.action_add_to_playlist:
-                        showPlaylistPicker(song);
-                        return true;
-                    default: //do nothing
-                        break;
-                }
-                return false;
+                case R.id.action_edit_tags:
+                    showID3TagEditor(song);
+                    return true;
+                case R.id.action_add_to_playlist:
+                    showPlaylistPicker(song);
+                    return true;
+                default: //do nothing
+                    break;
             }
+            return false;
         });
         popup.show();
     }
@@ -150,12 +136,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
     private void showPlaylistPicker(final Song song) {
         PlaylistPickerDialog picker = PlaylistPickerDialog.newInstance();
-        picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
-            @Override
-            public void onPlaylistPicked(Playlist playlist) {
-                PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
-            }
-        });
+        picker.setListener(playlist -> PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId()));
         picker.show(getChildFragmentManager(), "pick_playlist");
 
     }
@@ -253,26 +234,23 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+        getView().setOnKeyListener((v, keyCode, event) -> {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+            if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
 
-                    if (MainActivity.getQueueLayout()) {
+                if (MainActivity.getQueueLayout()) {
 
-                        Intent intent = new Intent();
-                        intent.setAction(INTENT_QUEUEVIEW);
-                        mContext.sendBroadcast(intent);
+                    Intent intent = new Intent();
+                    intent.setAction(INTENT_QUEUEVIEW);
+                    mContext.sendBroadcast(intent);
 
-                    } else {
-                        LibraryFragment.backToPrevious();
-                    }
-
-                    return true;
+                } else {
+                    LibraryFragment.backToPrevious();
                 }
-                return false;
+
+                return true;
             }
+            return false;
         });
     }
 

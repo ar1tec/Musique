@@ -163,17 +163,9 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
         Handler mHandler = new Handler();
 
         if (!value) {
-            mHandler.postDelayed(new Runnable() {
-                public void run() {
-                    actionBar.setDisplayShowCustomEnabled(false);
-                }
-            }, 200);
+            mHandler.postDelayed(() -> actionBar.setDisplayShowCustomEnabled(false), 200);
         } else {
-            mHandler.postDelayed(new Runnable() {
-                public void run() {
-                    actionBar.setDisplayShowCustomEnabled(true);
-                }
-            }, 200);
+            mHandler.postDelayed(() -> actionBar.setDisplayShowCustomEnabled(true), 200);
         }
     }
 

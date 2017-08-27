@@ -1,6 +1,5 @@
 package org.oucho.musicplayer.utils;
 
-import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,15 +17,11 @@ public class StopReceive  extends BroadcastReceiver {
         if ("org.oucho.musicplayer.STOP".equals(etat) && "stop".equals(halt)) {
 
             final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
+            handler.postDelayed(() -> {
+                NotificationManager notificationManager;
+                notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(Notification.NOTIFY_ID);
 
-                @SuppressLint("SetTextI18n")
-                public void run() {
-                    NotificationManager notificationManager;
-                    notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.cancel(Notification.NOTIFY_ID);
-
-                }
             }, 500);
         }
     }

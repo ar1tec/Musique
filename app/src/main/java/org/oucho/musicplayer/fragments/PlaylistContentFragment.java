@@ -145,12 +145,7 @@ public class PlaylistContentFragment extends BaseFragment {
 
 
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setOnItemMovedListener(new DragRecyclerView.OnItemMovedListener() {
-            @Override
-            public void onItemMoved(int oldPosition, int newPosition) {
-                mAdapter.moveItem(oldPosition, newPosition);
-            }
-        });
+        mRecyclerView.setOnItemMovedListener((oldPosition, newPosition) -> mAdapter.moveItem(oldPosition, newPosition));
 
         return rootView;
     }
@@ -172,35 +167,32 @@ public class PlaylistContentFragment extends BaseFragment {
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+        getView().setOnKeyListener((v, keyCode, event) -> {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+            if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
 
-                    LockableViewPager.setSwipeLocked(false);
+                LockableViewPager.setSwipeLocked(false);
 
-                    if (MainActivity.getQueueLayout()) {
+                if (MainActivity.getQueueLayout()) {
 
-                        Intent intent = new Intent();
-                        intent.setAction(INTENT_QUEUEVIEW);
-                        getContext().sendBroadcast(intent);
+                    Intent intent = new Intent();
+                    intent.setAction(INTENT_QUEUEVIEW);
+                    getContext().sendBroadcast(intent);
 
-                    } else {
+                } else {
 
-                        MainActivity.setPlaylistFragmentState(false);
+                    MainActivity.setPlaylistFragmentState(false);
 
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                        ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
-                        ft.commit();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                    ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
+                    ft.commit();
 
-                    }
-
-                    return true;
                 }
-                return false;
+
+                return true;
             }
+            return false;
         });
     }
 

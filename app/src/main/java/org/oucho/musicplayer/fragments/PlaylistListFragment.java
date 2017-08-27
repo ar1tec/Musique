@@ -33,7 +33,6 @@ import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -71,14 +70,10 @@ public class PlaylistListFragment extends BaseFragment {
                     list.add(new Playlist(id, name));
                 } while (cursor.moveToNext());
 
-                Collections.sort(list, new Comparator<Playlist>() {
-
-                    @Override
-                    public int compare(Playlist lhs, Playlist rhs) {
-                        Collator c = Collator.getInstance(Locale.getDefault());
-                        c.setStrength(Collator.PRIMARY);
-                        return c.compare(lhs.getName(), rhs.getName());
-                    }
+                Collections.sort(list, (lhs, rhs) -> {
+                    Collator c = Collator.getInstance(Locale.getDefault());
+                    c.setStrength(Collator.PRIMARY);
+                    return c.compare(lhs.getName(), rhs.getName());
                 });
             }
 
@@ -141,37 +136,34 @@ public class PlaylistListFragment extends BaseFragment {
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+        getView().setOnKeyListener((v, keyCode, event) -> {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+            if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
 
-                    if (MainActivity.getQueueLayout()) {
+                if (MainActivity.getQueueLayout()) {
 
-                        Intent intent = new Intent();
-                        intent.setAction(INTENT_QUEUEVIEW);
-                        mCntext.sendBroadcast(intent);
+                    Intent intent = new Intent();
+                    intent.setAction(INTENT_QUEUEVIEW);
+                    mCntext.sendBroadcast(intent);
 
-                    } else if (MainActivity.getPlaylistFragmentState()) {
+                } else if (MainActivity.getPlaylistFragmentState()) {
 
-                        MainActivity.setPlaylistFragmentState(false);
-                        LockableViewPager.setSwipeLocked(false);
+                    MainActivity.setPlaylistFragmentState(false);
+                    LockableViewPager.setSwipeLocked(false);
 
 
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                        ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
-                        ft.commit();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                    ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
+                    ft.commit();
 
-                    } else {
-                        LibraryFragment.backToPrevious();
-                    }
-
-                    return true;
+                } else {
+                    LibraryFragment.backToPrevious();
                 }
-                return false;
+
+                return true;
             }
+            return false;
         });
     }
 
@@ -197,12 +189,7 @@ public class PlaylistListFragment extends BaseFragment {
 
     private void showCreatePlaylistDialog() {
         CreatePlaylistDialog dialog = CreatePlaylistDialog.newInstance();
-        dialog.setOnPlaylistCreatedListener(new CreatePlaylistDialog.OnPlaylistCreatedListener() {
-            @Override
-            public void onPlaylistCreated() {
-                load();
-            }
-        });
+        dialog.setOnPlaylistCreatedListener(this::load);
         dialog.show(getChildFragmentManager(), "create_playlist");
 
     }

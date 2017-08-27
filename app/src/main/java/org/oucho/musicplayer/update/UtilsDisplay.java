@@ -3,9 +3,7 @@ package org.oucho.musicplayer.update;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
-import android.view.View;
 
 import org.oucho.musicplayer.R;
 
@@ -20,11 +18,7 @@ class UtilsDisplay {
                 .setTitle(title)
                 .setMessage(content)
 
-        .setPositiveButton(btnPositive, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        UtilsLibrary.goToUpdate(context, apk);
-                    }
-                })
+        .setPositiveButton(btnPositive, (dialog, id) -> UtilsLibrary.goToUpdate(context, apk))
 
         .setNegativeButton(btnNegative, null).show();
 
@@ -46,12 +40,7 @@ class UtilsDisplay {
 
 
         Snackbar snackbar = Snackbar.make(activity.findViewById(android.R.id.content), content, Snackbar.LENGTH_LONG);
-        snackbar.setAction(context.getResources().getString(R.string.appupdater_btn_update), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UtilsLibrary.goToUpdate(context, apk);
-            }
-        }).show();
+        snackbar.setAction(context.getResources().getString(R.string.appupdater_btn_update), view -> UtilsLibrary.goToUpdate(context, apk)).show();
     }
 
     static void showUpdateNotAvailableSnackbar(final Context context, String content) {

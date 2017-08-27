@@ -31,12 +31,7 @@ public class ToolbarDrawerToggle implements DrawerLayout.DrawerListener {
             mGravities = gravities;
         }
         toolbar.setNavigationIcon(mArrowDrawable);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleDrawers();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> toggleDrawers());
     }
 
     private void toggleDrawers() {

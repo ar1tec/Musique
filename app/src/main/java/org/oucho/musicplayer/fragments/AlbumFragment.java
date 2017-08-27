@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -32,7 +31,6 @@ import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
-import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SongEditorDialog;
@@ -210,26 +208,23 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         } else {
 
-            mHandler.postDelayed(new Runnable() {
+            mHandler.postDelayed(() -> {
 
-                public void run() {
+                if (tri.equals("a-z"))
+                    getActivity().setTitle(Titre);
 
-                    if (tri.equals("a-z"))
-                        getActivity().setTitle(Titre);
+                if (tri.equals(getString(R.string.title_sort_artist)))
+                    getActivity().setTitle(Artiste);
 
-                    if (tri.equals(getString(R.string.title_sort_artist)))
-                        getActivity().setTitle(Artiste);
-
-                    if (tri.equals(getString(R.string.title_sort_year)))
-                        getActivity().setTitle(Année);
+                if (tri.equals(getString(R.string.title_sort_year)))
+                    getActivity().setTitle(Année);
 
 
-                    Intent intent = new Intent();
-                    intent.setAction(INTENT_TOOLBAR_SHADOW);
-                    intent.putExtra("boolean", false);
-                    mContext.sendBroadcast(intent);
+                Intent intent = new Intent();
+                intent.setAction(INTENT_TOOLBAR_SHADOW);
+                intent.putExtra("boolean", false);
+                mContext.sendBroadcast(intent);
 
-                }
             }, 300);
         }
 
@@ -329,12 +324,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         @Override
         public void onItemClick(int position, View view) {
 
-            mHandler.postDelayed(new Runnable() {
-
-                public void run() {
-                    mAdapter.notifyDataSetChanged();
-                }
-            }, 100);
+            mHandler.postDelayed(() -> mAdapter.notifyDataSetChanged(), 100);
 
 
             switch (view.getId()) {
@@ -355,14 +345,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         public void onItemLongClick(int position, View view) {
 
 
-            mHandler.postDelayed(new Runnable() {
-
-                public void run() {
-
-                    mAdapter.notifyDataSetChanged();
-
-                }
-            }, 100);
+            mHandler.postDelayed(() -> mAdapter.notifyDataSetChanged(), 100);
 
 
             switch (view.getId()) {
@@ -400,16 +383,13 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
 
     private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
-            = new SongEditorDialog.OnTagsEditionSuccessListener() {
-        @Override
-        public void onTagsEditionSuccess() {
+            = () -> {
 
-            Log.e(TAG_LOG, "mOnTagsEditionSuccessListener");
+                Log.e(TAG_LOG, "mOnTagsEditionSuccessListener");
 
-            ((MainActivity) getActivity()).refresh();
+                ((MainActivity) getActivity()).refresh();
 
-        }
-    };
+            };
 
     private void showMenu(final int position, View v) {
 
@@ -421,32 +401,28 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
         inflater.inflate(R.menu.album_song_item, popup.getMenu());
 
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_add_to_queue:
 
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_add_to_queue:
+                    if (MainActivity.getChercheActivity()) {
+                        ((SearchActivity) getActivity()).addToQueue(song);
+                    } else {
+                        ((MainActivity) getActivity()).addToQueue(song);
+                    }
 
-                        if (MainActivity.getChercheActivity()) {
-                            ((SearchActivity) getActivity()).addToQueue(song);
-                        } else {
-                            ((MainActivity) getActivity()).addToQueue(song);
-                        }
+                    return true;
 
-                        return true;
-
-                    case R.id.action_edit_tags:
-                        showID3TagEditor(song);
-                        return true;
-                    case R.id.action_add_to_playlist:
-                        showPlaylistPicker(song);
-                        return true;
-                    default: //do nothing
-                        break;
-                }
-                return false;
+                case R.id.action_edit_tags:
+                    showID3TagEditor(song);
+                    return true;
+                case R.id.action_add_to_playlist:
+                    showPlaylistPicker(song);
+                    return true;
+                default: //do nothing
+                    break;
             }
+            return false;
         });
 
         popup.show();
@@ -460,12 +436,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     private void showPlaylistPicker(final Song song) {
         PlaylistPickerDialog picker = PlaylistPickerDialog.newInstance();
-        picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
-            @Override
-            public void onPlaylistPicked(Playlist playlist) {
-                PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
-            }
-        });
+        picker.setListener(playlist -> PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId()));
         picker.show(getChildFragmentManager(), "pick_playlist");
     }
 
@@ -519,52 +490,48 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
             getView().setFocusableInTouchMode(true);
             getView().requestFocus();
-            getView().setOnKeyListener(new View.OnKeyListener() {
+            getView().setOnKeyListener((v, keyCode, event) -> {
 
-                @Override
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                    if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    LockableViewPager.setSwipeLocked(false);
 
-                        LockableViewPager.setSwipeLocked(false);
+                    if (MainActivity.getQueueLayout()) {
 
-                        if (MainActivity.getQueueLayout()) {
+                        Intent intent = new Intent();
+                        intent.setAction(INTENT_QUEUEVIEW);
+                        mContext.sendBroadcast(intent);
 
-                            Intent intent = new Intent();
-                            intent.setAction(INTENT_QUEUEVIEW);
-                            mContext.sendBroadcast(intent);
-
-                            return true;
+                        return true;
 
 
-                        } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
-
-                            MainActivity.setAlbumFragmentState(false);
-
-                            FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                            ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
-                            ft.commit();
-
-                            Intent intent = new Intent();
-                            intent.setAction("reload");
-                            mContext.sendBroadcast(intent);
-
-                            Intent shadow = new Intent();
-                            shadow.setAction(INTENT_TOOLBAR_SHADOW);
-                            shadow.putExtra("boolean", true);
-                            mContext.sendBroadcast(shadow);
-
-                            return true;
-                        }
+                    } else if (getFragmentManager().findFragmentById(R.id.fragment_album_list_layout) != null) {
 
                         MainActivity.setAlbumFragmentState(false);
 
-                        return false;
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                        ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
+                        ft.commit();
+
+                        Intent intent = new Intent();
+                        intent.setAction("reload");
+                        mContext.sendBroadcast(intent);
+
+                        Intent shadow = new Intent();
+                        shadow.setAction(INTENT_TOOLBAR_SHADOW);
+                        shadow.putExtra("boolean", true);
+                        mContext.sendBroadcast(shadow);
+
+                        return true;
                     }
+
+                    MainActivity.setAlbumFragmentState(false);
 
                     return false;
                 }
+
+                return false;
             });
 
         }
@@ -596,11 +563,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                 } else {
 
-                    mHandler.postDelayed(new Runnable() {
-                        public void run() {
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    }, 100);
+                    mHandler.postDelayed(() -> mAdapter.notifyDataSetChanged(), 100);
 
                 }
             }

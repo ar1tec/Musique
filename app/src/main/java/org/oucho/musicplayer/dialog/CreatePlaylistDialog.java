@@ -2,7 +2,6 @@ package org.oucho.musicplayer.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -40,24 +39,20 @@ public class CreatePlaylistDialog extends DialogFragment {
                 .setTitle(R.string.create_playlist)
                 .setView(layout)
                 .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                EditText editText = layout.findViewById(R.id.playlist_name);
+                        (dialog, which) -> {
+                            EditText editText = layout.findViewById(R.id.playlist_name);
 
-                                PlaylistsUtils.createPlaylist(getActivity()
-                                        .getContentResolver(), editText
-                                        .getText().toString());
+                            PlaylistsUtils.createPlaylist(getActivity()
+                                    .getContentResolver(), editText
+                                    .getText().toString());
 
-                                if (mListener != null) {
-                                    mListener.onPlaylistCreated();
-                                }
+                            if (mListener != null) {
+                                mListener.onPlaylistCreated();
                             }
                         })
                 .setNegativeButton(android.R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int which) {
-                                // This constructor is intentionally empty, pourquoi ? parce que !
-                            }
+                        (dialog, which) -> {
+                            // This constructor is intentionally empty, pourquoi ? parce que !
                         });
 
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);

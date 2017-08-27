@@ -38,7 +38,6 @@ import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.loaders.AlbumLoader;
 import org.oucho.musicplayer.fragments.loaders.SortOrder;
 import org.oucho.musicplayer.db.model.Album;
-import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.utils.CustomGridLayoutManager;
@@ -241,23 +240,19 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.album_item, popup.getMenu());
         final Album album = mAdapter.getItem(position);
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
 
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-
-                    case R.id.action_edit_tags:
-                        showEditorDialog(album);
-                        return true;
-                    case R.id.action_add_to_playlist:
-                        showPlaylistPicker(album);
-                        return true;
-                    default: //do nothing
-                        break;
-                }
-                return false;
+                case R.id.action_edit_tags:
+                    showEditorDialog(album);
+                    return true;
+                case R.id.action_add_to_playlist:
+                    showPlaylistPicker(album);
+                    return true;
+                default: //do nothing
+                    break;
             }
+            return false;
         });
         popup.show();
     }
@@ -270,12 +265,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
     private void showPlaylistPicker(final Album album) {
         PlaylistPickerDialog picker = PlaylistPickerDialog.newInstance();
-        picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
-            @Override
-            public void onPlaylistPicked(Playlist playlist) {
-                PlaylistsUtils.addAlbumToPlaylist(mContext.getContentResolver(), playlist.getId(), album.getId());
-            }
-        });
+        picker.setListener(playlist -> PlaylistsUtils.addAlbumToPlaylist(mContext.getContentResolver(), playlist.getId(), album.getId()));
         picker.show(getChildFragmentManager(), "pick_playlist");
 
     }
@@ -285,12 +275,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
 
 
-    private final AlbumEditorDialog.OnEditionSuccessListener mOnEditionSuccessListener = new AlbumEditorDialog.OnEditionSuccessListener() {
-        @Override
-        public void onEditionSuccess() {
-            ((MainActivity) getActivity()).refresh();
-        }
-    };
+    private final AlbumEditorDialog.OnEditionSuccessListener mOnEditionSuccessListener = () -> ((MainActivity) getActivity()).refresh();
 
 
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
@@ -310,12 +295,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                     ft.addToBackStack("AlbumFragment");
                     ft.commit();
 
-                    mHandler.postDelayed(new Runnable() {
-
-                        public void run() {
-                            showOverflowMenu(false);
-                        }
-                    }, 300);
+                    mHandler.postDelayed(() -> showOverflowMenu(false), 300);
 
 
                     break;
@@ -430,45 +410,41 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
             getView().setFocusableInTouchMode(true);
             getView().requestFocus();
-            getView().setOnKeyListener(new View.OnKeyListener() {
+            getView().setOnKeyListener((v, keyCode, event) -> {
 
-                @Override
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                    if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (MainActivity.getQueueLayout()) {
 
-                        if (MainActivity.getQueueLayout()) {
+                        Intent intent = new Intent();
+                        intent.setAction(INTENT_QUEUEVIEW);
+                        mContext.sendBroadcast(intent);
 
-                            Intent intent = new Intent();
-                            intent.setAction(INTENT_QUEUEVIEW);
-                            mContext.sendBroadcast(intent);
+                        return true;
 
-                            return true;
+                    } else if (MainActivity.getAlbumFragmentState()) {
 
-                        } else if (MainActivity.getAlbumFragmentState()) {
+                        MainActivity.setAlbumFragmentState(false);
+                        LockableViewPager.setSwipeLocked(false);
+                        showOverflowMenu(true);
 
-                            MainActivity.setAlbumFragmentState(false);
-                            LockableViewPager.setSwipeLocked(false);
-                            showOverflowMenu(true);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                        ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
+                        ft.commit();
 
-                            FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                            ft.remove(getFragmentManager().findFragmentById(R.id.fragment_album_list_layout));
-                            ft.commit();
+                        Intent shadow = new Intent();
+                        shadow.setAction(INTENT_TOOLBAR_SHADOW);
+                        shadow.putExtra("boolean", true);
+                        mContext.sendBroadcast(shadow);
 
-                            Intent shadow = new Intent();
-                            shadow.setAction(INTENT_TOOLBAR_SHADOW);
-                            shadow.putExtra("boolean", true);
-                            mContext.sendBroadcast(shadow);
-
-                            return true;
-                        }
-
-                        return false;
-
+                        return true;
                     }
+
                     return false;
+
                 }
+                return false;
             });
 
         }
@@ -564,36 +540,33 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                 run = true;
 
-                mHandler.postDelayed(new Runnable() {
+                mHandler.postDelayed(() -> {
+                    int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
 
-                    public void run() {
-                        int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
-
-                        // Actions to do after xx seconds
-                        if (android.os.Build.VERSION.SDK_INT >= 24) {
+                    // Actions to do after xx seconds
+                    if (android.os.Build.VERSION.SDK_INT >= 24) {
 
 
+                        getActivity().setTitle(Html.fromHtml("<font>"
+                                + titre
+                                + " </font> <small> <font color='" + couleurTitre + "'>"
+                                + tri
+                                + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+                    } else {
+
+                        try {
+                            //noinspection deprecation
                             getActivity().setTitle(Html.fromHtml("<font>"
                                     + titre
-                                    + " </font> <small> <font color='" + couleurTitre + "'>"
+                                    + " </font> <small> <font color='" + couleurTitre + "'"
                                     + tri
-                                    + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
-                        } else {
-
-                            try {
-                                //noinspection deprecation
-                                getActivity().setTitle(Html.fromHtml("<font>"
-                                        + titre
-                                        + " </font> <small> <font color='" + couleurTitre + "'"
-                                        + tri
-                                        + "</small></font>"));
-                            } catch (NullPointerException ignore) {
-                                // Plantage si sorti de l'application moins
-                                // d'une seconde après son ouverture
-                                Log.w(TAG_LOG, "Sortie trop rapide après le lancmenet de l'application");
-                            }
-
+                                    + "</small></font>"));
+                        } catch (NullPointerException ignore) {
+                            // Plantage si sorti de l'application moins
+                            // d'une seconde après son ouverture
+                            Log.w(TAG_LOG, "Sortie trop rapide après le lancmenet de l'application");
                         }
+
                     }
                 }, 1000);
             }

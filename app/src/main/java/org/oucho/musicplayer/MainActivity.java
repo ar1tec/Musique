@@ -59,7 +59,6 @@ import org.oucho.musicplayer.dialog.HelpDialog;
 import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.fragments.PlayerFragment;
-import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
 import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
@@ -173,21 +172,15 @@ public class MainActivity extends AppCompatActivity implements
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mQueueView);
 
-        mQueueView.setOnItemMovedListener(new DragRecyclerView.OnItemMovedListener() {
-            @Override
-            public void onItemMoved(int oldPosition, int newPosition) {
-                mQueueAdapter.moveItem(oldPosition, newPosition);
-                mPlayerService.notifyChange(QUEUE_CHANGED);
-            }
+        mQueueView.setOnItemMovedListener((oldPosition, newPosition) -> {
+            mQueueAdapter.moveItem(oldPosition, newPosition);
+            mPlayerService.notifyChange(QUEUE_CHANGED);
         });
 
-        mQueueAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int oldPosition, View newPosition) {
-                updateQueue();
-                mQueueAdapter.notifyDataSetChanged();
-                mPlayerService.notifyChange(QUEUE_CHANGED);
-            }
+        mQueueAdapter.setOnItemClickListener((oldPosition, newPosition) -> {
+            updateQueue();
+            mQueueAdapter.notifyDataSetChanged();
+            mPlayerService.notifyChange(QUEUE_CHANGED);
         });
 
         mQueueView.setAdapter(mQueueAdapter);
@@ -296,11 +289,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                mDrawerLayout.closeDrawers();
-            }
-        }, 300);
+        mHandler.postDelayed(() -> mDrawerLayout.closeDrawers(), 300);
 
         switch (menuItem.getItemId()) {
             case R.id.action_equalizer:
@@ -788,12 +777,9 @@ public class MainActivity extends AppCompatActivity implements
                     layoutB.startAnimation(animate);
 
                     // bug GONE, reste actif si pas de clearAnimation
-                    mHandler.postDelayed(new Runnable() {
-
-                        public void run() {
-                            layoutB.clearAnimation();
-                            layoutB.setVisibility(View.GONE);
-                        }
+                    mHandler.postDelayed(() -> {
+                        layoutB.clearAnimation();
+                        layoutB.setVisibility(View.GONE);
                     }, 400);
 
 
@@ -923,12 +909,9 @@ public class MainActivity extends AppCompatActivity implements
         mQueueAdapter.setSelection(position);
 
         if (autoScrollQueue) {
-            mHandler.postDelayed(new Runnable() {
-
-                public void run() {
-                    mQueueView.smoothScrollToPosition(position);
-                    autoScrollQueue = false;
-                }
+            mHandler.postDelayed(() -> {
+                mQueueView.smoothScrollToPosition(position);
+                autoScrollQueue = false;
             }, 100);
         }
 
@@ -997,14 +980,7 @@ public class MainActivity extends AppCompatActivity implements
             if (menu == null)
                 return;
 
-            mHandler.postDelayed(new Runnable() {
-
-                public void run() {
-
-                    menu.setGroupVisible(R.id.main_menu_group, false);
-
-                }
-            }, 300);
+            mHandler.postDelayed(() -> menu.setGroupVisible(R.id.main_menu_group, false), 300);
 
         } else {
             Toast.makeText(mContext, "Vous devez d'abord sélectionner un titre", Toast.LENGTH_LONG).show();
@@ -1090,20 +1066,14 @@ public class MainActivity extends AppCompatActivity implements
         });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton(start, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setPositiveButton(start, (dialog, which) -> {
 
-                int mins = mSeekArc.getProgress();
-                startTimer(mins);
-            }
+            int mins = mSeekArc.getProgress();
+            startTimer(mins);
         });
 
-        builder.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // This constructor is intentionally empty, pourquoi ? parce que !
-            }
+        builder.setNegativeButton(cancel, (dialog, which) -> {
+            // This constructor is intentionally empty, pourquoi ? parce que !
         });
 
         builder.setView(view);
@@ -1127,18 +1097,10 @@ public class MainActivity extends AppCompatActivity implements
 
         final String stopTimer = getString(R.string.stop_timer);
 
-        final AlertDialog dialog = new AlertDialog.Builder(this).setPositiveButton(continuer, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).setNegativeButton(cancelTimer, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                annulTimer();
+        final AlertDialog dialog = new AlertDialog.Builder(this).setPositiveButton(continuer, (dialog12, which) -> dialog12.dismiss()).setNegativeButton(cancelTimer, (dialog1, which) -> {
+            annulTimer();
 
-                Toast.makeText(mContext, stopTimer, Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(mContext, stopTimer, Toast.LENGTH_LONG).show();
         }).setView(view).create();
 
         new CountDownTimer(mTask.getDelay(TimeUnit.MILLISECONDS), 1000) {
@@ -1301,14 +1263,11 @@ public class MainActivity extends AppCompatActivity implements
      **********************************************************************************************/
 
     private void killNotif() {
-        mHandler.postDelayed(new Runnable() {
+        mHandler.postDelayed(() -> {
+            NotificationManager notificationManager;
+            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancel(Notification.NOTIFY_ID);
 
-            public void run() {
-                NotificationManager notificationManager;
-                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.cancel(Notification.NOTIFY_ID);
-
-            }
         }, 500);
     }
 
@@ -1358,12 +1317,7 @@ public class MainActivity extends AppCompatActivity implements
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
 
                 DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE);
-                            }
-                        });
+                        (dialog, which) -> ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE));
             }
         }
     }

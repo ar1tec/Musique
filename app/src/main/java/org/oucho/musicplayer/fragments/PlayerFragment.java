@@ -96,19 +96,16 @@ public class PlayerFragment extends BaseFragment
         mContext.sendBroadcast(intent);
 
 
-        mHandler.postDelayed(new Runnable() {
+        mHandler.postDelayed(() -> {
 
-            public void run() {
+            String artist = PlayerService.getAlbumName();
+            getActivity().setTitle(artist);
 
-                String artist = PlayerService.getAlbumName();
-                getActivity().setTitle(artist);
+            Intent intent1 = new Intent();
+            intent1.setAction(INTENT_TOOLBAR_SHADOW);
+            intent1.putExtra("boolean", false);
+            mContext.sendBroadcast(intent1);
 
-                Intent intent = new Intent();
-                intent.setAction(INTENT_TOOLBAR_SHADOW);
-                intent.putExtra("boolean", false);
-                mContext.sendBroadcast(intent);
-
-            }
         }, 300);
 
     }
@@ -148,23 +145,19 @@ public class PlayerFragment extends BaseFragment
 
 
         // empêche les clicks vers le layout du dessous
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mOnClickListener = v -> {
 
-        @Override
-        public void onClick(View v) {
-
-            if (mPlayerService == null) {
-                return;
-            }
-            switch (v.getId()) {
-                case R.id.root:
-                    //mPlayerService.toggle();
-                    break;
+        if (mPlayerService == null) {
+            return;
+        }
+        switch (v.getId()) {
+            case R.id.root:
+                //mPlayerService.toggle();
+                break;
 
 
-                default:
-                    break;
-            }
+            default:
+                break;
         }
     };
 
@@ -305,60 +298,56 @@ public class PlayerFragment extends BaseFragment
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
+        getView().setOnKeyListener((v, keyCode, event) -> {
 
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                int viewID = MainActivity.getViewID();
 
-                    int viewID = MainActivity.getViewID();
-
-                    if( ! MainActivity.getPlaylistFragmentState() && ! MainActivity.getAlbumFragmentState())
-                    LockableViewPager.setSwipeLocked(false);
+                if( ! MainActivity.getPlaylistFragmentState() && ! MainActivity.getAlbumFragmentState())
+                LockableViewPager.setSwipeLocked(false);
 
 
-                    if (MainActivity.getQueueLayout()) {
+                if (MainActivity.getQueueLayout()) {
 
-                        Intent intent = new Intent();
-                        intent.setAction(INTENT_QUEUEVIEW);
-                        mContext.sendBroadcast(intent);
+                    Intent intent = new Intent();
+                    intent.setAction(INTENT_QUEUEVIEW);
+                    mContext.sendBroadcast(intent);
 
-                        return true;
+                    return true;
 
 
-                    } else if (getFragmentManager().findFragmentById(viewID) != null) {
+                } else if (getFragmentManager().findFragmentById(viewID) != null) {
 
-                        Intent intent0 = new Intent();
-                        intent0.setAction(INTENT_LAYOUTVIEW);
-                        intent0.putExtra("vue", "layoutx");
-                        mContext.sendBroadcast(intent0);
+                    Intent intent0 = new Intent();
+                    intent0.setAction(INTENT_LAYOUTVIEW);
+                    intent0.putExtra("vue", "layoutx");
+                    mContext.sendBroadcast(intent0);
 
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
-                        ft.remove(getFragmentManager().findFragmentById(viewID));
-                        ft.commit();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
+                    ft.remove(getFragmentManager().findFragmentById(viewID));
+                    ft.commit();
 
-                        Intent intent = new Intent();
-                        intent.setAction("reload");
-                        mContext.sendBroadcast(intent);
+                    Intent intent = new Intent();
+                    intent.setAction("reload");
+                    mContext.sendBroadcast(intent);
 
-                        if (!MainActivity.getAlbumFragmentState()) {
-                            Intent shadow = new Intent();
-                            shadow.setAction(INTENT_TOOLBAR_SHADOW);
-                            shadow.putExtra("boolean", true);
-                            mContext.sendBroadcast(shadow);
-                        }
-
-                        if (!MainActivity.getPlaylistFragmentState() && !MainActivity.getAlbumFragmentState())
-                            MainActivity.setMenu(true);
-
-                        return true;
+                    if (!MainActivity.getAlbumFragmentState()) {
+                        Intent shadow = new Intent();
+                        shadow.setAction(INTENT_TOOLBAR_SHADOW);
+                        shadow.putExtra("boolean", true);
+                        mContext.sendBroadcast(shadow);
                     }
-                    return false;
+
+                    if (!MainActivity.getPlaylistFragmentState() && !MainActivity.getAlbumFragmentState())
+                        MainActivity.setMenu(true);
+
+                    return true;
                 }
                 return false;
             }
+            return false;
         });
 
     }
@@ -388,11 +377,9 @@ public class PlayerFragment extends BaseFragment
 
                 if (first_run) {
 
-                    mHandler.postDelayed(new Runnable() {
-                        public void run() {
-                            getActivity().setTitle(artist);
-                            first_run = false;
-                        }
+                    mHandler.postDelayed(() -> {
+                        getActivity().setTitle(artist);
+                        first_run = false;
                     }, 300);
 
                 }  else {

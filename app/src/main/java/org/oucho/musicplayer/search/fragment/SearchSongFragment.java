@@ -11,14 +11,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.fragments.BaseFragment;
@@ -108,19 +106,16 @@ public class SearchSongFragment extends BaseFragment implements MusiqueKeys {
     }
 
 
-    private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(int position, View view) {
-            switch (view.getId()) {
-                case R.id.item_view:
-                    selectSong(position);
-                    break;
-                case R.id.menu_button:
-                    showMenu(position, view);
-                    break;
-                default:
-                    break;
-            }
+    private final BaseAdapter.OnItemClickListener mOnItemClickListener = (position, view) -> {
+        switch (view.getId()) {
+            case R.id.item_view:
+                selectSong(position);
+                break;
+            case R.id.menu_button:
+                showMenu(position, view);
+                break;
+            default:
+                break;
         }
     };
 
@@ -136,22 +131,18 @@ public class SearchSongFragment extends BaseFragment implements MusiqueKeys {
         final Song song = mSongAdapert.getItem(position);
         inflater.inflate(R.menu.search_song_item, popup.getMenu());
 
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_add_to_queue:
-                        mSearchActivity.addToQueue(song);
-                        return true;
-                    case R.id.action_add_to_playlist:
-                        showPlaylistPicker(song);
-                        return true;
-                    default: //do nothing
-                        break;
-                }
-                return false;
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_add_to_queue:
+                    mSearchActivity.addToQueue(song);
+                    return true;
+                case R.id.action_add_to_playlist:
+                    showPlaylistPicker(song);
+                    return true;
+                default: //do nothing
+                    break;
             }
+            return false;
         });
         popup.show();
     }
@@ -172,12 +163,7 @@ public class SearchSongFragment extends BaseFragment implements MusiqueKeys {
 
     private void showPlaylistPicker(final Song song) {
         PlaylistPickerDialog picker = PlaylistPickerDialog.newInstance();
-        picker.setListener(new PlaylistPickerDialog.OnPlaylistPickedListener() {
-            @Override
-            public void onPlaylistPicked(Playlist playlist) {
-                PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId());
-            }
-        });
+        picker.setListener(playlist -> PlaylistsUtils.addSongToPlaylist(getActivity().getContentResolver(), playlist.getId(), song.getId()));
         picker.show(getChildFragmentManager(), "pick_playlist");
 
     }

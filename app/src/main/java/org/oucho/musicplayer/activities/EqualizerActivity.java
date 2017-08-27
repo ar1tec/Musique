@@ -3,7 +3,6 @@ package org.oucho.musicplayer.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -15,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -78,15 +75,7 @@ public class EqualizerActivity extends AppCompatActivity {
 
             mSwitchButton.setChecked(AudioEffects.areAudioEffectsEnabled());
             mSwitchButton
-                    .setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView,
-                                                     boolean isChecked) {
-                            AudioEffects.setAudioEffectsEnabled(isChecked);
-
-                        }
-                    });
+                    .setOnCheckedChangeListener((buttonView, isChecked) -> AudioEffects.setAudioEffectsEnabled(isChecked));
             mSwitchBound = true;
         }
     }

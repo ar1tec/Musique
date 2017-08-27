@@ -28,7 +28,6 @@ import org.oucho.musicplayer.db.model.Playlist;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,14 +63,10 @@ public class PlaylistPickerDialog extends DialogFragment {
                     list.add(new Playlist(id, name));
                 } while (cursor.moveToNext());
 
-                Collections.sort(list, new Comparator<Playlist>() {
-
-                    @Override
-                    public int compare(Playlist lhs, Playlist rhs) {
-                        Collator c = Collator.getInstance(Locale.getDefault());
-                        c.setStrength(Collator.PRIMARY);
-                        return c.compare(lhs.getName(), rhs.getName());
-                    }
+                Collections.sort(list, (lhs, rhs) -> {
+                    Collator c = Collator.getInstance(Locale.getDefault());
+                    c.setStrength(Collator.PRIMARY);
+                    return c.compare(lhs.getName(), rhs.getName());
                 });
 
             }
@@ -90,27 +85,18 @@ public class PlaylistPickerDialog extends DialogFragment {
         }
     };
 
-    private final OnClickListener mOnClickListener = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.new_playlist:
-                    CreatePlaylistDialog dialog = CreatePlaylistDialog.newInstance();
-                    dialog.setOnPlaylistCreatedListener(new CreatePlaylistDialog.OnPlaylistCreatedListener() {
-                        @Override
-                        public void onPlaylistCreated() {
-                            refresh();
-                        }
-                    });
-                    dialog.show(getChildFragmentManager(), "create_playlist");
-                    break;
-                default: //do nothing
-                    break;
-            }
-
-
+    private final OnClickListener mOnClickListener = v -> {
+        switch (v.getId()) {
+            case R.id.new_playlist:
+                CreatePlaylistDialog dialog = CreatePlaylistDialog.newInstance();
+                dialog.setOnPlaylistCreatedListener(this::refresh);
+                dialog.show(getChildFragmentManager(), "create_playlist");
+                break;
+            default: //do nothing
+                break;
         }
+
+
     };
 
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
