@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_equalizer_margin"
     android:paddingRight="@dimen/activity_equalizer_margin"
     android:paddingTop="@dimen/activity_equalizer_margin"
-    tools:mContext="org.oucho.musicplayer.activities.EqualizerActivity">
+    tools:mContext="org.oucho.musicplayer.equalizer.EqualizerActivity">
 
     <Spinner
         android:id="@+id/presets_spinner"

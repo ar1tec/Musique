@@ -1,9 +1,8 @@
-package org.oucho.musicplayer.activities;
+package org.oucho.musicplayer.equalizer;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -22,7 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.audiofx.AudioEffects;
+import org.oucho.musicplayer.equalizer.AudioEffects;
 import org.oucho.musicplayer.utils.NavigationUtils;
 
 public class EqualizerActivity extends AppCompatActivity {
@@ -224,7 +223,8 @@ public class EqualizerActivity extends AppCompatActivity {
             View v = layout.getChildAt(band);
 
             final TextView freqTextView = v.findViewById(R.id.frequency);
-            final TextView levelTextView = v.findViewById(R.id.level);
+            final TextView levelTextView = v
+                    .findViewById(R.id.level);
             final SeekBar seekBar = v.findViewById(R.id.seek_bar);
 
 
@@ -252,7 +252,7 @@ public class EqualizerActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.equalizer, menu);
         MenuItem item = menu.findItem(R.id.action_switch);
 
-        mSwitchButton = MenuItemCompat.getActionView(item).findViewById(R.id.switch_button);
+        mSwitchButton = item.getActionView().findViewById(R.id.switch_button);
         bindSwitchToEqualizer();
         return true;
     }

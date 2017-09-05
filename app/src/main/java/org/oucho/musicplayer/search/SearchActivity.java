@@ -237,6 +237,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
             String receiveIntent = intent.getAction();
 
+            assert receiveIntent != null;
             if (receiveIntent.equals("search.setTitle")) {
 
                 String titre = intent.getStringExtra("title");
@@ -259,6 +260,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
                     if (view == null) {
                         view = new View(mContext);
                     }
+                    assert imm != null;
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
             }

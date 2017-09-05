@@ -3,11 +3,14 @@ package org.oucho.musicplayer.utils;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
@@ -15,7 +18,10 @@ import android.support.v7.app.NotificationCompat;
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.images.ArtworkCache;
+
+import java.io.IOException;
+
+import static org.oucho.musicplayer.MusiqueKeys.ARTWORK_URI;
 
 public class Notification {
 
@@ -29,7 +35,9 @@ public class Notification {
         timer = onOff;
     }
 
-    public static void updateNotification(@NonNull final PlayerService playerbackService) {
+
+    public static void updateNotification(Context context, @NonNull final PlayerService playerbackService) {
+
 
         if (!PlayerService.hasPlaylist()) {
             removeNotification(playerbackService);
@@ -56,15 +64,13 @@ public class Notification {
         builder.addAction(R.drawable.ic_fast_rewind_white_24dp, "", previousIntent)
                 .addAction(toggleResId, "", togglePlayIntent)
                 .addAction(R.drawable.ic_fast_forward_white_24dp, "", nextIntent)
-
                 .setVisibility(android.app.Notification.VISIBILITY_PUBLIC);
 
 
         Intent intent = new Intent(playerbackService, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendInt = PendingIntent.getActivity(playerbackService, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendInt = PendingIntent.getActivity(playerbackService, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendInt);
 
         if (!timer) {
@@ -80,18 +86,32 @@ public class Notification {
         Resources res = playerbackService.getResources();
 
          @SuppressLint("PrivateResource")
-         int height = (int) res.getDimension(R.dimen.notification_large_icon_height);
+         int height = (int) res.getDimension(R.dimen.art_size);
 
         @SuppressLint("PrivateResource")
-        final int width = (int) res.getDimension(R.dimen.notification_large_icon_width);
+        final int width = (int) res.getDimension(R.dimen.art_size);
 
-        ArtworkCache artworkCache = ArtworkCache.getInstance();
-        Bitmap b = artworkCache.getCachedBitmap(PlayerService.getAlbumId(), width, height);
+        Bitmap b = null;
+
+
+        Uri uri = ContentUris.withAppendedId(ARTWORK_URI, PlayerService.getAlbumId());
+       // Picasso.with(holder.vArtwork.getContext()).load(uri).resize(mThumbWidth, mThumbHeight).into(holder.vArtwork);
+
+        try {
+            ContentResolver contentResolver = context.getContentResolver();
+            b = BitmapHelper.decode(contentResolver.openInputStream(uri), width, height);
+
+        } catch (IOException ignored) {}
+
+
         if (b != null) {
             setBitmapAndBuild(b, playerbackService, builder);
 
         } else {
-            ArtworkCache.getInstance().loadBitmap(PlayerService.getAlbumId(), width, height, bitmap -> setBitmapAndBuild(bitmap, playerbackService, builder));
+
+            // TODO image inexistante
+            //setBitmapAndBuild(bitmap, playerbackService, builder);
+
         }
     }
 
@@ -121,6 +141,7 @@ public class Notification {
                 playerbackService.stopForeground(false);
             }
             NotificationManager notificationManager = (NotificationManager) playerbackService.getSystemService(Context.NOTIFICATION_SERVICE);
+            assert notificationManager != null;
             notificationManager.notify(NOTIFY_ID, notification);
         }
 
@@ -131,6 +152,7 @@ public class Notification {
 
     private static void removeNotification(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        assert notificationManager != null;
         notificationManager.cancel(NOTIFY_ID);
     }
 }

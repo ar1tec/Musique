@@ -7,7 +7,7 @@ import android.util.Log;
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.search.SearchActivity;
-import org.oucho.musicplayer.activities.EqualizerActivity;
+import org.oucho.musicplayer.equalizer.EqualizerActivity;
 
 public class NavigationUtils {
 

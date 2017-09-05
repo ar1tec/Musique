@@ -242,6 +242,7 @@ public class SearchAlbumFragment extends BaseFragment {
 
             String receiveIntent = intent.getAction();
 
+            assert receiveIntent != null;
             if (receiveIntent.equals("search.newkey")) {
 
                 String value = intent.getStringExtra("text");

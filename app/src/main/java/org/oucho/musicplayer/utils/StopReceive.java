@@ -20,6 +20,7 @@ public class StopReceive  extends BroadcastReceiver {
             handler.postDelayed(() -> {
                 NotificationManager notificationManager;
                 notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                assert notificationManager != null;
                 notificationManager.cancel(Notification.NOTIFY_ID);
 
             }, 500);

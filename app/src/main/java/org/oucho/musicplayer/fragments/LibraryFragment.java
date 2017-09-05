@@ -244,6 +244,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 
             String receiveIntent = intent.getAction();
 
+            assert receiveIntent != null;
             if (receiveIntent.equals(INTENT_TOOLBAR_SHADOW)) {
 
                 boolean value = intent.getBooleanExtra("boolean", true);

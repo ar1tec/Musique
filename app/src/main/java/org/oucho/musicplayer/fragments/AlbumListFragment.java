@@ -204,6 +204,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
         Resources res = mContext.getResources();
 
+        assert wm != null;
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);

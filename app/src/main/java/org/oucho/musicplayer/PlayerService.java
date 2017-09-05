@@ -3,6 +3,7 @@ package org.oucho.musicplayer;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -30,10 +31,10 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import org.oucho.musicplayer.audiofx.AudioEffectsReceiver;
+import org.oucho.musicplayer.equalizer.AudioEffectsReceiver;
 import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.images.ArtworkCache;
+import org.oucho.musicplayer.utils.BitmapHelper;
 import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.Permissions;
 
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 
 public class PlayerService extends Service implements MusiqueKeys {
@@ -324,7 +326,7 @@ public class PlayerService extends Service implements MusiqueKeys {
         }
 
         if (PLAYSTATE_CHANGED.equals(what) || META_CHANGED.equals(what)) {
-                Notification.updateNotification(this);
+                Notification.updateNotification(getApplicationContext(), this);
 
             if (isPlaying()) {
                 Intent music = new Intent();
@@ -361,7 +363,16 @@ public class PlayerService extends Service implements MusiqueKeys {
 
         if (what.equals(META_CHANGED)) {
             int largeArtSize = (int) getResources().getDimension(R.dimen.art_size);
-            Bitmap artwork = ArtworkCache.getInstance().getCachedBitmap(getAlbumId(), largeArtSize, largeArtSize);
+            Bitmap artwork = null; //  = ArtworkCache.getInstance().getCachedBitmap(getAlbumId(), largeArtSize, largeArtSize);
+
+            Uri uri = ContentUris.withAppendedId(ARTWORK_URI, getAlbumId());
+
+            try {
+                if (uri != null) {
+                    ContentResolver res = getApplicationContext().getContentResolver();
+                    artwork = BitmapHelper.decode(res.openInputStream(uri), largeArtSize, largeArtSize);
+                }
+            } catch (IOException ignored) {}
 
             MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder()
                     .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
@@ -757,7 +768,7 @@ public class PlayerService extends Service implements MusiqueKeys {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG) && isPlaying()) {
+            if (Objects.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG) && isPlaying()) {
                 boolean plugged = intent.getIntExtra("state", 0) == 1;
                 if (!plugged) {
                     pause();

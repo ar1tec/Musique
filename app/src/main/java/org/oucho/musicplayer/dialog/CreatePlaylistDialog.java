@@ -56,6 +56,7 @@ public class CreatePlaylistDialog extends DialogFragment {
                         });
 
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
 
         return builder.create();

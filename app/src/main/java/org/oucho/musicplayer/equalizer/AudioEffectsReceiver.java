@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.audiofx;
+package org.oucho.musicplayer.equalizer;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

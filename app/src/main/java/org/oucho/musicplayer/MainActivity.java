@@ -52,7 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
-import org.oucho.musicplayer.audiofx.AudioEffects;
+import org.oucho.musicplayer.equalizer.AudioEffects;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.dialog.HelpDialog;
@@ -60,7 +60,6 @@ import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.fragments.PlayerFragment;
 import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
-import org.oucho.musicplayer.images.ArtworkCache;
 import org.oucho.musicplayer.update.CheckUpdate;
 import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
@@ -234,7 +233,6 @@ public class MainActivity extends AppCompatActivity implements
         playbarShadow = (RelativeLayout) findViewById(R.id.playbar_shadow);
 
         PrefUtils.init(this);
-        ArtworkCache.init(this);
         AudioEffects.init(this);
 
         if (savedInstanceState == null) {
@@ -404,6 +402,7 @@ public class MainActivity extends AppCompatActivity implements
                     break;
 
                 case R.id.shuffle0:
+                    assert vibes != null;
                     vibes.vibrate(20);
 
                     boolean shuffle = PlayerService.isShuffleEnabled();
@@ -415,6 +414,7 @@ public class MainActivity extends AppCompatActivity implements
                     break;
 
                 case R.id.repeat0:
+                    assert vibes != null;
                     vibes.vibrate(20);
 
                     int mode = mPlayerService.getNextRepeatMode();
@@ -728,6 +728,7 @@ public class MainActivity extends AppCompatActivity implements
                 return;
             }
 
+            assert receiveIntent != null;
             if (receiveIntent.equals(INTENT_QUEUEVIEW)) {
 
                 mQueueLayout.setVisibility(View.GONE);
@@ -1154,7 +1155,7 @@ public class MainActivity extends AppCompatActivity implements
         timeAfficheur.setVisibility(View.VISIBLE);
 
         Notification.setState(true);
-        Notification.updateNotification(mPlayerService);
+        Notification.updateNotification(mContext, mPlayerService);
 
         showTimeEcran();
 
@@ -1189,7 +1190,7 @@ public class MainActivity extends AppCompatActivity implements
 
         Notification.setState(false);
 
-        Notification.updateNotification(mPlayerService);
+        Notification.updateNotification(mContext, mPlayerService);
     }
 
        /* ********************************
@@ -1238,7 +1239,6 @@ public class MainActivity extends AppCompatActivity implements
         PlayerService.setVolume(1.0f);
 
         killNotif();
-        clearCache();
         finish();
     }
 
@@ -1269,24 +1269,12 @@ public class MainActivity extends AppCompatActivity implements
         mHandler.postDelayed(() -> {
             NotificationManager notificationManager;
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            assert notificationManager != null;
             notificationManager.cancel(Notification.NOTIFY_ID);
 
         }, 500);
     }
 
-
-    /***********************************************************************************************
-     * Purge du cache
-     **********************************************************************************************/
-    private void clearCache() {
-        ArtworkCache.getInstance().clear();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        clearCache();
-    }
 
     /* *********************************************************************************************
     * Gestion des permissions (Android >= 6.0)

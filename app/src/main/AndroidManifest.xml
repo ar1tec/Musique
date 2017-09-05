@@ -38,7 +38,7 @@
         </activity>
 
         <activity
-            android:name=".activities.EqualizerActivity"
+            android:name=".equalizer.EqualizerActivity"
             android:label="@string/equalizer"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
@@ -54,7 +54,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".audiofx.AudioEffectsReceiver"
+            android:name=".equalizer.AudioEffectsReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
