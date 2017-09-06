@@ -892,19 +892,25 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void updateQueue() {
+
         if (mPlayerService == null) {
             return;
         }
 
         List<Song> queue = PlayerService.getQueuePlayList();
-        if (!queue.equals(mQueue)) {
-            mQueue = queue;
-            mQueueAdapter.setQueue(mQueue);
+
+        if ( queue.size() != 0) {
+
+            if (!queue.equals(mQueue)) {
+                mQueue = queue;
+                mQueueAdapter.setQueue(mQueue);
+            }
+
+            mQueueAdapter.notifyDataSetChanged();
+
+            setQueueSelection(PlayerService.getPositionWithinPlayList());
         }
 
-        mQueueAdapter.notifyDataSetChanged();
-
-        setQueueSelection(PlayerService.getPositionWithinPlayList());
     }
 
     private void setQueueSelection(final int position) {
