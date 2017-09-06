@@ -620,11 +620,11 @@ public class PlayerService extends Service implements MusiqueKeys {
 
         mediaPlayer1.reset();
 
-        Uri songUri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mCurrentSong.getId());
-
-        setUri(songUri);
-
         try {
+            Uri songUri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mCurrentSong.getId());
+
+            setUri(songUri);
+
             mediaPlayer1.setDataSource(getApplicationContext(), songUri);
             mediaPlayer1.prepareAsync();
 
