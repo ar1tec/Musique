@@ -125,8 +125,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         public void onLoadFinished(Loader<List<Album>> loader, List<Album> albumList) {
             mAdapter.setData(albumList);
 
-            Log.d(TAG_LOG, "onLoadFinished = " + albumList);
-
+           // Log.d(TAG_LOG, "onLoadFinished = " + albumList);
 
             listeTitre = albumList;
         }
@@ -270,10 +269,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         picker.show(getChildFragmentManager(), "pick_playlist");
 
     }
-
-
-
-
 
 
     private final AlbumEditorDialog.OnEditionSuccessListener mOnEditionSuccessListener = () -> ((MainActivity) getActivity()).refresh();

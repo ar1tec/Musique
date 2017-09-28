@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="app_name">Musique</string>
-
-    <!-- nav header activity main_activity -->
-    <string name="by">Old Geek, 2017</string>
-
     <string name="album">Album</string>
 
     <string name="albums">Albums</string>
@@ -78,55 +73,8 @@
     <string name="title_sort_artist">artiste</string>
     <string name="title_sort_album">album</string>
 
-    <string name="help">Information</string>
-
-    <string name="help_message" tools:ignore="StringFormatCount">
-        \n
-        Le but de ce logiciel et d\'avoir une application minimaliste et la plus simple possible, l\'inverse
-        d\'une \"usine à gaz\", sans pub ni autre parasitage lié.\n
-        \n
-        Toutes les fonctionnalitées sont dépendantes de votre système Android comme la reconnaissance
-        de format de fichier. Si votre système n\'est pas fait pour lire les fichiers de type lossless cette
-        application ne le permettra pas non plus.\n
-        \n
-        Cette application ne gère en rien les fichiers, elle dépend à 100% d\'Android, si des morceaux n\'apparaissent pas
-        c\'est que la base de données Android est corrompu. Il existe des outils qui permettent de réparer cette base.\n
-        \n
-        La modification des tags ne touche pas aux fichiers, elle apporte uniquement un ajout dans la base d\'Android.\n
-        Il en est de même pour la création des playlists, elles sont stockées dans la base de données d\'Android, si
-        vous desinstallez l\'application vos playlists seront toujours en place.\n
-        \n
-    </string>
-
 
     <string name="about">A propos</string>
-
-    <string name="about_message">
-        \n
-        Musique %1$s\n
-        \n
-        Old Geek, 2017\n
-        \n
-        Licence:\n
-        \n
-        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE\n
-                   Version 2, December 2004\n
-        \n
-        2017 Old Geek - dev@null.net\n
-        \n
-        Everyone is permitted to copy and distribute verbatim or modified
-        copies of this license document, and changing it is allowed as long
-        as the name is changed.\n
-        \n
-           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE\n
-        TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION\n
-        \n
-        0. You just DO WHAT THE FUCK YOU WANT TO.\n
-        \n
-        \n
-        Code source: https://github.com/Old-Geek/Musique\n
-        \n
-    </string>
 
     <string name="exit">Quitter</string>
 

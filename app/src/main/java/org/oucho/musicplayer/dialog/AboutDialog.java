@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -22,29 +21,16 @@ public class AboutDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        String title = getString(R.string.about);
-
         AlertDialog.Builder about = new AlertDialog.Builder(getActivity());
 
-        View rootView = getActivity().getLayoutInflater().inflate(R.layout.dialog_main_noshadow, nullParent);
-        Toolbar toolbar = rootView.findViewById(R.id.dialog_toolbar_noshadow);
-        toolbar.setTitle(title);
-        toolbar.setTitleTextColor(0xffffffff);
-
-
+        View dialoglayout = getActivity().getLayoutInflater().inflate(R.layout.dialog_about, nullParent);
         String versionName = BuildConfig.VERSION_NAME;
+        TextView versionView = dialoglayout.findViewById(R.id.version);
+        versionView.setText(versionName);
 
-        String version = getContext().getResources().getString(R.string.about_message, versionName);
-
-
-        final TextView text = rootView.findViewById(R.id.showrules_dialog);
-        text.setText(version);
-
-        about.setView(rootView);
-
+        about.setView(dialoglayout);
 
         return about.create();
     }
-
 
 }

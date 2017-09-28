@@ -38,9 +38,7 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
     @Override
     public SongViewHolder onCreateViewHolderImpl(ViewGroup parent) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.fragment_album_song_list_item, parent, false);
-
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_album_song_list_item, parent, false);
         return new SongViewHolder(itemView);
     }
 
@@ -90,7 +88,6 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
         return mSongList.get(position);
     }
 
-
     @Override
     public int getItemCountImpl() {
         return mSongList.size();
@@ -100,7 +97,6 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
     public int getItemViewTypeImpl() {
         return 0;
     }
-
 
     class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
@@ -128,7 +124,6 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
             itemView.setOnLongClickListener(this);
 
         }
-
 
         @Override
         public void onClick(View v) {

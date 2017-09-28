@@ -269,8 +269,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         Uri uri = ContentUris.withAppendedId(ARTWORK_URI, mAlbum.getId());
         Picasso.with(mContext).load(uri).resize(mArtworkWidth, mArtworkHeight).into(artworkView);
 
-       // ArtworkCache.getInstance().loadBitmap(mAlbum.getId(), artworkView, mArtworkWidth, mArtworkHeight);
-
         TextView titreAlbum = rootView.findViewById(R.id.line1);
 
         TextView artiste = rootView.findViewById(R.id.line2);

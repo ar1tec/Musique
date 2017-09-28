@@ -55,7 +55,6 @@ import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.equalizer.AudioEffects;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.AboutDialog;
-import org.oucho.musicplayer.dialog.HelpDialog;
 import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.fragments.PlayerFragment;
@@ -319,10 +318,6 @@ public class MainActivity extends AppCompatActivity implements
                 showAboutDialog();
                 break;
 
-            case R.id.nav_help:
-                showHelpDialog();
-                break;
-
             case R.id.nav_exit:
                 exit();
                 break;
@@ -342,13 +337,6 @@ public class MainActivity extends AppCompatActivity implements
         AboutDialog dialog = new AboutDialog();
         dialog.show(getSupportFragmentManager(), "about");
     }
-
-    private void showHelpDialog(){
-        HelpDialog dialog = new HelpDialog();
-        dialog.show(getSupportFragmentManager(), "help");
-    }
-
-
 
     /* *********************************************************************************************
      * Click listener activity_main layout

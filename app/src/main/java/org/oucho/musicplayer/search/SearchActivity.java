@@ -462,8 +462,6 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
     };
 
 
-
-
     /******************************************************************************
      * Titre
      ******************************************************************************/
@@ -473,16 +471,10 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
         final int couleurTitre = ContextCompat.getColor(mContext, R.color.colorAccent);
 
         if (android.os.Build.VERSION.SDK_INT >= 24) {
-            setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>"
-                    + titre
-                    + "</font>", Html.FROM_HTML_MODE_LEGACY));
-
+            setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>" + titre + "</font>", Html.FROM_HTML_MODE_LEGACY));
         } else {
-
             //noinspection deprecation
-            setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>"
-                    + titre
-                    + "</font>"));
+            setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>" + titre + "</font>"));
         }
     }
 
