@@ -1,7 +1,6 @@
 package org.oucho.musicplayer.update;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -38,8 +37,8 @@ class AppUpdate {
         return this;
     }
 
-    AppUpdate setUpdateXML(@NonNull String xmlUrl) {
-        this.xmlUrl = xmlUrl;
+    AppUpdate setUpdateXML() {
+        this.xmlUrl = CheckUpdate.updateURL;
         return this;
     }
 

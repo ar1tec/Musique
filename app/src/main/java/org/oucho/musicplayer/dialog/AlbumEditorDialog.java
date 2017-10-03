@@ -3,8 +3,6 @@ package org.oucho.musicplayer.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,8 +14,8 @@ import android.widget.Toast;
 
 import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.utils.TagEdit;
 import org.oucho.musicplayer.db.model.Album;
+import org.oucho.musicplayer.utils.TagEdit;
 
 import java.util.HashMap;
 
