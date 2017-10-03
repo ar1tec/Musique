@@ -2,6 +2,7 @@ package org.oucho.musicplayer.widgets.fastscroll;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
@@ -227,6 +228,7 @@ public class FastScroller extends LinearLayout {
         setVisibility(enabled ? VISIBLE : GONE);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 

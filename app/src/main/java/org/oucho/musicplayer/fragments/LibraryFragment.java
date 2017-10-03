@@ -51,9 +51,9 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
     private boolean pagerVisible = false;
 
 
-    private static LockableViewPager mViewPager;
+    private LockableViewPager mViewPager;
 
-    private static void setmViewPager(LockableViewPager value) {
+    private void setmViewPager(LockableViewPager value) {
         mViewPager = value;
     }
 
@@ -81,6 +81,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
         if (!receiver) {
             IntentFilter filter = new IntentFilter();
             filter.addAction(INTENT_TOOLBAR_SHADOW);
+            filter.addAction(INTENT_BACK);
 
             mContext.registerReceiver(mServiceListener, filter);
             receiver = true;
@@ -161,7 +162,7 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
     };
 
 
-    public static void backToPrevious() {
+    private void backToPrevious() {
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
     }
 
@@ -254,6 +255,10 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 
                 if (!value)
                     shadow.setElevation(0);
+            }
+
+            if (receiveIntent.equals(INTENT_BACK)) {
+                backToPrevious();
             }
         }
     };

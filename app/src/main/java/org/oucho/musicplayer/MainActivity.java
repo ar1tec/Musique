@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private final VolumeTimer volume = new VolumeTimer();
 
-    private static Menu menu;
+    private Menu menu;
     private static ScheduledFuture mTask;
     private static PlayerService mPlayerService;
 
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         mQueueLayout = findViewById(R.id.queue_layout);
-        mQueueView = (DragRecyclerView) findViewById(R.id.queue_view);
+        mQueueView = findViewById(R.id.queue_view);
         mQueueView.setLayoutManager(new CustomLayoutManager(this));
 
         mQueueAdapter = new QueueAdapter(mContext, mQueueView);
@@ -202,34 +202,34 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.play_pause_toggle).setOnClickListener(mOnClickListener);
         findViewById(R.id.play_pause_toggle0).setOnClickListener(mOnClickListener);
 
-        layoutA = (RelativeLayout) findViewById(R.id.track_info);
-        layoutB = (RelativeLayout) findViewById(R.id.track_info0);
+        layoutA = findViewById(R.id.track_info);
+        layoutB = findViewById(R.id.track_info0);
 
-        previousButton = (ImageButton) findViewById(R.id.quick_prev);
-        forwardButton = (ImageButton) findViewById(R.id.quick_next);
-        previousButton0 = (ImageButton) findViewById(R.id.quick_prev0);
-        forwardButton0 = (ImageButton) findViewById(R.id.quick_next0);
+        previousButton = findViewById(R.id.quick_prev);
+        forwardButton = findViewById(R.id.quick_next);
+        previousButton0 = findViewById(R.id.quick_prev0);
+        forwardButton0 = findViewById(R.id.quick_next0);
 
-        timeAfficheur = ((TextView) findViewById(R.id.zZz));
+        timeAfficheur = findViewById(R.id.zZz);
 
-        queueBlurView = (BlurView) findViewById(R.id.queueBlurView);
+        queueBlurView = findViewById(R.id.queueBlurView);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mProgressBar = findViewById(R.id.progress_bar);
 
-        shuffleBar = (ImageView) findViewById(R.id.bar0_shuffle);
-        repeatBar = (ImageView) findViewById(R.id.bar0_repeat);
-        repeatBar1 = (ImageView) findViewById(R.id.bar0_repeat1);
+        shuffleBar = findViewById(R.id.bar0_shuffle);
+        repeatBar = findViewById(R.id.bar0_repeat);
+        repeatBar1 = findViewById(R.id.bar0_repeat1);
 
         radioIsInstalled = checkApp();
 
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mNavigationView = findViewById(R.id.navigation_view);
         mNavigationView.inflateMenu(R.menu.navigation);
         mNavigationView.setNavigationItemSelectedListener(this);
 
         setNavigationMenu();
 
-        playbarShadow = (RelativeLayout) findViewById(R.id.playbar_shadow);
+        playbarShadow = findViewById(R.id.playbar_shadow);
 
         PrefUtils.init(this);
         AudioEffects.init(this);
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements
     private void setBlurView() {
         final float radius = 5f;
 
-        final ViewGroup rootView = (ViewGroup) findViewById(R.id.drawer_layout);
+        final ViewGroup rootView = findViewById(R.id.drawer_layout);
 
         queueBlurView.setupWith(rootView)
                 .blurAlgorithm(new RenderScriptBlur(mContext, true))
@@ -459,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void updateShuffleButton() {
         boolean shuffle = PlayerService.isShuffleEnabled();
-        ImageView shuffleButton = (ImageView) findViewById(R.id.shuffle0);
+        ImageView shuffleButton = findViewById(R.id.shuffle0);
 
         if (shuffle) {
             assert shuffleButton != null;
@@ -474,7 +474,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void updateRepeatButton() {
-        ImageView repeatButton = (ImageView) findViewById(R.id.repeat0);
+        ImageView repeatButton = findViewById(R.id.repeat0);
 
         int mode = PlayerService.getRepeatMode();
 
@@ -507,7 +507,7 @@ public class MainActivity extends AppCompatActivity implements
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_activity, menu);
 
-        setMainMenu(menu);
+        this.menu = menu;
 
         return true;
     }
@@ -627,6 +627,7 @@ public class MainActivity extends AppCompatActivity implements
             filter.addAction(INTENT_QUIT);
             filter.addAction(INTENT_QUEUEVIEW);
             filter.addAction(INTENT_LAYOUTVIEW);
+            filter.addAction(INTENT_SET_MENU);
 
 
             registerReceiver(mServiceListener, filter);
@@ -828,6 +829,12 @@ public class MainActivity extends AppCompatActivity implements
             if (receiveIntent.equals(INTENT_QUIT) && "exit".equals(intent.getStringExtra("halt")))
                 exit();
 
+            if (receiveIntent.equals(INTENT_SET_MENU)) {
+                boolean value = intent.getBooleanExtra("menu", false);
+
+                setMenu(value);
+            }
+
         }
     };
 
@@ -920,8 +927,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setButtonDrawable() {
         if (mPlayerService != null) {
-            ImageButton quickButton = (ImageButton) findViewById(R.id.play_pause_toggle);
-            ImageButton quickButton0 = (ImageButton) findViewById(R.id.play_pause_toggle0);
+            ImageButton quickButton = findViewById(R.id.play_pause_toggle);
+            ImageButton quickButton0 = findViewById(R.id.play_pause_toggle0);
 
             if (PlayerService.isPlaying()) {
                 assert quickButton != null;
@@ -1243,7 +1250,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(drawer_layout);
+        DrawerLayout drawer = findViewById(drawer_layout);
         assert drawer != null;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -1339,7 +1346,7 @@ public class MainActivity extends AppCompatActivity implements
         return queueLayout;
     }
 
-    public static void setMenu(Boolean value) {
+    private void setMenu(Boolean value) {
         menu.setGroupVisible(R.id.main_menu_group, value);
     }
 
@@ -1369,10 +1376,6 @@ public class MainActivity extends AppCompatActivity implements
     }
     public static void setChercheActivity(Boolean value) {
         chercheActivity = value;
-    }
-
-    private static void setMainMenu(Menu value) {
-        menu = value;
     }
 
 }

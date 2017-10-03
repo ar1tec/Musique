@@ -18,6 +18,11 @@ public interface MusiqueKeys {
     String INTENT_LAYOUTVIEW = "org.oucho.musicplayer.LAYOUTVIEW";
     String INTENT_TOOLBAR_SHADOW = "org.oucho.musicplayer.SHADOW";
 
+    String INTENT_BACK = "org.oucho.musicplayer.LOCK_ViewPager";
+
+    String INTENT_SET_MENU = "org.oucho.musicplayer.SET_MENU";
+
+
     String ACTION_NEXT = "org.oucho.musicplayer.ACTION_NEXT";
     String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";
     String ACTION_PAUSE = "org.oucho.musicplayer.ACTION_PAUSE";

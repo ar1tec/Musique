@@ -341,8 +341,15 @@ public class PlayerFragment extends BaseFragment
                         mContext.sendBroadcast(shadow);
                     }
 
-                    if (!MainActivity.getPlaylistFragmentState() && !MainActivity.getAlbumFragmentState())
-                        MainActivity.setMenu(true);
+                    if (!MainActivity.getPlaylistFragmentState() && !MainActivity.getAlbumFragmentState()) {
+
+                        Intent menu = new Intent();
+                        menu.setAction(INTENT_SET_MENU);
+                        menu.putExtra("boolean", true);
+                        mContext.sendBroadcast(menu);
+
+                       // MainActivity.setMenu(true);
+                    }
 
                     return true;
                 }

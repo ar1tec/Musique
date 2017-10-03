@@ -49,9 +49,9 @@ import static org.oucho.musicplayer.MusiqueKeys.FILTER;
 public class SearchActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
 
-    private static SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private static ActionBar actionBar;
+    private ActionBar actionBar;
 
     private String mTabArtists = "";
     private static String mTabAlbums = "";
@@ -65,7 +65,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
     private FragmentManager mFragmentManager;
 
-    private static PlayerService mPlayerService;
+    private PlayerService mPlayerService;
 
 
     @Override
@@ -80,15 +80,15 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
             getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager viewPager = findViewById(R.id.container);
         viewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
 
@@ -117,7 +117,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
         return textNew;
     }
 
-    public static void setAlbumTab(int value) {
+    private void setAlbumTab(int value) {
 
         mTabAlbums = " (" + value + ')';
         if (mTabAlbums.equals(" (0)")) {
@@ -169,18 +169,13 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
         }
     }
 
-
-    private static void setmPlayerService(PlayerService value) {
-        mPlayerService = value;
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
 
 
         if (mServiceBound) {
-            setmPlayerService(null);
+            mPlayerService = null;
 
             unbindService(mServiceConnection);
             mServiceBound = false;
@@ -208,6 +203,8 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
 
             filter.addAction("search.setTitle");
             filter.addAction("search.setTabLayout");
+            filter.addAction("search.setAlbumTab");
+
 
             mContext.registerReceiver(mSearchListener, filter);
             receiver = true;
@@ -263,6 +260,13 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
                     assert imm != null;
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
+            }
+
+
+            if (receiveIntent.equals("search.setAlbumTab")) {
+
+                int tab = intent.getIntExtra("setAlbumTab", 0);
+                setAlbumTab(tab);
             }
         }
     };

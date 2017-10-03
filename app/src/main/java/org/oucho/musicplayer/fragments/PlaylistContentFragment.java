@@ -41,6 +41,7 @@ import java.util.List;
 
 import static org.oucho.musicplayer.MusiqueKeys.ARTWORK_URI;
 import static org.oucho.musicplayer.MusiqueKeys.INTENT_QUEUEVIEW;
+import static org.oucho.musicplayer.MusiqueKeys.INTENT_SET_MENU;
 
 
 public class PlaylistContentFragment extends BaseFragment {
@@ -71,7 +72,12 @@ public class PlaylistContentFragment extends BaseFragment {
             mSongList = new ArrayList<>(data);
             mAdapter.notifyDataSetChanged();
 
-            MainActivity.setMenu(false);
+            Intent menu = new Intent();
+            menu.setAction(INTENT_SET_MENU);
+            menu.putExtra("boolean", false);
+            getContext().sendBroadcast(menu);
+
+            //MainActivity.setMenu(false);
 
 
         }

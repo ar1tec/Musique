@@ -100,7 +100,7 @@ public class EqualizerActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item,
                 AudioEffects.getEqualizerPresets(this));
 
-        mSpinner = (Spinner) findViewById(R.id.presets_spinner);
+        mSpinner = findViewById(R.id.presets_spinner);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -127,7 +127,7 @@ public class EqualizerActivity extends AppCompatActivity {
     }
 
     private void initBassBoost() {
-        SeekBar bassBoost = (SeekBar) findViewById(R.id.bassboost_slider);
+        SeekBar bassBoost = findViewById(R.id.bassboost_slider);
         assert bassBoost != null;
         bassBoost.setMax(AudioEffects.BASSBOOST_MAX_STRENGTH);
         bassBoost.setProgress(AudioEffects.getBassBoostStrength());
@@ -156,7 +156,7 @@ public class EqualizerActivity extends AppCompatActivity {
     }
 
     private void initSeekBars() {
-            ViewGroup layout = (ViewGroup) findViewById(R.id.equalizer_layout);
+            ViewGroup layout = findViewById(R.id.equalizer_layout);
 
             final short[] range = AudioEffects.getBandLevelRange();
 
@@ -211,7 +211,7 @@ public class EqualizerActivity extends AppCompatActivity {
     }
 
     private void updateSeekBars() {
-        ViewGroup layout = (ViewGroup) findViewById(R.id.equalizer_layout);
+        ViewGroup layout = findViewById(R.id.equalizer_layout);
 
         final short[] range = AudioEffects.getBandLevelRange();
 

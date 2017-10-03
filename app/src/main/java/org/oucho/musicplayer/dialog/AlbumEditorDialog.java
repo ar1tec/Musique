@@ -2,7 +2,6 @@ package org.oucho.musicplayer.dialog;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.utils.TagEdit;
 import org.oucho.musicplayer.db.model.Album;
@@ -31,12 +31,12 @@ public class AlbumEditorDialog extends DialogFragment {
     private static final String ARG_YEAR = "year";
     private static final String ARG_TRACK_COUNT = "track_count";
 
-    private Album mAlbum;
+    private static Album mAlbum;
 
     private EditText mAlbumEditText;
     private EditText mArtistEditText;
     private EditText mYearEditText;
-    private OnEditionSuccessListener mListener;
+    private static OnEditionSuccessListener mListener;
 
     public static AlbumEditorDialog newInstance(Album album) {
         AlbumEditorDialog fragment = new AlbumEditorDialog();
@@ -75,8 +75,6 @@ public class AlbumEditorDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final Context context = getContext();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.edit_tags);
 
@@ -93,55 +91,67 @@ public class AlbumEditorDialog extends DialogFragment {
         mYearEditText.setText(String.valueOf(mAlbum.getYear()));
 
 
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
 
-                final Activity activity = getActivity();
-                dismiss();
+            dismiss();
 
-                new AsyncTask<Object,Object,Boolean>(){
+            String list[] = {mAlbumEditText.getText().toString(), mArtistEditText.getText().toString(), mYearEditText.getText().toString()};
 
-                    @Override
-                    protected Boolean doInBackground(Object... params) {
-                        return saveTags(activity);
-                    }
-
-                    @Override
-                    protected void onPostExecute(Boolean b) {
-                        super.onPostExecute(b);
-                        if (b) {
-                            if(mListener != null) {
-                                mListener.onEditionSuccess();
-                            }
-                        } else {
-                            Toast.makeText(context, R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }.execute();
+            new tag(list).execute();
 
 
-            }
         }).setNegativeButton(android.R.string.cancel, (dialog, which) -> dismiss());
 
 
         return builder.create();
     }
 
-    private boolean saveTags(Context context) {
+    private static class tag extends AsyncTask<Object,Object,Boolean> {
+
+        final String album;
+        final String artist;
+        final String year;
+
+        tag(String[] value) {
+            super();
+
+            this.album = value[0];
+            this.artist = value[1];
+            this.year = value[2];
+        }
+
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            return saveTags(album, artist, year);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean b) {
+            super.onPostExecute(b);
+            if (b) {
+                if(mListener != null) {
+                    mListener.onEditionSuccess();
+                }
+            } else {
+                Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+    private static boolean saveTags(String album, String artist, String year) {
 
         HashMap<String,String> data = new HashMap<>();
 
-        data.put(TagEdit.ALBUM_NAME, mAlbumEditText.getText().toString());
-        data.put(TagEdit.ARTIST_NAME, mArtistEditText.getText().toString());
-        data.put(TagEdit.YEAR, mYearEditText.getText().toString());
+        data.put(TagEdit.ALBUM_NAME, album);
+        data.put(TagEdit.ARTIST_NAME, artist);
+        data.put(TagEdit.YEAR, year);
 
-        return TagEdit.editAlbumData(context, mAlbum, data);
+        return TagEdit.editAlbumData(MusiqueApplication.getInstance(), mAlbum, data);
     }
 
 
-    public void setOnEditionSuccessListener(OnEditionSuccessListener listener)
-    {
+    public void setOnEditionSuccessListener(OnEditionSuccessListener listener) {
         mListener = listener;
     }
 

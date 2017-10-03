@@ -38,7 +38,6 @@ class AppUpdate {
         return this;
     }
 
-    @SuppressWarnings("SameParameterValue")
     AppUpdate setUpdateXML(@NonNull String xmlUrl) {
         this.xmlUrl = xmlUrl;
         return this;
@@ -55,11 +54,9 @@ class AppUpdate {
         return this;
     }
 
-    /**
-     * Execute AppUpdate in background.
-     */
+
     public void start() {
-        CheckAsync.LatestAppVersion latestAppVersion = new CheckAsync.LatestAppVersion(context, xmlUrl, new LibraryListener() {
+        CheckAsync.LatestAppVersion latestAppVersion = new CheckAsync.LatestAppVersion(xmlUrl, new LibraryListener() {
             @Override
             public void onSuccess(Update update) {
                 if (UtilsLibrary.isUpdateAvailable(UtilsLibrary.getAppInstalledVersion(context), update.getLatestVersion())) {

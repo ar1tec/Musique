@@ -36,11 +36,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import static org.oucho.musicplayer.MusiqueKeys.INTENT_BACK;
 import static org.oucho.musicplayer.MusiqueKeys.INTENT_QUEUEVIEW;
 
 public class PlaylistListFragment extends BaseFragment {
 
-    private Context mCntext;
+    private Context mContext;
 
     private static final String[] sProjection = {
             MediaStore.Audio.Playlists._ID,
@@ -101,7 +102,7 @@ public class PlaylistListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mCntext = getContext();
+        mContext = getContext();
     }
 
     @Override
@@ -144,7 +145,7 @@ public class PlaylistListFragment extends BaseFragment {
 
                     Intent intent = new Intent();
                     intent.setAction(INTENT_QUEUEVIEW);
-                    mCntext.sendBroadcast(intent);
+                    mContext.sendBroadcast(intent);
 
                 } else if (MainActivity.getPlaylistFragmentState()) {
 
@@ -158,7 +159,12 @@ public class PlaylistListFragment extends BaseFragment {
                     ft.commit();
 
                 } else {
-                    LibraryFragment.backToPrevious();
+
+                    Intent backToPrevious = new Intent();
+                    backToPrevious.setAction(INTENT_BACK);
+                    mContext.sendBroadcast(backToPrevious);
+
+                   // LibraryFragment.backToPrevious();
                 }
 
                 return true;
@@ -220,7 +226,7 @@ public class PlaylistListFragment extends BaseFragment {
         super.setUserVisibleHint(visible);
 
         if (visible || isResumed()){
-            getActivity().setTitle(mCntext.getString(R.string.playlists));
+            getActivity().setTitle(mContext.getString(R.string.playlists));
 
             MainActivity.setViewID(R.id.fragment_playlist_list);
 

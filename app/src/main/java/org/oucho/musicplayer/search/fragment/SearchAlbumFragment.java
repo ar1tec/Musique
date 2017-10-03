@@ -80,10 +80,20 @@ public class SearchAlbumFragment extends BaseFragment {
             mAdapterAlbum.setData(data);
 
             if (SearchActivity.getNewText().equals("")) {
-                SearchActivity.setAlbumTab(0);
-            } else {
-                SearchActivity.setAlbumTab(data.size());
+                //SearchActivity.setAlbumTab(0);
 
+                Intent setTab = new Intent();
+                setTab.setAction("search.setAlbumTab");
+                setTab.putExtra("setAlbumTab", 0);
+                getContext().sendBroadcast(setTab);
+
+            } else {
+                //SearchActivity.setAlbumTab(data.size());
+
+                Intent setTab = new Intent();
+                setTab.setAction("search.setAlbumTab");
+                setTab.putExtra("setAlbumTab", data.size());
+                getContext().sendBroadcast(setTab);
             }
 
             if (data.size() == 0) {

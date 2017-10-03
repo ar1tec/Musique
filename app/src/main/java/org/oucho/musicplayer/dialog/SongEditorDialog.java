@@ -1,9 +1,7 @@
 package org.oucho.musicplayer.dialog;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.utils.TagEdit;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Song;
@@ -33,16 +32,14 @@ public class SongEditorDialog extends DialogFragment {
     private static final String ARG_YEAR = "year";
 
 
-    private Song mSong;
+    private static Song mSong;
 
     private EditText mTitleEditText;
     private EditText mArtistEditText;
     private EditText mAlbumEditText;
     private EditText mTrackEditText;
     private EditText mGenreEditText;
-    private OnTagsEditionSuccessListener mListener;
-
-    private Context context;
+    private static OnTagsEditionSuccessListener mListener;
 
     public static SongEditorDialog newInstance(Song song) {
         SongEditorDialog fragment = new SongEditorDialog();
@@ -61,8 +58,6 @@ public class SongEditorDialog extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-
-        context = getContext();
 
         if (args != null) {
 
@@ -104,68 +99,88 @@ public class SongEditorDialog extends DialogFragment {
         mGenreEditText.setText(mSong.getGenre());
 
 
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
 
-                final Activity activity = getActivity();
-                dismiss();
+            dismiss();
 
-                new AsyncTask<Object,Object,Boolean>(){
+            String list[] = {
+                    mTitleEditText.getText().toString(),
+                    mArtistEditText.getText().toString(),
+                    mAlbumEditText.getText().toString(),
+                    mTrackEditText.getText().toString(),
+                    mGenreEditText.getText().toString()
+            };
 
-                    @Override
-                    protected Boolean doInBackground(Object... params) {
-                        return saveTags(activity);
-                    }
-
-                    @Override
-                    protected void onPostExecute(Boolean b) {
-                        super.onPostExecute(b);
-                        if (b) {
-                            if(mListener != null) {
-                                mListener.onTagsEditionSuccess();
-                            }
-                        }
-                        else {
-                            Toast.makeText(context,R.string.tags_edition_failed,Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                }.execute();
+            new tag(list).execute();
 
 
-            }
         }).setNegativeButton(android.R.string.cancel, (dialog, which) -> dismiss());
 
 
         return builder.create();
     }
 
-    private boolean saveTags(Context context) {
+    private static class tag extends AsyncTask<Object,Object,Boolean> {
 
+        final String title;
+        final String artist;
+        final String album;
+        final String track;
+        final String genre;
 
-        HashMap<String,String> tags = new HashMap<>();
+        tag(String[] value) {
+            super();
 
-        tags.put(TagEdit.TITLE, mTitleEditText.getText().toString());
-        tags.put(TagEdit.ARTIST, mArtistEditText.getText().toString());
-        tags.put(TagEdit.ALBUM, mAlbumEditText.getText().toString());
-        tags.put(TagEdit.TRACK, mTrackEditText.getText().toString());
-        tags.put(TagEdit.GENRE, mGenreEditText.getText().toString());
+            this.title = value[0];
+            this.artist = value[1];
+            this.album = value[2];
+            this.track = value[1];
+            this.genre = value[2];
+        }
 
-        return TagEdit.editSongTags(context, mSong, tags);
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            return saveTags(title, artist, album, track, genre);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean b) {
+            super.onPostExecute(b);
+            if (b) {
+                if(mListener != null) {
+                    mListener.onTagsEditionSuccess();
+                }
+            }
+            else {
+                Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_failed,Toast.LENGTH_SHORT).show();
+
+            }
+        }
 
     }
 
 
-    public void setOnTagsEditionSuccessListener(OnTagsEditionSuccessListener listener)
-    {
+    private static boolean saveTags(String title, String artist, String album, String track, String genre) {
+
+        HashMap<String,String> tags = new HashMap<>();
+
+        tags.put(TagEdit.TITLE, title);
+        tags.put(TagEdit.ARTIST, artist);
+        tags.put(TagEdit.ALBUM, album);
+        tags.put(TagEdit.TRACK, track);
+        tags.put(TagEdit.GENRE, genre);
+
+        return TagEdit.editSongTags(MusiqueApplication.getInstance(), mSong, tags);
+
+    }
+
+
+    public void setOnTagsEditionSuccessListener(OnTagsEditionSuccessListener listener) {
         mListener = listener;
     }
 
 
     public interface OnTagsEditionSuccessListener {
-
-
         void onTagsEditionSuccess();
     }
 

@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.widgets;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -23,6 +24,7 @@ public class LockableViewPager extends ViewPager {
         swipeLocked = value;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return !swipeLocked && super.onTouchEvent(event);
