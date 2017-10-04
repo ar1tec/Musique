@@ -249,8 +249,6 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
                     Intent backToPrevious = new Intent();
                     backToPrevious.setAction(INTENT_BACK);
                     mContext.sendBroadcast(backToPrevious);
-
-                    // LibraryFragment.backToPrevious();
                 }
 
                 return true;
