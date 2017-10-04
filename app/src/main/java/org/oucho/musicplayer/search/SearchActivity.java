@@ -41,6 +41,7 @@ import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.search.fragment.SearchAlbumFragment;
 import org.oucho.musicplayer.search.fragment.SearchArtistFragment;
 import org.oucho.musicplayer.search.fragment.SearchSongFragment;
+import org.oucho.musicplayer.widgets.LockableViewPager;
 
 import java.util.List;
 
@@ -315,6 +316,7 @@ public class SearchActivity extends AppCompatActivity implements FragmentManager
         } else {
 
             MainActivity.setChercheActivity(false);
+            LockableViewPager.setSwipeLocked(false);
             finish();
         }
     }
