@@ -395,13 +395,8 @@ public class MainActivity extends AppCompatActivity implements
                     vibes.vibrate(20);
 
                     boolean shuffle = PlayerService.isShuffleEnabled();
-                    Log.d(TAG, "shuffle = " + shuffle);
-
-                    mPlayerService.setShuffleEnabled(!shuffle);
-                    Log.d(TAG, "setshuffle = " + !shuffle);
-
+                    mPlayerService.shuffleOnOff(!shuffle);
                     updateShuffleButton();
-
                     updateQueue();
                     mPlayerService.notifyChange(QUEUE_CHANGED);
                     break;
@@ -413,15 +408,12 @@ public class MainActivity extends AppCompatActivity implements
                     int mode = mPlayerService.getNextRepeatMode();
                     mPlayerService.setRepeatMode(mode);
                     updateRepeatButton();
-
                     updateQueue();
                     mPlayerService.notifyChange(QUEUE_CHANGED);
                     break;
 
                 case R.id.track_info:
-
                     goPlayer();
-
                     break;
 
                 default:
@@ -495,12 +487,7 @@ public class MainActivity extends AppCompatActivity implements
             repeatBar.setVisibility(View.VISIBLE);
             repeatBar1.setVisibility(View.GONE);
 
-        } /*else if (mode == PlayerService.REPEAT_CURRENT) {
-            assert repeatButton != null;
-            repeatButton.setImageResource(R.drawable.ic_repeat_one_grey_600_24dp);
-            repeatBar.setVisibility(View.GONE);
-            repeatBar1.setVisibility(View.VISIBLE);
-        }*/
+        }
     }
 
     /* *********************************************************************************************

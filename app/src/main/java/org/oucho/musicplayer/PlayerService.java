@@ -537,7 +537,7 @@ public class PlayerService extends Service implements MusiqueKeys {
     }
 
 
-    public void setShuffleEnabled(boolean value) {
+    public void shuffleOnOff(boolean value) {
 
         setShuffle(value);
 
