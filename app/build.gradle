@@ -3,8 +3,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
-
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "org.oucho.musicplayer"
@@ -13,7 +12,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 35
-        versionName "1.16.4"
+        versionName "1.16.5"
         setProperty("archivesBaseName", "Musique_$versionName")
     }
 
@@ -25,10 +24,10 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
-
         }
 
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

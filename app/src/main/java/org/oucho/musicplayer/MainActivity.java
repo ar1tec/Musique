@@ -395,7 +395,11 @@ public class MainActivity extends AppCompatActivity implements
                     vibes.vibrate(20);
 
                     boolean shuffle = PlayerService.isShuffleEnabled();
+                    Log.d(TAG, "shuffle = " + shuffle);
+
                     mPlayerService.setShuffleEnabled(!shuffle);
+                    Log.d(TAG, "setshuffle = " + !shuffle);
+
                     updateShuffleButton();
 
                     updateQueue();

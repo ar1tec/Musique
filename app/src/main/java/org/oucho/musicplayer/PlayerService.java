@@ -537,25 +537,22 @@ public class PlayerService extends Service implements MusiqueKeys {
     }
 
 
-    public void setShuffleEnabled(boolean enable) {
+    public void setShuffleEnabled(boolean value) {
 
-        if (mShuffle != enable) {
+        setShuffle(value);
 
-            setShuffle(true);
-
-            if (enable) {
-                shuffle();
-            } else {
-                mQueuePlayList.clear();
-                mQueuePlayList.addAll(mOriginalSongList);
-            }
-
-            //on met à jour la position
-            updateCurrentPosition();
-            notifyChange(ORDER_CHANGED);
-            Log.i(TAG_LOG, "setShuffleEnabled");
-
+        if (value) {
+            shuffle();
+        } else {
+            mQueuePlayList.clear();
+            mQueuePlayList.addAll(mOriginalSongList);
         }
+
+        //on met à jour la position
+        updateCurrentPosition();
+        notifyChange(ORDER_CHANGED);
+        Log.i(TAG_LOG, "setShuffleEnabled");
+
     }
 
 
