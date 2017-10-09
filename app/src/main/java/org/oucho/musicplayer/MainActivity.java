@@ -68,11 +68,11 @@ import org.oucho.musicplayer.utils.Notification;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.utils.VolumeTimer;
-import org.oucho.musicplayer.widgets.CustomSwipe;
-import org.oucho.musicplayer.widgets.DragRecyclerView;
-import org.oucho.musicplayer.widgets.ProgressBar;
-import org.oucho.musicplayer.widgets.blurview.BlurView;
-import org.oucho.musicplayer.widgets.blurview.RenderScriptBlur;
+import org.oucho.musicplayer.tools.CustomSwipe;
+import org.oucho.musicplayer.tools.DragRecyclerView;
+import org.oucho.musicplayer.tools.ProgressBar;
+import org.oucho.musicplayer.tools.blurview.BlurView;
+import org.oucho.musicplayer.tools.blurview.RenderScriptBlur;
 
 import java.io.File;
 import java.util.List;
@@ -862,7 +862,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-
     private void updateAll() {
         if (mPlayerService != null) {
 
@@ -924,13 +923,13 @@ public class MainActivity extends AppCompatActivity implements
 
             if (PlayerService.isPlaying()) {
                 assert quickButton != null;
-                quickButton.setImageResource(R.drawable.ic_pause_circle_filled_grey_600_48dp);
-                quickButton0.setImageResource(R.drawable.ic_pause_circle_filled_grey_600_48dp);
+                quickButton.setImageResource(R.drawable.ic_pause_circle_filled_amber_a700_48dp);
+                quickButton0.setImageResource(R.drawable.ic_pause_circle_filled_amber_a700_48dp);
 
             } else {
                 assert quickButton != null;
-                quickButton.setImageResource(R.drawable.ic_play_circle_filled_grey_600_48dp);
-                quickButton0.setImageResource(R.drawable.ic_play_circle_filled_grey_600_48dp);
+                quickButton.setImageResource(R.drawable.ic_play_circle_filled_amber_a700_48dp);
+                quickButton0.setImageResource(R.drawable.ic_play_circle_filled_amber_a700_48dp);
             }
         }
     }

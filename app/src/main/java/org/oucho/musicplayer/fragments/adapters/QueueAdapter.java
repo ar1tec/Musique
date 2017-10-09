@@ -15,8 +15,8 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.widgets.CustomSwipeAdapter;
-import org.oucho.musicplayer.widgets.DragRecyclerView;
+import org.oucho.musicplayer.tools.CustomSwipeAdapter;
+import org.oucho.musicplayer.tools.DragRecyclerView;
 
 import java.util.Collections;
 import java.util.List;

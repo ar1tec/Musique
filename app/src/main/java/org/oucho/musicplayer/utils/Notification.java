@@ -3,6 +3,8 @@ package org.oucho.musicplayer.utils;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -12,12 +14,14 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.media.app.NotificationCompat.MediaStyle;
 
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.widget.MusiqueWidget;
 
 import java.io.IOException;
 
@@ -53,7 +57,7 @@ public class Notification {
         PendingIntent previousIntent = PendingIntent.getService(playerbackService, 0,
                 new Intent(playerbackService, PlayerService.class).setAction(PlayerService.ACTION_PREVIOUS), 0);
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(playerbackService);
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(playerbackService, "CHANNEL_ID");
 
 
         builder.setContentTitle(PlayerService.getSongTitle())
@@ -95,7 +99,6 @@ public class Notification {
 
 
         Uri uri = ContentUris.withAppendedId(ARTWORK_URI, PlayerService.getAlbumId());
-       // Picasso.with(holder.vArtwork.getContext()).load(uri).resize(mThumbWidth, mThumbHeight).into(holder.vArtwork);
 
         try {
             ContentResolver contentResolver = context.getContentResolver();
@@ -113,6 +116,13 @@ public class Notification {
             //setBitmapAndBuild(bitmap, playerbackService, builder);
 
         }
+
+        int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, MusiqueWidget.class));
+
+        Intent widget = new Intent(context, MusiqueWidget.class);
+        widget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        widget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        context.sendBroadcast(widget);
     }
 
     private static void setBitmapAndBuild(Bitmap bitmap, @NonNull PlayerService playerbackService, NotificationCompat.Builder builder) {
@@ -125,11 +135,9 @@ public class Notification {
         }
         builder.setLargeIcon(image);
 
-
-        builder.setStyle(new NotificationCompat.MediaStyle()
+        builder.setStyle(new MediaStyle()
                 .setMediaSession(PlayerService.getMediaSession().getSessionToken())
                 .setShowActionsInCompactView(0, 1, 2));
-
 
         android.app.Notification notification = builder.build();
 
@@ -148,7 +156,6 @@ public class Notification {
         sIsServiceForeground = startForeground;
 
     }
-
 
     private static void removeNotification(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

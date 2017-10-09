@@ -41,7 +41,7 @@ import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.search.fragment.SearchAlbumFragment;
 import org.oucho.musicplayer.search.fragment.SearchArtistFragment;
 import org.oucho.musicplayer.search.fragment.SearchSongFragment;
-import org.oucho.musicplayer.widgets.LockableViewPager;
+import org.oucho.musicplayer.tools.LockableViewPager;
 
 import java.util.List;
 

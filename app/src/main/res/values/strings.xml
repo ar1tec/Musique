@@ -82,8 +82,8 @@
 
     <!-- Timer -->
     <string name="timer_info" formatted="false" tools:ignore="StringFormatInvalid">%02d:%02d</string>
-    <string name="start">start</string>
-    <string name="cancel">cancel</string>
+    <string name="start">Start</string>
+    <string name="cancel">Cancel</string>
     <string name="continuer">continue</string>
     <string name="cancel_timer">cancel the timer</string>
     <string name="impossible">0 not possible</string>

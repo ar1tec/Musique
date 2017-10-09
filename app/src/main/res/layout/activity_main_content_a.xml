@@ -109,8 +109,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/prev"
                 android:scaleType="center"
-                android:src="@drawable/ic_fast_rewind_grey_600_36dp"
-                android:tint="@color/colorAccent" />
+                android:src="@drawable/ic_fast_rewind_amber_a700_36dp" />
 
             <ImageButton
                 android:id="@+id/play_pause_toggle"
@@ -121,8 +120,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/play"
                 android:scaleType="center"
-                android:src="@drawable/ic_play_circle_filled_grey_600_48dp"
-                android:tint="@color/colorAccent" />
+                android:src="@drawable/ic_play_circle_filled_amber_a700_48dp" />
 
             <ImageButton
                 android:id="@+id/quick_next"
@@ -132,8 +130,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/next"
                 android:scaleType="center"
-                android:src="@drawable/ic_fast_forward_grey_600_36dp"
-                android:tint="@color/colorAccent" />
+                android:src="@drawable/ic_fast_forward_amber_a700_36dp" />
         </LinearLayout>
 
     </LinearLayout>

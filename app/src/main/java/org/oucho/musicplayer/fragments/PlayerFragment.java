@@ -31,7 +31,7 @@ import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.widgets.LockableViewPager;
+import org.oucho.musicplayer.tools.LockableViewPager;
 
 import java.io.IOException;
 import java.util.List;

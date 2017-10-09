@@ -30,10 +30,10 @@ import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.fragments.loaders.PlaylistLoader;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.widgets.CustomSwipe;
-import org.oucho.musicplayer.widgets.CustomSwipeAdapter;
-import org.oucho.musicplayer.widgets.DragRecyclerView;
-import org.oucho.musicplayer.widgets.LockableViewPager;
+import org.oucho.musicplayer.tools.CustomSwipe;
+import org.oucho.musicplayer.tools.CustomSwipeAdapter;
+import org.oucho.musicplayer.tools.DragRecyclerView;
+import org.oucho.musicplayer.tools.LockableViewPager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -238,7 +238,6 @@ public class PlaylistContentFragment extends BaseFragment {
 
             itemView.findViewById(R.id.song_info).setOnClickListener(this);
             vReorderButton.setOnTouchListener(this);
-
         }
 
         @Override

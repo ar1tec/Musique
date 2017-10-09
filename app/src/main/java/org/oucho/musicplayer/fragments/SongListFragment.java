@@ -32,7 +32,7 @@ import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
-import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
+import org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 

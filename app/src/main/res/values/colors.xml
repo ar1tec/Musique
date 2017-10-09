@@ -3,7 +3,7 @@
 
  <color name="colorPrimary">#ffffff</color>
  <color name="colorPrimaryDark">#ffffff</color>
- <color name="colorAccent">#FFAB00</color><!--amber_700-->
+ <color name="colorAccent">#FFAB00</color><!--amber_A700-->
 
  <color name="blue_900_trans">#980d47a1</color>
  <color name="lime_700">#AFB42B</color>

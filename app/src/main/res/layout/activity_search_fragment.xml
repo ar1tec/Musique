@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView
+    <org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

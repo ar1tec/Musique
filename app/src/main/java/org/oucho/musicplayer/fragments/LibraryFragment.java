@@ -27,7 +27,7 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.utils.ToolbarDrawerToggle;
-import org.oucho.musicplayer.widgets.LockableViewPager;
+import org.oucho.musicplayer.tools.LockableViewPager;
 
 import java.util.HashMap;
 import java.util.Map;

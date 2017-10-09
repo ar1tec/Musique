@@ -43,8 +43,8 @@ import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.utils.CustomGridLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
-import org.oucho.musicplayer.widgets.LockableViewPager;
-import org.oucho.musicplayer.widgets.fastscroll.FastScrollRecyclerView;
+import org.oucho.musicplayer.tools.LockableViewPager;
+import org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 
