@@ -12,7 +12,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 35
-        versionName "1.16.5"
+        versionName "1.17.0"
         setProperty("archivesBaseName", "Musique_$versionName")
     }
 
@@ -45,6 +45,8 @@ dependencies {
     compile 'com.android.support:palette-v7:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    compile 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.2'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'

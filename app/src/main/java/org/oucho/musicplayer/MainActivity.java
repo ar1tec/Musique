@@ -232,9 +232,6 @@ public class MainActivity extends AppCompatActivity implements
 
         playbarShadow = findViewById(R.id.playbar_shadow);
 
-        PrefUtils.init(this);
-        AudioEffects.init(this);
-
         if (savedInstanceState == null) {
             showLibrary();
         }

@@ -3,6 +3,9 @@
     <exclude
         domain="database"
         path="Queue.db" />
+    <exclude
+        domain="database"
+        path="Queue.db-journal" />
     <!-- Exclude the shared preferences file that contains the GCM registrationId -->
     <exclude
         domain="sharedpref"

@@ -4,13 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
+import android.util.Log;
 
 import org.oucho.musicplayer.R;
 
 
 public class AudioEffects {
 
-    public static final short BASSBOOST_MAX_STRENGTH = 1000;
+    private static String TAG = "AudioEffect)";
+    static final short BASSBOOST_MAX_STRENGTH = 1000;
     private static final String PREF_EQ_ENABLED = "enabled";
     private static final String PREF_BAND_LEVEL = "level";
     private static final String PREF_PRESET = "preset";
@@ -122,26 +124,31 @@ public class AudioEffects {
 
     }
 
-    public static short getBassBoostStrength() {
+    static short getBassBoostStrength() {
         return sBassBoostValues.strength;
     }
 
-    public static void setBassBoostStrength(short strength) {
+    static void setBassBoostStrength(short strength) {
+        Log.d(TAG, "setBassBoostStrength" + strength);
+
         sBassBoostValues.strength = strength;
         if (sBassBoost != null) {
+
+            Log.d(TAG, "setBassBoostStrength, if (sBassBoost != null)" + strength);
+
             sBassBoost.setStrength(strength);
         }
 
     }
 
-    public static short[] getBandLevelRange() {
+    static short[] getBandLevelRange() {
         if (sEqualizer == null) {
             return null;
         }
         return sEqualizer.getBandLevelRange();
     }
 
-    public static short getBandLevel(short band) {
+    static short getBandLevel(short band) {
         if (sEqualizer == null && sEqualizerValues.levelsSet && sEqualizerValues.bandLevels.length > band) {
             return sEqualizerValues.bandLevels[band];
         }
@@ -149,14 +156,17 @@ public class AudioEffects {
         return sEqualizer.getBandLevel(band);
     }
 
-    public static boolean areAudioEffectsEnabled() {
+    static boolean areAudioEffectsEnabled() {
         if (sEqualizer == null) {
             return sEqualizerValues.enabled;
         }
+
+        Log.d(TAG, "areAudioEffectsEnabled " + sEqualizer.getEnabled());
+
         return sEqualizer.getEnabled();
     }
 
-    public static void setAudioEffectsEnabled(boolean enabled) {
+    static void setAudioEffectsEnabled(boolean enabled) {
         if (sEqualizer == null || sBassBoost == null) {
             return;
         }
@@ -164,7 +174,7 @@ public class AudioEffects {
         sEqualizer.setEnabled(enabled);
     }
 
-    public static void setBandLevel(short band, short level) {
+    static void setBandLevel(short band, short level) {
         sCustomPreset = true;
 
         if(sEqualizerValues.bandLevels.length > band)
@@ -178,7 +188,7 @@ public class AudioEffects {
         }
     }
 
-    public static String[] getEqualizerPresets(Context context) {
+    static String[] getEqualizerPresets(Context context) {
         if (sEqualizer == null) {
             return new String[]{};
         }
@@ -195,7 +205,7 @@ public class AudioEffects {
         return presets;
     }
 
-    public static int getCurrentPreset() {
+    static int getCurrentPreset() {
         if (sEqualizer == null || sCustomPreset) {
             return 0;
         }
@@ -203,7 +213,7 @@ public class AudioEffects {
         return sEqualizer.getCurrentPreset() + 1;
     }
 
-    public static void usePreset(short preset) {
+    static void usePreset(short preset) {
         if (sEqualizer == null) {
             return;
         }
@@ -213,26 +223,29 @@ public class AudioEffects {
     }
 
 
-    public static short getNumberOfBands() {
+    static short getNumberOfBands() {
         if (sEqualizer == null) {
             return 0;
         }
         return sEqualizer.getNumberOfBands();
     }
 
-    public static int getCenterFreq(short band) {
+    static int getCenterFreq(short band) {
         if (sEqualizer == null) {
             return 0;
         }
         return sEqualizer.getCenterFreq(band);
     }
 
-    public static void savePrefs(Context context) {
+    static void savePrefs(Context context) {
+
+        Log.d(TAG, "savePrefs");
+
         if (sEqualizer == null || sBassBoost == null) {
             return;
         }
-        SharedPreferences prefs = context.getSharedPreferences(AUDIO_EFFECTS_PREFS,
-                Context.MODE_PRIVATE);
+
+        SharedPreferences prefs = context.getSharedPreferences(AUDIO_EFFECTS_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         editor.putInt(PREF_BASSBOOST, sBassBoostValues.strength);
@@ -248,8 +261,10 @@ public class AudioEffects {
 
             editor.putInt(PREF_BAND_LEVEL + b, level);
         }
-        editor.putBoolean(PREF_EQ_ENABLED,
-                sEqualizer.getEnabled());
+
+        editor.putBoolean(PREF_EQ_ENABLED, sEqualizer.getEnabled());
+        Log.d(TAG, "savePrefs + PREF_EQ_ENABLED " + sEqualizer.getEnabled());
+
 
         editor.apply();
     }
@@ -267,4 +282,6 @@ public class AudioEffects {
 
         boolean levelsSet = false;
     }
+
+
 }

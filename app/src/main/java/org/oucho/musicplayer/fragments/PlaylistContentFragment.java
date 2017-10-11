@@ -77,9 +77,6 @@ public class PlaylistContentFragment extends BaseFragment {
             menu.putExtra("boolean", false);
             getContext().sendBroadcast(menu);
 
-            //MainActivity.setMenu(false);
-
-
         }
 
         @Override
@@ -165,7 +162,6 @@ public class PlaylistContentFragment extends BaseFragment {
 
         LockableViewPager.setSwipeLocked(true);
 
-        //final int viewID = MainActivity.getViewID();
         // Active la touche back
         if(getView() == null){
             return;
@@ -265,12 +261,11 @@ public class PlaylistContentFragment extends BaseFragment {
 
     class SongListAdapter extends RecyclerView.Adapter<SongViewHolder> implements CustomSwipeAdapter {
 
-        private final Context context = getContext(); // NOPMD
+        private final Context context = getContext();
 
         @Override
         public SongViewHolder onCreateViewHolder(ViewGroup parent, int type) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_playlist_content_item, parent, false);
-
 
             return new SongViewHolder(itemView);
         }
@@ -280,12 +275,9 @@ public class PlaylistContentFragment extends BaseFragment {
 
             final int mThumbSize = context.getResources().getDimensionPixelSize(R.dimen.art_thumbnail_playlist_size);
 
-
             Song song = mSongList.get(position);
             viewHolder.vTitle.setText(song.getTitle());
             viewHolder.vArtist.setText(song.getArtist());
-
-            //ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), viewHolder.vReorderButton, mThumbSize, mThumbSize, ArtworkHelper.getDefaultThumbDrawable(context));
 
             Uri uri = ContentUris.withAppendedId(ARTWORK_URI, song.getAlbumId());
             Picasso.with(viewHolder.vReorderButton.getContext()).load(uri).resize(mThumbSize, mThumbSize).into(viewHolder.vReorderButton);
@@ -307,9 +299,7 @@ public class PlaylistContentFragment extends BaseFragment {
             PlaylistsUtils.moveItem(getActivity().getContentResolver(), mPlaylist.getId(), oldPosition, newPosition);
 
             notifyItemMoved(oldPosition, newPosition);
-
         }
-
 
         @Override
         public void onItemSwiped(int position) {

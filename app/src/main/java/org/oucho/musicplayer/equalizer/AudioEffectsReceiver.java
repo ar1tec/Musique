@@ -16,13 +16,11 @@ public class AudioEffectsReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         int audioSessionId = intent.getIntExtra(EXTRA_AUDIO_SESSION_ID, 0);
 
-        if(ACTION_OPEN_AUDIO_EFFECT_SESSION.equals(action))
-        {
+        if(ACTION_OPEN_AUDIO_EFFECT_SESSION.equals(action)) {
             AudioEffects.openAudioEffectSession(context, audioSessionId);
-
         }
-        else if(ACTION_CLOSE_AUDIO_EFFECT_SESSION.equals(action))
-        {
+
+        else if(ACTION_CLOSE_AUDIO_EFFECT_SESSION.equals(action)) {
             AudioEffects.closeAudioEffectSession();
         }
     }

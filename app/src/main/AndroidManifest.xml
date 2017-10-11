@@ -51,6 +51,17 @@
                 android:value="org.oucho.musicplayer.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".equalizer.NewEqualizerActivity"
+            android:label="@string/equalizer"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeEqualizer">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.oucho.musicplayer.MainActivity" />
+        </activity>
+
         <service
             android:name=".PlayerService"
             android:enabled="true"

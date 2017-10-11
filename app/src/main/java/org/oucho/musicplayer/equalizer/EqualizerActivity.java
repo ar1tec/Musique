@@ -1,16 +1,21 @@
 package org.oucho.musicplayer.equalizer;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Html;
+import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -21,16 +26,39 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.equalizer.AudioEffects;
+import org.oucho.musicplayer.tools.chart.model.LineSet;
+import org.oucho.musicplayer.tools.chart.renderer.AxisRenderer;
+import org.oucho.musicplayer.tools.chart.view.LineChartView;
 import org.oucho.musicplayer.utils.NavigationUtils;
+
 
 public class EqualizerActivity extends AppCompatActivity {
 
+    private static String TAG = "EqualizerActivity";
 
     private SwitchCompat mSwitchButton;
     private boolean mSwitchBound;
 
     private Spinner mSpinner;
+
+
+    LineSet dataset;
+    LineChartView chart;
+    Paint paint;
+    float[] points;
+
+    float[] pointsCenter;
+    LineSet datasetCenter;
+
+    public static float ratio;
+    public static float ratio2;
+    public static int screen_width;
+    public static int screen_height;
+
+
+    public static int[] seekbarpos;
+
+    SeekBar[] seekBarFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +66,6 @@ public class EqualizerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_equalizer);
 
         Context context = getApplicationContext();
-
 
         int couleurTitre = ContextCompat.getColor(context, R.color.colorAccent);
 
@@ -54,13 +81,71 @@ public class EqualizerActivity extends AppCompatActivity {
             actionBar.setTitle(Html.fromHtml("<font color='" + couleurTitre + "'>" + titre + "</font>"));
         }
 
+        Point size = new Point();
+        getWindowManager().getDefaultDisplay().getSize(size);
+
+        screen_width = size.x;
+        screen_height = size.y;
+
+        ratio = (float) screen_height / (float) 1920;
+        ratio2 = (float) screen_width / (float) 1080;
+        ratio = Math.min(ratio, ratio2);
+
+        int numberOfBand = AudioEffects.getNumberOfBands();
+
+
+        points = new float[numberOfBand];
+        pointsCenter = new float[numberOfBand];
+
+        seekbarpos = new int[numberOfBand];
+
+        seekBarFinal = new SeekBar[numberOfBand];
+
+        int colorGrille = ContextCompat.getColor(context, R.color.grey_400);
+        int colorCenter = ContextCompat.getColor(context, R.color.grey_600);
+
+        int colorCourbe = ContextCompat.getColor(context, R.color.colorAccent);
+
+
+
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(colorGrille);
+        paint.setStrokeWidth((float) (1.10 * ratio));
+
+        datasetCenter = new LineSet();
+        datasetCenter.setColor(colorCenter);
+        datasetCenter.setSmooth(true);
+        datasetCenter.setThickness(2);
+
+        dataset = new LineSet();
+        dataset.setColor(colorCourbe);
+        dataset.setSmooth(true);
+        dataset.setThickness(5);
+
+        chart = findViewById(R.id.lineChart);
+
+
+        chart.setXAxis(false);
+        chart.setYAxis(false);
+
+        chart.setYLabels(AxisRenderer.LabelPosition.NONE);
+        chart.setXLabels(AxisRenderer.LabelPosition.NONE);
+        chart.setGrid(8, 10, paint);
+
+        chart.setAxisBorderValues(-300, 3300);
+
         mSwitchBound = false;
+
         init();
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
+
+        Log.d(TAG, "onPause()");
         AudioEffects.savePrefs(this);
     }
 
@@ -74,8 +159,7 @@ public class EqualizerActivity extends AppCompatActivity {
         if (!mSwitchBound && mSwitchButton != null) {
 
             mSwitchButton.setChecked(AudioEffects.areAudioEffectsEnabled());
-            mSwitchButton
-                    .setOnCheckedChangeListener((buttonView, isChecked) -> AudioEffects.setAudioEffectsEnabled(isChecked));
+            mSwitchButton.setOnCheckedChangeListener((buttonView, isChecked) -> AudioEffects.setAudioEffectsEnabled(isChecked));
             mSwitchBound = true;
         }
     }
@@ -92,13 +176,12 @@ public class EqualizerActivity extends AppCompatActivity {
         updateSeekBars();
 
         initPresets();
+
     }
 
     private void initPresets() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item,
-                AudioEffects.getEqualizerPresets(this));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, AudioEffects.getEqualizerPresets(this));
 
         mSpinner = findViewById(R.id.presets_spinner);
 
@@ -111,19 +194,21 @@ public class EqualizerActivity extends AppCompatActivity {
         mSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position >= 1) {
                     AudioEffects.usePreset((short) (position - 1));
                 }
+
                 updateSeekBars();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 //  Auto-generated method stub
+
             }
         });
+
     }
 
     private void initBassBoost() {
@@ -134,20 +219,13 @@ public class EqualizerActivity extends AppCompatActivity {
         bassBoost.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // This constructor is intentionally empty, pourquoi ? parce que !
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-                // This constructor is intentionally empty, pourquoi ? parce que !
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     AudioEffects.setBassBoostStrength((short) seekBar.getProgress());
                 }
@@ -160,36 +238,47 @@ public class EqualizerActivity extends AppCompatActivity {
 
             final short[] range = AudioEffects.getBandLevelRange();
 
-            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, 0, 1);
+            LayoutParams lp = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
             short bands = AudioEffects.getNumberOfBands();
 
             for (short band = 0; band < bands; band++) {
 
                 View v = getLayoutInflater().inflate(R.layout.activity_equalizer_slider, layout, false);
 
+                SeekBar seekBar = v.findViewById(R.id.seekBar);
 
-                SeekBar seekBar = v.findViewById(R.id.seek_bar);
-
-
-                assert range != null;
+                 assert range != null;
                 seekBar.setMax((range[1]) - range[0]);
 
                 seekBar.setTag(band);
 
-                final TextView levelTextView = v
-                        .findViewById(R.id.level);
+                final short lowerEqualizerBandLevel = AudioEffects.getBandLevelRange()[0];
+
+                seekBarFinal[band] = seekBar;
+
+                String centerFrew = (AudioEffects.getCenterFreq(band) / 1000) + "Hz";
+
+                points[band] = seekbarpos[band] - lowerEqualizerBandLevel;
+                dataset.addPoint(centerFrew, points[band]);
+                seekBar.setProgress(seekbarpos[band] - lowerEqualizerBandLevel);
+
+                pointsCenter[band] = seekbarpos[band] - lowerEqualizerBandLevel;
+                datasetCenter.addPoint(centerFrew, points[band]);
+
+                chart.addData(dataset);
+                chart.addData(datasetCenter);
+
+                chart.show();
+
+                final TextView levelTextView = v.findViewById(R.id.level);
+
                 seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    }
+                    public void onStopTrackingTouch(SeekBar seekBar) {}
 
                     @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                        //  Auto-generated method stub
-
-                    }
+                    public void onStartTrackingTouch(SeekBar seekBar) {}
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -201,6 +290,10 @@ public class EqualizerActivity extends AppCompatActivity {
                             String niveau = (level > 0 ? "+" : "") + level / 100 + "dB";
                             levelTextView.setText(niveau);
                             mSpinner.setSelection(0);
+
+                            points[band] = level - lowerEqualizerBandLevel;
+                            dataset.updateValues(points);
+                            chart.notifyDataUpdate();
                         }
                     }
                 });
@@ -223,9 +316,8 @@ public class EqualizerActivity extends AppCompatActivity {
             View v = layout.getChildAt(band);
 
             final TextView freqTextView = v.findViewById(R.id.frequency);
-            final TextView levelTextView = v
-                    .findViewById(R.id.level);
-            final SeekBar seekBar = v.findViewById(R.id.seek_bar);
+            final TextView levelTextView = v.findViewById(R.id.level);
+            final SeekBar seekBar = v.findViewById(R.id.seekBar);
 
 
             int freq = AudioEffects.getCenterFreq(band);
@@ -243,6 +335,12 @@ public class EqualizerActivity extends AppCompatActivity {
 
             String niveau = (level > 0 ? "+" : "") + level / 100 + "dB";
             levelTextView.setText(niveau);
+
+            final short lowerEqualizerBandLevel = AudioEffects.getBandLevelRange()[0];
+
+            points[band] = AudioEffects.getBandLevel(band) - lowerEqualizerBandLevel;
+            dataset.updateValues(points);
+            chart.notifyDataUpdate();
         }
     }
 
@@ -253,6 +351,7 @@ public class EqualizerActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.action_switch);
 
         mSwitchButton = item.getActionView().findViewById(R.id.switch_button);
+
         bindSwitchToEqualizer();
         return true;
     }
