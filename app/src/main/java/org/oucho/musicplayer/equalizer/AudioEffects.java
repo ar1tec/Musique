@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
-import android.util.Log;
 
 import org.oucho.musicplayer.R;
 
 
 public class AudioEffects {
 
-    private static String TAG = "AudioEffect)";
     static final short BASSBOOST_MAX_STRENGTH = 1000;
     private static final String PREF_EQ_ENABLED = "enabled";
     private static final String PREF_BAND_LEVEL = "level";
@@ -129,13 +127,8 @@ public class AudioEffects {
     }
 
     static void setBassBoostStrength(short strength) {
-        Log.d(TAG, "setBassBoostStrength" + strength);
-
         sBassBoostValues.strength = strength;
         if (sBassBoost != null) {
-
-            Log.d(TAG, "setBassBoostStrength, if (sBassBoost != null)" + strength);
-
             sBassBoost.setStrength(strength);
         }
 
@@ -160,8 +153,6 @@ public class AudioEffects {
         if (sEqualizer == null) {
             return sEqualizerValues.enabled;
         }
-
-        Log.d(TAG, "areAudioEffectsEnabled " + sEqualizer.getEnabled());
 
         return sEqualizer.getEnabled();
     }
@@ -239,8 +230,6 @@ public class AudioEffects {
 
     static void savePrefs(Context context) {
 
-        Log.d(TAG, "savePrefs");
-
         if (sEqualizer == null || sBassBoost == null) {
             return;
         }
@@ -263,8 +252,6 @@ public class AudioEffects {
         }
 
         editor.putBoolean(PREF_EQ_ENABLED, sEqualizer.getEnabled());
-        Log.d(TAG, "savePrefs + PREF_EQ_ENABLED " + sEqualizer.getEnabled());
-
 
         editor.apply();
     }

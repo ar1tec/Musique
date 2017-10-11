@@ -16,8 +16,6 @@ import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.utils.BitmapHelper;
 
-import java.io.IOException;
-
 import static org.oucho.musicplayer.MusiqueKeys.ARTWORK_URI;
 import static org.oucho.musicplayer.PlayerService.isPlaying;
 

@@ -6,8 +6,6 @@ import android.os.IBinder;
 
 import org.oucho.musicplayer.PlayerService;
 
-import static org.oucho.musicplayer.MusiqueKeys.ACTION_STOP;
-
 
 public class WidgetService extends Service {
 

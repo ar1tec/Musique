@@ -53,7 +53,6 @@ import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
 import org.oucho.musicplayer.bugDroid.DummyActivity;
-import org.oucho.musicplayer.equalizer.AudioEffects;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.fragments.BaseFragment;
@@ -65,7 +64,6 @@ import org.oucho.musicplayer.utils.CustomLayoutManager;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
-import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.utils.SeekArc;
 import org.oucho.musicplayer.utils.VolumeTimer;
 import org.oucho.musicplayer.tools.CustomSwipe;

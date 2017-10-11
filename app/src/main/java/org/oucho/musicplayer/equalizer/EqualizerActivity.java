@@ -9,13 +9,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Html;
-import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -25,16 +22,15 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.db.chart.model.LineSet;
+import com.db.chart.renderer.AxisRenderer;
+import com.db.chart.view.LineChartView;
+
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.tools.chart.model.LineSet;
-import org.oucho.musicplayer.tools.chart.renderer.AxisRenderer;
-import org.oucho.musicplayer.tools.chart.view.LineChartView;
 import org.oucho.musicplayer.utils.NavigationUtils;
 
 
 public class EqualizerActivity extends AppCompatActivity {
-
-    private static String TAG = "EqualizerActivity";
 
     private SwitchCompat mSwitchButton;
     private boolean mSwitchBound;
@@ -42,23 +38,12 @@ public class EqualizerActivity extends AppCompatActivity {
     private Spinner mSpinner;
 
 
-    LineSet dataset;
-    LineChartView chart;
-    Paint paint;
-    float[] points;
+    private LineSet dataset;
+    private LineChartView chart;
+    private float[] points;
 
-    float[] pointsCenter;
-    LineSet datasetCenter;
+    private LineSet datasetCenter;
 
-    public static float ratio;
-    public static float ratio2;
-    public static int screen_width;
-    public static int screen_height;
-
-
-    public static int[] seekbarpos;
-
-    SeekBar[] seekBarFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,31 +69,22 @@ public class EqualizerActivity extends AppCompatActivity {
         Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
 
-        screen_width = size.x;
-        screen_height = size.y;
+        int screen_width = size.x;
+        int screen_height = size.y;
 
-        ratio = (float) screen_height / (float) 1920;
-        ratio2 = (float) screen_width / (float) 1080;
+        float ratio = (float) screen_height / (float) 1920;
+        float ratio2 = (float) screen_width / (float) 1080;
         ratio = Math.min(ratio, ratio2);
 
-        int numberOfBand = AudioEffects.getNumberOfBands();
 
-
-        points = new float[numberOfBand];
-        pointsCenter = new float[numberOfBand];
-
-        seekbarpos = new int[numberOfBand];
-
-        seekBarFinal = new SeekBar[numberOfBand];
+        points = new float[AudioEffects.getNumberOfBands()];
 
         int colorGrille = ContextCompat.getColor(context, R.color.grey_400);
         int colorCenter = ContextCompat.getColor(context, R.color.grey_600);
 
         int colorCourbe = ContextCompat.getColor(context, R.color.colorAccent);
 
-
-
-        paint = new Paint();
+        Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(colorGrille);
         paint.setStrokeWidth((float) (1.10 * ratio));
@@ -144,14 +120,11 @@ public class EqualizerActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-
-        Log.d(TAG, "onPause()");
         AudioEffects.savePrefs(this);
     }
 
     @Override
     public void onBackPressed() {
-
             NavigationUtils.showMainActivity(this);
     }
 
@@ -254,15 +227,12 @@ public class EqualizerActivity extends AppCompatActivity {
 
                 final short lowerEqualizerBandLevel = AudioEffects.getBandLevelRange()[0];
 
-                seekBarFinal[band] = seekBar;
-
                 String centerFrew = (AudioEffects.getCenterFreq(band) / 1000) + "Hz";
 
-                points[band] = seekbarpos[band] - lowerEqualizerBandLevel;
+                points[band] = band - lowerEqualizerBandLevel;
                 dataset.addPoint(centerFrew, points[band]);
-                seekBar.setProgress(seekbarpos[band] - lowerEqualizerBandLevel);
+                seekBar.setProgress(band - lowerEqualizerBandLevel);
 
-                pointsCenter[band] = seekbarpos[band] - lowerEqualizerBandLevel;
                 datasetCenter.addPoint(centerFrew, points[band]);
 
                 chart.addData(dataset);

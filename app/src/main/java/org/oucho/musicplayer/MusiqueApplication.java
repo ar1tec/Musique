@@ -1,14 +1,6 @@
 package org.oucho.musicplayer;
 
 import android.app.Application;
-import android.content.Context;
-import android.graphics.Color;
-import android.media.audiofx.BassBoost;
-import android.text.TextPaint;
-import android.view.Display;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
 
 import com.squareup.leakcanary.LeakCanary;
 
