@@ -12,7 +12,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 35
-        versionName "1.17.0"
+        versionName "1.17.1"
         setProperty("archivesBaseName", "Musique_$versionName")
     }
 
@@ -44,8 +44,10 @@ dependencies {
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:palette-v7:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
     compile 'com.squareup.picasso:picasso:2.5.2'
 
+    // equalizer
     compile 'com.diogobernardino:williamchart:2.5.0'
     compile 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.2'
 

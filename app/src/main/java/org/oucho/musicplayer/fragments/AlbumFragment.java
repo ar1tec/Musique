@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -267,7 +268,12 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         ImageView artworkView = rootView.findViewById(R.id.album_artwork);
 
         Uri uri = ContentUris.withAppendedId(ARTWORK_URI, mAlbum.getId());
-        Picasso.with(mContext).load(uri).resize(mArtworkWidth, mArtworkHeight).into(artworkView);
+        Picasso.with(mContext)
+                .load(uri)
+                .config(Bitmap.Config.RGB_565)
+                .resize(mArtworkWidth, mArtworkHeight)
+                .centerCrop()
+                .into(artworkView);
 
         TextView titreAlbum = rootView.findViewById(R.id.line1);
 

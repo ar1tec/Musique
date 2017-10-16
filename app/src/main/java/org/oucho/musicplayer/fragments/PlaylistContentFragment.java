@@ -3,6 +3,7 @@ package org.oucho.musicplayer.fragments;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -280,7 +281,12 @@ public class PlaylistContentFragment extends BaseFragment {
             viewHolder.vArtist.setText(song.getArtist());
 
             Uri uri = ContentUris.withAppendedId(ARTWORK_URI, song.getAlbumId());
-            Picasso.with(viewHolder.vReorderButton.getContext()).load(uri).resize(mThumbSize, mThumbSize).into(viewHolder.vReorderButton);
+            Picasso.with(viewHolder.vReorderButton.getContext())
+                    .load(uri)
+                    .config(Bitmap.Config.RGB_565)
+                    .resize(mThumbSize, mThumbSize)
+                    .centerCrop()
+                    .into(viewHolder.vReorderButton);
 
         }
 

@@ -3,6 +3,7 @@ package org.oucho.musicplayer.fragments.adapters;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -164,7 +165,11 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> imp
        // ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), holder.vArtwork, mThumbWidth, mThumbHeight, ArtworkHelper.getDefaultThumbDrawable(mContext));
 
         Uri uri = ContentUris.withAppendedId(ARTWORK_URI, song.getAlbumId());
-        Picasso.with(holder.vArtwork.getContext()).load(uri).resize(mThumbWidth, mThumbHeight).into(holder.vArtwork);
+        Picasso.with(holder.vArtwork.getContext())
+                .load(uri).config(Bitmap.Config.RGB_565)
+                .resize(mThumbWidth, mThumbHeight)
+                .centerCrop()
+                .into(holder.vArtwork);
     }
 
     public Song getItem(int position) {

@@ -3,6 +3,7 @@ package org.oucho.musicplayer.fragments.adapters;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -168,7 +169,12 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         }
 
         Uri uri = ContentUris.withAppendedId(ARTWORK_URI, album.getId());
-        Picasso.with(viewHolder.itemView.getContext()).load(uri).resize(mArtworkWidth, mArtworkHeight).into(viewHolder.vArtwork);
+        Picasso.with(viewHolder.itemView.getContext())
+                .load(uri)
+                .config(Bitmap.Config.RGB_565)
+                .resize(mArtworkWidth, mArtworkHeight)
+                .centerCrop()
+                .into(viewHolder.vArtwork);
     }
 
     @Override

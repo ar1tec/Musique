@@ -209,7 +209,12 @@ public class AudioEffects {
             return;
         }
         sCustomPreset = false;
-        sEqualizer.usePreset(preset);
+
+        try {
+            sEqualizer.usePreset(preset);
+        } catch (Exception ignore) {
+
+        }
 
     }
 

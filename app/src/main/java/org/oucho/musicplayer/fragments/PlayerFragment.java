@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.net.Uri;
@@ -409,7 +410,12 @@ public class PlayerFragment extends BaseFragment
 
             Uri uri = ContentUris.withAppendedId(ARTWORK_URI, PlayerService.getAlbumId());
 
-            Picasso.with(mContext).load(uri).resize(mArtworkSize, mArtworkSize).into(artworkView);
+            Picasso.with(mContext)
+                    .load(uri)
+                    .config(Bitmap.Config.RGB_565)
+                    .resize(mArtworkSize, mArtworkSize)
+                    .centerCrop()
+                    .into(artworkView);
 
 
             final int duration = PlayerService.getTrackDuration();
