@@ -47,15 +47,4 @@
         <item name="android:textColorSecondary">@color/grey_600</item>
     </style>
 
-
-    <!--bug android memory leaks inputMethodManager (api 21, 22, 23, 24, 25; +?)-->
-    <style name="AppTheme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
 </resources>

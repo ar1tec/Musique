@@ -31,10 +31,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".bugDroid.DummyActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Transparent" />
-        <activity
             android:name=".search.SearchActivity"
             android:label="@string/title_activity_plop"
             android:launchMode="singleTask"

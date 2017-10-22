@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.squareup.leakcanary.LeakCanary;
 
+import org.oucho.musicplayer.bugDroid.IMMLeaks;
 import org.oucho.musicplayer.equalizer.AudioEffects;
 import org.oucho.musicplayer.utils.PrefUtils;
 
@@ -25,6 +26,8 @@ public class MusiqueApplication extends Application {
         LeakCanary.install(this);
 
         setInstance(this);
+
+        IMMLeaks.fixFocusedViewLeak(this);
 
         PrefUtils.init(this);
         AudioEffects.init(this);

@@ -137,7 +137,6 @@ public class PlayerFragment extends BaseFragment
 
         LinearLayout linearLayout = rootView.findViewById(R.id.root);
         linearLayout.setOnClickListener(mOnClickListener);
-        mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
 
         updateAll();
 

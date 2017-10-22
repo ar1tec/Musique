@@ -52,7 +52,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.oucho.musicplayer.PlayerService.PlaybackBinder;
-import org.oucho.musicplayer.bugDroid.DummyActivity;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.AboutDialog;
 import org.oucho.musicplayer.fragments.BaseFragment;
@@ -1362,17 +1361,6 @@ public class MainActivity extends AppCompatActivity implements
     }
     public static void setChercheActivity(Boolean value) {
         chercheActivity = value;
-    }
-
-
-    // bug android memory leaks inputMethodManager (api 21, 22, 23, 24, 25; +?)
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        // This is important : Hack to open a dummy activity for 200-500ms (cannot be noticed by user as it is for 500ms
-        //  and transparent floating activity and auto finishes)
-        startActivity(new Intent(this, DummyActivity.class));
-        finish();
     }
 
 }
