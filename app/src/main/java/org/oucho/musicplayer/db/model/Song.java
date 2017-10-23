@@ -9,7 +9,7 @@ public class Song {
     private final String album;
     private final int trackNumber;
     private final long albumId;
-    private String genre;
+    private final String genre;
     private final int duration;
     private final int year;
     private final String mimeType;

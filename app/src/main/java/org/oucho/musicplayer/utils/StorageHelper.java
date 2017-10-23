@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
 import java.nio.channels.FileChannel;
 
 
-public class StorageHelper extends Activity {
+public class StorageHelper {
 
 
     private static final String TAG = "StorageHelper";
@@ -66,7 +66,7 @@ public class StorageHelper extends Activity {
     private static File getTargetFile(File source, File targetDir) {
         File file = new File(targetDir, source.getName());
         if (!source.getParentFile().equals(targetDir) && !file.exists())
-            deleteFile(file, false);
+            deleteFile(file);
 
         return file;
     }
@@ -98,7 +98,7 @@ public class StorageHelper extends Activity {
             } else {
 
                 // Storage Access Framework
-                DocumentFile targetDocument = getDocumentFile(target, false, false);
+                DocumentFile targetDocument = getDocumentFile(target);
 
                 if (targetDocument != null)
                     outStream = MusiqueApplication.getInstance().getContentResolver().openOutputStream(targetDocument.getUri());
@@ -139,30 +139,23 @@ public class StorageHelper extends Activity {
     }
 
 
-    public static boolean deleteFile(@NonNull final File file, boolean scann) {
+    public static void deleteFile(@NonNull final File file) {
 
         boolean success = false;
 
-        if (file.delete()) {
+        if (file.delete())
             success =  true;
-        }
 
         if (!success) {
-            DocumentFile document = getDocumentFile(file, false, false);
-            success = document != null && document.delete();
+            DocumentFile document = getDocumentFile(file);
+            if (document != null)
+                document.delete();
         }
-
-        if(success && scann)
-            scanFile(new String[]{ file.getPath() });
-
-        return success;
     }
 
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static DocumentFile getDocumentFile(File file, boolean isDirectory, boolean createDirectories) {
+    private static DocumentFile getDocumentFile(File file) {
         Uri treeUri;
 
         String baseFolder;
@@ -196,17 +189,8 @@ public class StorageHelper extends Activity {
 
             if (nextDocument == null) {
                 if (i < parts.length - 1) {
-                    if (createDirectories) {
-                        nextDocument = document.createDirectory(parts[i]);
-                    }
-                    else {
-                        return null;
-                    }
-                }
-                else if (isDirectory) {
-                    nextDocument = document.createDirectory(parts[i]);
-                }
-                else {
+                    return null;
+                } else {
                     nextDocument = document.createFile("image", parts[i]);
                 }
             }
@@ -256,6 +240,7 @@ public class StorageHelper extends Activity {
 
             Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
 
+            assert mStorageManager != null;
             Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
             Method getUuid = storageVolumeClazz.getMethod("getUuid");
             Method getPath = storageVolumeClazz.getMethod("getPath");

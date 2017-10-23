@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.bugDroid;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -133,6 +134,7 @@ public class IMMLeaks {
      *
      * Should be called from {@link Activity#onCreate(Bundle)} )}.
      */
+    @SuppressLint("PrivateApi")
     public static void fixFocusedViewLeak(Application application) {
 
         final InputMethodManager inputMethodManager =

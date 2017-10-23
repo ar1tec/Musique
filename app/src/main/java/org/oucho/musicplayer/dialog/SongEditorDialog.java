@@ -210,7 +210,7 @@ public class SongEditorDialog extends DialogFragment {
                 File file = new File(pathCache + filename);
 
                 if (file.exists())
-                    StorageHelper.deleteFile(file, false);
+                    StorageHelper.deleteFile(file);
 
                 StorageHelper.copyFile(song, MusiqueApplication.getInstance().getCacheDir(), false);
 
@@ -228,7 +228,7 @@ public class SongEditorDialog extends DialogFragment {
 
                 if (StorageHelper.copyFile(file, target, true)) {
                     success = true;
-                    StorageHelper.deleteFile(file, false);
+                    StorageHelper.deleteFile(file);
                 }
             }
 

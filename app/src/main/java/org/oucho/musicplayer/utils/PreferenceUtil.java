@@ -15,13 +15,13 @@ public class PreferenceUtil {
     }
 
 
-    public static void setSharedPreferenceUri(final int preferenceId, @Nullable final Uri uri) {
+    public static void setSharedPreferenceUri(@Nullable final Uri uri) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         if (uri == null) {
-            editor.putString(MusiqueApplication.getInstance().getString(preferenceId), null);
+            editor.putString(MusiqueApplication.getInstance().getString(R.string.key_internal_uri_extsdcard), null);
         }
         else {
-            editor.putString(MusiqueApplication.getInstance().getString(preferenceId), uri.toString());
+            editor.putString(MusiqueApplication.getInstance().getString(R.string.key_internal_uri_extsdcard), uri.toString());
         }
         editor.apply();
     }

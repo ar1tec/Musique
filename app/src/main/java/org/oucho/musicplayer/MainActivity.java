@@ -641,7 +641,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
     @SuppressWarnings("RestrictedApi")
-    public void refresh() {
+    private void refresh() {
 
         int fragmentNB = getSupportFragmentManager().getFragments().size();
         Fragment f;
@@ -1323,7 +1323,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    public void triggerStorageAccessFramework() {
+    private void triggerStorageAccessFramework() {
 
         DialogUtils.showPermissionDialog(this, getString(R.string.permission_write_sd_externe),
                 (dialog, which) -> {
@@ -1341,10 +1341,11 @@ public class MainActivity extends AppCompatActivity implements
 
                 treeUri = resultData.getData();
 
-                PreferenceUtil.setSharedPreferenceUri(R.string.key_internal_uri_extsdcard, treeUri);
+                PreferenceUtil.setSharedPreferenceUri(treeUri);
 
                 // Persist access permissions.
                 final int takeFlags = resultData.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                assert treeUri != null;
                 this.getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
 
                 refresh();
