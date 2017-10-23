@@ -12,8 +12,11 @@ public class Song {
     private String genre;
     private final int duration;
     private final int year;
+    private final String mimeType;
+    private final String path;
 
-    public Song(long id, String title, String artist, String album, long albumId, int trackNumber, int duration, int year) {
+
+    public Song(long id, String title, String artist, String album, long albumId, int trackNumber, int duration, int year, String genre, String mimeType, String path) {
         super();
         this.id = id;
         this.title = title == null ? MediaStore.UNKNOWN_STRING : title;
@@ -23,8 +26,9 @@ public class Song {
         this.trackNumber = trackNumber;
         this.duration = duration;
         this.year = year;
-
-
+        this.genre = genre;
+        this.mimeType = mimeType;
+        this.path = path;
     }
 
     public long getId() {
@@ -59,12 +63,17 @@ public class Song {
         return duration;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
     public int getYear() {
         return year;
     }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
 
 }

@@ -39,10 +39,10 @@ import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.search.SearchActivity;
-import org.oucho.musicplayer.utils.CustomLayoutManager;
+import org.oucho.musicplayer.view.CustomLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.tools.LockableViewPager;
-import org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView;
+import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 import java.util.Locale;
@@ -162,6 +162,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         Etat_player_Receiver = new Etat_player();
         IntentFilter filter = new IntentFilter();
         filter.addAction(INTENT_STATE);
+        filter.addAction(INTENT_REFRESH_ALBUM);
+
         mContext.registerReceiver(Etat_player_Receiver, filter);
         isRegistered = true;
 
@@ -386,15 +388,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     }
 
 
-    private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener
-            = () -> {
-
-                Log.e(TAG_LOG, "mOnTagsEditionSuccessListener");
-
-                ((MainActivity) getActivity()).refresh();
-
-            };
-
     private void showMenu(final int position, View v) {
 
         PopupMenu popup = new PopupMenu(getActivity(), v);
@@ -434,7 +427,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     private void showID3TagEditor(Song song) {
         SongEditorDialog dialog = SongEditorDialog.newInstance(song);
-        dialog.setOnTagsEditionSuccessListener(mOnTagsEditionSuccessListener);
         dialog.show(getChildFragmentManager(), "edit_tags");
     }
 
@@ -550,25 +542,30 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
             String receiveIntent = intent.getAction();
 
+            if (INTENT_REFRESH_ALBUM.equals(receiveIntent)) {
+                mAdapter.notifyDataSetChanged();
+                Log.w(TAG_LOG, "onReceive()");
 
-            if (INTENT_STATE.equals(receiveIntent)
-                    && intent.getStringExtra("state").equals("prev")
-                    || intent.getStringExtra("state").equals("next")
-                    || intent.getStringExtra("state").equals("play")) {
+            }
 
-                for (int i = 0; i < listeTitre.size(); i++) {
-                    if (listeTitre.get(i).getId() == PlayerService.getSongID())
-                        mRecyclerView.smoothScrollToPosition( i );
-                }
+            if (INTENT_STATE.equals(receiveIntent)) {
 
-                //   rustine lag next.prev    //
-                if (PlayerService.isPlaying()) {
-                    mAdapter.notifyDataSetChanged();
+                if (intent.getStringExtra("state").equals("prev") || intent.getStringExtra("state").equals("next") || intent.getStringExtra("state").equals("play")) {
 
-                } else {
+                    for (int i = 0; i < listeTitre.size(); i++) {
+                        if (listeTitre.get(i).getId() == PlayerService.getSongID())
+                            mRecyclerView.smoothScrollToPosition(i);
+                    }
 
-                    mHandler.postDelayed(() -> mAdapter.notifyDataSetChanged(), 100);
+                    //   rustine lag next.prev    //
+                    if (PlayerService.isPlaying()) {
+                        mAdapter.notifyDataSetChanged();
 
+                    } else {
+
+                        mHandler.postDelayed(() -> mAdapter.notifyDataSetChanged(), 100);
+
+                    }
                 }
             }
         }

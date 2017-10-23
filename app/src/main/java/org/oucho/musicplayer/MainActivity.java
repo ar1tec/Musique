@@ -3,6 +3,7 @@ package org.oucho.musicplayer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -14,6 +15,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -22,6 +24,7 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.ActivityCompat;
@@ -59,17 +62,18 @@ import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.fragments.PlayerFragment;
 import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
 import org.oucho.musicplayer.update.CheckUpdate;
-import org.oucho.musicplayer.utils.CustomLayoutManager;
+import org.oucho.musicplayer.utils.PreferenceUtil;
+import org.oucho.musicplayer.view.CustomLayoutManager;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
-import org.oucho.musicplayer.utils.SeekArc;
+import org.oucho.musicplayer.view.SeekArc;
 import org.oucho.musicplayer.utils.VolumeTimer;
 import org.oucho.musicplayer.tools.CustomSwipe;
-import org.oucho.musicplayer.tools.DragRecyclerView;
-import org.oucho.musicplayer.tools.ProgressBar;
-import org.oucho.musicplayer.tools.blurview.BlurView;
-import org.oucho.musicplayer.tools.blurview.RenderScriptBlur;
+import org.oucho.musicplayer.view.DragRecyclerView;
+import org.oucho.musicplayer.view.ProgressBar;
+import org.oucho.musicplayer.view.blurview.BlurView;
+import org.oucho.musicplayer.view.blurview.RenderScriptBlur;
 
 import java.io.File;
 import java.util.List;
@@ -234,7 +238,10 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         CheckUpdate.onStart(this);
+        setInstance(this);
     }
+
+
 
     private void setNavigationMenu() {
 
@@ -1266,6 +1273,18 @@ public class MainActivity extends AppCompatActivity implements
     * Gestion des permissions (Android >= 6.0)
     * *********************************************************************************************/
 
+    private void checkPermissions() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
+
+                DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
+                        (dialog, which) -> ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE));
+            }
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
 
@@ -1300,14 +1319,36 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    private void checkPermissions() {
+    public void triggerStorageAccessFramework() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        startActivityForResult(intent, REQUEST_CODE_STORAGE_ACCESS);
+    }
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+    private static MainActivity sInstance;
 
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
+    public static synchronized MainActivity getInstance() {
+        return sInstance;
+    }
 
-                DialogUtils.showPermissionDialog(this, getString(R.string.permission_read_phone_state),
-                        (dialog, which) -> ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_READ_PHONE_STATE));
+    private static void setInstance(MainActivity value) {
+        sInstance = value;
+    }
+
+    @Override
+    public final void onActivityResult(final int requestCode, final int resultCode, final Intent resultData) {
+        if (requestCode == REQUEST_CODE_STORAGE_ACCESS) {
+            Uri treeUri;
+            if (resultCode == Activity.RESULT_OK) {
+
+                treeUri = resultData.getData();
+
+                PreferenceUtil.setSharedPreferenceUri(R.string.key_internal_uri_extsdcard, treeUri);
+
+                // Persist access permissions.
+                final int takeFlags = resultData.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                this.getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
+
+                refresh();
             }
         }
     }

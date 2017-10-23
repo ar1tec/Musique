@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:elevation="@dimen/playbar_elevation">
 
-        <org.oucho.musicplayer.tools.ProgressBar
+        <org.oucho.musicplayer.view.ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -30,7 +30,7 @@
     </RelativeLayout>
 
 
-    <org.oucho.musicplayer.tools.blurview.BlurView
+    <org.oucho.musicplayer.view.blurview.BlurView
         android:id="@+id/queueBlurView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,7 +47,7 @@
             android:background="@color/blancTransparent"
             android:visibility="gone">
 
-            <org.oucho.musicplayer.tools.DragRecyclerView
+            <org.oucho.musicplayer.view.DragRecyclerView
                 android:id="@+id/queue_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -55,6 +55,6 @@
 
         </FrameLayout>
 
-    </org.oucho.musicplayer.tools.blurview.BlurView>
+    </org.oucho.musicplayer.view.blurview.BlurView>
 
 </RelativeLayout>

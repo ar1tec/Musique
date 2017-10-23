@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.tools.fastscroll;
+package org.oucho.musicplayer.view.fastscroll;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

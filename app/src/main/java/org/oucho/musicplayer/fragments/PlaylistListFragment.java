@@ -28,7 +28,7 @@ import org.oucho.musicplayer.fragments.adapters.PlaylistListAdapter;
 import org.oucho.musicplayer.dialog.CreatePlaylistDialog;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.tools.LockableViewPager;
-import org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView;
+import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
 
 import java.text.Collator;
 import java.util.ArrayList;

@@ -33,7 +33,7 @@ import org.oucho.musicplayer.fragments.loaders.PlaylistLoader;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.tools.CustomSwipe;
 import org.oucho.musicplayer.tools.CustomSwipeAdapter;
-import org.oucho.musicplayer.tools.DragRecyclerView;
+import org.oucho.musicplayer.view.DragRecyclerView;
 import org.oucho.musicplayer.tools.LockableViewPager;
 
 import java.util.ArrayList;

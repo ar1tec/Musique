@@ -5,7 +5,7 @@ import android.app.Application;
 import android.os.Bundle;
 
 /** Helper to avoid implementing all lifecycle callback methods. */
-public class LifecycleCallbacksAdapter implements Application.ActivityLifecycleCallbacks {
+class LifecycleCallbacksAdapter implements Application.ActivityLifecycleCallbacks {
     @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
     }

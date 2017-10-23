@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.tools;
+package org.oucho.musicplayer.view;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;

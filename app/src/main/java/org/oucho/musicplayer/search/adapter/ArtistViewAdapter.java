@@ -11,7 +11,7 @@ import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Artist;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
-import org.oucho.musicplayer.tools.fastscroll.FastScroller;
+import org.oucho.musicplayer.view.fastscroll.FastScroller;
 
 import java.text.Normalizer;
 import java.util.Collections;

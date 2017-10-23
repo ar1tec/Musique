@@ -120,5 +120,4 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
         return getCursor(musicUri, sProjection, selection, selectionArgs, fieldName, filter);
     }
 
-
 }

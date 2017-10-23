@@ -8,7 +8,10 @@ public interface MusiqueKeys {
     String FILTER = "filter";
 
     int PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
-    int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
+
+    // Storage Permissions
+    int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 10;
+    int REQUEST_CODE_STORAGE_ACCESS = 11;
 
     String APP_RADIO = "org.oucho.radio2";
 
@@ -17,11 +20,11 @@ public interface MusiqueKeys {
     String INTENT_QUEUEVIEW = "org.oucho.musicplayer.QUEUEVIEW";
     String INTENT_LAYOUTVIEW = "org.oucho.musicplayer.LAYOUTVIEW";
     String INTENT_TOOLBAR_SHADOW = "org.oucho.musicplayer.SHADOW";
+    String INTENT_REFRESH_ALBUM = "org.oucho.musicplayer.REFRESH_ALBUM";
 
     String INTENT_BACK = "org.oucho.musicplayer.LOCK_ViewPager";
 
     String INTENT_SET_MENU = "org.oucho.musicplayer.SET_MENU";
-
 
     String ACTION_NEXT = "org.oucho.musicplayer.ACTION_NEXT";
     String ACTION_STOP = "org.oucho.musicplayer.ACTION_STOP";

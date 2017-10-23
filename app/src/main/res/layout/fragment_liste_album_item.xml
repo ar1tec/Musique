@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <org.oucho.musicplayer.tools.SquareImageView
+        <org.oucho.musicplayer.view.SquareImageView
             android:id="@+id/album_artwork"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

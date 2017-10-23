@@ -16,7 +16,7 @@ import java.util.List;
 
 public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "Queue.db";
 
     private static final String COMMA_SEP = ",";
@@ -31,7 +31,9 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
                     QueueEntry.COLUMN_NAME_TRACK_NUMBER + " INTEGER" + COMMA_SEP +
                     QueueEntry.COLUMN_NAME_TRACK_DURATION + " INTEGER" + COMMA_SEP +
                     QueueEntry.COLUMN_NAME_ALBUM_ID + " INTEGER" + COMMA_SEP +
-                    QueueEntry.COLUMN_NAME_GENRE + " TEXT" +
+                    QueueEntry.COLUMN_NAME_GENRE + " TEXT" + COMMA_SEP +
+                    QueueEntry.COLUMN_NAME_MIME_TYPE +  " TEXT" + COMMA_SEP +
+                    QueueEntry.COLUMN_NAME_DATA +  " TEXT" +
                     " )";
 
     private static final String SQL_DELETE_ENTRIES =
@@ -48,6 +50,8 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
                     QueueEntry.COLUMN_NAME_TRACK_DURATION,
                     QueueEntry.COLUMN_NAME_ALBUM_ID,
                     QueueEntry.COLUMN_NAME_GENRE,
+                    QueueEntry.COLUMN_NAME_MIME_TYPE,
+                    QueueEntry.COLUMN_NAME_DATA,
             };
 
     public QueueDbHelper(Context context) {
@@ -61,8 +65,9 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
-        onCreate(db);
+        db.execSQL("ALTER TABLE " + QueueEntry.TABLE_NAME + " ADD COLUMN " + "mimeType TEXT");
+        db.execSQL("ALTER TABLE " + QueueEntry.TABLE_NAME + " ADD COLUMN " + "path TEXT");
+
     }
     private void addInternal(SQLiteDatabase db, Song song) {
 
@@ -75,6 +80,9 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
         values.put(QueueEntry.COLUMN_NAME_TRACK_DURATION, song.getDuration());
         values.put(QueueEntry.COLUMN_NAME_ALBUM_ID, song.getAlbumId());
         values.put(QueueEntry.COLUMN_NAME_GENRE, song.getGenre());
+        values.put(QueueEntry.COLUMN_NAME_MIME_TYPE, song.getMimeType());
+        values.put(QueueEntry.COLUMN_NAME_DATA, song.getPath());
+
 
         db.insert(QueueEntry.TABLE_NAME, null, values);
 
@@ -137,6 +145,10 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
             int albumIdCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_ALBUM_ID);
             int trackCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_NUMBER);
             int trackDur = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_DURATION);
+            int genreCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_GENRE);
+            int mimeCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_MIME_TYPE);
+            int pathCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_DATA);
+
 
             do {
                 long id = cursor.getLong(idCol);
@@ -154,8 +166,14 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
 
                 int year = 0;
 
+                String mimeType = cursor.getString(mimeCol);
 
-                list.add(new Song(id, title, artist, album, albumId, track, duration, year));
+                String path = cursor.getString(pathCol);
+
+                String genre = cursor.getString(genreCol);
+
+
+                list.add(new Song(id, title, artist, album, albumId, track, duration, year, genre, mimeType, path));
             } while (cursor.moveToNext());
         }
 
@@ -169,7 +187,7 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
     }
 
     private static class QueueEntry implements SongListColumns {
-        public static final String TABLE_NAME = "queue";
+        static final String TABLE_NAME = "queue";
     }
 
 }

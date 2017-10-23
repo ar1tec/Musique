@@ -11,8 +11,8 @@ android {
         renderscriptSupportModeEnabled true
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 35
-        versionName "1.17.2"
+        versionCode 36
+        versionName "1.18.0"
         setProperty("archivesBaseName", "Musique_$versionName")
     }
 
@@ -46,6 +46,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    compile 'net.jthink:jaudiotagger:2.2.5'
 
     // equalizer
     compile 'com.diogobernardino:williamchart:2.5.0'

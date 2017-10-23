@@ -40,11 +40,11 @@ import org.oucho.musicplayer.fragments.loaders.SortOrder;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
-import org.oucho.musicplayer.utils.CustomGridLayoutManager;
+import org.oucho.musicplayer.view.CustomGridLayoutManager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
 import org.oucho.musicplayer.tools.LockableViewPager;
-import org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView;
+import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 
@@ -259,7 +259,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
     private void showEditorDialog(Album album) {
         AlbumEditorDialog dialog = AlbumEditorDialog.newInstance(album);
-        dialog.setOnEditionSuccessListener(mOnEditionSuccessListener);
         dialog.show(getChildFragmentManager(), "edit_album_tags");
     }
 
@@ -269,10 +268,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         picker.show(getChildFragmentManager(), "pick_playlist");
 
     }
-
-
-    private final AlbumEditorDialog.OnEditionSuccessListener mOnEditionSuccessListener = () -> ((MainActivity) getActivity()).refresh();
-
 
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = new BaseAdapter.OnItemClickListener() {
         @Override

@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.tools;
+package org.oucho.musicplayer.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView;
+import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
 
 
 public class DragRecyclerView extends FastScrollRecyclerView {

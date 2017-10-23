@@ -3,25 +3,44 @@ package org.oucho.musicplayer.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
+import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
-import org.oucho.musicplayer.utils.TagEdit;
+import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.fragments.loaders.SongLoader;
+import org.oucho.musicplayer.utils.StorageHelper;
 
-import java.util.HashMap;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.oucho.musicplayer.MusiqueKeys.INTENT_REFRESH_ALBUM;
 
 
 public class AlbumEditorDialog extends DialogFragment {
 
+    private static List<Song> mSongList = new ArrayList<>();
+
+    private static final String TAG = "AlbumEditorDialog";
 
     private static final String ARG_ID = "id";
     private static final String ARG_NAME = "name";
@@ -33,8 +52,8 @@ public class AlbumEditorDialog extends DialogFragment {
 
     private EditText mAlbumEditText;
     private EditText mArtistEditText;
+    private EditText mGenreEditText;
     private EditText mYearEditText;
-    private static OnEditionSuccessListener mListener;
 
     public static AlbumEditorDialog newInstance(Album album) {
         AlbumEditorDialog fragment = new AlbumEditorDialog();
@@ -62,11 +81,11 @@ public class AlbumEditorDialog extends DialogFragment {
             int year = args.getInt(ARG_YEAR);
             int trackCount = args.getInt(ARG_TRACK_COUNT);
 
-            mAlbum = new Album(id,album,artist,year,trackCount);
+            mAlbum = new Album(id,album,artist, year,trackCount);
 
+            getLoaderManager().initLoader(0, null, mLoaderCallbacks);
         }
     }
-
 
 
     @NonNull
@@ -82,6 +101,7 @@ public class AlbumEditorDialog extends DialogFragment {
 
         mAlbumEditText = dialogView.findViewById(R.id.album);
         mArtistEditText = dialogView.findViewById(R.id.artist);
+        mGenreEditText = dialogView.findViewById(R.id.genre);
         mYearEditText = dialogView.findViewById(R.id.year);
 
         mAlbumEditText.setText(mAlbum.getAlbumName());
@@ -93,7 +113,7 @@ public class AlbumEditorDialog extends DialogFragment {
 
             dismiss();
 
-            String list[] = {mAlbumEditText.getText().toString(), mArtistEditText.getText().toString(), mYearEditText.getText().toString()};
+            String list[] = {mAlbumEditText.getText().toString(), mArtistEditText.getText().toString(), mGenreEditText.getText().toString(), mYearEditText.getText().toString()};
 
             new tag(list).execute();
 
@@ -108,6 +128,7 @@ public class AlbumEditorDialog extends DialogFragment {
 
         final String album;
         final String artist;
+        final String genre;
         final String year;
 
         tag(String[] value) {
@@ -115,50 +136,125 @@ public class AlbumEditorDialog extends DialogFragment {
 
             this.album = value[0];
             this.artist = value[1];
-            this.year = value[2];
+            this.genre = value[2];
+            this.year = value[3];
         }
 
         @Override
         protected Boolean doInBackground(Object... params) {
-            return saveTags(album, artist, year);
+            return saveTags(album, artist, genre, year);
         }
 
-        @Override
-        protected void onPostExecute(Boolean b) {
-            super.onPostExecute(b);
-            if (b) {
-                if(mListener != null) {
-                    mListener.onEditionSuccess();
+    }
+
+    private static boolean saveTags(String album, String artist, String genre, String year) {
+
+        boolean success = false;
+
+        for (int i = 0; i < mSongList.size(); i++) {
+
+
+            try {
+                File song = new File(mSongList.get(i).getPath());
+
+                if (StorageHelper.isWritable(song)) {
+
+                    AudioFile audioFile = AudioFileIO.read(song);
+                    Tag tag = audioFile.getTag();
+                    tag.setField(FieldKey.ARTIST, artist);
+                    tag.setField(FieldKey.ALBUM, album);
+                    tag.setField(FieldKey.GENRE, genre);
+                    tag.setField(FieldKey.YEAR, year);
+
+                    audioFile.commit();
+
+                    success = true;
+
+                } else {
+
+                    // TODO VERSION.SDK_INT >= 26
+                    //AudioFileIO.writeAs(audioFile, MusiqueApplication.getInstance().getCacheDir().getPath() + "/temp");
+
+                    String filename = new File(mSongList.get(i).getPath()).getName();
+                    String pathCache = MusiqueApplication.getInstance().getCacheDir().getPath() + "/";
+                    String pathSong = new File(mSongList.get(i).getPath()).getParent();
+
+                    File file = new File(pathCache + filename);
+
+                    if (file.exists())
+                        StorageHelper.deleteFile(file, false);
+
+                    StorageHelper.copyFile(song, MusiqueApplication.getInstance().getCacheDir(), false);
+
+                    AudioFile audioFile = AudioFileIO.read(file);
+                    Tag tag = audioFile.getTag();
+
+                    tag.setField(FieldKey.ARTIST, artist);
+                    tag.setField(FieldKey.ALBUM, album);
+                    tag.setField(FieldKey.GENRE, genre);
+                    tag.setField(FieldKey.YEAR, year);
+
+                    audioFile.commit();
+
+                    File target = new File(pathSong);
+
+                    if (StorageHelper.copyFile(file, target, true)) {
+                        success = true;
+                        StorageHelper.deleteFile(file, false);
+                    }
                 }
+
+
+            } catch (Exception e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+            }
+
+            if (success) {
+                StorageHelper.scanFile(new String[]{mSongList.get(i).getPath()});
+
             } else {
                 Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
+                break;
             }
         }
 
-    }
+        if (success) {
+            Intent intent = new Intent();
+            intent.setAction(INTENT_REFRESH_ALBUM);
+            MusiqueApplication.getInstance().sendBroadcast(intent);
 
-    private static boolean saveTags(String album, String artist, String year) {
+            MainActivity.getInstance().refresh();
 
-        HashMap<String,String> data = new HashMap<>();
+        }
 
-        data.put(TagEdit.ALBUM_NAME, album);
-        data.put(TagEdit.ARTIST_NAME, artist);
-        data.put(TagEdit.YEAR, year);
-
-        return TagEdit.editAlbumData(MusiqueApplication.getInstance(), mAlbum, data);
-    }
-
-
-    public void setOnEditionSuccessListener(OnEditionSuccessListener listener) {
-        mListener = listener;
+        return success;
     }
 
 
-    public interface OnEditionSuccessListener {
 
+    private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Song>>() {
 
-        void onEditionSuccess();
+        @Override
+        public Loader<List<Song>> onCreateLoader(int id, Bundle args) {
+            SongLoader loader = new SongLoader(getActivity());
 
-    }
+            loader.setSelection(MediaStore.Audio.Media.ALBUM_ID + " = ?", new String[]{String.valueOf(mAlbum.getId())});
+            loader.setSortOrder(MediaStore.Audio.Media.TRACK);
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
+
+            mSongList = songList;
+
+            mGenreEditText.setText(mSongList.get(0).getGenre());
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<Song>> loader) {
+            //  Auto-generated method stub
+        }
+    };
 
 }

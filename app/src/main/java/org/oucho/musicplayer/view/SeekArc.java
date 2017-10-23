@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.utils;
+package org.oucho.musicplayer.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

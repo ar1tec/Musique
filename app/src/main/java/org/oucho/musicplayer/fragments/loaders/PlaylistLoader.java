@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.utils.Permissions;
 
@@ -18,7 +19,13 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
             MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media.ARTIST_ID, MediaStore.Audio.Media.TRACK,
-            MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.YEAR};
+            MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.YEAR,
+            MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.DATA};
+
+    private static final String[] genresProjection = {
+            MediaStore.Audio.Genres.NAME,
+            MediaStore.Audio.Genres._ID
+    };
 
     private final long mPlaylistId;
 
@@ -34,6 +41,8 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
 
         Cursor cursor = getPlaylistCursor();
 
+        Cursor genresCursor;
+
         if (cursor != null && cursor.moveToFirst()) {
             int idCol = cursor
                     .getColumnIndex(MediaStore.Audio.Playlists.Members.AUDIO_ID);
@@ -48,6 +57,9 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
             int trackCol = cursor.getColumnIndex(MediaStore.Audio.Media.TRACK);
             int trackDur = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
             int yearCol = cursor.getColumnIndex(MediaStore.Audio.Media.YEAR);
+            int mimeCol = cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE);
+            int pathCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+
 
             do {
                 long id = cursor.getLong(idCol);
@@ -65,16 +77,47 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
 
                 int year = cursor.getInt(yearCol);
 
+                String mimeType = cursor.getString(mimeCol);
+                String path = cursor.getString(pathCol);
 
-                playlist.add(new Song(id, title, artist, album, albumId, track, duration, year));
+
+                // genre
+                int musicId = Integer.parseInt(cursor.getString(idCol));
+
+                Uri uri;
+                String genre = "unknow";
+                int genreCol;
+
+                try {
+                    uri = MediaStore.Audio.Genres.getContentUriForAudioId("external", musicId);
+                    genresCursor = MusiqueApplication.getInstance().getContentResolver().query(uri, genresProjection, null, null, null);
+
+                    if (genresCursor != null) {
+                        genreCol = genresCursor.getColumnIndex(MediaStore.Audio.Genres.NAME);
+
+                        if (genresCursor.moveToFirst()) {
+                            do {
+                                genre = genresCursor.getString(genreCol);
+                            } while (genresCursor.moveToNext());
+                        }
+                    }
+
+
+                    if (genresCursor != null)
+                        genresCursor.close();
+
+                } catch (Exception ignore) {}
+
+
+                playlist.add(new Song(id, title, artist, album, albumId, track, duration, year, genre, mimeType, path));
 
             } while (cursor.moveToNext());
 
         }
 
-        if (cursor != null) {
+        if (cursor != null)
             cursor.close();
-        }
+
 
 
         return playlist;

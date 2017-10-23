@@ -32,7 +32,7 @@ import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
-import org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView;
+import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 
@@ -76,8 +76,6 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
     private void populateAdapter(List<Song> songList) {
         mAdapter.setData(songList);
     }
-
-    private final SongEditorDialog.OnTagsEditionSuccessListener mOnTagsEditionSuccessListener = () -> ((MainActivity) getActivity()).refresh();
 
     private final BaseAdapter.OnItemClickListener mOnItemClickListener = (position, view) -> {
         switch (view.getId()) {
@@ -130,7 +128,6 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
     private void showID3TagEditor(Song song) {
         SongEditorDialog dialog = SongEditorDialog.newInstance(song);
-        dialog.setOnTagsEditionSuccessListener(mOnTagsEditionSuccessListener);
         dialog.show(getChildFragmentManager(), "edit_tags");
     }
 

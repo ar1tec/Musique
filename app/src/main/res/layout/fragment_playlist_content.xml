@@ -9,7 +9,7 @@
     tools:mContext="org.oucho.musicplayer.fragments.PlaylistContentFragment"
     tools:ignore="Overdraw">
 
-    <org.oucho.musicplayer.tools.DragRecyclerView
+    <org.oucho.musicplayer.view.DragRecyclerView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

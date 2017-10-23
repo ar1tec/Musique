@@ -1,0 +1,317 @@
+package org.oucho.musicplayer.utils;
+
+import android.content.Context;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
+import android.os.storage.StorageManager;
+import android.provider.DocumentsContract;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.provider.DocumentFile;
+import android.util.Log;
+
+import org.oucho.musicplayer.MainActivity;
+import org.oucho.musicplayer.MusiqueApplication;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.nio.channels.FileChannel;
+
+
+public class StorageHelper {
+
+
+    private static final String TAG = "StorageHelper";
+
+    private static final String PRIMARY_VOLUME_NAME = "primary";
+
+
+    public static boolean isWritable(@NonNull final File file) {
+        boolean isExisting = file.exists();
+
+        try {
+            FileOutputStream output = new FileOutputStream(file, true);
+            try {
+                output.close();
+            }
+            catch (IOException ignore) {}
+        }
+        catch (java.io.FileNotFoundException e) {
+            return false;
+        }
+        boolean result = file.canWrite();
+
+        // Ensure that file is not created during this process.
+        if (!isExisting) {
+            //noinspection ResultOfMethodCallIgnored
+            file.delete();
+        }
+
+        return result;
+    }
+
+    public static void scanFile(String[] paths) {
+        MediaScannerConnection.scanFile(MusiqueApplication.getInstance(), paths, null, null);
+    }
+
+    private static File getTargetFile(File source, File targetDir) {
+        File file = new File(targetDir, source.getName());
+        if (!source.getParentFile().equals(targetDir) && !file.exists())
+            deleteFile(file, false);
+
+        return file;
+    }
+
+    public static boolean copyFile(@NonNull final File source, @NonNull final File targetDir, boolean scann) {
+        InputStream inStream = null;
+        OutputStream outStream = null;
+
+        boolean success = false;
+
+        File target = getTargetFile(source, targetDir);
+
+        try {
+            inStream = new FileInputStream(source);
+
+            if (isWritable(target)) {
+                // standard way
+                FileChannel inChannel = new FileInputStream(source).getChannel();
+                FileChannel outChannel = new FileOutputStream(target).getChannel();
+                inChannel.transferTo(0, inChannel.size(), outChannel);
+                success = true;
+
+                try {
+                    inChannel.close();
+                } catch (Exception ignored) { }
+                try {
+                    outChannel.close();
+                } catch (Exception ignored) { }
+            } else {
+
+                // Storage Access Framework
+                DocumentFile targetDocument = getDocumentFile(target, false, false);
+
+                if (targetDocument != null)
+                    outStream = MusiqueApplication.getInstance().getContentResolver().openOutputStream(targetDocument.getUri());
+
+
+                if (outStream != null) {
+
+                    byte[] buffer = new byte[4096]; // MAGIC_NUMBER
+                    int bytesRead;
+                    while ((bytesRead = inStream.read(buffer)) != -1)
+                        outStream.write(buffer, 0, bytesRead);
+                    success = true;
+                }
+
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error when copying file from " + source.getAbsolutePath() + " to " + target.getAbsolutePath(), e);
+            return false;
+        }
+
+        finally {
+
+            try {
+                if (inStream != null)
+                    inStream.close();
+            } catch (Exception ignored) { }
+
+            try {
+                if (outStream != null)
+                    outStream.close();
+            } catch (Exception ignored) { }
+        }
+
+        if (success && scann)
+            scanFile(new String[] { target.getPath() });
+        return success;
+    }
+
+
+    public static boolean deleteFile(@NonNull final File file, boolean scann) {
+
+        boolean success = false;
+
+        if (file.delete()) {
+            success =  true;
+        }
+
+        if (!success) {
+            DocumentFile document = getDocumentFile(file, false, false);
+            success = document != null && document.delete();
+        }
+
+        if(success && scann)
+            scanFile(new String[]{ file.getPath() });
+
+        return success;
+    }
+
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static DocumentFile getDocumentFile(File file, boolean isDirectory, boolean createDirectories) {
+        Uri treeUri;
+
+        String baseFolder;
+
+        String fullPath;
+        try {
+            fullPath = file.getCanonicalPath();
+        } catch (IOException e) {
+            return null;
+        }
+
+        treeUri = PreferenceUtil.getTreeUris();
+
+        if (treeUri == null) {
+            MainActivity.getInstance().triggerStorageAccessFramework();
+        }
+
+        baseFolder = getFullPathFromTreeUri(MusiqueApplication.getInstance(), treeUri);
+
+        if (baseFolder == null) {
+            return null;
+        }
+
+        String relativePath = fullPath.substring(baseFolder.length() + 1);
+
+        DocumentFile document = DocumentFile.fromTreeUri(MusiqueApplication.getInstance(), treeUri);
+
+        String[] parts = relativePath.split("\\/");
+        for (int i = 0; i < parts.length; i++) {
+            DocumentFile nextDocument = document.findFile(parts[i]);
+
+            if (nextDocument == null) {
+                if (i < parts.length - 1) {
+                    if (createDirectories) {
+                        nextDocument = document.createDirectory(parts[i]);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                else if (isDirectory) {
+                    nextDocument = document.createDirectory(parts[i]);
+                }
+                else {
+                    nextDocument = document.createFile("image", parts[i]);
+                }
+            }
+            document = nextDocument;
+        }
+
+        return document;
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Nullable
+    private static String getFullPathFromTreeUri(Context context, Uri treeUri) {
+        if (treeUri == null) {
+            return null;
+        }
+        String volumePath = getVolumePath(context, getVolumeIdFromTreeUri(treeUri));
+        if (volumePath == null) {
+            return File.separator;
+        }
+        if (volumePath.endsWith(File.separator)) {
+            volumePath = volumePath.substring(0, volumePath.length() - 1);
+        }
+
+        String documentPath = getDocumentPathFromTreeUri(treeUri);
+        if (documentPath.endsWith(File.separator)) {
+            documentPath = documentPath.substring(0, documentPath.length() - 1);
+        }
+
+        if (documentPath.length() > 0) {
+            if (documentPath.startsWith(File.separator)) {
+                return volumePath + documentPath;
+            }
+            else {
+                return volumePath + File.separator + documentPath;
+            }
+        }
+        else {
+            return volumePath;
+        }
+    }
+
+    private static String getVolumePath(Context context, final String volumeId) {
+
+        try {
+            StorageManager mStorageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+
+            Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
+
+            Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
+            Method getUuid = storageVolumeClazz.getMethod("getUuid");
+            Method getPath = storageVolumeClazz.getMethod("getPath");
+            Method isPrimary = storageVolumeClazz.getMethod("isPrimary");
+            Object result = getVolumeList.invoke(mStorageManager);
+
+            final int length = Array.getLength(result);
+            for (int i = 0; i < length; i++) {
+                Object storageVolumeElement = Array.get(result, i);
+                String uuid = (String) getUuid.invoke(storageVolumeElement);
+                Boolean primary = (Boolean) isPrimary.invoke(storageVolumeElement);
+
+                // primary volume?
+                if (primary && PRIMARY_VOLUME_NAME.equals(volumeId)) {
+                    return (String) getPath.invoke(storageVolumeElement);
+                }
+
+                // other volumes?
+                if (uuid != null) {
+                    if (uuid.equals(volumeId)) {
+                        return (String) getPath.invoke(storageVolumeElement);
+                    }
+                }
+            }
+
+            // not found.
+            return null;
+        }
+        catch (Exception ex) {
+            return null;
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private static String getVolumeIdFromTreeUri(final Uri treeUri) {
+        final String docId = DocumentsContract.getTreeDocumentId(treeUri);
+        final String[] split = docId.split(":");
+
+        if (split.length > 0) {
+            return split[0];
+        }
+        else {
+            return null;
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private static String getDocumentPathFromTreeUri(final Uri treeUri) {
+        final String docId = DocumentsContract.getTreeDocumentId(treeUri);
+        final String[] split = docId.split(":");
+        if ((split.length >= 2) && (split[1] != null)) {
+            return split[1];
+        } else {
+            return File.separator;
+        }
+    }
+
+
+}

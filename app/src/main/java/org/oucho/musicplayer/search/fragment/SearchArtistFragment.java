@@ -26,7 +26,7 @@ import org.oucho.musicplayer.fragments.loaders.ArtistLoader;
 import org.oucho.musicplayer.search.SearchActivity;
 import org.oucho.musicplayer.search.adapter.ArtistViewAdapter;
 import org.oucho.musicplayer.utils.PrefUtils;
-import org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView;
+import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 

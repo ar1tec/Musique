@@ -31,7 +31,7 @@ import org.oucho.musicplayer.fragments.loaders.SortOrder;
 import org.oucho.musicplayer.search.SearchActivity;
 import org.oucho.musicplayer.search.adapter.AlbumViewAdapter;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
-import org.oucho.musicplayer.tools.fastscroll.FastScrollRecyclerView;
+import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
 

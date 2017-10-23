@@ -1,4 +1,4 @@
-package org.oucho.musicplayer.tools.fastscroll;
+package org.oucho.musicplayer.view.fastscroll;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import org.oucho.musicplayer.R;
-import org.oucho.musicplayer.tools.fastscroll.FastScroller.SectionIndexer;
+import org.oucho.musicplayer.view.fastscroll.FastScroller.SectionIndexer;
 
 @SuppressWarnings("unused")
 public class FastScrollRecyclerView extends RecyclerView {
