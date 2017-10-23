@@ -3,7 +3,6 @@ package org.oucho.musicplayer.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,7 +20,6 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
-import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
@@ -32,8 +30,6 @@ import org.oucho.musicplayer.utils.StorageHelper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.oucho.musicplayer.MusiqueKeys.INTENT_REFRESH_ALBUM;
 
 
 public class AlbumEditorDialog extends DialogFragment {
@@ -114,6 +110,7 @@ public class AlbumEditorDialog extends DialogFragment {
             dismiss();
 
             String list[] = {mAlbumEditText.getText().toString(), mArtistEditText.getText().toString(), mGenreEditText.getText().toString(), mYearEditText.getText().toString()};
+            Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition, Toast.LENGTH_SHORT).show();
 
             new tag(list).execute();
 
@@ -145,6 +142,17 @@ public class AlbumEditorDialog extends DialogFragment {
             return saveTags(album, artist, genre, year);
         }
 
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            if (aBoolean) {
+                Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_success, Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private static boolean saveTags(String album, String artist, String genre, String year) {
@@ -208,23 +216,6 @@ public class AlbumEditorDialog extends DialogFragment {
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
-
-            if (success) {
-                StorageHelper.scanFile(new String[]{mSongList.get(i).getPath()});
-
-            } else {
-                Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
-                break;
-            }
-        }
-
-        if (success) {
-            Intent intent = new Intent();
-            intent.setAction(INTENT_REFRESH_ALBUM);
-            MusiqueApplication.getInstance().sendBroadcast(intent);
-
-            MainActivity.getInstance().refresh();
-
         }
 
         return success;

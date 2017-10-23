@@ -53,6 +53,8 @@
     <string name="edit_tags">Edit data</string>
     <string name="action_edit_tags">Edit data</string>
     <string name="tags_edition_failed">Data editing failed</string>
+    <string name="tags_edition_success">Data editing success</string>
+    <string name="tags_edition">Modification in progress</string>
 
     <string name="year">Year</string>
 
@@ -63,6 +65,8 @@
     <string name="permission_read_phone_state">It is recommended (but not necessary) to give permission
         \"Make and manage phone calls \" to the application,
         This will allow the player to pause when you receive a call.</string>
+
+    <string name="permission_write_sd_externe">Select the external SD card to allow writing, required from android 5.0 and above.</string>
 
     <string name="sort_order_entry_az">Alphabetical order</string>
     <string name="sort_order_entry_year">Year</string>

@@ -24,7 +24,6 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.ActivityCompat;
@@ -61,17 +60,18 @@ import org.oucho.musicplayer.fragments.BaseFragment;
 import org.oucho.musicplayer.fragments.LibraryFragment;
 import org.oucho.musicplayer.fragments.PlayerFragment;
 import org.oucho.musicplayer.fragments.adapters.QueueAdapter;
+import org.oucho.musicplayer.tools.CustomSwipe;
 import org.oucho.musicplayer.update.CheckUpdate;
-import org.oucho.musicplayer.utils.PreferenceUtil;
-import org.oucho.musicplayer.view.CustomLayoutManager;
 import org.oucho.musicplayer.utils.GetAudioFocusTask;
 import org.oucho.musicplayer.utils.NavigationUtils;
 import org.oucho.musicplayer.utils.Notification;
-import org.oucho.musicplayer.view.SeekArc;
+import org.oucho.musicplayer.utils.PreferenceUtil;
+import org.oucho.musicplayer.utils.StorageHelper;
 import org.oucho.musicplayer.utils.VolumeTimer;
-import org.oucho.musicplayer.tools.CustomSwipe;
+import org.oucho.musicplayer.view.CustomLayoutManager;
 import org.oucho.musicplayer.view.DragRecyclerView;
 import org.oucho.musicplayer.view.ProgressBar;
+import org.oucho.musicplayer.view.SeekArc;
 import org.oucho.musicplayer.view.blurview.BlurView;
 import org.oucho.musicplayer.view.blurview.RenderScriptBlur;
 
@@ -161,6 +161,11 @@ public class MainActivity extends AppCompatActivity implements
             checkPermissions();
         }
 
+        Uri DP = PreferenceUtil.getTreeUris();
+        if (DP == null && StorageHelper.externalMemoryAvailable(this)) {
+            triggerStorageAccessFramework();
+        }
+
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         mQueueLayout = findViewById(R.id.queue_layout);
@@ -238,7 +243,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         CheckUpdate.onStart(this);
-        setInstance(this);
     }
 
 
@@ -1320,19 +1324,14 @@ public class MainActivity extends AppCompatActivity implements
 
 
     public void triggerStorageAccessFramework() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        startActivityForResult(intent, REQUEST_CODE_STORAGE_ACCESS);
+
+        DialogUtils.showPermissionDialog(this, getString(R.string.permission_write_sd_externe),
+                (dialog, which) -> {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                    startActivityForResult(intent, REQUEST_CODE_STORAGE_ACCESS);
+                });
     }
 
-    private static MainActivity sInstance;
-
-    public static synchronized MainActivity getInstance() {
-        return sInstance;
-    }
-
-    private static void setInstance(MainActivity value) {
-        sInstance = value;
-    }
 
     @Override
     public final void onActivityResult(final int requestCode, final int resultCode, final Intent resultData) {

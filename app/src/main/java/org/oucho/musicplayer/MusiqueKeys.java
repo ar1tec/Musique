@@ -20,7 +20,6 @@ public interface MusiqueKeys {
     String INTENT_QUEUEVIEW = "org.oucho.musicplayer.QUEUEVIEW";
     String INTENT_LAYOUTVIEW = "org.oucho.musicplayer.LAYOUTVIEW";
     String INTENT_TOOLBAR_SHADOW = "org.oucho.musicplayer.SHADOW";
-    String INTENT_REFRESH_ALBUM = "org.oucho.musicplayer.REFRESH_ALBUM";
 
     String INTENT_BACK = "org.oucho.musicplayer.LOCK_ViewPager";
 

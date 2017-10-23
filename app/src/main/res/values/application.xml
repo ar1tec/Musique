@@ -4,7 +4,7 @@
 
     <string name="app_full_name" translatable="false">Music player for android</string>
 
-    <string name="by" tools:ignore="MissingTranslation">Old Geek, 2017</string>
+    <string name="by" tools:ignore="MissingTranslation" translatable="false">Old Geek, 2017</string>
 
     <string name="licence_info" translatable="false">
         This program is free software: you can redistribute it and/or modify

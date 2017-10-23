@@ -162,7 +162,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         Etat_player_Receiver = new Etat_player();
         IntentFilter filter = new IntentFilter();
         filter.addAction(INTENT_STATE);
-        filter.addAction(INTENT_REFRESH_ALBUM);
 
         mContext.registerReceiver(Etat_player_Receiver, filter);
         isRegistered = true;
@@ -541,12 +540,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         public void onReceive(Context context, Intent intent) {
 
             String receiveIntent = intent.getAction();
-
-            if (INTENT_REFRESH_ALBUM.equals(receiveIntent)) {
-                mAdapter.notifyDataSetChanged();
-                Log.w(TAG_LOG, "onReceive()");
-
-            }
 
             if (INTENT_STATE.equals(receiveIntent)) {
 

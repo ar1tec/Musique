@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -9,10 +10,10 @@ import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
-import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueApplication;
 
 import java.io.File;
@@ -26,7 +27,7 @@ import java.lang.reflect.Method;
 import java.nio.channels.FileChannel;
 
 
-public class StorageHelper {
+public class StorageHelper extends Activity {
 
 
     private static final String TAG = "StorageHelper";
@@ -58,7 +59,7 @@ public class StorageHelper {
         return result;
     }
 
-    public static void scanFile(String[] paths) {
+    private static void scanFile(String[] paths) {
         MediaScannerConnection.scanFile(MusiqueApplication.getInstance(), paths, null, null);
     }
 
@@ -176,7 +177,7 @@ public class StorageHelper {
         treeUri = PreferenceUtil.getTreeUris();
 
         if (treeUri == null) {
-            MainActivity.getInstance().triggerStorageAccessFramework();
+            return null;
         }
 
         baseFolder = getFullPathFromTreeUri(MusiqueApplication.getInstance(), treeUri);
@@ -314,4 +315,9 @@ public class StorageHelper {
     }
 
 
+    public static boolean externalMemoryAvailable(Activity context) {
+        File[] storages = ContextCompat.getExternalFilesDirs(context, null);
+        return storages.length > 1 && storages[0] != null && storages[1] != null;
+
+    }
 }

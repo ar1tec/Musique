@@ -2,7 +2,6 @@ package org.oucho.musicplayer.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,15 +16,12 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
-import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.utils.StorageHelper;
 
 import java.io.File;
-
-import static org.oucho.musicplayer.MusiqueKeys.INTENT_REFRESH_ALBUM;
 
 
 public class SongEditorDialog extends DialogFragment {
@@ -130,6 +126,8 @@ public class SongEditorDialog extends DialogFragment {
                     mGenreEditText.getText().toString()
             };
 
+            Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition, Toast.LENGTH_SHORT).show();
+
             new tag(list).execute();
 
 
@@ -166,6 +164,16 @@ public class SongEditorDialog extends DialogFragment {
             return false;
         }
 
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            if (aBoolean) {
+                Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_success, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
@@ -224,23 +232,11 @@ public class SongEditorDialog extends DialogFragment {
                 }
             }
 
-
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
-        if (success) {
-            StorageHelper.scanFile(new String[]{mSong.getPath()});
 
-            Intent intent = new Intent();
-            intent.setAction(INTENT_REFRESH_ALBUM);
-            MusiqueApplication.getInstance().sendBroadcast(intent);
-
-            MainActivity.getInstance().refresh();
-
-        } else {
-            Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
-        }
         return success;
 
     }

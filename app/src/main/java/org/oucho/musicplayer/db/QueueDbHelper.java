@@ -36,8 +36,7 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
                     QueueEntry.COLUMN_NAME_DATA +  " TEXT" +
                     " )";
 
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + QueueEntry.TABLE_NAME;
+    private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + QueueEntry.TABLE_NAME;
 
     private static final String[] sProjection = new String[]
             {
@@ -65,8 +64,8 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("ALTER TABLE " + QueueEntry.TABLE_NAME + " ADD COLUMN " + "mimeType TEXT");
-        db.execSQL("ALTER TABLE " + QueueEntry.TABLE_NAME + " ADD COLUMN " + "path TEXT");
+        db.execSQL(SQL_DELETE_ENTRIES);
+        onCreate(db);
 
     }
     private void addInternal(SQLiteDatabase db, Song song) {
@@ -83,9 +82,7 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
         values.put(QueueEntry.COLUMN_NAME_MIME_TYPE, song.getMimeType());
         values.put(QueueEntry.COLUMN_NAME_DATA, song.getPath());
 
-
         db.insert(QueueEntry.TABLE_NAME, null, values);
-
     }
 
     public void removeAll() {
@@ -120,7 +117,14 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
 
 
     public List<Song> readAll() {
-        return read(-1);
+        List<Song> test = null;
+        try {
+            test = read(-1);
+        } catch (Exception ignore) {
+
+        }
+
+        return test;
     }
 
     private List<Song> read(int limit) {
@@ -130,6 +134,7 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
 
         Cursor cursor;
         if (limit < 0) {
+
             cursor = db.query(QueueEntry.TABLE_NAME, sProjection, null, null, null, null, null);
 
         } else {

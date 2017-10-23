@@ -628,6 +628,7 @@ public class PlayerService extends Service implements MusiqueKeys {
         } catch (IllegalArgumentException
                 | SecurityException
                 | IllegalStateException
+                | NullPointerException
                 | IOException e) {
             Log.e("open() ee", "ee", e);
         }
