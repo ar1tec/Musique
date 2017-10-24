@@ -68,8 +68,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     private final Handler mHandler = new Handler();
 
-    private int mArtworkWidth;
-    private int mArtworkHeight;
+    private int mArtworkSize;
 
     private String Titre = "";
     private String Artiste = "";
@@ -190,8 +189,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             }
         }
 
-        mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.fragment_album_artist_image_req_width);
-        mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.fragment_album_artist_image_req_height);
+        mArtworkSize = getResources().getDimensionPixelSize(R.dimen.fragment_album_artist_image_size);
 
         setTri();
 
@@ -270,7 +268,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         Picasso.with(mContext)
                 .load(uri)
                 .config(Bitmap.Config.RGB_565)
-                .resize(mArtworkWidth, mArtworkHeight)
+                .resize(mArtworkSize, mArtworkSize)
                 .centerCrop()
                 .into(artworkView);
 

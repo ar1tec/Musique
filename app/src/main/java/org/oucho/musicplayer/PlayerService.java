@@ -439,7 +439,6 @@ public class PlayerService extends Service implements MusiqueKeys {
 
     public void toggle() {
 
-
         if (mediaPlayer1.isPlaying() || mediaPlayer2.isPlaying()) {
             pause();
         } else {
@@ -450,7 +449,6 @@ public class PlayerService extends Service implements MusiqueKeys {
 
     public void playPrev() {
         int position = getPreviousPosition();
-
 
         if (position >= 0 && position < mQueuePlayList.size()) {
 
@@ -469,11 +467,9 @@ public class PlayerService extends Service implements MusiqueKeys {
         updateCurrentPosition();
         int position = mCurrentPosition;
 
-
         if ((isPlaying() && getPlayerPosition() >= 1500)) {
             return position;
         }
-
 
         if (position - 1 < 0) {
             if (mRepeatMode == REPEAT_ALL) {
@@ -488,7 +484,6 @@ public class PlayerService extends Service implements MusiqueKeys {
 
     public void playNext() {
         int position = getNextPosition();
-
 
         if (position >= 0 && position < mQueuePlayList.size()) {
 
@@ -636,6 +631,7 @@ public class PlayerService extends Service implements MusiqueKeys {
 
 
     private final OnPreparedListener mOnPreparedListener1 = new OnPreparedListener() {
+
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             Log.d(TAG_LOG, "mOnPreparedListener1");
@@ -662,7 +658,9 @@ public class PlayerService extends Service implements MusiqueKeys {
         }
     };
 
+
     private final OnPreparedListener mOnPreparedListener2 = new OnPreparedListener() {
+
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             Log.d(TAG_LOG, "mOnPreparedListener2");
@@ -672,7 +670,9 @@ public class PlayerService extends Service implements MusiqueKeys {
         }
     };
 
+
     private final OnCompletionListener mOnCompletionListener1 = new OnCompletionListener() {
+
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
             Log.d(TAG_LOG, "mOnCompletionListener1");
@@ -694,7 +694,9 @@ public class PlayerService extends Service implements MusiqueKeys {
         }
     };
 
+
     private final OnCompletionListener mOnCompletionListener2 = new OnCompletionListener() {
+
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
             Log.d(TAG_LOG, "mOnCompletionListener2");
@@ -717,10 +719,12 @@ public class PlayerService extends Service implements MusiqueKeys {
         }
     };
 
+
     private final OnErrorListener mOnErrorListener1 = (mediaPlayer, what, extra) -> {
         Log.e(TAG_LOG, "onError 1: " + String.valueOf(what) + " " + String.valueOf(extra));
         return false;
     };
+
 
     private final OnErrorListener mOnErrorListener2 = (mediaPlayer, what, extra) -> {
         Log.e(TAG_LOG, "onError 2: " + String.valueOf(what) + " " + String.valueOf(extra));
@@ -806,8 +810,11 @@ public class PlayerService extends Service implements MusiqueKeys {
 
 
     private final OnAudioFocusChangeListener mAudioFocusChangeListener = new OnAudioFocusChangeListener() {
+
         public void onAudioFocusChange(int focusChange) {
+
             switch (focusChange) {
+
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     if (isPlaying()) {
                         pause();

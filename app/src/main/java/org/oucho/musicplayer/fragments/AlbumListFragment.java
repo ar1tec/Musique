@@ -208,7 +208,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         Point size = new Point();
         display.getSize(size);
         float screenWidth = size.x;
-        float itemWidth = res.getDimension(R.dimen.fragmen_album_list_grid_item_width);
+        float itemWidth = res.getDimension(R.dimen.fragmen_album_list_grid_item_size);
         mRecyclerView.setLayoutManager(new CustomGridLayoutManager(mContext, Math.round(screenWidth / itemWidth)));
 
         int artworkSize = res.getDimensionPixelSize(R.dimen.art_size);
