@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -135,7 +136,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                 String temps = msToTextMinut(duréeTotal) + " " + getString(R.string.minute_pluriel);
                 durée.setText(temps);
             }
-
         }
 
         @Override
@@ -193,9 +193,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         mArtworkWidth = getResources().getDimensionPixelSize(R.dimen.fragment_album_artist_image_req_width);
         mArtworkHeight = getResources().getDimensionPixelSize(R.dimen.fragment_album_artist_image_req_height);
 
-
         setTri();
-
 
         if (MainActivity.getChercheActivity()) {
 
@@ -220,7 +218,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
                 if (tri.equals(getString(R.string.title_sort_year)))
                     getActivity().setTitle(Année);
-
 
                 Intent intent = new Intent();
                 intent.setAction(INTENT_TOOLBAR_SHADOW);
@@ -249,7 +246,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     }
 
 
-
     /* *********************************************************************************************
      * Création du visuel
      * ********************************************************************************************/
@@ -265,6 +261,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             rootView = inflater.inflate(R.layout.fragment_album, container, false);
         }
 
+        LinearLayout presentation = rootView.findViewById(R.id.presentation);
+        presentation.setOnClickListener(null);
 
         ImageView artworkView = rootView.findViewById(R.id.album_artwork);
 
@@ -309,17 +307,14 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             an.setVisibility(View.GONE);
         }
 
-
         durée = rootView.findViewById(R.id.duration);
 
         mRecyclerView = rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new CustomLayoutManager(getActivity()));
         mAdapter = new AlbumSongListAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
-        mAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
 
         mRecyclerView.setAdapter(mAdapter);
-
 
         return rootView;
     }
@@ -336,7 +331,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                 case R.id.item_view:
                     selectSong(position);
                     break;
-                case R.id.menu_button:
+                case R.id.buttonMenu:
                     showMenu(position, view);
                     break;
                 default:
@@ -345,23 +340,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         }
     };
 
-    private final BaseAdapter.OnItemLongClickListener mOnItemLongClickListener = new BaseAdapter.OnItemLongClickListener() {
-        @Override
-        public void onItemLongClick(int position, View view) {
-
-
-            mHandler.postDelayed(() -> mAdapter.notifyDataSetChanged(), 100);
-
-
-            switch (view.getId()) {
-                case R.id.item_view:
-                    showMenu(position, view);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

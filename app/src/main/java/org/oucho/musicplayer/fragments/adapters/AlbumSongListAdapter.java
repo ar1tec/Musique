@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -98,13 +99,14 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
         return 0;
     }
 
-    class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView vTime;
         private final TextView vTitle;
         private final TextView vTrackNumber;
+        private final ImageButton vButton;
 
-        final ImageView PlayView;
+        private final ImageView PlayView;
 
         SongViewHolder(View itemView) {
             super(itemView);
@@ -117,12 +119,13 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
             vTrackNumber = itemView.findViewById(R.id.track_number);
 
+            vButton = itemView.findViewById(R.id.buttonMenu);
+
+            vButton.setOnClickListener(this);
+
             PlayView = itemView.findViewById(R.id.play);
 
             itemView.setOnClickListener(this);
-
-            itemView.setOnLongClickListener(this);
-
         }
 
         @Override
@@ -134,13 +137,6 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
         }
 
-        @Override
-        public boolean  onLongClick(View v) {
-            final int position = getAdapterPosition();
-            triggerOnItemLongClickListener(position, v);
-
-            return true;
-        }
     }
 
 }
