@@ -1,8 +1,14 @@
 package org.oucho.musicplayer.db.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.util.Log;
 
-public class Song {
+public class Song implements Parcelable {
+
+    private static final String TAG = "Song";
+
     private final long id;
     private final String title;
     private final String artist;
@@ -40,6 +46,7 @@ public class Song {
     }
 
     public String getTitle() {
+        Log.d(TAG, "getTitle() = " + title);
         return title;
     }
 
@@ -75,5 +82,51 @@ public class Song {
         return path;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.artist);
+        dest.writeString(this.album);
+        dest.writeInt(this.trackNumber);
+        dest.writeLong(this.albumId);
+        dest.writeString(this.genre);
+        dest.writeInt(this.duration);
+        dest.writeInt(this.year);
+        dest.writeString(this.mimeType);
+        dest.writeString(this.path);
+    }
+
+    public Song(Parcel in) {
+        this.id = in.readLong();
+        this.title = in.readString();
+        this.artist = in.readString();
+        this.album = in.readString();
+        this.trackNumber = in.readInt();
+        this.albumId = in.readLong();
+        this.genre = in.readString();
+        this.duration = in.readInt();
+        this.year = in.readInt();
+        this.mimeType = in.readString();
+        this.path = in.readString();
+    }
+
+    public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel source) {
+            return new Song(source);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
 }

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,8 @@ import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Artist;
+import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.dialog.SaveTagProgressDialog;
 import org.oucho.musicplayer.fragments.adapters.AlbumListAdapter;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.loaders.AlbumLoader;
@@ -68,16 +71,10 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     private FastScrollRecyclerView mRecyclerView;
     private final Handler mHandler = new Handler();
 
-    private Artist mArtist = null;
+    private Artist mArtist;
 
 
     private List<Album> listeTitre;
-
-
-    private static final String PARAM_ARTIST_ID = "artist_id";
-    private static final String PARAM_ARTIST_NAME = "artist_name";
-    private static final String PARAM_ALBUM_COUNT = "album_count";
-    private static final String PARAM_TRACK_COUNT = "track_count";
 
 
     public static AlbumListFragment newInstance() {
@@ -91,10 +88,10 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         Log.d(TAG_LOG, "newInstance" + artist);
 
         AlbumListFragment fragment = new AlbumListFragment();
+
         Bundle args = new Bundle();
-        args.putLong(PARAM_ARTIST_ID, artist.getId());
-        args.putString(PARAM_ARTIST_NAME, artist.getName());
-        args.putInt(PARAM_TRACK_COUNT, artist.getTrackCount());
+        args.putParcelable("artist", artist);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -147,18 +144,13 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle args = getArguments();
+        Bundle bundle = getArguments();
         setHasOptionsMenu(true);
 
 
-        if (args != null) {
-            long id = args.getLong(PARAM_ARTIST_ID);
-            String name = args.getString(PARAM_ARTIST_NAME);
-            int albumCount = args.getInt(PARAM_ALBUM_COUNT);
-            int trackCount = args.getInt(PARAM_TRACK_COUNT);
-            mArtist = new Artist(id, name, albumCount, trackCount);
+        if (bundle != null) {
+            mArtist = bundle.getParcelable("artist");
         }
-
 
         mContext = getContext();
 
@@ -169,7 +161,11 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         setTri();
 
         reloadReceiver = new ReloadView();
-        IntentFilter filter = new IntentFilter("reload");
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("reload");
+        filter.addAction(ALBUM_TAG);
+        filter.addAction(REFRESH_TAG);
+
         mContext.registerReceiver(reloadReceiver, filter);
         isRegistered = true;
 
@@ -380,6 +376,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -387,7 +384,11 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         Log.i(TAG_LOG, "onResume()");
 
         if (!isRegistered) {
-            IntentFilter filter = new IntentFilter("reload");
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("reload");
+            filter.addAction(ALBUM_TAG);
+            filter.addAction(REFRESH_TAG);
+
             mContext.registerReceiver(reloadReceiver, filter);
             isRegistered = true;
         }
@@ -478,10 +479,70 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                 if (!MainActivity.getAlbumFragmentState())
                     showOverflowMenu(true);
 
+                mAdapter.notifyDataSetChanged();
             }
 
+            if (ALBUM_TAG.equals(receiveIntent)) {
+
+                new WriteTag(intent.getParcelableExtra("album"),
+                        intent.getStringExtra("albumName"),
+                        intent.getStringExtra("artistName"),
+                        intent.getStringExtra("genre"),
+                        intent.getStringExtra("year")
+                ).execute();
+
+            }
+
+            if (REFRESH_TAG.equals(receiveIntent)) {
+
+                load();
+            }
             // recharge la vue via Adapter
-            mAdapter.notifyDataSetChanged();
+
+        }
+    }
+
+
+    class WriteTag extends AsyncTask<String, Integer, Boolean> {
+
+
+        SaveTagProgressDialog newFragment;
+
+        String albumName;
+        String artistName;
+        String genre;
+        String year;
+
+        Album album;
+
+        WriteTag(Album album, String albumName, String artistName, String genre, String year) {
+            this.album = album;
+            this.albumName = albumName;
+            this.artistName = artistName;
+            this.genre = genre;
+            this.year = year;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... arg0) {
+            newFragment = new SaveTagProgressDialog();
+            Bundle bundle = new Bundle();
+            bundle.putString("type", "album");
+            bundle.putString("albumName", albumName);
+            bundle.putString("artistName", artistName);
+            bundle.putString("genre", genre);
+            bundle.putString("year", year);
+            bundle.putParcelable("album", album);
+
+            newFragment.setArguments(bundle);
+            newFragment.show(getFragmentManager(), "SaveTag");
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
         }
     }
 

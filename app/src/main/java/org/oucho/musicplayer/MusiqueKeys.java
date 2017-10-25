@@ -48,4 +48,12 @@ public interface MusiqueKeys {
     String STATE_PREFS_NAME = "PlayerState";
 
     Uri ARTWORK_URI = Uri.parse("content://media/external/audio/albumart");
+
+
+    String SONG_TAG = "org.oucho.musicplayer.SONG_TAG";
+    String ALBUM_TAG = "org.oucho.musicplayer.ALBUM_TAG";
+
+    String REFRESH_TAG = "org.oucho.musicplayer.REFRESH";
+
+
 }

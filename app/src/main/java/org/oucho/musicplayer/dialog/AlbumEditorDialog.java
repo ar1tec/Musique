@@ -3,6 +3,7 @@ package org.oucho.musicplayer.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,6 +32,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.oucho.musicplayer.MusiqueKeys.ALBUM_TAG;
+
 
 public class AlbumEditorDialog extends DialogFragment {
 
@@ -53,12 +56,10 @@ public class AlbumEditorDialog extends DialogFragment {
 
     public static AlbumEditorDialog newInstance(Album album) {
         AlbumEditorDialog fragment = new AlbumEditorDialog();
+
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, album.getId());
-        args.putString(ARG_NAME, album.getAlbumName());
-        args.putString(ARG_ARTIST, album.getArtistName());
-        args.putInt(ARG_YEAR, album.getYear());
-        args.putInt(ARG_TRACK_COUNT, album.getTrackCount());
+
+        args.putParcelable("album", album);
 
         fragment.setArguments(args);
         return fragment;
@@ -67,17 +68,11 @@ public class AlbumEditorDialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
+        Bundle bundle = getArguments();
 
-        if (args != null) {
+        if (bundle != null) {
 
-            long id = args.getLong(ARG_ID);
-            String album = args.getString(ARG_NAME);
-            String artist = args.getString(ARG_ARTIST);
-            int year = args.getInt(ARG_YEAR);
-            int trackCount = args.getInt(ARG_TRACK_COUNT);
-
-            mAlbum = new Album(id,album,artist, year,trackCount);
+            mAlbum = bundle.getParcelable("album");
 
             getLoaderManager().initLoader(0, null, mLoaderCallbacks);
         }
@@ -109,118 +104,22 @@ public class AlbumEditorDialog extends DialogFragment {
 
             dismiss();
 
-            String list[] = {mAlbumEditText.getText().toString(), mArtistEditText.getText().toString(), mGenreEditText.getText().toString(), mYearEditText.getText().toString()};
-            Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.setAction(ALBUM_TAG);
 
-            new tag(list).execute();
+            intent.putExtra("albumName", mAlbumEditText.getText().toString());
+            intent.putExtra("artistName", mArtistEditText.getText().toString());
+            intent.putExtra("year", mYearEditText.getText().toString());
+            intent.putExtra("genre", mGenreEditText.getText().toString());
 
+            intent.putExtra("album", mAlbum);
+            getContext().sendBroadcast(intent);
 
         }).setNegativeButton(android.R.string.cancel, (dialog, which) -> dismiss());
 
 
         return builder.create();
     }
-
-    private static class tag extends AsyncTask<Object,Object,Boolean> {
-
-        final String album;
-        final String artist;
-        final String genre;
-        final String year;
-
-        tag(String[] value) {
-            super();
-
-            this.album = value[0];
-            this.artist = value[1];
-            this.genre = value[2];
-            this.year = value[3];
-        }
-
-        @Override
-        protected Boolean doInBackground(Object... params) {
-            return saveTags(album, artist, genre, year);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-
-            if (aBoolean) {
-                Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_success, Toast.LENGTH_SHORT).show();
-
-            } else {
-                Toast.makeText(MusiqueApplication.getInstance(), R.string.tags_edition_failed, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private static boolean saveTags(String album, String artist, String genre, String year) {
-
-        boolean success = false;
-
-        for (int i = 0; i < mSongList.size(); i++) {
-
-
-            try {
-                File song = new File(mSongList.get(i).getPath());
-
-                if (StorageHelper.isWritable(song)) {
-
-                    AudioFile audioFile = AudioFileIO.read(song);
-                    Tag tag = audioFile.getTag();
-                    tag.setField(FieldKey.ARTIST, artist);
-                    tag.setField(FieldKey.ALBUM, album);
-                    tag.setField(FieldKey.GENRE, genre);
-                    tag.setField(FieldKey.YEAR, year);
-
-                    audioFile.commit();
-
-                    success = true;
-
-                } else {
-
-                    // TODO VERSION.SDK_INT >= 26
-                    //AudioFileIO.writeAs(audioFile, MusiqueApplication.getInstance().getCacheDir().getPath() + "/temp");
-
-                    String filename = new File(mSongList.get(i).getPath()).getName();
-                    String pathCache = MusiqueApplication.getInstance().getCacheDir().getPath() + "/";
-                    String pathSong = new File(mSongList.get(i).getPath()).getParent();
-
-                    File file = new File(pathCache + filename);
-
-                    if (file.exists())
-                        StorageHelper.deleteFile(file);
-
-                    StorageHelper.copyFile(song, MusiqueApplication.getInstance().getCacheDir(), false);
-
-                    AudioFile audioFile = AudioFileIO.read(file);
-                    Tag tag = audioFile.getTag();
-
-                    tag.setField(FieldKey.ARTIST, artist);
-                    tag.setField(FieldKey.ALBUM, album);
-                    tag.setField(FieldKey.GENRE, genre);
-                    tag.setField(FieldKey.YEAR, year);
-
-                    audioFile.commit();
-
-                    File target = new File(pathSong);
-
-                    if (StorageHelper.copyFile(file, target, true)) {
-                        success = true;
-                        StorageHelper.deleteFile(file);
-                    }
-                }
-
-
-            } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
-            }
-        }
-
-        return success;
-    }
-
 
 
     private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Song>>() {
