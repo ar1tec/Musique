@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -11,7 +12,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -44,9 +44,9 @@ import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.search.SearchActivity;
-import org.oucho.musicplayer.view.CustomLayoutManager;
-import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.tools.LockableViewPager;
+import org.oucho.musicplayer.utils.PlaylistsUtils;
+import org.oucho.musicplayer.view.CustomLayoutManager;
 import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
@@ -573,18 +573,19 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     class WriteTag extends AsyncTask<String, Integer, Boolean> {
 
 
         SaveTagProgressDialog newFragment;
 
-        String title;
-        String albumName;
-        String artistName;
-        String genre;
-        String track;
+        final String title;
+        final String albumName;
+        final String artistName;
+        final String genre;
+        final String track;
 
-        Song song;
+        final Song song;
 
         WriteTag(Song song, String title, String albumName, String artistName, String genre, String track) {
             this.title = title;

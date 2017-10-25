@@ -12,8 +12,6 @@ public class Album implements Parcelable {
     private int year;
     private int trackCount;
 
-    public Album() { }
-
     public Album(long id, String albumName, String artistName, int year, int trackCount) {
         super();
         this.id = id;
@@ -57,7 +55,7 @@ public class Album implements Parcelable {
         dest.writeInt(this.trackCount);
     }
 
-    public Album(Parcel in) {
+    private Album(Parcel in) {
         this.id = in.readLong();
         this.albumName = in.readString();
         this.artistName = in.readString();
@@ -65,6 +63,7 @@ public class Album implements Parcelable {
         this.trackCount = in.readInt();
     }
 
+    @SuppressWarnings("unused")
     public static final Parcelable.Creator<Album> CREATOR = new Parcelable.Creator<Album>() {
         @Override
         public Album createFromParcel(Parcel source) {

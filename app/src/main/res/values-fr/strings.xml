@@ -52,7 +52,6 @@
     <string name="search">Rechercher</string>
     <string name="edit_tags">Editer données</string>
     <string name="action_edit_tags">Editer données</string>
-    <string name="tags_edition_failed">L\'édition des données a échoué</string>
     <string name="year">Année</string>
 
     <string name="delete">supprimer</string>
@@ -117,7 +116,6 @@
     <string name="no_result">aucun résultat</string>
 
     <string name="action_play_album">Lecure</string>
-    <string name="tags_edition_success">Modification des fichiers effectué</string>
     <string name="tags_edition">Modification en cours</string>
     <string name="permission_write_sd_externe">Sélectionner la carte SD externe pour autoriser l\'écriture, nécessaire depuis android 5.0 et plus.</string>
 

@@ -49,13 +49,14 @@ public class Artist implements Parcelable {
         dest.writeInt(this.trackCount);
     }
 
-    public Artist(Parcel in) {
+    private Artist(Parcel in) {
         this.id = in.readLong();
         this.name = in.readString();
         this.albumCount = in.readInt();
         this.trackCount = in.readInt();
     }
 
+    @SuppressWarnings("unused")
     public static final Parcelable.Creator<Artist> CREATOR = new Parcelable.Creator<Artist>() {
         @Override
         public Artist createFromParcel(Parcel source) {

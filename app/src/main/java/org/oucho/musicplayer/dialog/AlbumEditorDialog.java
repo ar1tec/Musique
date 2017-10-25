@@ -4,7 +4,6 @@ package org.oucho.musicplayer.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -12,23 +11,14 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
-import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
-import org.oucho.musicplayer.utils.StorageHelper;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,15 +27,7 @@ import static org.oucho.musicplayer.MusiqueKeys.ALBUM_TAG;
 
 public class AlbumEditorDialog extends DialogFragment {
 
-    private static List<Song> mSongList = new ArrayList<>();
-
     private static final String TAG = "AlbumEditorDialog";
-
-    private static final String ARG_ID = "id";
-    private static final String ARG_NAME = "name";
-    private static final String ARG_ARTIST = "artist";
-    private static final String ARG_YEAR = "year";
-    private static final String ARG_TRACK_COUNT = "track_count";
 
     private static Album mAlbum;
 
@@ -136,9 +118,7 @@ public class AlbumEditorDialog extends DialogFragment {
         @Override
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
 
-            mSongList = songList;
-
-            mGenreEditText.setText(mSongList.get(0).getGenre());
+            mGenreEditText.setText(songList.get(0).getGenre());
         }
 
         @Override

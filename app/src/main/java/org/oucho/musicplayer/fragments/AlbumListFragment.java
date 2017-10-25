@@ -1,5 +1,6 @@
 package org.oucho.musicplayer.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,20 +34,19 @@ import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Artist;
-import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.dialog.AlbumEditorDialog;
+import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SaveTagProgressDialog;
 import org.oucho.musicplayer.fragments.adapters.AlbumListAdapter;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.loaders.AlbumLoader;
 import org.oucho.musicplayer.fragments.loaders.SortOrder;
-import org.oucho.musicplayer.db.model.Album;
-import org.oucho.musicplayer.dialog.AlbumEditorDialog;
-import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
-import org.oucho.musicplayer.view.CustomGridLayoutManager;
+import org.oucho.musicplayer.tools.LockableViewPager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.utils.PrefUtils;
-import org.oucho.musicplayer.tools.LockableViewPager;
+import org.oucho.musicplayer.view.CustomGridLayoutManager;
 import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
 
 import java.util.List;
@@ -503,17 +503,18 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     class WriteTag extends AsyncTask<String, Integer, Boolean> {
 
 
         SaveTagProgressDialog newFragment;
 
-        String albumName;
-        String artistName;
-        String genre;
-        String year;
+        final String albumName;
+        final String artistName;
+        final String genre;
+        final String year;
 
-        Album album;
+        final Album album;
 
         WriteTag(Album album, String albumName, String artistName, String genre, String year) {
             this.album = album;

@@ -103,7 +103,7 @@ public class Song implements Parcelable {
         dest.writeString(this.path);
     }
 
-    public Song(Parcel in) {
+    private Song(Parcel in) {
         this.id = in.readLong();
         this.title = in.readString();
         this.artist = in.readString();
@@ -117,6 +117,7 @@ public class Song implements Parcelable {
         this.path = in.readString();
     }
 
+    @SuppressWarnings("unused")
     public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
         @Override
         public Song createFromParcel(Parcel source) {

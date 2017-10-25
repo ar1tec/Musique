@@ -52,8 +52,6 @@
     <string name="search">Search</string>
     <string name="edit_tags">Edit data</string>
     <string name="action_edit_tags">Edit data</string>
-    <string name="tags_edition_failed">Data editing failed</string>
-    <string name="tags_edition_success">Data editing success</string>
     <string name="tags_edition">Modification in progress</string>
 
     <string name="year">Year</string>

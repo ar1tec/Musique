@@ -28,7 +28,6 @@ import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.fragments.AlbumListFragment;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.utils.StorageHelper;
 
@@ -58,12 +57,12 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
 
     private AlertDialog controlDialog;
 
-    String title;
-    String albumName;
-    String artistName;
-    String track;
-    String genre;
-    String year;
+    private String title;
+    private String albumName;
+    private String artistName;
+    private String track;
+    private String genre;
+    private String year;
 
 
     @Override
@@ -133,7 +132,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
 
         @Override
         protected Boolean doInBackground(String... arg0) {
-            boolean success = false;
+            boolean success;
 
             if (isAlbum) {
 
@@ -156,9 +155,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                 if (StorageHelper.isWritable(song)) {
 
                     try {
-                        getActivity().runOnUiThread(() -> {
-                            file_name.setText(mSong.getPath());
-                        });
+                        getActivity().runOnUiThread(() -> file_name.setText(mSong.getPath()));
                     } catch (NullPointerException ignored) {}
 
                     AudioFile audioFile = AudioFileIO.read(song);
@@ -173,9 +170,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                     success = true;
 
                     try {
-                        getActivity().runOnUiThread(() -> {
-                            progressBar.setProgress(100);
-                        });
+                        getActivity().runOnUiThread(() -> progressBar.setProgress(100));
                     } catch (NullPointerException ignored) {}
 
                 } else {
@@ -184,9 +179,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                     //AudioFileIO.writeAs(audioFile, MusiqueApplication.getInstance().getCacheDir().getPath() + "/temp");
 
                     try {
-                        getActivity().runOnUiThread(() -> {
-                            file_name.setText(mSong.getPath());
-                        });
+                        getActivity().runOnUiThread(() -> file_name.setText(mSong.getPath()));
                     } catch (NullPointerException ignored) {}
 
                     String filename = new File(mSong.getPath()).getName();
@@ -201,9 +194,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                     StorageHelper.copyFile(song, MusiqueApplication.getInstance().getCacheDir(), false);
 
                     try {
-                        getActivity().runOnUiThread(() -> {
-                            progressBar.setProgress(50);
-                        });
+                        getActivity().runOnUiThread(() -> progressBar.setProgress(50));
                     } catch (NullPointerException ignored) {}
 
                     AudioFile audioFile = AudioFileIO.read(file);
@@ -224,9 +215,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                     }
 
                     try {
-                        getActivity().runOnUiThread(() -> {
-                            progressBar.setProgress(100);
-                        });
+                        getActivity().runOnUiThread(() -> progressBar.setProgress(100));
                     } catch (NullPointerException ignored) {}
 
                 }
@@ -263,9 +252,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
 
 
                         try {
-                            getActivity().runOnUiThread(() -> {
-                                file_name.setText(mSongList.get(j).getPath());
-                            });
+                            getActivity().runOnUiThread(() -> file_name.setText(mSongList.get(j).getPath()));
                         } catch (NullPointerException ignored) {}
 
                         AudioFile audioFile = AudioFileIO.read(song);
@@ -280,9 +267,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                         float tc = step * totalCount;
 
                         try {
-                            getActivity().runOnUiThread(() -> {
-                                progressBar.setProgress((int) tc);
-                            });
+                            getActivity().runOnUiThread(() -> progressBar.setProgress((int) tc));
                         } catch (NullPointerException ignored) {}
 
                         success = true;
@@ -293,9 +278,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                         //AudioFileIO.writeAs(audioFile, MusiqueApplication.getInstance().getCacheDir().getPath() + "/temp");
 
                         try {
-                            getActivity().runOnUiThread(() -> {
-                                file_name.setText(mSongList.get(j).getPath());
-                            });
+                            getActivity().runOnUiThread(() -> file_name.setText(mSongList.get(j).getPath()));
                         } catch (NullPointerException ignored) {}
 
 
@@ -315,9 +298,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                         float tc1 = (step * totalCount) - (step/2);
 
                         try {
-                            getActivity().runOnUiThread(() -> {
-                                progressBar.setProgress((int) tc1);
-                            });
+                            getActivity().runOnUiThread(() -> progressBar.setProgress((int) tc1));
                         } catch (NullPointerException ignored) {}
 
 
@@ -341,9 +322,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                         float tc2 = (step * totalCount);
 
                         try {
-                            getActivity().runOnUiThread(() -> {
-                                progressBar.setProgress((int) tc2);
-                            });
+                            getActivity().runOnUiThread(() -> progressBar.setProgress((int) tc2));
                         } catch (NullPointerException ignored) {}
                     }
 
