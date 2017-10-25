@@ -45,7 +45,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class DirectoryPicker extends BottomSheetDialogFragment {
 
@@ -198,20 +200,23 @@ public class DirectoryPicker extends BottomSheetDialogFragment {
                 folders.add(0, parent);
             }
 
-           ExtensionsFilter imageFilter = new ExtensionsFilter(new String[] {".png", ".jpg", ".bmp"});
-
-           File[] images = dir.listFiles(imageFilter);
-
+            ExtensionsFilter imageFilter = new ExtensionsFilter(new String[] {".png", ".jpg", ".bmp"});
+            File[] images = dir.listFiles(imageFilter);
             File[] files = dir.listFiles();
 
             if (files != null && files.length > 0) {
-
                 folders.addAll(new ArrayList<>(Arrays.asList(files)));
-                sort();
-
                 folders.addAll(new ArrayList<>(Arrays.asList(images)));
-
             }
+
+            // remove duplicates
+            Set<File> hs = new HashSet<>();
+            hs.addAll(folders);
+            folders.clear();
+            folders.addAll(hs);
+
+            sort();
+
             currentFolderPath.setText(dir.getAbsolutePath());
             adapter.notifyDataSetChanged();
         }
