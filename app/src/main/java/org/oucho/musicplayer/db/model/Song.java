@@ -46,7 +46,6 @@ public class Song implements Parcelable {
     }
 
     public String getTitle() {
-        Log.d(TAG, "getTitle() = " + title);
         return title;
     }
 
