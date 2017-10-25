@@ -155,7 +155,7 @@ public class StorageHelper {
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static DocumentFile getDocumentFile(File file) {
+    public static DocumentFile getDocumentFile(File file) {
         Uri treeUri;
 
         String baseFolder;
@@ -191,6 +191,58 @@ public class StorageHelper {
                 if (i < parts.length - 1) {
                     return null;
                 } else {
+                    nextDocument = document.createFile("image", parts[i]);
+                }
+            }
+            document = nextDocument;
+        }
+
+        return document;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public static DocumentFile getDocumentFile(Context context, File file, boolean isDirectory, boolean createDirectories) {
+        Uri treeUri;
+
+        String baseFolder;
+
+        String fullPath;
+        try {
+            fullPath = file.getCanonicalPath();
+        } catch (IOException e) {
+            return null;
+        }
+
+        treeUri = PreferenceUtil.getTreeUris();
+
+        baseFolder = getFullPathFromTreeUri(context, treeUri);
+
+
+        if (baseFolder == null) {
+            return null;
+        }
+
+        String relativePath = fullPath.substring(baseFolder.length() + 1);
+
+        DocumentFile document = DocumentFile.fromTreeUri(context, treeUri);
+
+        String[] parts = relativePath.split("\\/");
+        for (int i = 0; i < parts.length; i++) {
+            DocumentFile nextDocument = document.findFile(parts[i]);
+
+            if (nextDocument == null) {
+                if (i < parts.length - 1) {
+                    if (createDirectories) {
+                        nextDocument = document.createDirectory(parts[i]);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                else if (isDirectory) {
+                    nextDocument = document.createDirectory(parts[i]);
+                }
+                else {
                     nextDocument = document.createFile("image", parts[i]);
                 }
             }
@@ -304,5 +356,20 @@ public class StorageHelper {
         File[] storages = ContextCompat.getExternalFilesDirs(context, null);
         return storages.length > 1 && storages[0] != null && storages[1] != null;
 
+    }
+
+
+    public static String getSdcardPath(Context context) {
+        for(File file : context.getExternalFilesDirs("external")) {
+            if (file != null && !file.equals(context.getExternalFilesDir("external"))) {
+                int index = file.getAbsolutePath().lastIndexOf("/Android/data");
+
+                if (index < 0)
+                    Log.w(TAG, "Unexpected external file dir: " + file.getAbsolutePath());
+                else
+                    return new File(file.getAbsolutePath().substring(0, index)).getPath();
+            }
+        }
+        return null;
     }
 }

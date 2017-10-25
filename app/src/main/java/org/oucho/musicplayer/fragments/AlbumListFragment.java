@@ -488,17 +488,15 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         intent.getStringExtra("albumName"),
                         intent.getStringExtra("artistName"),
                         intent.getStringExtra("genre"),
-                        intent.getStringExtra("year")
+                        intent.getStringExtra("year"),
+                        intent.getStringExtra("cover")
                 ).execute();
 
             }
 
             if (REFRESH_TAG.equals(receiveIntent)) {
-
                 load();
             }
-            // recharge la vue via Adapter
-
         }
     }
 
@@ -513,15 +511,17 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         final String artistName;
         final String genre;
         final String year;
+        final String cover;
 
         final Album album;
 
-        WriteTag(Album album, String albumName, String artistName, String genre, String year) {
+        WriteTag(Album album, String albumName, String artistName, String genre, String year, String cover) {
             this.album = album;
             this.albumName = albumName;
             this.artistName = artistName;
             this.genre = genre;
             this.year = year;
+            this.cover = cover;
         }
 
         @Override
@@ -533,6 +533,8 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             bundle.putString("artistName", artistName);
             bundle.putString("genre", genre);
             bundle.putString("year", year);
+            bundle.putString("cover", cover);
+
             bundle.putParcelable("album", album);
 
             newFragment.setArguments(bundle);

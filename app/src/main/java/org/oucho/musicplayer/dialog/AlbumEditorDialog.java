@@ -4,6 +4,8 @@ package org.oucho.musicplayer.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -11,15 +13,21 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.Tag;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
+import org.oucho.musicplayer.utils.BitmapHelper;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 
 import static org.oucho.musicplayer.MusiqueKeys.ALBUM_TAG;
@@ -31,10 +39,13 @@ public class AlbumEditorDialog extends DialogFragment {
 
     private static Album mAlbum;
 
+    private ImageView mArtwork;
     private EditText mAlbumEditText;
     private EditText mArtistEditText;
     private EditText mGenreEditText;
     private EditText mYearEditText;
+
+    private String newArtwork = null;
 
     public static AlbumEditorDialog newInstance(Album album) {
         AlbumEditorDialog fragment = new AlbumEditorDialog();
@@ -69,9 +80,11 @@ public class AlbumEditorDialog extends DialogFragment {
         builder.setTitle(R.string.edit_tags);
 
         @SuppressLint("InflateParams")
-        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_album_tag_editor, null);
+        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_tag_album_editor, null);
         builder.setView(dialogView);
 
+        mArtwork = dialogView.findViewById(R.id.artwork);
+        mArtwork.setOnClickListener(mOnClickListener);
         mAlbumEditText = dialogView.findViewById(R.id.album);
         mArtistEditText = dialogView.findViewById(R.id.artist);
         mGenreEditText = dialogView.findViewById(R.id.genre);
@@ -80,7 +93,6 @@ public class AlbumEditorDialog extends DialogFragment {
         mAlbumEditText.setText(mAlbum.getAlbumName());
         mArtistEditText.setText(mAlbum.getArtistName());
         mYearEditText.setText(String.valueOf(mAlbum.getYear()));
-
 
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
 
@@ -93,6 +105,7 @@ public class AlbumEditorDialog extends DialogFragment {
             intent.putExtra("artistName", mArtistEditText.getText().toString());
             intent.putExtra("year", mYearEditText.getText().toString());
             intent.putExtra("genre", mGenreEditText.getText().toString());
+            intent.putExtra("cover", newArtwork);
 
             intent.putExtra("album", mAlbum);
             getContext().sendBroadcast(intent);
@@ -118,12 +131,59 @@ public class AlbumEditorDialog extends DialogFragment {
         @Override
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
 
+            try {
+                File file = new File(songList.get(0).getPath());
+
+                AudioFile f = AudioFileIO.read(file);
+
+                Tag tag = f.getTag();
+
+                mArtwork.setImageBitmap(BitmapHelper.byteToBitmap(tag.getFirstArtwork().getBinaryData()));
+
+            } catch (Exception ignore) {}
+
+
             mGenreEditText.setText(songList.get(0).getGenre());
+
         }
 
         @Override
         public void onLoaderReset(Loader<List<Song>> loader) {
             //  Auto-generated method stub
+        }
+    };
+
+
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+
+
+            switch (v.getId()) {
+                case R.id.artwork:
+                    DirectoryPicker.with(getFragmentManager())
+                            .onImageSelected(path -> {
+
+                                Log.d(TAG, "result = " + path);
+
+                                File imgFile = new  File(path);
+
+                                if(imgFile.exists()){
+
+                                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+                                    mArtwork.setImageBitmap(myBitmap);
+
+                                    newArtwork = path;
+                                }
+
+                            }).show();
+                    break;
+
+                default:
+                    break;
+            }
         }
     };
 

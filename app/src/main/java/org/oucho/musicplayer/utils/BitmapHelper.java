@@ -2,12 +2,17 @@ package org.oucho.musicplayer.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class BitmapHelper {
+
+    private static final String TAG = "BitmapHelper";
 
     private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
@@ -43,5 +48,41 @@ public class BitmapHelper {
         return BitmapFactory.decodeStream(inputStream, null, options);
     }
 
+
+    // convert from byte array to bitmap
+    public static Bitmap byteToBitmap(byte[] image) {
+
+        try {
+            return BitmapFactory.decodeByteArray(image, 0, image.length);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+
+    // convert from bitmap to string
+    public static String bitmapToString(Bitmap image) {
+
+        byte[] two = getBytes(image);
+
+        try {
+            return Base64.encodeToString(two, Base64.DEFAULT);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    // convert from bitmap to byte array
+    public static byte[] getBytes(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        try {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            return stream.toByteArray();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "Bitmap to byte[] conversion: " + e);
+            return null;
+        }
+    }
 
 }

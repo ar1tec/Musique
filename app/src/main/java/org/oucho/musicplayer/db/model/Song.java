@@ -3,7 +3,6 @@ package org.oucho.musicplayer.db.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.util.Log;
 
 public class Song implements Parcelable {
 

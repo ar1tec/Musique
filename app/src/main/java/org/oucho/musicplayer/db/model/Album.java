@@ -11,14 +11,17 @@ public class Album implements Parcelable {
     private String artistName;
     private int year;
     private int trackCount;
+    private String cover;
 
-    public Album(long id, String albumName, String artistName, int year, int trackCount) {
+
+    public Album(long id, String albumName, String artistName, int year, int trackCount, String cover) {
         super();
         this.id = id;
         this.albumName = albumName == null ? MediaStore.UNKNOWN_STRING : albumName;
         this.artistName = artistName == null ? MediaStore.UNKNOWN_STRING : artistName;
         this.year = year;
         this.trackCount = trackCount;
+        this.cover = cover;
     }
 
     public long getId() {
@@ -41,6 +44,10 @@ public class Album implements Parcelable {
         return trackCount;
     }
 
+    public String getCover() {
+        return cover;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -53,6 +60,7 @@ public class Album implements Parcelable {
         dest.writeString(this.artistName);
         dest.writeInt(this.year);
         dest.writeInt(this.trackCount);
+        dest.writeString(this.cover);
     }
 
     private Album(Parcel in) {
@@ -61,6 +69,7 @@ public class Album implements Parcelable {
         this.artistName = in.readString();
         this.year = in.readInt();
         this.trackCount = in.readInt();
+        this.cover = in.readString();
     }
 
     @SuppressWarnings("unused")

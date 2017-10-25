@@ -81,8 +81,7 @@ public class AlbumLoader extends BaseLoader<List<Album>> {
                 int year = cursor.getInt(yearCol);
                 int count = cursor.getInt(songsNbCol);
 
-
-                mAlbumList.add(new Album(id, name, artist, year, count));
+                mAlbumList.add(new Album(id, name, artist, year, count, null));
 
             } while (cursor.moveToNext());
 

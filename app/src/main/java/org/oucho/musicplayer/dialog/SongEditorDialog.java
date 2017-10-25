@@ -19,8 +19,6 @@ public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
 
     private static final String TAG = "SongEditorDialog";
 
-
-
     private static Song mSong;
 
     private EditText mTitleEditText;
@@ -28,7 +26,6 @@ public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
     private EditText mAlbumEditText;
     private EditText mTrackEditText;
     private EditText mGenreEditText;
-
 
     public static SongEditorDialog newInstance(Song song) {
         SongEditorDialog fragment = new SongEditorDialog();
@@ -59,7 +56,7 @@ public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
         builder.setTitle(R.string.edit_tags);
 
         @SuppressLint("InflateParams")
-        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_song_tag_editor, null);
+        View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_tag_song_editor, null);
         builder.setView(dialogView);
 
         mTitleEditText = dialogView.findViewById(R.id.title);

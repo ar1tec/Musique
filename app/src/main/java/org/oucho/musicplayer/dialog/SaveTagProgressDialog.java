@@ -2,7 +2,12 @@ package org.oucho.musicplayer.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,16 +24,21 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.images.Artwork;
+import org.jaudiotagger.tag.images.ArtworkFactory;
 import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
+import org.oucho.musicplayer.utils.BitmapHelper;
 import org.oucho.musicplayer.utils.StorageHelper;
 
 import java.io.File;
@@ -63,6 +73,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
     private String track;
     private String genre;
     private String year;
+    private String cover;
 
 
     @Override
@@ -83,6 +94,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
             artistName = bundle.getString("artistName");
             genre = bundle.getString("genre");
             year = bundle.getString("year");
+            cover = bundle.getString("cover");
 
             getLoaderManager().initLoader(0, null, mLoaderCallbacks);
 
@@ -97,8 +109,6 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
             artistName = bundle.getString("artistName");
             track = bundle.getString("track");
             genre = bundle.getString("genre");
-
-
 
         }
     }
@@ -138,6 +148,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
 
                 success = saveTagsAlbum();
 
+
             } else {
                 success = saveTags();
             }
@@ -165,6 +176,13 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                     tag.setField(FieldKey.ALBUM, albumName);
                     tag.setField(FieldKey.TRACK, track);
                     tag.setField(FieldKey.GENRE, genre);
+
+                    if (cover != null) {
+                        File art = new File(cover);
+                        Artwork cover = ArtworkFactory.createArtworkFromFile(art);
+                        tag.setField(cover);
+                    }
+
                     audioFile.commit();
 
                     success = true;
@@ -205,6 +223,13 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                     tag.setField(FieldKey.ALBUM, albumName);
                     tag.setField(FieldKey.TRACK, track);
                     tag.setField(FieldKey.GENRE, genre);
+
+                    if (cover != null) {
+                        File art = new File(cover);
+                        Artwork cover = ArtworkFactory.createArtworkFromFile(art);
+                        tag.setField(cover);
+                    }
+
                     audioFile.commit();
 
                     File target = new File(pathSong);
@@ -223,7 +248,6 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
-
 
             return success;
 
@@ -262,6 +286,12 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                         tag.setField(FieldKey.GENRE, genre);
                         tag.setField(FieldKey.YEAR, year);
 
+                        if (cover != null) {
+                            File art = new File(cover);
+                            Artwork cover = ArtworkFactory.createArtworkFromFile(art);
+                            tag.setField(cover);
+                        }
+
                         audioFile.commit();
 
                         float tc = step * totalCount;
@@ -291,8 +321,6 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                         if (file.exists())
                             StorageHelper.deleteFile(file);
 
-
-
                         StorageHelper.copyFile(song, MusiqueApplication.getInstance().getCacheDir(), false);
 
                         float tc1 = (step * totalCount) - (step/2);
@@ -310,7 +338,15 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                         tag.setField(FieldKey.GENRE, genre);
                         tag.setField(FieldKey.YEAR, year);
 
+                        if (cover != null) {
+                            File art = new File(cover);
+                            Artwork cover = ArtworkFactory.createArtworkFromFile(art);
+                            tag.setField(cover);
+                        }
+
                         audioFile.commit();
+
+
 
                         File target = new File(pathSong);
 
@@ -324,12 +360,21 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                         try {
                             getActivity().runOnUiThread(() -> progressBar.setProgress((int) tc2));
                         } catch (NullPointerException ignored) {}
+
                     }
 
 
                 } catch (Exception e) {
                     Log.e(TAG, Log.getStackTraceString(e));
                 }
+
+            }
+
+            if (cover != null) {
+                getContext().getContentResolver().delete(ContentUris.withAppendedId(ARTWORK_URI, mAlbum.getId()), null, null);
+
+                Uri uri = ContentUris.withAppendedId(ARTWORK_URI, mAlbum.getId());
+                Picasso.with(getActivity()).invalidate(uri);
             }
 
             return success;
@@ -342,7 +387,6 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
             onStop();
         }
     }
-
 
     @Override
     public void onStop() {
@@ -395,9 +439,5 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
         @Override
         public void onLoaderReset(Loader<List<Song>> loader) {}
     };
-
-
-
-
 
 }
