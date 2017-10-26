@@ -565,6 +565,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             if (REFRESH_TAG.equals(receiveIntent)) {
 
                 MainActivity.setAlbumFragmentState(false);
+                LockableViewPager.setSwipeLocked(false);
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
