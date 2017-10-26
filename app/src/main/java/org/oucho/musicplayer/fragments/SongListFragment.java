@@ -39,7 +39,7 @@ import java.util.List;
 
 public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
-    private static final String TAG_LOG = "Song List Fragment";
+    private static final String TAG_LOG = "SongListFragment";
 
     private Context mContext;
     private MainActivity mActivity;
@@ -53,6 +53,8 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
         @Override
         public Loader<List<Song>> onCreateLoader(int id, Bundle args) {
+
+            Log.i(TAG_LOG, "Loader");
             SongLoader loader = new SongLoader(getActivity());
 
             loader.setSortOrder(PrefUtils.getInstance().getSongSortOrder());
@@ -61,6 +63,8 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
         @Override
         public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
+            Log.i(TAG_LOG, "onLoadFinished");
+
             populateAdapter(songList);
 
         }

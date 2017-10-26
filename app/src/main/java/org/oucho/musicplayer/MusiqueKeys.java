@@ -55,5 +55,5 @@ public interface MusiqueKeys {
 
     String REFRESH_TAG = "org.oucho.musicplayer.REFRESH";
 
-
+    String SET_TITLE = "org.oucho.musicplayer.SET_TITLE";
 }

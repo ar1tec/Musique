@@ -165,6 +165,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         filter.addAction("reload");
         filter.addAction(ALBUM_TAG);
         filter.addAction(REFRESH_TAG);
+        filter.addAction(SET_TITLE);
 
         mContext.registerReceiver(reloadReceiver, filter);
         isRegistered = true;
@@ -388,6 +389,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             filter.addAction("reload");
             filter.addAction(ALBUM_TAG);
             filter.addAction(REFRESH_TAG);
+            filter.addAction(SET_TITLE);
 
             mContext.registerReceiver(reloadReceiver, filter);
             isRegistered = true;
@@ -430,6 +432,8 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                         shadow.putExtra("boolean", true);
                         mContext.sendBroadcast(shadow);
 
+                        setTitre();
+
                         return true;
                     }
 
@@ -471,6 +475,8 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
             String receiveIntent = intent.getAction();
 
+            Log.i(TAG_LOG, "onReceive = " + receiveIntent);
+
             if ("reload".equals(receiveIntent)) {
                 if (MainActivity.getViewID() != R.id.fragment_song_layout)
                     setUserVisibleHint(true);
@@ -481,6 +487,9 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                 mAdapter.notifyDataSetChanged();
             }
+
+            if (SET_TITLE.equals(receiveIntent))
+                setTitre();
 
             if (ALBUM_TAG.equals(receiveIntent)) {
 
@@ -549,6 +558,30 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         }
     }
 
+    private void setTitre() {
+        final int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
+
+        if (!MainActivity.getAlbumFragmentState()) {
+
+            if (android.os.Build.VERSION.SDK_INT >= 24) {
+                getActivity().setTitle(Html.fromHtml("<font>"
+                        + titre
+                        + " </font> <small> <font color='" + couleurTitre + "'>"
+                        + tri
+                        + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+
+            } else {
+
+                //noinspection deprecation
+                getActivity().setTitle(Html.fromHtml("<font>"
+                        + titre
+                        + " </font> <small> <font color='" + couleurTitre + "'>"
+                        + tri
+                        + "</small></font>"));
+            }
+        }
+
+    }
 
     @Override
     public void setUserVisibleHint(boolean visible){
@@ -569,24 +602,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
                 MainActivity.setViewID(R.id.fragment_album_list_layout);
 
-                final int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
-
-                if (android.os.Build.VERSION.SDK_INT >= 24) {
-                    getActivity().setTitle(Html.fromHtml("<font>"
-                            + titre
-                            + " </font> <small> <font color='" + couleurTitre + "'>"
-                            + tri
-                            + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
-
-                } else {
-
-                    //noinspection deprecation
-                    getActivity().setTitle(Html.fromHtml("<font>"
-                            + titre
-                            + " </font> <small> <font color='" + couleurTitre + "'>"
-                            + tri
-                            + "</small></font>"));
-                }
+                setTitre();
 
 
             } else {
@@ -596,33 +612,9 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
                 run = true;
 
                 mHandler.postDelayed(() -> {
-                    int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
 
-                    // Actions to do after xx seconds
-                    if (android.os.Build.VERSION.SDK_INT >= 24) {
+                    setTitre();
 
-
-                        getActivity().setTitle(Html.fromHtml("<font>"
-                                + titre
-                                + " </font> <small> <font color='" + couleurTitre + "'>"
-                                + tri
-                                + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
-                    } else {
-
-                        try {
-                            //noinspection deprecation
-                            getActivity().setTitle(Html.fromHtml("<font>"
-                                    + titre
-                                    + " </font> <small> <font color='" + couleurTitre + "'"
-                                    + tri
-                                    + "</small></font>"));
-                        } catch (NullPointerException ignore) {
-                            // Plantage si sorti de l'application moins
-                            // d'une seconde après son ouverture
-                            Log.w(TAG_LOG, "Sortie trop rapide après le lancmenet de l'application");
-                        }
-
-                    }
                 }, 1000);
             }
         }

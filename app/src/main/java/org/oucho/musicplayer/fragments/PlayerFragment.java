@@ -334,7 +334,13 @@ public class PlayerFragment extends BaseFragment
                     intent.setAction("reload");
                     mContext.sendBroadcast(intent);
 
-                    if (!MainActivity.getAlbumFragmentState()) {
+                    if (MainActivity.getAlbumFragmentState()) {
+
+                        Intent titreAlbum = new Intent();
+                        titreAlbum.setAction(SET_TITLE);
+                        mContext.sendBroadcast(titreAlbum);
+
+                    } else {
                         Intent shadow = new Intent();
                         shadow.setAction(INTENT_TOOLBAR_SHADOW);
                         shadow.putExtra("boolean", true);

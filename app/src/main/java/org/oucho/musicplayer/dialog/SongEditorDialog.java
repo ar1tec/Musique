@@ -10,9 +10,16 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.utils.BitmapHelper;
+
+import java.io.File;
 
 
 public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
@@ -69,8 +76,14 @@ public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
         mArtistEditText.setText(mSong.getArtist());
         mAlbumEditText.setText(mSong.getAlbum());
         mTrackEditText.setText(String.valueOf(mSong.getTrackNumber()));
-        mGenreEditText.setText(mSong.getGenre());
 
+
+        try {
+            File file = new File(mSong.getPath());
+            AudioFile f = AudioFileIO.read(file);
+            Tag tag = f.getTag();
+            mGenreEditText.setText(tag.getFirst(FieldKey.GENRE));
+        } catch (Exception ignore) {}
 
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
 

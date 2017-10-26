@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
@@ -140,10 +141,12 @@ public class AlbumEditorDialog extends DialogFragment {
 
                 mArtwork.setImageBitmap(BitmapHelper.byteToBitmap(tag.getFirstArtwork().getBinaryData()));
 
+                mGenreEditText.setText(tag.getFirst(FieldKey.GENRE));
+
             } catch (Exception ignore) {}
 
 
-            mGenreEditText.setText(songList.get(0).getGenre());
+
 
         }
 

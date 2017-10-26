@@ -160,6 +160,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         filter.addAction(INTENT_STATE);
         filter.addAction(SONG_TAG);
         filter.addAction(REFRESH_TAG);
+        filter.addAction(SET_TITLE);
 
         mContext.registerReceiver(Receiver, filter);
         isRegistered = true;
@@ -444,6 +445,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             IntentFilter filter = new IntentFilter();
             filter.addAction(INTENT_STATE);
             filter.addAction(SONG_TAG);
+            filter.addAction(REFRESH_TAG);
+            filter.addAction(SET_TITLE);
 
             mContext.registerReceiver(Receiver, filter);
             isRegistered = true;
@@ -461,6 +464,8 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             getView().setOnKeyListener((v, keyCode, event) -> {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    Log.i(TAG_LOG, "KEYCODE_BACK");
 
                     LockableViewPager.setSwipeLocked(false);
 
@@ -491,10 +496,18 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                         shadow.putExtra("boolean", true);
                         mContext.sendBroadcast(shadow);
 
+                        Intent titreListAlbum = new Intent();
+                        titreListAlbum.setAction(SET_TITLE);
+                        mContext.sendBroadcast(titreListAlbum);
+
                         return true;
+
                     }
 
                     MainActivity.setAlbumFragmentState(false);
+                    Intent titreListAlbum = new Intent();
+                    titreListAlbum.setAction(SET_TITLE);
+                    mContext.sendBroadcast(titreListAlbum);
 
                     return false;
                 }
@@ -567,10 +580,17 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                 shadow.putExtra("boolean", true);
                 MusiqueApplication.getInstance().sendBroadcast(shadow);
 
-                Intent refresh = new Intent();
-                refresh.setAction(REFRESH_TAG);
-                MusiqueApplication.getInstance().sendBroadcast(refresh);
+            }
 
+            if (SET_TITLE.equals(receiveIntent)){
+                if (tri.equals("a-z"))
+                    getActivity().setTitle(Titre);
+
+                if (tri.equals(getString(R.string.title_sort_artist)))
+                    getActivity().setTitle(Artiste);
+
+                if (tri.equals(getString(R.string.title_sort_year)))
+                    getActivity().setTitle(Année);
             }
         }
     }
