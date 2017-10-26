@@ -13,7 +13,9 @@
         android:layout_width="30dp"
         android:id="@+id/volume_image"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="16dp" />
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:id="@+id/spinner_volume_name"

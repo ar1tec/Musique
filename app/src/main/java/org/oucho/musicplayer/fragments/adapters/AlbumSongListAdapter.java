@@ -65,13 +65,14 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
             if (PlayerService.isPlaying()) {
 
+                holder.PlayView.setImageResource(R.drawable.ic_play_arrow_amber_a700_24dp);
                 holder.vTrackNumber.setVisibility(View.INVISIBLE);
                 holder.PlayView.setVisibility(View.VISIBLE);
 
             } else {
 
                 holder.vTrackNumber.setVisibility(View.INVISIBLE);
-                holder.PlayView.setImageResource(R.drawable.ic_pause_jaune_24dp);
+                holder.PlayView.setImageResource(R.drawable.ic_pause_amber_a700_24dp);
                 holder.PlayView.setVisibility(View.VISIBLE);
             }
 

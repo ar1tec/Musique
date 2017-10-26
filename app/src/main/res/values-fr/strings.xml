@@ -50,8 +50,7 @@
     <string name="action_equalizer">Égaliseur</string>
 
     <string name="search">Rechercher</string>
-    <string name="edit_tags">Editer données</string>
-    <string name="action_edit_tags">Editer données</string>
+    <string name="edit_tags">Edition des tags</string>
     <string name="year">Année</string>
 
     <string name="delete">supprimer</string>
@@ -118,5 +117,7 @@
     <string name="action_play_album">Lecure</string>
     <string name="tags_edition">Modification en cours</string>
     <string name="permission_write_sd_externe">Sélectionner la carte SD externe pour autoriser l\'écriture, nécessaire depuis android 5.0 et plus.</string>
+    <string name="internal_storage">Stockage interne</string>
+    <string name="extrnal_storage">Stockage externe</string>
 
 </resources>

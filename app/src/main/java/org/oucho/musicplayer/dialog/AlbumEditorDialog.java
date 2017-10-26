@@ -162,7 +162,7 @@ public class AlbumEditorDialog extends DialogFragment {
 
             switch (v.getId()) {
                 case R.id.artwork:
-                    DirectoryPicker.with(getFragmentManager())
+                    FilePickerDialog.with(getFragmentManager())
                             .onImageSelected(path -> {
 
                                 Log.d(TAG, "result = " + path);

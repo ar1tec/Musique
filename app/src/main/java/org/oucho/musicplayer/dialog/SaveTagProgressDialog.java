@@ -3,10 +3,7 @@ package org.oucho.musicplayer.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -38,7 +35,6 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
-import org.oucho.musicplayer.utils.BitmapHelper;
 import org.oucho.musicplayer.utils.StorageHelper;
 
 import java.io.File;

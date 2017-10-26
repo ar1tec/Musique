@@ -168,6 +168,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
             mAlbum = bundle.getParcelable("album");
 
+            assert mAlbum != null;
             Titre = mAlbum.getAlbumName();
             Artiste = mAlbum.getArtistName();
             Année = String.valueOf(mAlbum.getYear());

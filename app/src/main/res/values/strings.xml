@@ -51,7 +51,6 @@
 
     <string name="search">Search</string>
     <string name="edit_tags">Edit data</string>
-    <string name="action_edit_tags">Edit data</string>
     <string name="tags_edition">Modification in progress</string>
 
     <string name="year">Year</string>
@@ -126,11 +125,8 @@
     <string name="key_internal_uri_extsdcard" translatable="false">key_extsdcard</string>
 
 
-    <string name="new_folder">New Folder</string>
-    <string name="ok_action">OK</string>
     <string name="internal_storage">Internal Storage</string>
     <string name="extrnal_storage">External Storage</string>
-    <string name="chose_img">Select image</string>
 
 
 </resources>
