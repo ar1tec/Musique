@@ -145,7 +145,9 @@ public class FilePickerDialog extends BottomSheetDialogFragment {
                 folders.add(0, parent);
             }
 
-            FileFilter directoryFilter = file -> (file.isDirectory() && !file.isHidden()) || file.getName().endsWith(".png") || file.getName().endsWith(".jpg");
+            FileFilter directoryFilter = file -> (file.isDirectory() && !file.isHidden())
+                    || file.getName().toUpperCase().endsWith(".PNG")
+                    || file.getName().toUpperCase().endsWith(".JPG");
             File[] files = dir.listFiles(directoryFilter);
 
             if (files != null && files.length > 0) {
@@ -260,7 +262,7 @@ public class FilePickerDialog extends BottomSheetDialogFragment {
                 holder.imgFolder.setTag(f.getPath());
 
             } else {
-                holder.imgFolder.setImageResource(R.drawable.ic_folder_grey_600_24dp);
+                holder.imgFolder.setImageResource(R.drawable.ic_folder_grey_500_24dp);
             }
 
             holder.folderName.setText(f.getName());

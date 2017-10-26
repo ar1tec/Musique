@@ -170,11 +170,9 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
     @Override
     public void load() {
         int fragmentCount = mSectionsPagerAdapter.getCount();
-        for(int pos = 0; pos < fragmentCount; pos++)
-        {
+        for(int pos = 0; pos < fragmentCount; pos++) {
             BaseFragment fragment = (BaseFragment) mSectionsPagerAdapter.getFragment(pos);
-            if(fragment != null)
-            {
+            if(fragment != null) {
                 Log.i(TAG_LOG, "frag1 " + fragment.getClass().getCanonicalName());
 
                 fragment.load();
