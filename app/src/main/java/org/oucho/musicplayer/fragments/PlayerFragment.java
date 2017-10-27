@@ -458,13 +458,12 @@ public class PlayerFragment extends BaseFragment
 
     private String getBitrate() {
 
-        File file = null;
         AudioFile audioFile = null;
 
         if (PlayerService.getSong() != null) {
 
             try {
-                file = new File(PlayerService.getSong().getPath());
+                File file = new File(PlayerService.getSong().getPath());
                 audioFile = AudioFileIO.read(file);
             } catch (Exception ignore) {
             }
