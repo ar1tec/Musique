@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +65,6 @@ public class PlayerFragment extends BaseFragment
     private int total_track = -1;
 
     private boolean mServiceBound;
-    private boolean first_run = true;
 
     public static PlayerFragment newInstance() {
         PlayerFragment fragment = new PlayerFragment();
@@ -382,7 +382,10 @@ public class PlayerFragment extends BaseFragment
 
                     if (MainActivity.getViewID() == R.id.fragment_song_layout) {
                         LockableViewPager.setSwipeLocked(false);
-                        String getTri = préférences.getString("song_sort_order", "");
+
+                        SharedPreferences prefs = mContext.getSharedPreferences(FICHIER_PREFS, Context.MODE_PRIVATE);
+                        String getTri = prefs.getString("song_sort_order", "");
+
                         String tri;
                         if ("year DESC".equals(getTri)) {
                             tri = mContext.getString(R.string.title_sort_year);

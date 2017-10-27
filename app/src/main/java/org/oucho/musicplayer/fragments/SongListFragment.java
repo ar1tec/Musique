@@ -298,6 +298,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
         inflater.inflate(R.menu.song_sort_by, menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         PrefUtils prefUtils = PrefUtils.getInstance();

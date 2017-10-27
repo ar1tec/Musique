@@ -344,6 +344,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         inflater.inflate(R.menu.albumlist_sort_by, menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         PrefUtils prefUtils = PrefUtils.getInstance();
