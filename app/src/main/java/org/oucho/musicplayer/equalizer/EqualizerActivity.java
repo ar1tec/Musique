@@ -22,9 +22,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.db.chart.model.LineSet;
-import com.db.chart.renderer.AxisRenderer;
-import com.db.chart.view.LineChartView;
+import org.oucho.musicplayer.view.chart.model.LineSet;
+import org.oucho.musicplayer.view.chart.renderer.AxisRenderer;
+import org.oucho.musicplayer.view.chart.view.LineChartView;
 
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.utils.NavigationUtils;

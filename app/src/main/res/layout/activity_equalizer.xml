@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_equalizer_margin"
     tools:mContext="org.oucho.musicplayer.equalizer.EqualizerActivity">
 
-    <com.db.chart.view.LineChartView
+    <org.oucho.musicplayer.view.chart.view.LineChartView
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
         android:layout_height="120dp"

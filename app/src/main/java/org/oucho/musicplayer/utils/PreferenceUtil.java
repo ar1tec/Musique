@@ -10,7 +10,7 @@ import org.oucho.musicplayer.R;
 
 public class PreferenceUtil {
 
-    public static SharedPreferences getSharedPreferences() {
+    private static SharedPreferences getSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(MusiqueApplication.getInstance());
     }
 
@@ -26,7 +26,7 @@ public class PreferenceUtil {
         editor.apply();
     }
 
-    public static Uri getSharedPreferenceUri() {
+    private static Uri getSharedPreferenceUri() {
         String uriString = getSharedPreferences().getString(MusiqueApplication.getInstance().getString(R.string.key_internal_uri_extsdcard), null);
 
         if (uriString == null)

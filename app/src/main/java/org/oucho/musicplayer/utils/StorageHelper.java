@@ -35,7 +35,7 @@ public class StorageHelper {
     private static final String PRIMARY_VOLUME_NAME = "primary";
 
 
-    public static boolean isWritable(@NonNull final File file) {
+    private static boolean isWritable(@NonNull final File file) {
         boolean isExisting = file.exists();
 
         try {

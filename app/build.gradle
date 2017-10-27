@@ -51,10 +51,6 @@ dependencies {
     // tag edit
     compile 'net.jthink:jaudiotagger:2.2.5'
 
-    // equalizer
-    compile 'com.diogobernardino:williamchart:2.5.0'
-    compile 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.2'
-
     // find memory leak
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'

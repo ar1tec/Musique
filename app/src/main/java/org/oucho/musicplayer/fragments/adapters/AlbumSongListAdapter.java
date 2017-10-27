@@ -4,9 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +12,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
-import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Song;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 

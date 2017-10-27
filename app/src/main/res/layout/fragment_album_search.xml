@@ -56,7 +56,6 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/line2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4.0dip"
@@ -78,7 +77,6 @@
                     android:visibility="visible" />
 
                 <TextView
-                    android:id="@+id/line4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10.0dip"
