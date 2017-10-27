@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements
     private boolean mServiceBound = false;
     private boolean autoScrollQueue = false;
 
+    private static String playlistName;
+
     private static int viewID;
 
     private static boolean running;
@@ -1381,6 +1383,13 @@ public class MainActivity extends AppCompatActivity implements
     }
     public static void setPlaylistFragmentState(Boolean value) {
         playlistFragmentState = value;
+    }
+
+    public static String getPlaylistName() {
+        return playlistName;
+    }
+    public static void setPlaylistName(String value) {
+        playlistName = value;
     }
 
     public static boolean getAlbumFragmentState() {

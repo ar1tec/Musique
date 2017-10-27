@@ -32,7 +32,6 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
                     QueueEntry.COLUMN_NAME_TRACK_DURATION + " INTEGER" + COMMA_SEP +
                     QueueEntry.COLUMN_NAME_ALBUM_ID + " INTEGER" + COMMA_SEP +
                     QueueEntry.COLUMN_NAME_GENRE + " TEXT" + COMMA_SEP +
-                    QueueEntry.COLUMN_NAME_MIME_TYPE +  " TEXT" + COMMA_SEP +
                     QueueEntry.COLUMN_NAME_DATA +  " TEXT" +
                     " )";
 
@@ -49,7 +48,6 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
                     QueueEntry.COLUMN_NAME_TRACK_DURATION,
                     QueueEntry.COLUMN_NAME_ALBUM_ID,
                     QueueEntry.COLUMN_NAME_GENRE,
-                    QueueEntry.COLUMN_NAME_MIME_TYPE,
                     QueueEntry.COLUMN_NAME_DATA,
             };
 
@@ -79,7 +77,6 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
         values.put(QueueEntry.COLUMN_NAME_TRACK_DURATION, song.getDuration());
         values.put(QueueEntry.COLUMN_NAME_ALBUM_ID, song.getAlbumId());
         values.put(QueueEntry.COLUMN_NAME_GENRE, song.getGenre());
-        values.put(QueueEntry.COLUMN_NAME_MIME_TYPE, song.getMimeType());
         values.put(QueueEntry.COLUMN_NAME_DATA, song.getPath());
 
         db.insert(QueueEntry.TABLE_NAME, null, values);
@@ -151,7 +148,6 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
             int trackCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_NUMBER);
             int trackDur = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_TRACK_DURATION);
             int genreCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_GENRE);
-            int mimeCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_MIME_TYPE);
             int pathCol = cursor.getColumnIndex(QueueEntry.COLUMN_NAME_DATA);
 
 
@@ -171,14 +167,12 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
 
                 int year = 0;
 
-                String mimeType = cursor.getString(mimeCol);
-
                 String path = cursor.getString(pathCol);
 
                 String genre = cursor.getString(genreCol);
 
 
-                list.add(new Song(id, title, artist, album, albumId, track, duration, year, genre, mimeType, path));
+                list.add(new Song(id, title, artist, album, albumId, track, duration, year, genre, path));
             } while (cursor.moveToNext());
         }
 

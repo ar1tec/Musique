@@ -20,7 +20,7 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
             MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media.ARTIST_ID, MediaStore.Audio.Media.TRACK,
             MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.YEAR,
-            MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.DATA};
+            MediaStore.Audio.Media.DATA};
 
     private static final String[] genresProjection = {
             MediaStore.Audio.Genres.NAME,
@@ -57,7 +57,6 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
             int trackCol = cursor.getColumnIndex(MediaStore.Audio.Media.TRACK);
             int trackDur = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
             int yearCol = cursor.getColumnIndex(MediaStore.Audio.Media.YEAR);
-            int mimeCol = cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE);
             int pathCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
 
@@ -77,7 +76,6 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
 
                 int year = cursor.getInt(yearCol);
 
-                String mimeType = cursor.getString(mimeCol);
                 String path = cursor.getString(pathCol);
 
 
@@ -109,7 +107,7 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
                 } catch (Exception ignore) {}
 
 
-                playlist.add(new Song(id, title, artist, album, albumId, track, duration, year, genre, mimeType, path));
+                playlist.add(new Song(id, title, artist, album, albumId, track, duration, year, genre, path));
 
             } while (cursor.moveToNext());
 

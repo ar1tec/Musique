@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -110,6 +112,7 @@ public class PlaylistContentFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         try {
             mActivity = (MainActivity) context;
         } catch (ClassCastException e) {
@@ -158,10 +161,37 @@ public class PlaylistContentFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        MainActivity.setViewID(R.id.fragment_playlist);
 
         MainActivity.setPlaylistFragmentState(true);
 
+        MainActivity.setPlaylistName(mPlaylist.getName());
+
         LockableViewPager.setSwipeLocked(true);
+
+
+        final int couleurTitre = ContextCompat.getColor(getContext(), R.color.grey_400);
+        String titre = getContext().getString(R.string.playlists);
+
+        if (!MainActivity.getAlbumFragmentState()) {
+
+            if (android.os.Build.VERSION.SDK_INT >= 24) {
+                getActivity().setTitle(Html.fromHtml("<font>"
+                        + titre
+                        + " </font> <small> <font color='" + couleurTitre + "'>"
+                        + mPlaylist.getName()
+                        + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+
+            } else {
+
+                //noinspection deprecation
+                getActivity().setTitle(Html.fromHtml("<font>"
+                        + titre
+                        + " </font> <small> <font color='" + couleurTitre + "'>"
+                        + mPlaylist.getName()
+                        + "</small></font>"));
+            }
+        }
 
         // Active la touche back
         if(getView() == null){
@@ -190,6 +220,8 @@ public class PlaylistContentFragment extends BaseFragment {
                     ft.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_out_bottom);
                     ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
                     ft.commit();
+
+                    getActivity().setTitle(getContext().getString(R.string.playlists));
 
                 }
 

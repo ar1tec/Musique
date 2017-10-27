@@ -155,7 +155,7 @@ public class StorageHelper {
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static DocumentFile getDocumentFile(File file) {
+    private static DocumentFile getDocumentFile(File file) {
         Uri treeUri;
 
         String baseFolder;

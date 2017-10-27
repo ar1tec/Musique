@@ -11,6 +11,7 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -19,7 +20,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,12 +36,14 @@ import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Artist;
+import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.dialog.AlbumEditorDialog;
 import org.oucho.musicplayer.dialog.PlaylistPickerDialog;
 import org.oucho.musicplayer.dialog.SaveTagProgressDialog;
 import org.oucho.musicplayer.fragments.adapters.AlbumListAdapter;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.loaders.AlbumLoader;
+import org.oucho.musicplayer.fragments.loaders.SongLoader;
 import org.oucho.musicplayer.fragments.loaders.SortOrder;
 import org.oucho.musicplayer.tools.LockableViewPager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
@@ -85,8 +87,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
     public static AlbumListFragment newInstance(Artist artist) {
 
-        Log.d(TAG_LOG, "newInstance" + artist);
-
         AlbumListFragment fragment = new AlbumListFragment();
 
         Bundle args = new Bundle();
@@ -104,8 +104,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
             AlbumLoader loader;
             if(mArtist != null) {
-
-                Log.d(TAG_LOG, "Artist loaded = " + mArtist.getName());
                 loader = new AlbumLoader(mContext, mArtist.getName());
                 loader.setSortOrder(PrefUtils.getInstance().getAlbumSortOrder());
 
@@ -121,9 +119,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         @Override
         public void onLoadFinished(Loader<List<Album>> loader, List<Album> albumList) {
             mAdapter.setData(albumList);
-
-           // Log.d(TAG_LOG, "onLoadFinished = " + albumList);
-
             listeTitre = albumList;
         }
 
@@ -235,17 +230,23 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
         PopupMenu popup = new PopupMenu(mContext, v);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.album_item, popup.getMenu());
+        inflater.inflate(R.menu.album_song_item, popup.getMenu());
         final Album album = mAdapter.getItem(position);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
 
+                case R.id.action_add_to_queue:
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("album", album);
+                    getLoaderManager().restartLoader(1, bundle, mLoaderSong);
+                    break;
+
                 case R.id.action_edit_tags:
                     showEditorDialog(album);
-                    return true;
+                    break;
                 case R.id.action_add_to_playlist:
                     showPlaylistPicker(album);
-                    return true;
+                    break;
                 default: //do nothing
                     break;
             }
@@ -253,6 +254,28 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         });
         popup.show();
     }
+
+    private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderSong = new LoaderManager.LoaderCallbacks<List<Song>>() {
+
+        @Override
+        public Loader<List<Song>> onCreateLoader(int id, Bundle args) {
+            Album album = args.getParcelable("album");
+            SongLoader loader = new SongLoader(getActivity());
+            loader.setSelection(MediaStore.Audio.Media.ALBUM_ID + " = ?", new String[]{String.valueOf(album.getId())});
+            loader.setSortOrder(MediaStore.Audio.Media.TRACK);
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<Song>> loader, List<Song> songList) {
+            for (int i = 0; i < songList.size(); i++)
+                ((MainActivity) getActivity()).addToQueue(songList.get(i));
+
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<Song>> loader) {}
+    };
 
     private void showEditorDialog(Album album) {
         AlbumEditorDialog dialog = AlbumEditorDialog.newInstance(album);
@@ -382,8 +405,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
     public void onResume() {
         super.onResume();
 
-        Log.i(TAG_LOG, "onResume()");
-
         if (!isRegistered) {
             IntentFilter filter = new IntentFilter();
             filter.addAction("reload");
@@ -474,8 +495,6 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         public void onReceive(final Context context, Intent intent) {
 
             String receiveIntent = intent.getAction();
-
-            Log.i(TAG_LOG, "onReceive = " + receiveIntent);
 
             if ("reload".equals(receiveIntent)) {
                 if (MainActivity.getViewID() != R.id.fragment_song_layout)
@@ -597,25 +616,16 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
             }
 
             // délai affichage lors du premier chargement nom appli --> tri actuel
-
             if (run) {
 
                 MainActivity.setViewID(R.id.fragment_album_list_layout);
-
                 setTitre();
-
 
             } else {
 
                 MainActivity.setViewID(R.id.fragment_album_list_layout);
-
                 run = true;
-
-                mHandler.postDelayed(() -> {
-
-                    setTitre();
-
-                }, 1000);
+                mHandler.postDelayed(this::setTitre, 1000);
             }
         }
     }

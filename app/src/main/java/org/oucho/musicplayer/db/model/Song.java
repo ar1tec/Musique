@@ -17,11 +17,10 @@ public class Song implements Parcelable {
     private final String genre;
     private final int duration;
     private final int year;
-    private final String mimeType;
     private final String path;
 
 
-    public Song(long id, String title, String artist, String album, long albumId, int trackNumber, int duration, int year, String genre, String mimeType, String path) {
+    public Song(long id, String title, String artist, String album, long albumId, int trackNumber, int duration, int year, String genre, String path) {
         super();
         this.id = id;
         this.title = title == null ? MediaStore.UNKNOWN_STRING : title;
@@ -32,7 +31,6 @@ public class Song implements Parcelable {
         this.duration = duration;
         this.year = year;
         this.genre = genre;
-        this.mimeType = mimeType;
         this.path = path;
     }
 
@@ -72,10 +70,6 @@ public class Song implements Parcelable {
         return year;
     }
 
-    public String getMimeType() {
-        return mimeType;
-    }
-
     public String getPath() {
         return path;
     }
@@ -97,7 +91,6 @@ public class Song implements Parcelable {
         dest.writeString(this.genre);
         dest.writeInt(this.duration);
         dest.writeInt(this.year);
-        dest.writeString(this.mimeType);
         dest.writeString(this.path);
     }
 
@@ -111,7 +104,6 @@ public class Song implements Parcelable {
         this.genre = in.readString();
         this.duration = in.readInt();
         this.year = in.readInt();
-        this.mimeType = in.readString();
         this.path = in.readString();
     }
 

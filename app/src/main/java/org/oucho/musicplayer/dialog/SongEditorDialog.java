@@ -17,7 +17,6 @@ import org.jaudiotagger.tag.Tag;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Song;
-import org.oucho.musicplayer.utils.BitmapHelper;
 
 import java.io.File;
 

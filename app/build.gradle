@@ -12,7 +12,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 36
-        versionName "1.18.3"
+        versionName "1.18.4"
         setProperty("archivesBaseName", "Musique_$versionName")
     }
 
@@ -55,5 +55,8 @@ dependencies {
     compile 'com.diogobernardino:williamchart:2.5.0'
     compile 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.2'
 
+    // find memory leak
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
 }

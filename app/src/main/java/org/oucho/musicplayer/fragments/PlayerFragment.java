@@ -12,7 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +57,7 @@ public class PlayerFragment extends BaseFragment
 
     private final Handler mHandler = new Handler();
 
-    TextView bitrate;
+    private TextView bitrate;
 
     private int track = -1;
     private int mArtworkSize;
@@ -227,8 +228,6 @@ public class PlayerFragment extends BaseFragment
         public void onReceive(Context context, Intent intent) {
 
             if (mPlayerService == null) {
-                Log.i(TAG_LOG, "if (mPlayerService == null)");
-
                 return;
             }
 
@@ -306,9 +305,10 @@ public class PlayerFragment extends BaseFragment
             if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
                 int viewID = MainActivity.getViewID();
+                final int couleurTitre = ContextCompat.getColor(getContext(), R.color.grey_400);
 
                 if( ! MainActivity.getPlaylistFragmentState() && ! MainActivity.getAlbumFragmentState())
-                LockableViewPager.setSwipeLocked(false);
+                    LockableViewPager.setSwipeLocked(false);
 
 
                 if (MainActivity.getQueueLayout()) {
@@ -356,7 +356,59 @@ public class PlayerFragment extends BaseFragment
                         menu.putExtra("boolean", true);
                         mContext.sendBroadcast(menu);
 
-                       // MainActivity.setMenu(true);
+                        setHasOptionsMenu(true);
+                    }
+
+                    if (MainActivity.getViewID() == R.id.fragment_playlist_list || MainActivity.getViewID() == R.id.fragment_playlist) {
+                        LockableViewPager.setSwipeLocked(false);
+                        String titre = (mContext.getString(R.string.playlists));
+
+                        if (MainActivity.getViewID() == R.id.fragment_playlist_list) {
+                            setHasOptionsMenu(true);
+                        } else {
+                            String playlist = MainActivity.getPlaylistName();
+
+                            if (android.os.Build.VERSION.SDK_INT >= 24) {
+                                getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color='" + couleurTitre + "'>"
+                                        + playlist + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+                            } else {
+                                //noinspection deprecation
+                                getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color='" + couleurTitre + "'>" + playlist + "</small></font>"));
+                            }
+
+                        }
+                    }
+
+
+                    if (MainActivity.getViewID() == R.id.fragment_song_layout) {
+                        LockableViewPager.setSwipeLocked(false);
+                        String getTri = préférences.getString("song_sort_order", "");
+                        String tri;
+                        if ("year DESC".equals(getTri)) {
+                            tri = mContext.getString(R.string.title_sort_year);
+                        } else if ("REPLACE ('<BEGIN>' || artist, '<BEGIN>The ', '<BEGIN>')".equals(getTri)) {
+                            tri = mContext.getString(R.string.title_sort_artist);
+                        } else if ("album".equals(getTri)) {
+                            tri = mContext.getString(R.string.title_sort_album);
+                        } else if ("_id DESC".equals(getTri)) {
+                            tri = mContext.getString(R.string.title_sort_add);
+                        } else {
+                            tri = "a-z";
+                        }
+
+                        MainActivity.setViewID(R.id.fragment_song_layout);
+
+                        String titre = mContext.getString(R.string.titles);
+
+                        if (android.os.Build.VERSION.SDK_INT >= 24) {
+                            getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color='" + couleurTitre + "'>"
+                                    + tri + "</small></font>", Html.FROM_HTML_MODE_LEGACY));
+                        } else {
+                            //noinspection deprecation
+                            getActivity().setTitle(Html.fromHtml("<font>" + titre + " " + " " + " </font> <small> <font color='" + couleurTitre + "'>"
+                                    + tri + "</small></font>"));
+                        }
+                        setHasOptionsMenu(true);
                     }
 
                     return true;
@@ -455,7 +507,6 @@ public class PlayerFragment extends BaseFragment
         }
     }
 
-
     private String getBitrate() {
 
         AudioFile audioFile = null;
@@ -471,14 +522,9 @@ public class PlayerFragment extends BaseFragment
 
         if (audioFile != null) {
             String bitRate = audioFile.getAudioHeader().getBitRate();
-
             String sampleRate = audioFile.getAudioHeader().getSampleRate();
-
             String mime = audioFile.getAudioHeader().getEncodingType();
-
             String vbr0 = audioFile.getAudioHeader().isVariableBitRate() ? ", vbr" : "";
-
-            Log.d(TAG_LOG, "getBitRate : " + bitRate + " " + sampleRate + " ");
 
             return mime + " - " + bitRate + "kb/s" + vbr0 + " - " + sampleRate + "Hz";
         }

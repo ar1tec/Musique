@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -173,8 +172,6 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
         for(int pos = 0; pos < fragmentCount; pos++) {
             BaseFragment fragment = (BaseFragment) mSectionsPagerAdapter.getFragment(pos);
             if(fragment != null) {
-                Log.i(TAG_LOG, "frag1 " + fragment.getClass().getCanonicalName());
-
                 fragment.load();
             }
         }
@@ -214,8 +211,6 @@ public class LibraryFragment extends BaseFragment implements MusiqueKeys {
                 Fragment f = (Fragment) obj;
                 String tag = f.getTag();
                 mFragmentTags.put(position, tag);
-                Log.i(TAG_LOG, "fragtag" + tag);
-
             }
             return obj;
         }

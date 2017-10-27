@@ -41,6 +41,7 @@ import static org.oucho.musicplayer.MusiqueKeys.INTENT_QUEUEVIEW;
 
 public class PlaylistListFragment extends BaseFragment {
 
+    private static final String TAG_LOG = "PlayListFragment";
     private Context mContext;
 
     private static final String[] sProjection = {
@@ -158,6 +159,8 @@ public class PlaylistListFragment extends BaseFragment {
                     ft.remove(getFragmentManager().findFragmentById(R.id.fragment_playlist_list));
                     ft.commit();
 
+                    getActivity().setTitle(getContext().getString(R.string.playlists));
+
                 } else {
 
                     Intent backToPrevious = new Intent();
@@ -223,7 +226,8 @@ public class PlaylistListFragment extends BaseFragment {
     public void setUserVisibleHint(boolean visible){
         super.setUserVisibleHint(visible);
 
-        if (visible || isResumed()){
+        if (visible || isResumed()) {
+
             getActivity().setTitle(mContext.getString(R.string.playlists));
 
             MainActivity.setViewID(R.id.fragment_playlist_list);

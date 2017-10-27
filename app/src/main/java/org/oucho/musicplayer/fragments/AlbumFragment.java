@@ -18,7 +18,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -347,8 +346,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     private void selectSong(int position) {
 
-        Log.i(TAG_LOG, "selectedSong(), position:" + String.valueOf(position));
-
         if (mSearchActivity != null) {
             mSearchActivity.onSongSelected(mAdapter.getSongList(), position);
 
@@ -377,15 +374,14 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                     } else {
                         ((MainActivity) getActivity()).addToQueue(song);
                     }
-
-                    return true;
+                    break;
 
                 case R.id.action_edit_tags:
                     showID3TagEditor(song);
-                    return true;
+                    break;
                 case R.id.action_add_to_playlist:
                     showPlaylistPicker(song);
-                    return true;
+                    break;
                 default: //do nothing
                     break;
             }
@@ -464,8 +460,6 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             getView().setOnKeyListener((v, keyCode, event) -> {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-
-                    Log.i(TAG_LOG, "KEYCODE_BACK");
 
                     LockableViewPager.setSwipeLocked(false);
 

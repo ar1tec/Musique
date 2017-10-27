@@ -5,9 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.database.DatabaseUtilsCompat;
-import android.util.Log;
 
-import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.db.model.Song;
 
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class SongLoader extends BaseLoader<List<Song>> {
             MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media.ARTIST_ID, MediaStore.Audio.Media.TRACK,
             MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.YEAR,
-            MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.DATA};
+            MediaStore.Audio.Media.DATA};
 
     public SongLoader(Context context) {
         super(context);
@@ -52,13 +50,10 @@ public class SongLoader extends BaseLoader<List<Song>> {
 
             int yearCol = cursor.getColumnIndex(MediaStore.Audio.Media.YEAR);
 
-            int mimeCol  = cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE);
             int pathCol  = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
 
             do {
-
-                Log.i(TAG_LOG, "do");
 
                 long id = cursor.getLong(idCol);
                 String title = cursor.getString(titleCol);
@@ -75,12 +70,10 @@ public class SongLoader extends BaseLoader<List<Song>> {
 
                 int year = cursor.getInt(yearCol);
 
-                String mimeType = cursor.getString(mimeCol);
                 String path = cursor.getString(pathCol);
 
-
                 // ne pas integrer recher genre, trop long à charger
-                mSongList.add(new Song(id, title, artist, album, albumId, track, duration, year, "unknow", mimeType, path));
+                mSongList.add(new Song(id, title, artist, album, albumId, track, duration, year, "unknow", path));
             } while (cursor.moveToNext());
 
         }
