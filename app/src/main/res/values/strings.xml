@@ -128,5 +128,8 @@
     <string name="internal_storage">Internal Storage</string>
     <string name="extrnal_storage">External Storage</string>
 
+    <string name="track_number">Track n°</string>
+    <string name="disc_number">Disc n°</string>
+
 
 </resources>

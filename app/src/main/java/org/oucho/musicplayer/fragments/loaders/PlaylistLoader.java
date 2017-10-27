@@ -107,7 +107,7 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
                 } catch (Exception ignore) {}
 
 
-                playlist.add(new Song(id, title, artist, album, albumId, track, duration, year, genre, path));
+                playlist.add(new Song(id, title, artist, album, albumId, track, 0, duration, year, null, path));
 
             } while (cursor.moveToNext());
 

@@ -13,6 +13,7 @@ public class Song implements Parcelable {
     private final String artist;
     private final String album;
     private final int trackNumber;
+    private final int discNumber;
     private final long albumId;
     private final String genre;
     private final int duration;
@@ -20,7 +21,7 @@ public class Song implements Parcelable {
     private final String path;
 
 
-    public Song(long id, String title, String artist, String album, long albumId, int trackNumber, int duration, int year, String genre, String path) {
+    public Song(long id, String title, String artist, String album, long albumId, int trackNumber, int discNumber, int duration, int year, String genre, String path) {
         super();
         this.id = id;
         this.title = title == null ? MediaStore.UNKNOWN_STRING : title;
@@ -28,6 +29,7 @@ public class Song implements Parcelable {
         this.album = album == null ? MediaStore.UNKNOWN_STRING : album;
         this.albumId = albumId;
         this.trackNumber = trackNumber;
+        this.discNumber = discNumber;
         this.duration = duration;
         this.year = year;
         this.genre = genre;
@@ -58,6 +60,11 @@ public class Song implements Parcelable {
         return trackNumber;
     }
 
+    public int getDiscNumber() {
+        return discNumber;
+    }
+
+
     public String getGenre() {
         return genre;
     }
@@ -87,6 +94,7 @@ public class Song implements Parcelable {
         dest.writeString(this.artist);
         dest.writeString(this.album);
         dest.writeInt(this.trackNumber);
+        dest.writeInt(this.discNumber);
         dest.writeLong(this.albumId);
         dest.writeString(this.genre);
         dest.writeInt(this.duration);
@@ -100,6 +108,7 @@ public class Song implements Parcelable {
         this.artist = in.readString();
         this.album = in.readString();
         this.trackNumber = in.readInt();
+        this.discNumber = in.readInt();
         this.albumId = in.readLong();
         this.genre = in.readString();
         this.duration = in.readInt();

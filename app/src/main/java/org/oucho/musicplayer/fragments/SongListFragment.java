@@ -410,6 +410,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
                         intent.getStringExtra("artistName"),
                         intent.getStringExtra("genre"),
                         intent.getStringExtra("track"),
+                        intent.getStringExtra("disc"),
                         intent.getStringExtra("cover")
 
                 ).execute();
@@ -437,17 +438,19 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
         final String artistName;
         final String genre;
         final String track;
+        final String disc;
         final String cover;
 
         final Song song;
 
-        WriteTag(Song song, String title, String albumName, String artistName, String genre, String track, String cover) {
+        WriteTag(Song song, String title, String albumName, String artistName, String genre, String track, String disc,  String cover) {
             this.title = title;
             this.song = song;
             this.albumName = albumName;
             this.artistName = artistName;
             this.genre = genre;
             this.track = track;
+            this.disc = disc;
             this.cover = cover;
         }
 
@@ -460,6 +463,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
             bundle.putString("albumName", albumName);
             bundle.putString("artistName", artistName);
             bundle.putString("genre", genre);
+            bundle.putString("disc", disc);
             bundle.putString("track", track);
             bundle.putString("cover", cover);
 

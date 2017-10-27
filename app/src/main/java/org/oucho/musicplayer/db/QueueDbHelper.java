@@ -172,7 +172,7 @@ public class QueueDbHelper extends SQLiteOpenHelper implements MusiqueKeys {
                 String genre = cursor.getString(genreCol);
 
 
-                list.add(new Song(id, title, artist, album, albumId, track, duration, year, genre, path));
+                list.add(new Song(id, title, artist, album, albumId, track, 0, duration, year, genre, path));
             } while (cursor.moveToNext());
         }
 

@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +15,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
+import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Song;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,13 +59,39 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
 
         long secondes = song.getDuration() / 1000;
 
+        String trackNb = String.valueOf(song.getTrackNumber());
+
+        String discNb;
+
+        Spanned spanned;
+
+        if (song.getTrackNumber() >= 1000) {
+
+            discNb = String.valueOf(trackNb.charAt(0));
+            trackNb = trackNb.substring(1);
+            trackNb = Integer.valueOf(trackNb).toString();
+
+            final int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
+
+                if (android.os.Build.VERSION.SDK_INT >= 24) {
+                    spanned = Html.fromHtml("<font color='" + couleurTitre + "'>" + discNb + " - " + "</font>" + trackNb, Html.FROM_HTML_MODE_LEGACY);
+                } else {
+                    //noinspection deprecation
+                    spanned = Html.fromHtml("<font color='" + couleurTitre + "'>" + discNb + " - " + "</font>" + trackNb);
+                }
+
+            holder.vTrackNumber.setText(spanned);
+        } else {
+            holder.vTrackNumber.setText(trackNb);
+        }
+
         @SuppressLint("DefaultLocale")
         String duration = String.valueOf( (secondes % 3600) / 60 ) + ":" + String.format("%02d", (secondes % 3600) % 60 );
 
         holder.vTime.setText(duration);
         holder.vTitle.setText(song.getTitle());
 
-        holder.vTrackNumber.setText(String.valueOf(position + 1));
+
 
         if (song.getId() == PlayerService.getSongID()) {
 

@@ -31,6 +31,8 @@ public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
     private EditText mArtistEditText;
     private EditText mAlbumEditText;
     private EditText mTrackEditText;
+    private EditText mDiscEditText;
+
     private EditText mGenreEditText;
 
     public static SongEditorDialog newInstance(Song song) {
@@ -69,12 +71,13 @@ public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
         mArtistEditText = dialogView.findViewById(R.id.artist);
         mAlbumEditText = dialogView.findViewById(R.id.album);
         mTrackEditText = dialogView.findViewById(R.id.track_number);
+        mDiscEditText = dialogView.findViewById(R.id.disc_number);
+
         mGenreEditText = dialogView.findViewById(R.id.genre);
 
         mTitleEditText.setText(mSong.getTitle());
         mArtistEditText.setText(mSong.getArtist());
         mAlbumEditText.setText(mSong.getAlbum());
-        mTrackEditText.setText(String.valueOf(mSong.getTrackNumber()));
 
 
         try {
@@ -82,6 +85,9 @@ public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
             AudioFile f = AudioFileIO.read(file);
             Tag tag = f.getTag();
             mGenreEditText.setText(tag.getFirst(FieldKey.GENRE));
+            mTrackEditText.setText(tag.getFirst(FieldKey.TRACK));
+            mDiscEditText.setText(tag.getFirst(FieldKey.DISC_NO));
+
         } catch (Exception ignore) {}
 
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
@@ -95,8 +101,8 @@ public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
             intent.putExtra("albumName", mAlbumEditText.getText().toString());
             intent.putExtra("artistName", mArtistEditText.getText().toString());
             intent.putExtra("track", mTrackEditText.getText().toString());
+            intent.putExtra("disc", mDiscEditText.getText().toString());
             intent.putExtra("genre", mGenreEditText.getText().toString());
-
             intent.putExtra("song", mSong);
             getContext().sendBroadcast(intent);
 

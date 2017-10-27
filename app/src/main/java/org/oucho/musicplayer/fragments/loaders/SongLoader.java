@@ -73,7 +73,7 @@ public class SongLoader extends BaseLoader<List<Song>> {
                 String path = cursor.getString(pathCol);
 
                 // ne pas integrer recher genre, trop long à charger
-                mSongList.add(new Song(id, title, artist, album, albumId, track, duration, year, "unknow", path));
+                mSongList.add(new Song(id, title, artist, album, albumId, track, 0, duration, year, "unknow", path));
             } while (cursor.moveToNext());
 
         }

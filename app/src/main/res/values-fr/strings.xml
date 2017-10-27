@@ -120,4 +120,7 @@
     <string name="internal_storage">Stockage interne</string>
     <string name="extrnal_storage">Stockage externe</string>
 
+    <string name="track_number">Titre n°</string>
+    <string name="disc_number">Disque n°</string>
+
 </resources>

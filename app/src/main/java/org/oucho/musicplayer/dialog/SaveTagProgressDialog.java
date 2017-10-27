@@ -58,7 +58,6 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
 
     private Song mSong;
 
-
     private AsyncTask<String, Integer, Boolean> deleteTask;
 
     private AlertDialog controlDialog;
@@ -67,6 +66,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
     private String albumName;
     private String artistName;
     private String track;
+    private String disc;
     private String genre;
     private String year;
     private String cover;
@@ -104,6 +104,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
             albumName = bundle.getString("albumName");
             artistName = bundle.getString("artistName");
             track = bundle.getString("track");
+            disc = bundle.getString("disc");
             genre = bundle.getString("genre");
 
         }
@@ -171,6 +172,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                     tag.setField(FieldKey.ARTIST, artistName);
                     tag.setField(FieldKey.ALBUM, albumName);
                     tag.setField(FieldKey.TRACK, track);
+                    tag.setField(FieldKey.DISC_NO, disc);
                     tag.setField(FieldKey.GENRE, genre);
 
                     if (cover != null) {
@@ -218,6 +220,12 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                     tag.setField(FieldKey.ARTIST, artistName);
                     tag.setField(FieldKey.ALBUM, albumName);
                     tag.setField(FieldKey.TRACK, track);
+
+                    if (disc.equals("0") || disc.equals(""))
+                        tag.deleteField(FieldKey.DISC_NO);
+                    else
+                        tag.setField(FieldKey.DISC_NO, disc);
+
                     tag.setField(FieldKey.GENRE, genre);
 
                     if (cover != null) {
@@ -341,7 +349,6 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                         }
 
                         audioFile.commit();
-
 
 
                         File target = new File(pathSong);
