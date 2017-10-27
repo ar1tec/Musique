@@ -54,6 +54,7 @@ import java.util.Locale;
 
 public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
+    @SuppressWarnings("unused")
     private static final String TAG_LOG = "Album Fragment";
 
     private Album mAlbum;

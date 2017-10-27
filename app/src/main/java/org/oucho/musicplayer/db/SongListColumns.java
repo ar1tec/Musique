@@ -13,7 +13,6 @@ interface SongListColumns extends BaseColumns {
     String COLUMN_NAME_ALBUM_ID = "album_id";
     String COLUMN_NAME_TRACK_NUMBER = "number";
     String COLUMN_NAME_TRACK_DURATION = "duration";
-    String COLUMN_NAME_MIME_TYPE = "mimeType";
     String COLUMN_NAME_DATA = "data";
 
 

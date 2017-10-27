@@ -6,6 +6,7 @@ import android.provider.MediaStore;
 
 public class Song implements Parcelable {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "Song";
 
     private final long id;
@@ -63,7 +64,6 @@ public class Song implements Parcelable {
     public int getDiscNumber() {
         return discNumber;
     }
-
 
     public String getGenre() {
         return genre;

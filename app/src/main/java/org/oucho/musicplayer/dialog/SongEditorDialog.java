@@ -23,6 +23,7 @@ import java.io.File;
 
 public class SongEditorDialog extends DialogFragment implements MusiqueKeys {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "SongEditorDialog";
 
     private static Song mSong;

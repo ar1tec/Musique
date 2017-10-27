@@ -14,14 +14,14 @@ public abstract class ChartEntry implements Comparable<ChartEntry> {
 
     private final String mLabel;
 
-    private int mColor;
+    private final int mColor;
 
     private float mX;
     private float mY;
     private float mValue;
-    private float mShadowDx;
-    private float mShadowDy;
-    private float mShadowRadius;
+    private final float mShadowDx;
+    private final float mShadowDy;
+    private final float mShadowRadius;
 
     private final int[] mShadowColor;
 

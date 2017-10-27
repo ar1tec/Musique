@@ -14,6 +14,7 @@ import java.util.List;
 
 public class SongLoader extends BaseLoader<List<Song>> {
 
+    @SuppressWarnings("unused")
     private static final String TAG_LOG = "SongLoader";
 
     private static final String[] sProjection = {MediaStore.Audio.Media._ID,

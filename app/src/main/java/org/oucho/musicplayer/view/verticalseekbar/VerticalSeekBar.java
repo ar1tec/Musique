@@ -264,9 +264,7 @@ public class VerticalSeekBar extends AppCompatSeekBar {
         if (mMethodSetProgressFromUser != null) {
             try {
                 mMethodSetProgressFromUser.invoke(this, progress, fromUser);
-            } catch (IllegalArgumentException ignored) {
-            } catch (IllegalAccessException ignored) {
-            } catch (InvocationTargetException ignored) {
+            } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ignored) {
             }
         } else {
             super.setProgress(progress);

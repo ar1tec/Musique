@@ -45,6 +45,7 @@ public class PlayerFragment extends BaseFragment
         implements MusiqueKeys,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
+    @SuppressWarnings("unused")
     private static final String TAG_LOG = "Player Fragment";
 
     private Context mContext;

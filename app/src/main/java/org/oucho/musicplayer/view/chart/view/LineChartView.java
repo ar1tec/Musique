@@ -26,14 +26,14 @@ public class LineChartView extends ChartView {
 
     private final Style mStyle;
 
-    private float mClickableRadius;
+    private final float mClickableRadius;
 
 
     public LineChartView(Context context, AttributeSet attrs) {
 
         super(context, attrs);
 
-        setOrientation(Orientation.VERTICAL);
+        setOrientation();
         mStyle = new Style();
         mClickableRadius = context.getResources().getDimension(R.dimen.dot_region_radius);
     }
@@ -43,7 +43,7 @@ public class LineChartView extends ChartView {
 
         super(context);
 
-        setOrientation(Orientation.VERTICAL);
+        setOrientation();
         mStyle = new Style();
         mClickableRadius = context.getResources().getDimension(R.dimen.dot_region_radius);
     }

@@ -43,6 +43,7 @@ import java.util.List;
 
 public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
+    @SuppressWarnings("unused")
     private static final String TAG_LOG = "SongListFragment";
 
     private Context mContext;

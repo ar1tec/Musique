@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.utils.Permissions;
 
@@ -77,35 +76,6 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
                 int year = cursor.getInt(yearCol);
 
                 String path = cursor.getString(pathCol);
-
-
-                // genre
-                int musicId = Integer.parseInt(cursor.getString(idCol));
-
-                Uri uri;
-                String genre = "unknow";
-                int genreCol;
-
-                try {
-                    uri = MediaStore.Audio.Genres.getContentUriForAudioId("external", musicId);
-                    genresCursor = MusiqueApplication.getInstance().getContentResolver().query(uri, genresProjection, null, null, null);
-
-                    if (genresCursor != null) {
-                        genreCol = genresCursor.getColumnIndex(MediaStore.Audio.Genres.NAME);
-
-                        if (genresCursor.moveToFirst()) {
-                            do {
-                                genre = genresCursor.getString(genreCol);
-                            } while (genresCursor.moveToNext());
-                        }
-                    }
-
-
-                    if (genresCursor != null)
-                        genresCursor.close();
-
-                } catch (Exception ignore) {}
-
 
                 playlist.add(new Song(id, title, artist, album, albumId, track, 0, duration, year, null, path));
 

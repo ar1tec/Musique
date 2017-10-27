@@ -43,6 +43,7 @@ public final class Preconditions {
         template = String.valueOf(template); // null -> "null"
 
         // start substituting the arguments into the '%s' placeholders
+        assert args != null;
         StringBuilder builder = new StringBuilder(template.length() + 16 * args.length);
         int templateStart = 0;
         int i = 0;

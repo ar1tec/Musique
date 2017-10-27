@@ -23,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.oucho.musicplayer.view.chart.model.LineSet;
-import org.oucho.musicplayer.view.chart.renderer.AxisRenderer;
 import org.oucho.musicplayer.view.chart.view.LineChartView;
 
 import org.oucho.musicplayer.R;
@@ -105,8 +104,8 @@ public class EqualizerActivity extends AppCompatActivity {
         chart.setXAxis(false);
         chart.setYAxis(false);
 
-        chart.setYLabels(AxisRenderer.LabelPosition.NONE);
-        chart.setXLabels(AxisRenderer.LabelPosition.NONE);
+        chart.setYLabels();
+        chart.setXLabels();
         chart.setGrid(8, 10, paint);
 
         chart.setAxisBorderValues(-300, 3300);

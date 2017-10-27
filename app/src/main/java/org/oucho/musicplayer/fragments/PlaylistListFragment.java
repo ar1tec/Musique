@@ -41,6 +41,7 @@ import static org.oucho.musicplayer.MusiqueKeys.INTENT_QUEUEVIEW;
 
 public class PlaylistListFragment extends BaseFragment {
 
+    @SuppressWarnings("unused")
     private static final String TAG_LOG = "PlayListFragment";
     private Context mContext;
 

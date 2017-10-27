@@ -13,7 +13,7 @@ public abstract class ChartSet {
 
     private final ArrayList<ChartEntry> mEntries;
 
-    private float mAlpha;
+    private final float mAlpha;
 
     private boolean mIsVisible;
 

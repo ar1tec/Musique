@@ -9,6 +9,7 @@ import java.io.InputStream;
 
 public class BitmapHelper {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "BitmapHelper";
 
     private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {

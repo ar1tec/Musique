@@ -14,15 +14,15 @@ public class Point extends ChartEntry {
 
     private static final float DOTS_RADIUS = 3;
 
-    private boolean mHasStroke;
+    private final boolean mHasStroke;
 
-    private float mStrokeThickness;
+    private final float mStrokeThickness;
 
-    private int mStrokeColor;
+    private final int mStrokeColor;
 
-    private float mRadius;
+    private final float mRadius;
 
-    private Drawable mDrawable;
+    private final Drawable mDrawable;
 
 
     Point(String label, float value) {

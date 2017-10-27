@@ -55,6 +55,7 @@ import java.util.List;
 
 public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
 
+    @SuppressWarnings("unused")
     private static final String TAG_LOG = "AlbumListFragment";
 
     private Context mContext;
@@ -261,6 +262,7 @@ public class AlbumListFragment extends BaseFragment implements MusiqueKeys {
         public Loader<List<Song>> onCreateLoader(int id, Bundle args) {
             Album album = args.getParcelable("album");
             SongLoader loader = new SongLoader(getActivity());
+            assert album != null;
             loader.setSelection(MediaStore.Audio.Media.ALBUM_ID + " = ?", new String[]{String.valueOf(album.getId())});
             loader.setSortOrder(MediaStore.Audio.Media.TRACK);
             return loader;

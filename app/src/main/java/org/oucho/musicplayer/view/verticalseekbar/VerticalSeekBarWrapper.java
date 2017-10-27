@@ -107,7 +107,7 @@ public class VerticalSeekBarWrapper extends FrameLayout {
         }
     }
 
-    /*package*/ void applyViewRotation() {
+    void applyViewRotation() {
         applyViewRotation(getWidth(), getHeight());
     }
 

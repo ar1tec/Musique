@@ -42,7 +42,7 @@ public abstract class ChartView extends RelativeLayout {
 
     private final YRenderer yRndr;
 
-    final Style style;
+    private final Style style;
 
     private ArrayList<ChartSet> data;
 
@@ -342,9 +342,9 @@ public abstract class ChartView extends RelativeLayout {
     }
 
 
-    void setOrientation(@NonNull Orientation orien) {
+    void setOrientation() {
 
-        mOrientation = checkNotNull(orien);
+        mOrientation = checkNotNull(Orientation.VERTICAL);
         if (mOrientation == Orientation.VERTICAL) {
             yRndr.setHandleValues(true);
         } else {
@@ -352,29 +352,29 @@ public abstract class ChartView extends RelativeLayout {
         }
     }
 
-    public float getInnerChartBottom() {
+    float getInnerChartBottom() {
         return yRndr.getInnerChartBottom();
     }
 
-    public float getInnerChartLeft() {
+    float getInnerChartLeft() {
         return xRndr.getInnerChartLeft();
     }
 
-    public float getInnerChartRight() {
+    private float getInnerChartRight() {
         return xRndr.getInnerChartRight();
     }
 
-    public float getInnerChartTop() {
+    float getInnerChartTop() {
         return yRndr.getInnerChartTop();
     }
 
-    public ChartView setYLabels(@NonNull YRenderer.LabelPosition position) {
-        style.yLabelsPositioning = checkNotNull(position);
+    public ChartView setYLabels() {
+        style.yLabelsPositioning = checkNotNull(AxisRenderer.LabelPosition.NONE);
         return this;
     }
 
-    public ChartView setXLabels(@NonNull XRenderer.LabelPosition position) {
-        style.xLabelsPositioning = checkNotNull(position);
+    public ChartView setXLabels() {
+        style.xLabelsPositioning = checkNotNull(AxisRenderer.LabelPosition.NONE);
         return this;
     }
 
@@ -449,24 +449,24 @@ public abstract class ChartView extends RelativeLayout {
 
         private boolean hasYAxis;
 
-        private float axisThickness;
+        private final float axisThickness;
 
-        private int axisColor;
+        private final int axisColor;
 
         /**
          * Distance between axis and label
          */
-        private int axisLabelsSpacing;
+        private final int axisLabelsSpacing;
 
         /**
          * Spacing between axis labels and chart sides
          */
-        private int axisBorderSpacing;
+        private final int axisBorderSpacing;
 
         /**
          * Spacing between chart top and axis label
          */
-        private int axisTopSpacing;
+        private final int axisTopSpacing;
 
         /**
          * Grid
@@ -482,9 +482,9 @@ public abstract class ChartView extends RelativeLayout {
 
         private Paint labelsPaint;
 
-        private int labelsColor;
+        private final int labelsColor;
 
-        private float fontSize;
+        private final float fontSize;
 
         private Typeface typeface;
 
@@ -502,7 +502,7 @@ public abstract class ChartView extends RelativeLayout {
         /**
          * Labels Metric to draw together with labels.
          */
-        private DecimalFormat labelsFormat;
+        private final DecimalFormat labelsFormat;
 
 
         Style(Context context) {

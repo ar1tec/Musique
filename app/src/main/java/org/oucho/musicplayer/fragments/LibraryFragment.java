@@ -35,6 +35,7 @@ import java.util.Map;
 public class LibraryFragment extends BaseFragment implements MusiqueKeys {
 
 
+    @SuppressWarnings("unused")
     private static final String TAG_LOG = "Search Activity";
 
     private final Handler mHandler = new Handler();
