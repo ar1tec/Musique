@@ -51,9 +51,7 @@
 
     <declare-styleable name="VerticalSeekBar">
         <attr name="seekBarRotation">
-            <!-- Clock wise - 90 deg; top = min, bottom = max -->
             <enum name="CW90" value="90" />
-            <!-- Clock wise - 270 deg; bottom = min, top = max -->
             <enum name="CW270" value="270" />
         </attr>
     </declare-styleable>
@@ -78,18 +76,6 @@
         <attr name="chart_fontSize" format="dimension" />
         <attr name="chart_typeface" format="string" />
 
-        <attr name="chart_shadowColor" format="reference|color" />
-        <attr name="chart_shadowDx" format="dimension" />
-        <attr name="chart_shadowDy" format="dimension" />
-        <attr name="chart_shadowRadius" format="dimension" />
-
-    </declare-styleable>
-
-    <declare-styleable name="BarChartAttrs">
-        <attr name="chart_barSpacing" format="dimension" />
-        <attr name="chart_setSpacing" format="dimension" />
-        <attr name="chart_cornerRadius" format="dimension" />
-        <attr name="chart_barBackgroundColor" format="reference|color" />
     </declare-styleable>
 
 </resources>
