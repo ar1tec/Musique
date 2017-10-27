@@ -49,7 +49,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
     private MainActivity mActivity;
     private SongListAdapter mAdapter;
     private SharedPreferences préférences = null;
-    private Receiver Receiver;
+    private songReceiver songReceiver;
     private boolean isRegistered = false;
     private String titre;
     private String tri;
@@ -184,12 +184,12 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
         setTri();
 
-        Receiver = new Receiver();
+        songReceiver = new songReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(SONG_TAG);
         filter.addAction(REFRESH_TAG);
 
-        mContext.registerReceiver(Receiver, filter);
+        mContext.registerReceiver(songReceiver, filter);
         isRegistered = true;
 
     }
@@ -235,7 +235,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
         super.onPause();
 
         if (isRegistered) {
-            mContext.unregisterReceiver(Receiver);
+            mContext.unregisterReceiver(songReceiver);
 
             isRegistered = false;
         }
@@ -252,7 +252,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
             filter.addAction(REFRESH_TAG);
             filter.addAction(SET_TITLE);
 
-            mContext.registerReceiver(Receiver, filter);
+            mContext.registerReceiver(songReceiver, filter);
             isRegistered = true;
         }
 
@@ -394,7 +394,7 @@ public class SongListFragment extends BaseFragment implements MusiqueKeys {
 
 
 
-    private class Receiver extends BroadcastReceiver {
+    private class songReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {

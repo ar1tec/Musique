@@ -53,23 +53,21 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
 
     private ProgressBar progressBar;
 
+    private Song mSong;
     private Album mAlbum;
     private List<Song> mSongList = new ArrayList<>();
 
-    private Song mSong;
-
+    private AlertDialog controlDialog;
     private AsyncTask<String, Integer, Boolean> deleteTask;
 
-    private AlertDialog controlDialog;
-
-    private String title;
-    private String albumName;
-    private String artistName;
-    private String track;
     private String disc;
-    private String genre;
     private String year;
     private String cover;
+    private String genre;
+    private String title;
+    private String track;
+    private String albumName;
+    private String artistName;
 
 
     @Override
@@ -85,21 +83,19 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
             isAlbum = true;
 
             mAlbum = bundle.getParcelable("album");
-
             albumName = bundle.getString("albumName");
             artistName = bundle.getString("artistName");
             genre = bundle.getString("genre");
             year = bundle.getString("year");
             cover = bundle.getString("cover");
 
-            getLoaderManager().initLoader(0, null, mLoaderCallbacks);
+            getLoaderManager().initLoader(0, null, mLoaderSongs);
 
         } else if (type != null && type.equals("song")) {
 
             isAlbum = false;
 
             mSong = bundle.getParcelable("song");
-
             title = bundle.getString("title");
             albumName = bundle.getString("albumName");
             artistName = bundle.getString("artistName");
@@ -134,6 +130,34 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (!isAlbum)
+            deleteTask = new Delete().execute();
+    }
+
+
+    @Override
+    public void onStop() {
+
+        Log.w(TAG, "stop");
+        if (deleteTask.getStatus() == AsyncTask.Status.FINISHED) {
+
+            Intent refresh = new Intent();
+            refresh.setAction(REFRESH_TAG);
+            // don't touch error on break != getContext().sendBroadcast(refresh);
+            MusiqueApplication.getInstance().sendBroadcast(refresh);
+            controlDialog.cancel();
+        } else {
+            isCancel = true;
+            new Handler().postDelayed(this::onStop, 500);
+        }
+        super.onStop();
+    }
+
+
     @SuppressLint("StaticFieldLeak")
     class Delete extends AsyncTask<String, Integer, Boolean> {
 
@@ -158,103 +182,69 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
             boolean success = false;
 
             try {
+                // TODO VERSION.SDK_INT >= 26
+                //AudioFileIO.writeAs(audioFile, MusiqueApplication.getInstance().getCacheDir().getPath() + "/temp");
+
                 File song = new File(mSong.getPath());
 
-                if (StorageHelper.isWritable(song)) {
+                try {
+                    getActivity().runOnUiThread(() -> file_name.setText(mSong.getPath()));
+                } catch (NullPointerException ignored) {}
 
-                    try {
-                        getActivity().runOnUiThread(() -> file_name.setText(mSong.getPath()));
-                    } catch (NullPointerException ignored) {}
+                String filename = new File(mSong.getPath()).getName();
+                String pathCache = MusiqueApplication.getInstance().getCacheDir().getPath() + "/";
+                String pathSong = new File(mSong.getPath()).getParent();
 
-                    AudioFile audioFile = AudioFileIO.read(song);
-                    Tag tag = audioFile.getTag();
-                    tag.setField(FieldKey.TITLE, title);
-                    tag.setField(FieldKey.ARTIST, artistName);
-                    tag.setField(FieldKey.ALBUM, albumName);
-                    tag.setField(FieldKey.TRACK, track);
+                File file = new File(pathCache + filename);
+
+                if (file.exists())
+                    StorageHelper.deleteFile(file);
+
+                StorageHelper.copyFile(song, MusiqueApplication.getInstance().getCacheDir(), false);
+
+                try {
+                    getActivity().runOnUiThread(() -> progressBar.setProgress(50));
+                } catch (NullPointerException ignored) {}
+
+                AudioFile audioFile = AudioFileIO.read(file);
+                Tag tag = audioFile.getTag();
+
+                tag.setField(FieldKey.TITLE, title);
+                tag.setField(FieldKey.ARTIST, artistName);
+                tag.setField(FieldKey.ALBUM, albumName);
+                tag.setField(FieldKey.TRACK, track);
+                tag.setField(FieldKey.GENRE, genre);
+
+                if (disc.equals("0") || disc.equals(""))
+                    tag.deleteField(FieldKey.DISC_NO);
+                else
                     tag.setField(FieldKey.DISC_NO, disc);
-                    tag.setField(FieldKey.GENRE, genre);
 
-                    if (cover != null) {
-                        File art = new File(cover);
-                        Artwork cover = ArtworkFactory.createArtworkFromFile(art);
-                        tag.setField(cover);
-                    }
-
-                    audioFile.commit();
-
-                    success = true;
-
-                    try {
-                        getActivity().runOnUiThread(() -> progressBar.setProgress(100));
-                    } catch (NullPointerException ignored) {}
-
-                } else {
-
-                    // TODO VERSION.SDK_INT >= 26
-                    //AudioFileIO.writeAs(audioFile, MusiqueApplication.getInstance().getCacheDir().getPath() + "/temp");
-
-                    try {
-                        getActivity().runOnUiThread(() -> file_name.setText(mSong.getPath()));
-                    } catch (NullPointerException ignored) {}
-
-                    String filename = new File(mSong.getPath()).getName();
-                    String pathCache = MusiqueApplication.getInstance().getCacheDir().getPath() + "/";
-                    String pathSong = new File(mSong.getPath()).getParent();
-
-                    File file = new File(pathCache + filename);
-
-                    if (file.exists())
-                        StorageHelper.deleteFile(file);
-
-                    StorageHelper.copyFile(song, MusiqueApplication.getInstance().getCacheDir(), false);
-
-                    try {
-                        getActivity().runOnUiThread(() -> progressBar.setProgress(50));
-                    } catch (NullPointerException ignored) {}
-
-                    AudioFile audioFile = AudioFileIO.read(file);
-                    Tag tag = audioFile.getTag();
-
-                    tag.setField(FieldKey.TITLE, title);
-                    tag.setField(FieldKey.ARTIST, artistName);
-                    tag.setField(FieldKey.ALBUM, albumName);
-                    tag.setField(FieldKey.TRACK, track);
-
-                    if (disc.equals("0") || disc.equals(""))
-                        tag.deleteField(FieldKey.DISC_NO);
-                    else
-                        tag.setField(FieldKey.DISC_NO, disc);
-
-                    tag.setField(FieldKey.GENRE, genre);
-
-                    if (cover != null) {
-                        File art = new File(cover);
-                        Artwork cover = ArtworkFactory.createArtworkFromFile(art);
-                        tag.setField(cover);
-                    }
-
-                    audioFile.commit();
-
-                    File target = new File(pathSong);
-
-                    if (StorageHelper.copyFile(file, target, true)) {
-                        success = true;
-                        StorageHelper.deleteFile(file);
-                    }
-
-                    try {
-                        getActivity().runOnUiThread(() -> progressBar.setProgress(100));
-                    } catch (NullPointerException ignored) {}
-
+                if (cover != null) {
+                    File art = new File(cover);
+                    Artwork cover = ArtworkFactory.createArtworkFromFile(art);
+                    tag.setField(cover);
                 }
+
+                audioFile.commit();
+
+                File target = new File(pathSong);
+
+                if (StorageHelper.copyFile(file, target, true)) {
+                    success = true;
+                    StorageHelper.deleteFile(file);
+                }
+
+                try {
+                    getActivity().runOnUiThread(() -> progressBar.setProgress(100));
+                } catch (NullPointerException ignored) {}
+
 
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
 
             return success;
-
         }
 
         private boolean saveTagsAlbum() {
@@ -274,97 +264,64 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                 int j = i;
 
                 try {
+
+                    // TODO VERSION.SDK_INT >= 26
+                    //AudioFileIO.writeAs(audioFile, MusiqueApplication.getInstance().getCacheDir().getPath() + "/temp");
+
                     File song = new File(mSongList.get(i).getPath());
 
-                    if (StorageHelper.isWritable(song)) {
+                    try {
+                        getActivity().runOnUiThread(() -> file_name.setText(mSongList.get(j).getPath()));
+                    } catch (NullPointerException ignored) {}
 
 
-                        try {
-                            getActivity().runOnUiThread(() -> file_name.setText(mSongList.get(j).getPath()));
-                        } catch (NullPointerException ignored) {}
+                    String filename = new File(mSongList.get(i).getPath()).getName();
+                    String pathCache = MusiqueApplication.getInstance().getCacheDir().getPath() + "/";
+                    String pathSong = new File(mSongList.get(i).getPath()).getParent();
 
-                        AudioFile audioFile = AudioFileIO.read(song);
-                        Tag tag = audioFile.getTag();
-                        tag.setField(FieldKey.ARTIST, artistName);
-                        tag.setField(FieldKey.ALBUM, albumName);
-                        tag.setField(FieldKey.GENRE, genre);
-                        tag.setField(FieldKey.YEAR, year);
+                    File file = new File(pathCache + filename);
 
-                        if (cover != null) {
-                            File art = new File(cover);
-                            Artwork cover = ArtworkFactory.createArtworkFromFile(art);
-                            tag.setField(cover);
-                        }
+                    if (file.exists())
+                        StorageHelper.deleteFile(file);
 
-                        audioFile.commit();
+                    StorageHelper.copyFile(song, MusiqueApplication.getInstance().getCacheDir(), false);
 
-                        float tc = step * totalCount;
+                    float tc1 = (step * totalCount) - (step/2);
 
-                        try {
-                            getActivity().runOnUiThread(() -> progressBar.setProgress((int) tc));
-                        } catch (NullPointerException ignored) {}
-
-                        success = true;
-
-                    } else {
-
-                        // TODO VERSION.SDK_INT >= 26
-                        //AudioFileIO.writeAs(audioFile, MusiqueApplication.getInstance().getCacheDir().getPath() + "/temp");
-
-                        try {
-                            getActivity().runOnUiThread(() -> file_name.setText(mSongList.get(j).getPath()));
-                        } catch (NullPointerException ignored) {}
+                    try {
+                        getActivity().runOnUiThread(() -> progressBar.setProgress((int) tc1));
+                    } catch (NullPointerException ignored) {}
 
 
-                        String filename = new File(mSongList.get(i).getPath()).getName();
-                        String pathCache = MusiqueApplication.getInstance().getCacheDir().getPath() + "/";
-                        String pathSong = new File(mSongList.get(i).getPath()).getParent();
+                    AudioFile audioFile = AudioFileIO.read(file);
+                    Tag tag = audioFile.getTag();
 
-                        File file = new File(pathCache + filename);
+                    tag.setField(FieldKey.ARTIST, artistName);
+                    tag.setField(FieldKey.ALBUM, albumName);
+                    tag.setField(FieldKey.GENRE, genre);
+                    tag.setField(FieldKey.YEAR, year);
 
-                        if (file.exists())
-                            StorageHelper.deleteFile(file);
-
-                        StorageHelper.copyFile(song, MusiqueApplication.getInstance().getCacheDir(), false);
-
-                        float tc1 = (step * totalCount) - (step/2);
-
-                        try {
-                            getActivity().runOnUiThread(() -> progressBar.setProgress((int) tc1));
-                        } catch (NullPointerException ignored) {}
-
-
-                        AudioFile audioFile = AudioFileIO.read(file);
-                        Tag tag = audioFile.getTag();
-
-                        tag.setField(FieldKey.ARTIST, artistName);
-                        tag.setField(FieldKey.ALBUM, albumName);
-                        tag.setField(FieldKey.GENRE, genre);
-                        tag.setField(FieldKey.YEAR, year);
-
-                        if (cover != null) {
-                            File art = new File(cover);
-                            Artwork cover = ArtworkFactory.createArtworkFromFile(art);
-                            tag.setField(cover);
-                        }
-
-                        audioFile.commit();
-
-
-                        File target = new File(pathSong);
-
-                        if (StorageHelper.copyFile(file, target, true)) {
-                            success = true;
-                            StorageHelper.deleteFile(file);
-                        }
-
-                        float tc2 = (step * totalCount);
-
-                        try {
-                            getActivity().runOnUiThread(() -> progressBar.setProgress((int) tc2));
-                        } catch (NullPointerException ignored) {}
-
+                    if (cover != null) {
+                        File art = new File(cover);
+                        Artwork cover = ArtworkFactory.createArtworkFromFile(art);
+                        tag.setField(cover);
                     }
+
+                    audioFile.commit();
+
+
+                    File target = new File(pathSong);
+
+                    if (StorageHelper.copyFile(file, target, true)) {
+                        success = true;
+                        StorageHelper.deleteFile(file);
+                    }
+
+                    float tc2 = (step * totalCount);
+
+                    try {
+                        getActivity().runOnUiThread(() -> progressBar.setProgress((int) tc2));
+                    } catch (NullPointerException ignored) {}
 
 
                 } catch (Exception e) {
@@ -391,38 +348,8 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
         }
     }
 
-    @Override
-    public void onStop() {
 
-        Log.w(TAG, "stop");
-        if (deleteTask.getStatus() == AsyncTask.Status.FINISHED) {
-
-            Intent refresh = new Intent();
-            refresh.setAction(REFRESH_TAG);
-            // prevent crash on break != getContext().sendBroadcast(refresh);
-            MusiqueApplication.getInstance().sendBroadcast(refresh);
-            controlDialog.cancel();
-        } else {
-            isCancel = true;
-            new Handler().postDelayed(this::onStop, 500);
-        }
-        super.onStop();
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Log.d(TAG, "onStart()");
-
-        if (!isAlbum)
-            deleteTask = new Delete().execute();
-    }
-
-
-
-    private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Song>>() {
+    private final LoaderManager.LoaderCallbacks<List<Song>> mLoaderSongs = new LoaderManager.LoaderCallbacks<List<Song>>() {
 
         @Override
         public Loader<List<Song>> onCreateLoader(int id, Bundle args) {

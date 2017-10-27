@@ -102,8 +102,8 @@ public class PlayerFragment extends BaseFragment
 
         mHandler.postDelayed(() -> {
 
-            String artist = PlayerService.getAlbumName();
-            getActivity().setTitle(artist);
+            String album = PlayerService.getAlbumName();
+            getActivity().setTitle(album);
 
             Intent intent1 = new Intent();
             intent1.setAction(INTENT_TOOLBAR_SHADOW);
@@ -147,7 +147,7 @@ public class PlayerFragment extends BaseFragment
     }
 
 
-        // empêche les clicks vers le layout du dessous
+    // empêche les clicks vers le layout du dessous
     private final View.OnClickListener mOnClickListener = v -> {
 
         if (mPlayerService == null) {
@@ -439,30 +439,15 @@ public class PlayerFragment extends BaseFragment
 
             String title = PlayerService.getSongTitle();
             final String artist = PlayerService.getArtistName();
-            String album = PlayerService.getAlbumName();
-
-            if (artist != null) {
-
-                if (first_run) {
-
-                    mHandler.postDelayed(() -> {
-                        getActivity().setTitle(artist);
-                        first_run = false;
-                    }, 300);
-
-                }  else {
-                    getActivity().setTitle(artist);
-                }
-            }
 
             if (title != null) {
                 //noinspection ConstantConditions
                 ((TextView) rootView.findViewById(R.id.song_title)).setText(title);
             }
 
-            if (album != null) {
+            if (artist != null) {
                 //noinspection ConstantConditions
-                ((TextView) rootView.findViewById(R.id.song_album)).setText(album);
+                ((TextView) rootView.findViewById(R.id.song_artist)).setText(artist);
             }
 
             ImageView artworkView = rootView.findViewById(R.id.artwork);

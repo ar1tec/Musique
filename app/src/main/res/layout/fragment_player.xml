@@ -53,7 +53,7 @@
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/song_album"
+        android:id="@+id/song_artist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
@@ -124,7 +124,7 @@
             android:layout_gravity="center_horizontal"
             android:text="1kb/s"
             android:textColor="@color/grey_600"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:fontFamily="sans-serif-light"
             card_view:ignore="HardcodedText"
             android:layout_weight="1" />

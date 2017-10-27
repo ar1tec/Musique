@@ -68,7 +68,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
     private int mArtworkSize;
 
-    private String Titre = "";
+    private String albumName = "";
     private String Artiste = "";
     private String Année = "";
     private String nb_Morceaux = "";
@@ -169,7 +169,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             mAlbum = bundle.getParcelable("album");
 
             assert mAlbum != null;
-            Titre = mAlbum.getAlbumName();
+            albumName = mAlbum.getAlbumName();
             Artiste = mAlbum.getArtistName();
             Année = String.valueOf(mAlbum.getYear());
 
@@ -192,24 +192,17 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
             mSearchActivity = (SearchActivity) mContext;
 
             if (android.os.Build.VERSION.SDK_INT >= 24) {
-                getActivity().setTitle(Html.fromHtml("<font color=\"#FFA000\">" + Titre + " </font> <small> <font color=\"#CCCCCC\">", Html.FROM_HTML_MODE_LEGACY));
+                getActivity().setTitle(Html.fromHtml("<font color=\"#FFA000\">" + albumName + " </font> <small> <font color=\"#CCCCCC\">", Html.FROM_HTML_MODE_LEGACY));
             } else {
                 //noinspection deprecation
-                getActivity().setTitle(Html.fromHtml("<font color=\"#FFA000\">" + Titre + " </font>"));
+                getActivity().setTitle(Html.fromHtml("<font color=\"#FFA000\">" + albumName + " </font>"));
             }
 
         } else {
 
             mHandler.postDelayed(() -> {
 
-                if (tri.equals("a-z"))
-                    getActivity().setTitle(Titre);
-
-                if (tri.equals(getString(R.string.title_sort_artist)))
-                    getActivity().setTitle(Artiste);
-
-                if (tri.equals(getString(R.string.title_sort_year)))
-                    getActivity().setTitle(Année);
+                getActivity().setTitle(albumName);
 
                 Intent intent = new Intent();
                 intent.setAction(INTENT_TOOLBAR_SHADOW);
@@ -266,38 +259,14 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
                 .centerCrop()
                 .into(artworkView);
 
-        TextView titreAlbum = rootView.findViewById(R.id.line1);
+        TextView artist = rootView.findViewById(R.id.artist_name);
+        artist.setText(Artiste);
 
-        TextView artiste = rootView.findViewById(R.id.line2);
-        artiste.setText(Artiste);
+        TextView year = rootView.findViewById(R.id.year);
+        year.setText(Année);
 
-        TextView an = rootView.findViewById(R.id.line3);
-        an.setText(Année);
-
-        TextView morceaux = rootView.findViewById(R.id.line4);
-        morceaux.setText(nb_Morceaux);
-
-
-        if (tri.equals("a-z")) {
-            titreAlbum.setText(Artiste);
-            titreAlbum.setVisibility(View.VISIBLE);
-            artiste.setVisibility(View.GONE);
-            an.setVisibility(View.VISIBLE);
-        }
-
-        if (tri.equals(mContext.getString(R.string.title_sort_artist))) {
-            titreAlbum.setText(Titre);
-            titreAlbum.setVisibility(View.VISIBLE);
-            artiste.setVisibility(View.GONE);
-            an.setVisibility(View.VISIBLE);
-        }
-
-        if (tri.equals(mContext.getString(R.string.title_sort_year))) {
-            titreAlbum.setText(Titre);
-            titreAlbum.setVisibility(View.VISIBLE);
-            artiste.setVisibility(View.VISIBLE);
-            an.setVisibility(View.GONE);
-        }
+        TextView trackNb = rootView.findViewById(R.id.nb_track);
+        trackNb.setText(nb_Morceaux);
 
         durée = rootView.findViewById(R.id.duration);
 
@@ -580,7 +549,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
 
             if (SET_TITLE.equals(receiveIntent)){
                 if (tri.equals("a-z"))
-                    getActivity().setTitle(Titre);
+                    getActivity().setTitle(albumName);
 
                 if (tri.equals(getString(R.string.title_sort_artist)))
                     getActivity().setTitle(Artiste);

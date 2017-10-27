@@ -1007,7 +1007,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (artist != null) {
             //noinspection ConstantConditions
-            ((TextView) findViewById(R.id.song_album)).setText(artist + ", "  + PlayerService.getAlbumName());
+            ((TextView) findViewById(R.id.song_artist)).setText(artist + ", "  + PlayerService.getAlbumName());
         }
 
         int duration = PlayerService.getTrackDuration();

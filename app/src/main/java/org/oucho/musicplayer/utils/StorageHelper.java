@@ -83,7 +83,7 @@ public class StorageHelper {
             inStream = new FileInputStream(source);
 
             if (isWritable(target)) {
-                // standard way
+
                 FileChannel inChannel = new FileInputStream(source).getChannel();
                 FileChannel outChannel = new FileOutputStream(target).getChannel();
                 inChannel.transferTo(0, inChannel.size(), outChannel);
@@ -92,17 +92,17 @@ public class StorageHelper {
                 try {
                     inChannel.close();
                 } catch (Exception ignored) { }
+
                 try {
                     outChannel.close();
                 } catch (Exception ignored) { }
+
             } else {
 
-                // Storage Access Framework
                 DocumentFile targetDocument = getDocumentFile(target);
 
                 if (targetDocument != null)
                     outStream = MusiqueApplication.getInstance().getContentResolver().openOutputStream(targetDocument.getUri());
-
 
                 if (outStream != null) {
 

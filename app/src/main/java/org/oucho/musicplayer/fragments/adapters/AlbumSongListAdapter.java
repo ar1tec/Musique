@@ -57,40 +57,20 @@ public class AlbumSongListAdapter extends Adapter<AlbumSongListAdapter.SongViewH
     public void onBindViewHolderImpl(SongViewHolder holder, int position) {
         Song song = getItem(position);
 
-        long secondes = song.getDuration() / 1000;
-
         String trackNb = String.valueOf(song.getTrackNumber());
 
-        String discNb;
-
-        Spanned spanned;
-
-        if (song.getTrackNumber() >= 1000) {
-
-            discNb = String.valueOf(trackNb.charAt(0));
+        if (Integer.parseInt(trackNb) >= 1000) {
             trackNb = trackNb.substring(1);
             trackNb = Integer.valueOf(trackNb).toString();
-
-            final int couleurTitre = ContextCompat.getColor(mContext, R.color.grey_400);
-
-                if (android.os.Build.VERSION.SDK_INT >= 24) {
-                    spanned = Html.fromHtml("<font color='" + couleurTitre + "'>" + discNb + " - " + "</font>" + trackNb, Html.FROM_HTML_MODE_LEGACY);
-                } else {
-                    //noinspection deprecation
-                    spanned = Html.fromHtml("<font color='" + couleurTitre + "'>" + discNb + " - " + "</font>" + trackNb);
-                }
-
-            holder.vTrackNumber.setText(spanned);
-        } else {
-            holder.vTrackNumber.setText(trackNb);
         }
+        holder.vTrackNumber.setText(trackNb);
 
+        long secondes = song.getDuration() / 1000;
         @SuppressLint("DefaultLocale")
         String duration = String.valueOf( (secondes % 3600) / 60 ) + ":" + String.format("%02d", (secondes % 3600) % 60 );
 
         holder.vTime.setText(duration);
         holder.vTitle.setText(song.getTitle());
-
 
 
         if (song.getId() == PlayerService.getSongID()) {
