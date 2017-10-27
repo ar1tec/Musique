@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.media.MediaExtractor;
-import android.media.MediaFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +24,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
@@ -34,7 +34,7 @@ import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.tools.LockableViewPager;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,6 +55,8 @@ public class PlayerFragment extends BaseFragment
     private final PlayerService mPlayerService = MainActivity.getPlayerService();
 
     private final Handler mHandler = new Handler();
+
+    TextView bitrate;
 
     private int track = -1;
     private int mArtworkSize;
@@ -129,7 +131,7 @@ public class PlayerFragment extends BaseFragment
         nbTrack = rootView.findViewById(R.id.nombre_titre);
         nbTrack.setText(track + "/" + total_track);
 
-        TextView bitrate = rootView.findViewById(R.id.bitrate);
+        bitrate = rootView.findViewById(R.id.bitrate);
         bitrate.setText(getBitrate());
 
         mSeekBar = rootView.findViewById(R.id.seek_bar);
@@ -432,6 +434,9 @@ public class PlayerFragment extends BaseFragment
 
                 updateSeekBar();
             }
+
+
+            bitrate.setText(getBitrate());
         }
     }
 
@@ -452,48 +457,34 @@ public class PlayerFragment extends BaseFragment
 
 
     private String getBitrate() {
-        MediaExtractor mex = new MediaExtractor();
-        try {
-            mex.setDataSource(getContext(), PlayerService.getSongPath(), null);// the adresss location of the sound on sdcard.
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        File file = null;
+        AudioFile audioFile = null;
+
+        if (PlayerService.getSong() != null) {
+
+            try {
+                file = new File(PlayerService.getSong().getPath());
+                audioFile = AudioFileIO.read(file);
+            } catch (Exception ignore) {
+            }
         }
 
-        MediaFormat mf = mex.getTrackFormat(0);
+        if (audioFile != null) {
+            String bitRate = audioFile.getAudioHeader().getBitRate();
 
-        Log.d(TAG_LOG, "mf = " + mf);
+            String sampleRate = audioFile.getAudioHeader().getSampleRate();
 
-        String mime = mf.getString(MediaFormat.KEY_MIME);
-        Log.d(TAG_LOG, "mime = " + mime);
+            String mime = audioFile.getAudioHeader().getEncodingType();
 
-        if (mime.equals("audio/mp4a-latm")) {
-            mime = "aac";
-        } else if (mime.equals("audio/mpeg")) {
-            mime = "mp3";
+            String vbr0 = audioFile.getAudioHeader().isVariableBitRate() ? ", vbr" : "";
+
+            Log.d(TAG_LOG, "getBitRate : " + bitRate + " " + sampleRate + " ");
+
+            return mime + " - " + bitRate + "kb/s" + vbr0 + " - " + sampleRate + "Hz";
         }
 
-
-        String bitRate = "";
-        try {
-            bitRate = String.valueOf((mf.getInteger("bit-rate") / 1000) + "kb/s - ");
-        } catch (NullPointerException ignore) {
-
-        }
-
-        try {
-            bitRate = String.valueOf(mf.getInteger(MediaFormat.KEY_BIT_RATE));
-        } catch (NullPointerException ignore) {
-
-        }
-
-        int sampleRate = -1;
-        try {
-            sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE);
-        } catch (NullPointerException ignore) {}
-
-        Log.d(TAG_LOG, "getBitRate : " + bitRate + " " + sampleRate + " ");
-
-        return bitRate + mime + " - " + sampleRate + "Hz";
+        return null;
     }
 
 

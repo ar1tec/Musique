@@ -83,8 +83,6 @@ public class PlayerService extends Service implements MusiqueKeys {
     private int mCurrentPosition;
     private static int mRepeatMode = NO_REPEAT;
 
-    private static Uri uriForPlayer;
-
     private Boolean start = false;
     private static Song mCurrentSong;
     private AudioManager mAudioManager;
@@ -615,8 +613,6 @@ public class PlayerService extends Service implements MusiqueKeys {
         try {
             Uri songUri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mCurrentSong.getId());
 
-            setUri(songUri);
-
             mediaPlayer1.setDataSource(getApplicationContext(), songUri);
             mediaPlayer1.prepareAsync();
 
@@ -972,6 +968,13 @@ public class PlayerService extends Service implements MusiqueKeys {
         return -1;
     }
 
+    public static Song getSong() {
+        if (mCurrentSong != null) {
+            return mCurrentSong;
+        }
+        return null;
+    }
+
     public static int getTrackDuration() {
 
         if (currentPlayer == 1) {
@@ -1002,14 +1005,6 @@ public class PlayerService extends Service implements MusiqueKeys {
         public PlayerService getService() {
             return PlayerService.this;
         }
-    }
-
-    private void setUri(Uri songUri) {
-        uriForPlayer = songUri;
-    }
-
-    public static Uri getSongPath() {
-        return uriForPlayer;
     }
 
     public static List<Song> getQueuePlayList() {
