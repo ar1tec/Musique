@@ -15,11 +15,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.angelo.Angelo;
 import org.oucho.musicplayer.view.fastscroll.FastScroller;
 
 import java.text.Normalizer;
@@ -165,7 +164,7 @@ public class SongListAdapter extends Adapter<SongListAdapter.SongViewHolder> imp
        // ArtworkCache.getInstance().loadBitmap(song.getAlbumId(), holder.vArtwork, mThumbWidth, mThumbHeight, ArtworkHelper.getDefaultThumbDrawable(mContext));
 
         Uri uri = ContentUris.withAppendedId(ARTWORK_URI, song.getAlbumId());
-        Picasso.with(holder.vArtwork.getContext())
+        Angelo.with(holder.vArtwork.getContext())
                 .load(uri).config(Bitmap.Config.RGB_565)
                 .resize(mThumbWidth, mThumbHeight)
                 .centerCrop()

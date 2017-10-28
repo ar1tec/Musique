@@ -7,23 +7,18 @@ import org.oucho.musicplayer.view.chart.util.Tools;
 
 public class Point extends ChartEntry {
 
-
     private static final int DEFAULT_COLOR = -16777216;
-
-    private static final float DOTS_THICKNESS = 4;
-
-    private static final float DOTS_RADIUS = 3;
-
-    private final boolean mHasStroke;
-
-    private final float mStrokeThickness;
 
     private final int mStrokeColor;
 
+    private final boolean mHasStroke;
+
     private final float mRadius;
+    private final float mStrokeThickness;
+    private static final float DOTS_RADIUS = 3;
+    private static final float DOTS_THICKNESS = 4;
 
     private final Drawable mDrawable;
-
 
     Point(String label, float value) {
 

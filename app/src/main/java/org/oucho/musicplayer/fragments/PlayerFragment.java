@@ -23,8 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.oucho.musicplayer.MainActivity;
@@ -33,6 +31,7 @@ import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.QueueDbHelper;
 import org.oucho.musicplayer.db.model.Song;
+import org.oucho.musicplayer.angelo.Angelo;
 import org.oucho.musicplayer.tools.LockableViewPager;
 
 import java.io.File;
@@ -457,7 +456,7 @@ public class PlayerFragment extends BaseFragment
 
             Uri uri = ContentUris.withAppendedId(ARTWORK_URI, PlayerService.getAlbumId());
 
-            Picasso.with(mContext)
+            Angelo.with(mContext)
                     .load(uri)
                     .config(Bitmap.Config.RGB_565)
                     .resize(mArtworkSize, mArtworkSize)

@@ -16,12 +16,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.oucho.musicplayer.MusiqueKeys;
 import org.oucho.musicplayer.PlayerService;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
+import org.oucho.musicplayer.angelo.Angelo;
 import org.oucho.musicplayer.view.fastscroll.FastScroller;
 
 import java.text.Normalizer;
@@ -169,7 +168,7 @@ public class AlbumListAdapter extends BaseAdapter<AlbumListAdapter.AlbumViewHold
         }
 
         Uri uri = ContentUris.withAppendedId(ARTWORK_URI, album.getId());
-        Picasso.with(viewHolder.itemView.getContext())
+        Angelo.with(viewHolder.itemView.getContext())
                 .load(uri)
                 .config(Bitmap.Config.RGB_565)
                 .resize(mArtworkWidth, mArtworkHeight)

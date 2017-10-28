@@ -22,9 +22,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 
 import org.oucho.musicplayer.R;
+import org.oucho.musicplayer.angelo.Angelo;
 import org.oucho.musicplayer.utils.StorageHelper;
 import org.oucho.musicplayer.view.CustomLayoutManager;
 import org.oucho.musicplayer.view.fastscroll.FastScrollRecyclerView;
@@ -252,7 +252,7 @@ public class FilePickerDialog extends BottomSheetDialogFragment {
 
             if (f.isFile()) {
 
-                Picasso.with(getContext())
+                Angelo.with(getContext())
                         .load(f)
                         .config(Bitmap.Config.RGB_565)
                         .resize(100, 100)

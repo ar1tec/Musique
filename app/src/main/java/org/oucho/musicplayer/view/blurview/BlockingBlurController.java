@@ -175,8 +175,7 @@ class BlockingBlurController implements BlurController {
             try {
                 rootView.offsetDescendantRectToMyCoords(blurView, relativeViewBounds);
             } catch (IllegalArgumentException e) {
-                // BlurView is not a child of the rootView (i.e. it's in Dialog)
-                        // Fallback to regular coordinates system
+                // BlurView is not a child of the rootView (i.e. it's in Dialog)  Fallback to regular coordinates system
                         shouldTryToOffsetCoords = false;
             }
         }

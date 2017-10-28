@@ -21,11 +21,6 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
             MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.YEAR,
             MediaStore.Audio.Media.DATA};
 
-    private static final String[] genresProjection = {
-            MediaStore.Audio.Genres.NAME,
-            MediaStore.Audio.Genres._ID
-    };
-
     private final long mPlaylistId;
 
     public PlaylistLoader(Context context, long playlistId) {
@@ -39,8 +34,6 @@ public class PlaylistLoader extends BaseLoader<List<Song>> {
         List<Song> playlist = new ArrayList<>();
 
         Cursor cursor = getPlaylistCursor();
-
-        Cursor genresCursor;
 
         if (cursor != null && cursor.moveToFirst()) {
             int idCol = cursor

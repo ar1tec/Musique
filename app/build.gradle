@@ -45,13 +45,10 @@ dependencies {
     compile 'com.android.support:palette-v7:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    // image cache
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.okio:okio:1.13.0'
 
-    // tag edit
     compile 'net.jthink:jaudiotagger:2.2.5'
 
-    // find memory leak
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 

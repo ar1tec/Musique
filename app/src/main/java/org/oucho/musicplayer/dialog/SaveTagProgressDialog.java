@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -35,6 +34,7 @@ import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Album;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
+import org.oucho.musicplayer.angelo.Angelo;
 import org.oucho.musicplayer.utils.StorageHelper;
 
 import java.io.File;
@@ -334,7 +334,7 @@ public class SaveTagProgressDialog extends DialogFragment implements MusiqueKeys
                 getContext().getContentResolver().delete(ContentUris.withAppendedId(ARTWORK_URI, mAlbum.getId()), null, null);
 
                 Uri uri = ContentUris.withAppendedId(ARTWORK_URI, mAlbum.getId());
-                Picasso.with(getActivity()).invalidate(uri);
+                Angelo.with(getActivity()).invalidate(uri);
             }
 
             return success;

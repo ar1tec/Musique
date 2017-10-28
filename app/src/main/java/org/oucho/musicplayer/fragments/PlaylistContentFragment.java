@@ -25,13 +25,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.R;
 import org.oucho.musicplayer.db.model.Playlist;
 import org.oucho.musicplayer.db.model.Song;
 import org.oucho.musicplayer.fragments.loaders.PlaylistLoader;
+import org.oucho.musicplayer.angelo.Angelo;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
 import org.oucho.musicplayer.tools.CustomSwipe;
 import org.oucho.musicplayer.tools.CustomSwipeAdapter;
@@ -313,7 +312,7 @@ public class PlaylistContentFragment extends BaseFragment {
             viewHolder.vArtist.setText(song.getArtist());
 
             Uri uri = ContentUris.withAppendedId(ARTWORK_URI, song.getAlbumId());
-            Picasso.with(viewHolder.vReorderButton.getContext())
+            Angelo.with(viewHolder.vReorderButton.getContext())
                     .load(uri)
                     .config(Bitmap.Config.RGB_565)
                     .resize(mThumbSize, mThumbSize)

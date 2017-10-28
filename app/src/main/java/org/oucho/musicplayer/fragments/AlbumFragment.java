@@ -27,8 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.oucho.musicplayer.MainActivity;
 import org.oucho.musicplayer.MusiqueApplication;
 import org.oucho.musicplayer.MusiqueKeys;
@@ -42,6 +40,7 @@ import org.oucho.musicplayer.dialog.SongEditorDialog;
 import org.oucho.musicplayer.fragments.adapters.AlbumSongListAdapter;
 import org.oucho.musicplayer.fragments.adapters.BaseAdapter;
 import org.oucho.musicplayer.fragments.loaders.SongLoader;
+import org.oucho.musicplayer.angelo.Angelo;
 import org.oucho.musicplayer.search.SearchActivity;
 import org.oucho.musicplayer.tools.LockableViewPager;
 import org.oucho.musicplayer.utils.PlaylistsUtils;
@@ -253,7 +252,7 @@ public class AlbumFragment extends BaseFragment implements MusiqueKeys {
         ImageView artworkView = rootView.findViewById(R.id.album_artwork);
 
         Uri uri = ContentUris.withAppendedId(ARTWORK_URI, mAlbum.getId());
-        Picasso.with(mContext)
+        Angelo.with(mContext)
                 .load(uri)
                 .config(Bitmap.Config.RGB_565)
                 .resize(mArtworkSize, mArtworkSize)
